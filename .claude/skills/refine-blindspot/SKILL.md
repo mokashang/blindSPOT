@@ -1,15 +1,18 @@
 ---
 name: refine-blindspot
-description: One iteration of autonomous refinement on the Blindspot project. Evaluate the previous change, decide a concrete direction, apply within scope, verify, log, commit (or open a PR). Designed to run hourly via the `schedule` skill once trust is established — but ALWAYS invokable manually. The skill never schedules itself; that is a user action.
+description: One iteration of autonomous refinement on the Blindspot project. Evaluate the previous change, decide a concrete direction, apply on a fresh branch, run eval, open a PR, auto-review with a separate Claude session, merge if approved. Designed to run hourly via the `schedule` skill once trust is established — but ALWAYS invokable manually. The skill never schedules itself; that is a user action.
 ---
 
 # Refine Blindspot
 
 You are running one iteration of refinement on the Blindspot project. The
-loop is: read state → evaluate previous change → decide direction → apply →
-verify → log → commit (or open PR). Stay strictly within the scope tiers
-defined below. The user trusts this skill because of those tiers, not in
-spite of them.
+loop is: read state → evaluate previous change → decide direction → apply
+on branch → eval → open PR → auto-review → merge or hold → log.
+
+Every change goes through a PR that is reviewed by a separate Claude
+session before merging. There is no direct-to-main commit path — uniform
+PR flow with two layers of review (the per-commit code-review hook plus
+the PR-level auto-reviewer).
 
 ## Step 1 — Read state
 
@@ -20,9 +23,12 @@ Use Bash + Read to collect:
 - The most recent file in `eval/results/*.json`
 - The eval result from immediately before the most recent (for delta math)
 - If it exists, `data/feedback.jsonl` (real user ratings, post-V1)
+- `gh pr list --state open --search "head:refine/"` — see if any prior
+  refine PRs are still open (rejected by auto-review). If so, that's a
+  signal something needs human attention.
 
 Build a short mental summary:
-- What did the last refinement run change?
+- What did the last refinement run change? Was it merged or held?
 - What signal delta did it predict?
 - What is the current eval score?
 - Are there clusters in recent `ungrounded_claims` rows?
@@ -39,6 +45,10 @@ the actual delta computed from eval scores. Classify:
 - **NEUTRAL** — `|actual_delta| < 0.02` on the aggregate quality_score (below noise)
 - **NEGATIVE** — actual delta is opposite sign to predicted, OR much smaller than predicted
 
+If the previous PR was REJECTED by the auto-reviewer (not merged),
+classify as **REJECTED** and read the rejection reason — adjust this
+run's approach to avoid the same rejection cause.
+
 ## Step 3 — Decide direction
 
 Cycle through these four dimensions in order. For each, ask: "Is there a
@@ -51,16 +61,16 @@ the first yes.
 
 2. **Coverage gaps** — Check `ungrounded_claims` rows from recent turns.
    Group by topic. Is there a cluster pointing at a topic that no current
-   source-view covers? (If yes, plan a 🟡 PR to add a source-view.)
+   source-view covers? (If yes, plan a PR to add a new source-view.)
 
 3. **Signal-to-noise** — Check `source_view_stats`. Are any source-views
    consistently producing low-rated blind spots? Consider lowering their
-   `reliability` field (🟢 direct edit) or improving the `keyword_filter`.
+   `reliability` field, or improving the `keyword_filter`.
 
-4. **Failure-mode patterns** — Look at the critic's recent feedback strings.
-   Are there recurring categories (e.g. "too generic", "no concrete
-   numbers", "missing citations")? The fix usually goes into the agent's
-   system prompt.
+4. **Failure-mode patterns** — Look at the critic's recent feedback
+   strings. Are there recurring categories (e.g. "too generic", "no
+   concrete numbers", "missing citations")? The fix usually goes into
+   the agent's system prompt.
 
 Pick **ONE** concrete change. Examples of acceptable concreteness:
 
@@ -79,181 +89,213 @@ Unacceptable (too vague): "improve coverage", "make prompts clearer",
 
 ### Direction selection based on previous-run classification:
 
-- **POSITIVE** → continue along the same dimension as the last run. Refine
-  further in the same area.
-- **NEUTRAL** → switch to a different dimension. The current path isn't
-  producing signal.
-- **NEGATIVE** → if the last commit was a 🟢 direct commit, consider
-  `git revert` of that commit and try a different angle. If the last
-  action was a 🟡 PR (still pending), DO NOT make another related change
-  this turn — the user hasn't reviewed yet.
+- **POSITIVE** → continue along the same dimension. Refine further.
+- **NEUTRAL** → switch to a different dimension. The path isn't producing signal.
+- **NEGATIVE** → If the previous merged change caused a regression that
+  wasn't caught by branch-eval (rare), open a `git revert` PR.
+- **REJECTED** → read the auto-reviewer's reason. Address it (don't just
+  retry the same thing). If the rejection seems wrong, escalate via
+  `HUMAN_REVIEW_REQUESTED:` rather than gaming the reviewer.
+- **BASELINE** → start anywhere reasonable.
 
-## Step 4 — Apply the change
-
-There is no "never touch" tier. The worst case is always 🟡 (a PR).
-
-### 🟢 Auto-commit to `main` (no PR)
-
-Allowed only for these paths:
-
-- `src/blindspot/prompts/*.md` — agent system prompts
-- `community_profiles/*.md` — community-analyst profiles
-- `data/source_registry.yaml` — but ONLY the `notes`, `reliability`, or
-  `freshness_required` field of an **existing** entry. Adding a new entry
-  is 🟡.
-- `fixtures/eval_situations.yaml` — additive only (do not modify or
-  delete existing situations)
-- `docs/**/*.md`
-- `config.yaml` — only fields listed under `tunable_keys` in the config
-  schema, and only within their declared min/max ranges
-
-Use Edit / Write tools. After editing, go to Step 5.
-
-### 🟡 Branch + open PR (anything else)
-
-Required for:
-
-- `src/**/*.py` — any code change
-- `db/migrations/**`
-- `pyproject.toml`
-- `.claude/settings.json`
-- `.claude/hooks/**`
-- `tests/**`
-- New entries in `source_registry.yaml` or `tag_taxonomy_seed.yaml`
-- New community profile files
-- Config schema additions
-- **Any file deletion**
-
-Steps:
+## Step 4 — Apply on a fresh branch
 
 ```bash
-# Branch name format: refine/YYYYMMDD-HHMMSS-<short-slug>
 ts="$(date -u +%Y%m%d-%H%M%S)"
 slug="<derive a short kebab-case slug from your intent>"
-git checkout -b "refine/${ts}-${slug}"
+branch="refine/${ts}-${slug}"
+git checkout -b "$branch"
+```
 
-# Make the edits via Edit/Write tools.
+Make the change using Edit/Write tools. The pre-commit code-review hook
+will fire on each commit (catches code-quality issues for `.py`, `.ts`,
+etc; allows `.md`/`.yaml`/`.json` through). If the hook blocks your
+commit on a code file, address the feedback or abandon (don't bypass).
 
+```bash
 git add <files>
-git commit -m "<concise message>"     # pre-commit code-review hook runs
-git push -u origin "refine/${ts}-${slug}"
+git commit -m "<concise message starting with 'refine:'>"
+```
 
-gh pr create --title "refine: <short>" --body "$(cat <<EOF
+## Step 5 — Run eval on the branch
+
+```bash
+blindspot eval     # writes eval/results/<timestamp>.json
+```
+
+Compute `new_quality_score - baseline_quality_score` from the report.
+
+- If delta `< -0.02` (clear regression):
+  ```bash
+  git checkout main
+  git branch -D "$branch"
+  ```
+  Log NEGATIVE with the regression delta, exit.
+- If delta `>= -0.02`, proceed.
+
+## Step 6 — Push branch + open PR
+
+```bash
+git push -u origin "$branch"
+
+gh pr create --title "refine: <short summary>" --body "$(cat <<EOF
 ## What changed
-<description>
+<one-sentence description>
 
 ## Why
-<reasoning, including which dimension from Step 3 this addresses>
+<dimension from Step 3 + rationale>
 
 ## Predicted signal delta
-- specificity: +X
-- non_obviousness: +X
-- grounding_pct: +X%
-- diversity: +X
+- specificity: ±X
+- non_obviousness: ±X
+- grounding_pct: ±X%
+- diversity: ±X
 
-## Risk of regression
-<honest assessment>
+## Eval result on this branch
+- baseline quality_score: <previous>
+- branch quality_score: <new>
+- delta: <delta>
 
-## Security-sensitive flag
-$( if echo "<files>" | grep -qE "\.claude/(settings\.json|hooks/)|pyproject\.toml"; then
-     echo "⚠️ This PR touches a security-sensitive file. Please review carefully."
-   else
-     echo "None."
-   fi )
+## Files touched
+<list>
+
+## Risk assessment
+<honest one-paragraph assessment of what could go wrong>
 
 🤖 Generated by refine-blindspot skill
 EOF
 )"
 ```
 
-Never merge the PR yourself. The user reviews and merges.
+Capture the PR number (e.g. `pr_number=$(gh pr view --json number -q .number)`).
 
-## Step 5 — Verify (🟢 only)
+## Step 7 — Auto-review
 
-For 🟢 commits:
+Get the diff and invoke the reviewer:
 
-1. Run `blindspot eval` with a 600-second timeout.
-2. Compute `new_quality_score - baseline_quality_score`.
-3. If the delta is `< -0.02` (clear regression), `git restore` the file
-   and log this as NEGATIVE in Step 6.
-4. If the delta is `>= -0.02`, proceed to Step 6 + 7.
+```bash
+diff_text="$(gh pr diff $pr_number)"
+pr_body="$(gh pr view $pr_number --json body -q .body)"
 
-For 🟡 PRs, Step 5 is skipped — verification is the user's review +
-whatever CI you set up later.
+reviewer_prompt="$(cat .claude/skills/refine-blindspot/REVIEWER_PROMPT.md)
 
-## Step 6 — Log to `refinements/log.jsonl`
+---
 
-Append exactly one JSON line:
+# PR description
+$pr_body
+
+# Diff
+\`\`\`diff
+$diff_text
+\`\`\`
+
+Now output your verdict as a single JSON object on one line, nothing else."
+
+verdict_json="$(timeout 180 claude -p "$reviewer_prompt")"
+```
+
+Parse `verdict_json` for `{"approve": bool, "reason": "..."}`.
+
+**Robustness:** If `claude -p` fails or output is unparseable, treat as
+reject and leave the PR open (do not auto-merge on broken parsing).
+
+## Step 8 — Merge or hold
+
+**If approved:**
+
+```bash
+gh pr merge $pr_number --squash --delete-branch
+```
+
+(The `gh pr merge` will land the squashed change on main. The pre-commit
+hook does not fire on merges, but the per-commit hook already reviewed
+the underlying commits when they were made on the branch.)
+
+**If rejected:**
+
+```bash
+gh pr comment $pr_number --body "🤖 Auto-review rejected: <reason>"
+git checkout main
+# Do NOT delete the branch — leave it for human review.
+```
+
+The PR stays open. The next refine run will see it via `gh pr list` and
+adjust strategy.
+
+## Step 9 — Log
+
+Append exactly one JSON line to `refinements/log.jsonl`:
 
 ```json
 {
   "timestamp": "2026-05-13T14:00:00Z",
-  "run_id": "<git short SHA, or PR number with 'pr-' prefix>",
-  "classification_of_previous": "POSITIVE|NEUTRAL|NEGATIVE|BASELINE",
+  "run_id": "<short branch SHA, or 'pr-<n>' for held PRs>",
+  "pr_number": 42,
+  "pr_status": "merged|held|abandoned-pre-pr",
+  "classification_of_previous": "POSITIVE|NEUTRAL|NEGATIVE|REJECTED|BASELINE",
   "dimension": "prompt-clarity|coverage|signal-noise|failure-pattern",
-  "tier": "🟢|🟡",
   "files_touched": ["src/blindspot/prompts/risk_officer.md"],
   "summary": "<one-sentence what changed>",
   "rationale": "<one-paragraph why>",
   "baseline_quality_score": 0.71,
-  "new_quality_score": 0.74,
+  "branch_quality_score": 0.74,
   "expected_signal_delta": {
     "specificity": 0.05,
     "non_obviousness": 0.00,
     "grounding_pct": 0,
     "diversity": 0.00
   },
-  "verify_outcome": "passed|regression|skipped-pr",
+  "auto_review_verdict": "approve|reject",
+  "auto_review_reason": "<reviewer's reason verbatim>",
   "next_suggested_path": "Try tuning entity_weight if specificity holds gains."
 }
 ```
 
-## Step 7 — Commit & push
-
-### For 🟢
+The log itself lives on main. Append + commit + push in one small commit:
 
 ```bash
-git add <files> refinements/log.jsonl
-git commit -m "refine: <summary from Step 6>"     # hook will run, should pass
-git push origin main                              # durable user auth
-```
-
-If the pre-commit code-review hook blocks the commit (it shouldn't — 🟢
-files are all non-code), abort and `HUMAN_REVIEW_REQUESTED` (see below).
-
-### For 🟡
-
-The PR is already open. Just append the log entry as a single commit on
-`main` (the log itself is 🟢):
-
-```bash
-git checkout main
 git add refinements/log.jsonl
-git commit -m "refine: log iteration (PR #<n>)"
+git commit -m "refine: log iteration $ts"
 git push origin main
 ```
 
 ## Boundaries — when to bail out
 
-Output a single line starting with `HUMAN_REVIEW_REQUESTED:` followed by a
-short explanation, and exit without making further changes, if:
+Output a single line starting with `HUMAN_REVIEW_REQUESTED:` followed by
+a short explanation, and exit without making further changes, if:
 
 - The eval suite fails to run at all (broken pipeline upstream).
-- Three consecutive `refinements/log.jsonl` entries classify previous as NEGATIVE.
-- The same `dimension` has been tried 5+ times in the last 10 runs with no POSITIVE.
-- A git operation fails (push rejected, merge conflict, branch already exists).
-- The code-review hook blocks a commit you expected to be 🟢.
+- Three consecutive `refinements/log.jsonl` entries classify previous as
+  NEGATIVE or REJECTED.
+- The same `dimension` has been tried 5+ times in the last 10 runs with
+  no POSITIVE merge.
+- Three consecutive PRs have been rejected by the auto-reviewer.
+- A git operation fails (push rejected, merge conflict, branch already
+  exists).
+- The code-review hook blocks a commit you expected to pass.
+- The auto-reviewer's verdict output is unparseable on two consecutive
+  attempts.
 
-The skill is meant to compose with human oversight, not replace it. Bailing
-out is the correct behavior when it's stuck.
+These conditions mean either refine's judgment, the reviewer's
+calibration, or the project state has drifted into a place that needs
+human eyes. Bailing out is the correct behavior.
 
 ## Non-negotiables
 
-- Never disable, modify, or bypass the pre-commit code-review hook.
+- Never push directly to `main` from a refine session. All changes go
+  through PR + auto-review. The only direct-to-main commit is the
+  single log-append in Step 9.
 - Never use `git push --force` or any destructive git operation.
-- Never schedule yourself. Scheduling is a deliberate user action via the
-  separate `schedule` skill, after they've watched this skill run 3–5 times
-  manually and inspected the log.
-- Never merge a PR opened by this skill.
-- Never modify `.claude/settings.json` or `.claude/hooks/**` without going
-  through 🟡 PR — even though those are technically in scope.
+- Never schedule yourself. Scheduling is a deliberate user action via
+  the separate `schedule` skill, after the user has watched this skill
+  run 3–5 times manually.
+- Never modify `REVIEWER_PROMPT.md`, this `SKILL.md`, or any file under
+  `.claude/hooks/` or `.claude/settings.json` — the auto-reviewer is
+  instructed to reject any PR touching these, but you should also not
+  attempt them. If you think they need a change, output
+  `HUMAN_REVIEW_REQUESTED:` and explain.
+- Never bypass the pre-commit code-review hook (no `--no-verify`,
+  `BLINDSPOT_SKIP_REVIEW=1`, or similar). If the hook blocks a commit,
+  abandon and try a different change.
+- If the auto-reviewer rejects, do not retry the same idea. Either
+  address the reviewer's concern or move to a different dimension.

@@ -3774,7 +3774,7 @@ Watch what it does. Read the JSONL entry it appended to `refinements/log.jsonl`.
 After each run, inspect:
 - Did the eval score move?
 - Was the change defensible?
-- Did it stay within the 🟢 scope (didn't open weird PRs)?
+- Did the auto-reviewer's verdict look reasonable? Did the PR scope match its description?
 
 - [ ] **Step 3: Decide whether to schedule**
 

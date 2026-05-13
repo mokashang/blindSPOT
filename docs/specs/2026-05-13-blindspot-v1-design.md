@@ -20,7 +20,7 @@ Today, accessing that knowledge requires luck — knowing the right person. Blin
 - CLI interface only.
 - SQLite persistence at `~/.blindspot/blindspot.db`.
 - Eval suite (fixture situations → quality regression scoring).
-- Refinement-routine skill **written and committed** but not yet scheduled (user invokes manually first).
+- Refinement-routine skill **written, committed, with PR-based auto-review by a separate Claude** (see §12), not yet scheduled.
 
 **Explicitly deferred:**
 - Bilingual support (Chinese sources + i18n).
@@ -413,21 +413,68 @@ Lives at `.claude/skills/refine-blindspot/SKILL.md`. Invoked manually first, the
    - NEUTRAL → switch angle; the path isn't producing signal.
    - NEGATIVE → either `git revert` or refine in opposite direction.
 3. **Decide direction** — structured monologue across four dimensions: *prompt clarity*, *coverage gaps*, *signal-to-noise*, *failure-mode patterns*. (Does NOT invoke the interactive `brainstorming` skill — the routine reasons solo.)
-4. **Apply change** under strict scope (see Scope tiers below).
+4. **Apply change** on a fresh `refine/<ts>-<slug>` branch.
 5. **Verify** — run eval suite. If eval regresses on aggregate signal, revert.
 6. **Log** — append a JSON entry to `refinements/log.jsonl`: timestamp, action, prediction of effect, which signals to check next time.
 7. **Commit + push** to GitHub.
 
-### Scope tiers (the safety constraint)
+### Scope: uniform PR flow with auto-review by a separate Claude
 
-There is no "never touch" tier — the worst case is always 🟡 (open a PR for the user to review). The PR mechanism is the safety net.
+The skill has write access to the entire repository, but **every change goes through a Pull Request that is reviewed by a separate Claude session** (auto-reviewer). The auto-reviewer is the structural safety constraint — not human review, not file-scope tiers.
 
-| Tier | Action | Files |
-|------|--------|-------|
-| 🟢 Auto-commit + push to main | direct edit on `main`, no review | `src/blindspot/prompts/*.md`, `community_profiles/*.md`, `data/source_registry.yaml` (only the `notes` / `reliability` / `freshness_required` fields on existing entries — not adding new entries), `fixtures/eval_situations.yaml` (additive only), `docs/**/*.md`, `config.yaml` (only fields declared under `tunable_keys` in the config schema, within their declared ranges) |
-| 🟡 Branch + auto-PR | create branch, push, open PR via `gh`; never merge yourself | everything else, including: `src/**/*.py` (any code change), `db/migrations/**`, `pyproject.toml`, `.claude/settings.json`, `.claude/hooks/**`, `tests/**`, **new** entries in `source_registry.yaml` or `tag_taxonomy_seed.yaml`, **new** community profile files, config schema additions, **any file deletion** |
+**Why this design:**
 
-PRs that touch security-sensitive files (`.claude/settings.json`, `.claude/hooks/**`, `pyproject.toml` dependency additions) get an extra flag in the PR body so the user knows to scrutinize them harder.
+- File-scope tiers (🟢/🟡) are brittle — they can't catch "the change is in an allowed file but is semantically harmful."
+- Human PR review at hourly cadence is a bottleneck; refine can't iterate if PRs sit waiting.
+- Auto-review by a separate Claude with a focused reviewer prompt catches scope creep, suspicious modifications to safety-relevant files, and patterns that look adversarial — without blocking on a human.
+
+**Refine flow under this design (full detail in SKILL.md):**
+
+```
+1. Read state (refinements/log.jsonl, git log, eval results, ungrounded claims)
+2. Evaluate previous change → POSITIVE | NEUTRAL | NEGATIVE | BASELINE
+3. Decide direction — pick ONE concrete change in one of:
+   prompt clarity / coverage gap / signal-to-noise / failure pattern
+4. Create branch `refine/<YYYYMMDD-HHMMSS>-<slug>` and commit changes
+   (pre-commit code-review hook fires on each commit as usual)
+5. Run `blindspot eval` on the branch. If quality_score regresses by
+   more than 0.02, abandon: delete branch, log NEGATIVE, exit.
+6. Push branch, `gh pr create` with structured PR body
+7. AUTO-REVIEW:
+   - Capture PR diff via `gh pr diff`
+   - Invoke `claude -p` with the reviewer prompt
+     (`.claude/skills/refine-blindspot/REVIEWER_PROMPT.md`) + diff
+   - Parse JSON verdict: {"approve": bool, "reason": "..."}
+8. Approve → `gh pr merge --squash` (lands on main, deletes branch)
+   Reject  → `gh pr comment` with the reason, leave PR open, log
+9. Append entry to refinements/log.jsonl with the verdict
+```
+
+**Two complementary review layers:**
+
+| Layer | Reviewer | What it checks |
+|-------|----------|----------------|
+| Pre-commit hook | `~/.claude/hooks/blindspot-code-review-on-commit.py` | Per-commit code correctness / security bugs in `.py`/`.ts`/etc. |
+| PR auto-review | `claude -p` with REVIEWER_PROMPT.md | Whole-PR scope / intent / weakening-of-constraints / adversarial patterns |
+
+The auto-reviewer is biased toward **rejection** on uncertainty. Rejected PRs sit open for the user to eyeball; approved PRs go straight to main. False negatives (good PR rejected) cost a few seconds of user attention; false positives (bad PR approved) can land actual harm.
+
+**What the auto-reviewer specifically watches for** (full prompt in REVIEWER_PROMPT.md):
+
+- Changes to `.claude/settings.json`, `.claude/hooks/**`, or the refine skill itself — REJECT unless the PR description gives a clear, defensible reason.
+- New dependencies added to `pyproject.toml` — REJECT unless justified.
+- Deletion of tests or eval fixtures — REJECT.
+- Diff much larger or in different files than PR description claims — REJECT.
+- Anything that looks like prompt-injection artifacts (e.g. "ignore previous instructions" appearing in source) — REJECT.
+- Anything where the reviewer is not confident — REJECT (leave for human).
+
+**Bailout conditions** (skill self-stops with `HUMAN_REVIEW_REQUESTED:`):
+
+- 3 consecutive previous-runs classified NEGATIVE.
+- Same dimension tried 5+ times in last 10 runs without movement.
+- Eval pipeline broken (can't run).
+- 3 consecutive PRs rejected by the auto-reviewer (something is wrong with refine's judgment OR with the reviewer's calibration).
+- Git operations fail.
 
 ### Signal function
 
@@ -462,6 +509,8 @@ The routine does NOT auto-start. Sequence:
 - **30–60 s latency** is long for a CLI prompt. Mitigation: clear progress indicator per agent in V1; streaming editor output in V1.1.
 - **Subscription quota under refine-routine** — hourly autonomous runs use significant quota. Mitigation: skip-if-no-change throttle in the skill; manual cadence first.
 - **One-domain brittleness** — first user asking a non-tech-career question gets a poor answer. Mitigation: Triage Officer explicitly refuses out-of-domain queries with a clear message instead of generating low-quality output.
+- **Auto-reviewer miscalibration** — The PR auto-reviewer is itself an LLM call. False negatives (rejecting safe PRs) slow iteration but are otherwise harmless. False positives (approving bad PRs) are the real risk: e.g. the reviewer fails to flag a sneaky `.claude/settings.json` change. Mitigation: bias the reviewer prompt heavily toward rejection on uncertainty; weekly user audit of merged PRs; bailout condition triggers if 3 consecutive PRs are rejected (signals reviewer or refine is miscalibrated).
+- **Self-referential safety failure** — Refine could theoretically open a PR that modifies `REVIEWER_PROMPT.md` or `SKILL.md`, the auto-reviewer (running with the OLD prompt) approves it, and the NEXT refine run uses the new, weakened constraints. Mitigation: REVIEWER_PROMPT.md is on the explicit "always REJECT" list inside REVIEWER_PROMPT.md itself; changes to those two files always sit for human review.
 
 ## 14. Implementation order
 
