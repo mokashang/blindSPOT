@@ -43,8 +43,8 @@ class SearchContext:
 class Document:
     """A piece of fetched content with a per-turn stable ID."""
 
-    doc_id: str
-    source_view_id: str
+    doc_id: str                      # `doc-1`, `doc-2`, …  assigned at collection time
+    source_view_id: str              # slug from data/source_registry.yaml
     community_tag: str
     url: str
     title: str
@@ -64,7 +64,7 @@ class BlindSpot:
 @dataclass
 class CommunityAnalystOutput:
     community_tag: str
-    prose: str
+    prose: str                       # "What [community] would tell you" section
     blind_spots: list[BlindSpot]
 
 
@@ -76,8 +76,8 @@ class RiskOfficerOutput:
 @dataclass
 class CriticVerdict:
     specificity_pass: bool
-    non_obviousness: int
-    grounding_pct: int
+    non_obviousness: int             # 1-5
+    grounding_pct: int               # 0-100
     regenerate_required: bool
     feedback: str
 
@@ -88,5 +88,5 @@ class FinalResponse:
     community_outputs: list[CommunityAnalystOutput]
     risk_output: RiskOfficerOutput
     critic_verdict: CriticVerdict
-    rendered_markdown: str
-    documents_used: list[Document]
+    rendered_markdown: str           # what the user sees
+    documents_used: list[Document]   # for citation rendering & ungrounded-claim logging
