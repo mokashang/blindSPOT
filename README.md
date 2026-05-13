@@ -18,15 +18,35 @@ pip install -e ".[dev]"
 ```
 
 **macOS quirk:** if `import blindspot` fails after install (Python 3.13 +
-`com.apple.provenance` xattr corruption on the editable .pth), strip the
-xattrs and reinstall:
+`com.apple.provenance` xattr corruption on the editable .pth), there are
+two options. **Permanent fix is the alias below — recommended.**
+
+One-shot reinstall (re-needs after each new file under `src/blindspot/`):
 
 ```bash
 xattr -cr .venv && pip install -e ".[dev]" --force-reinstall --no-deps
 ```
 
-This may also need to be re-run after adding new modules under
-`src/blindspot/`.
+**Permanent alias** (add to `~/.zshrc` or `~/.bashrc`, then reload your
+shell) — runs the CLI via PYTHONPATH and never touches the editable
+install:
+
+```bash
+alias blindspot="cd /Users/moka/Documents/blindspot && PYTHONPATH=src .venv/bin/python -m blindspot.cli"
+```
+
+Trade-off: this alias `cd`s into the project dir, so your shell's cwd
+ends up there. If you'd rather keep your cwd, use the equivalent
+function form:
+
+```bash
+blindspot() {
+    ( cd /Users/moka/Documents/blindspot && PYTHONPATH=src .venv/bin/python -m blindspot.cli "$@" )
+}
+```
+
+There's also `./bin/blindspot` in the repo as a no-shell-config option
+that works from any cwd inside this project.
 
 ## Configure
 
