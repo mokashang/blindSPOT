@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-# Permanent CLI wrapper that bypasses the editable-install .pth.
-# Avoids the macOS com.apple.provenance xattr breakage that requires
-# `pip install -e .` to be re-run after every new .py under src/.
+# Permanent CLI wrapper. Bypasses pip's editable .pth — works regardless
+# of whether the macOS com.apple.provenance xattr has corrupted the
+# install. Always finds the package via PYTHONPATH=<repo>/src.
 #
 # Usage: ./bin/blindspot ask "..."
+set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 REPO_ROOT="$( cd "${SCRIPT_DIR}/.." && pwd )"
+export PYTHONPATH="${REPO_ROOT}/src${PYTHONPATH:+:${PYTHONPATH}}"
 exec "${REPO_ROOT}/.venv/bin/python" -m blindspot.cli "$@"
