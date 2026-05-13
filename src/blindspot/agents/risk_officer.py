@@ -41,7 +41,21 @@ async def run_risk_officer(
     docs: list[Document],
     llm: LLMClient,
     cfg: Config,
+    prior_critic_feedback: str | None = None,
 ) -> RiskOfficerOutput:
+    base_system = load_prompt("risk_officer")
+    if prior_critic_feedback:
+        system = (
+            f"{base_system}\n\n"
+            "---\n\n"
+            "# PRIOR ATTEMPT REJECTED BY CRITIC\n\n"
+            "The Critic rejected the previous version of your output with the\n"
+            "following feedback. Address it directly in this regeneration:\n\n"
+            f"{prior_critic_feedback}\n"
+        )
+    else:
+        system = base_system
+
     user = (
         f"# Situation\n{situation.raw_text}\n\n"
         f"# Documents (all communities)\n\n{serialize_documents_for_prompt(docs)}\n\n"
@@ -67,7 +81,7 @@ async def run_risk_officer(
     )
 
     out = await llm.complete(
-        system=load_prompt("risk_officer"),
+        system=system,
         user=user,
         model=cfg.models.default,
         json_schema=RISK_SCHEMA,

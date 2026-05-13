@@ -26,13 +26,19 @@ async def run_eval(
     out_dir.mkdir(parents=True, exist_ok=True)
     fixtures = yaml.safe_load(fixtures_path.read_text())
 
-    init_schema(cfg)
-    engine = get_engine(cfg)
+    # Eval runs use a separate SQLite file so synthetic sessions, turns,
+    # blind_spots, and ungrounded_claims don't pollute the user's live
+    # history / ratings.
+    eval_cfg = cfg.model_copy(deep=True)
+    eval_db_path = Path(cfg.db.path).expanduser().with_name("blindspot-eval.db")
+    eval_cfg.db.path = str(eval_db_path)
+    init_schema(eval_cfg)
+    engine = get_engine(eval_cfg)
 
     per_situation = []
     for fix in fixtures:
         with Session(engine) as db:
-            orch = Orchestrator.create(cfg, llm, embedder, db)
+            orch = Orchestrator.create(eval_cfg, llm, embedder, db)
             resp = await orch.run(fix["text"])
         verdict = await judge_response(fix["text"], resp.rendered_markdown, llm, cfg)
         per_situation.append({"id": fix["id"], **verdict})

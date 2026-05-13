@@ -20,6 +20,7 @@ from blindspot.db.models import (
     UngroundedClaimRow,
 )
 from blindspot.db.session import get_engine, init_schema
+from blindspot.llm.anthropic_api_client import AnthropicAPIClient
 from blindspot.llm.claude_agent_client import ClaudeAgentClient
 from blindspot.llm.voyage_embedder import VoyageEmbedder
 from blindspot.orchestrator import Orchestrator
@@ -31,11 +32,30 @@ app.add_typer(sources_app, name="sources")
 console = Console()
 
 
-def _bootstrap():
+def _bootstrap_readonly():
+    """For commands that just touch the DB — no LLM, no embedder.
+
+    Avoids `KeyError: VOYAGE_API_KEY` etc. when the user runs `history` or
+    `sources list` without LLM credentials set.
+    """
     cfg = load_config(Path("config.yaml"))
     init_schema(cfg)
     engine = get_engine(cfg)
-    llm = ClaudeAgentClient()
+    return cfg, engine
+
+
+def _bootstrap_full():
+    """For commands that actually call the LLM / embedder."""
+    cfg, engine = _bootstrap_readonly()
+    if cfg.llm_backend == "anthropic_api":
+        llm = AnthropicAPIClient()
+    elif cfg.llm_backend == "claude_agent_sdk":
+        llm = ClaudeAgentClient()
+    else:
+        raise typer.BadParameter(
+            f"Unknown llm_backend in config.yaml: {cfg.llm_backend!r}. "
+            f"Must be 'claude_agent_sdk' or 'anthropic_api'."
+        )
     embedder = VoyageEmbedder(model=cfg.embedder.model)
     return cfg, engine, llm, embedder
 
@@ -46,7 +66,7 @@ def ask(situation: str = typer.Argument(None)):
     if situation is None:
         console.print("[bold]Describe your situation:[/bold]")
         situation = typer.prompt("")
-    cfg, engine, llm, embedder = _bootstrap()
+    cfg, engine, llm, embedder = _bootstrap_full()
     with Session(engine) as db:
         orch = Orchestrator.create(cfg, llm, embedder, db)
         resp = asyncio.run(orch.run(situation))
@@ -55,26 +75,28 @@ def ask(situation: str = typer.Argument(None)):
 
 @app.command(name="continue")
 def continue_session(session_id: int, message: str = typer.Argument(None)):
-    """Add a turn to an existing session."""
+    """Add a turn to an existing session.
+
+    The new turn is appended to the same SessionRow (turn_number = max + 1),
+    so `history` / `review` show a real multi-turn thread.
+    """
     if message is None:
         message = typer.prompt("Follow-up:")
-    cfg, engine, llm, embedder = _bootstrap()
+    cfg, engine, llm, embedder = _bootstrap_full()
     with Session(engine) as db:
         sess = db.get(SessionRow, session_id)
         if sess is None:
             console.print(f"[red]No session {session_id}[/red]")
             raise typer.Exit(1)
-        # V1: continue = a fresh orchestrator run. Past turns aren't fed
-        # back into Triage. (Future: include past-turn context.)
         orch = Orchestrator.create(cfg, llm, embedder, db)
-        resp = asyncio.run(orch.run(message))
+        resp = asyncio.run(orch.run(message, session_id=session_id))
     console.print(Markdown(resp.rendered_markdown))
 
 
 @app.command()
 def history(limit: int = 20):
     """List past sessions with one-line summaries."""
-    _cfg, engine, _llm, _embed = _bootstrap()
+    _cfg, engine = _bootstrap_readonly()
     with Session(engine) as db:
         rows = (
             db.query(SessionRow)
@@ -92,7 +114,7 @@ def history(limit: int = 20):
 @app.command()
 def review(session_id: int):
     """Pretty-print a full session."""
-    _cfg, engine, _llm, _embed = _bootstrap()
+    _cfg, engine = _bootstrap_readonly()
     with Session(engine) as db:
         sess = db.get(SessionRow, session_id)
         if sess is None:
@@ -124,7 +146,7 @@ def rate(
     if rating not in {"hit", "meh", "obvious"}:
         console.print("[red]rating must be hit, meh, or obvious[/red]")
         raise typer.Exit(1)
-    _cfg, engine, _llm, _embed = _bootstrap()
+    _cfg, engine = _bootstrap_readonly()
     with Session(engine) as db:
         turn_row = (
             db.query(TurnRow)
@@ -152,7 +174,7 @@ def rate(
 @app.command()
 def stats():
     """Overall rating distribution + recent activity."""
-    _cfg, engine, _llm, _embed = _bootstrap()
+    _cfg, engine = _bootstrap_readonly()
     with Session(engine) as db:
         counts = {
             r: db.query(BlindSpotRow).filter_by(rating=r).count()
@@ -180,7 +202,7 @@ def sources_list():
 @sources_app.command(name="gaps")
 def sources_gaps(days: int = 30):
     """Show recent ungrounded_claims patterns."""
-    _cfg, engine, _llm, _embed = _bootstrap()
+    _cfg, engine = _bootstrap_readonly()
     cutoff = datetime.now(timezone.utc) - timedelta(days=days)
     with Session(engine) as db:
         rows = (
@@ -200,7 +222,7 @@ def sources_gaps(days: int = 30):
 @sources_app.command(name="stats")
 def sources_stats():
     """Per-source-view performance stats."""
-    _cfg, engine, _llm, _embed = _bootstrap()
+    _cfg, engine = _bootstrap_readonly()
     with Session(engine) as db:
         rows = db.query(SourceViewStatsRow).all()
     for r in rows:
@@ -211,10 +233,10 @@ def sources_stats():
         )
 
 
-@app.command()
-def eval():
+@app.command(name="eval")
+def eval_cmd():
     """Run the eval suite. Writes results to eval/results/<timestamp>.json."""
-    cfg, _engine, llm, embedder = _bootstrap()
+    cfg, _engine, llm, embedder = _bootstrap_full()
     from blindspot.eval.runner import run_eval
 
     path = asyncio.run(run_eval(cfg, llm, embedder))

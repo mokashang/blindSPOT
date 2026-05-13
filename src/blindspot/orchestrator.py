@@ -55,7 +55,12 @@ class Orchestrator:
             registry=load_registry(registry_path),
         )
 
-    async def run(self, situation_text: str, user_id: str = "local") -> FinalResponse:
+    async def run(
+        self,
+        situation_text: str,
+        user_id: str = "local",
+        session_id: int | None = None,
+    ) -> FinalResponse:
         # Step 1: Triage.
         situation = await run_triage(situation_text, self.llm, self.cfg)
 
@@ -104,13 +109,20 @@ class Orchestrator:
             situation, analyst_outputs, docs, self.llm, self.cfg
         )
 
-        # Step 6: Critic. Single retry if regenerate_required.
+        # Step 6: Critic. Single retry if regenerate_required — the retry
+        # feeds the critic's feedback back into Risk Officer so the new
+        # generation actually has signal about what to fix.
         verdict = await run_critic(
             situation_text, analyst_outputs, risk_output, self.llm, self.cfg
         )
         if verdict.regenerate_required:
             risk_output = await run_risk_officer(
-                situation, analyst_outputs, docs, self.llm, self.cfg
+                situation,
+                analyst_outputs,
+                docs,
+                self.llm,
+                self.cfg,
+                prior_critic_feedback=verdict.feedback,
             )
             verdict = await run_critic(
                 situation_text, analyst_outputs, risk_output, self.llm, self.cfg
@@ -124,7 +136,7 @@ class Orchestrator:
         # Step 8: Persist.
         self._persist(
             user_id, situation_text, rendered, situation, docs,
-            analyst_outputs, risk_output,
+            analyst_outputs, risk_output, session_id=session_id,
         )
         return FinalResponse(
             situation=situation,
@@ -146,14 +158,46 @@ class Orchestrator:
         )
 
     def _persist(
-        self, user_id, raw, rendered, situation, docs, analyst_outputs, risk_output
+        self,
+        user_id,
+        raw,
+        rendered,
+        situation,
+        docs,
+        analyst_outputs,
+        risk_output,
+        session_id: int | None = None,
     ):
-        sess = SessionRow(user_id=user_id, situation=raw, language="en")
-        self.db.add(sess)
-        self.db.flush()
+        if session_id is not None:
+            sess = self.db.get(SessionRow, session_id)
+            if sess is None:
+                # Fall through to creating a new session if the requested
+                # one doesn't exist (defensive — the CLI validates first,
+                # but tests and library callers may not).
+                sess = SessionRow(user_id=user_id, situation=raw, language="en")
+                self.db.add(sess)
+                self.db.flush()
+                next_turn = 1
+            else:
+                # Continue an existing session: next turn_number = max + 1.
+                existing_max = (
+                    self.db.query(TurnRow)
+                    .filter_by(session_id=sess.id)
+                    .order_by(TurnRow.turn_number.desc())
+                    .first()
+                )
+                next_turn = (existing_max.turn_number + 1) if existing_max else 1
+        else:
+            sess = SessionRow(user_id=user_id, situation=raw, language="en")
+            self.db.add(sess)
+            self.db.flush()
+            next_turn = 1
+
         turn = TurnRow(
-            session_id=sess.id, turn_number=1,
-            user_input=raw, assistant_response=rendered,
+            session_id=sess.id,
+            turn_number=next_turn,
+            user_input=raw,
+            assistant_response=rendered,
         )
         self.db.add(turn)
         self.db.flush()
