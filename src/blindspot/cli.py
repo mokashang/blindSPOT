@@ -211,5 +211,15 @@ def sources_stats():
         )
 
 
+@app.command()
+def eval():
+    """Run the eval suite. Writes results to eval/results/<timestamp>.json."""
+    cfg, _engine, llm, embedder = _bootstrap()
+    from blindspot.eval.runner import run_eval
+
+    path = asyncio.run(run_eval(cfg, llm, embedder))
+    console.print(f"[green]Wrote results to {path}[/green]")
+
+
 if __name__ == "__main__":
     app()
