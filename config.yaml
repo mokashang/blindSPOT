@@ -1,0 +1,53 @@
+llm_backend: claude_agent_sdk        # or: anthropic_api
+
+models:
+  default: claude-opus-4-7
+
+embedder:
+  provider: voyage
+  model: voyage-3
+
+db:
+  path: ~/.blindspot/blindspot.db
+
+tag_match:
+  weights:
+    domain: 3.0
+    entity: 2.0
+    risk_surface: 1.5
+    persona: 1.5
+    similarity: 1.0
+  top_n: 5
+  max_per_community: 2
+
+normalization:
+  embedding_similarity_threshold: 0.85
+
+critic:
+  grounding_pct_threshold: 80
+  non_obviousness_min: 3
+  max_regenerations: 1
+
+cache:
+  fresh_ttl_days: 7
+  evergreen_ttl_days: 30
+
+refine:
+  quality_score_weights:
+    specificity: 0.35
+    non_obviousness: 0.25
+    grounding_pct: 0.20
+    source_diversity: 0.15
+    ungrounded_inverse: 0.05
+
+tunable_keys:
+  - tag_match.weights.domain
+  - tag_match.weights.entity
+  - tag_match.weights.risk_surface
+  - tag_match.weights.persona
+  - tag_match.weights.similarity
+  - tag_match.top_n
+  - tag_match.max_per_community
+  - normalization.embedding_similarity_threshold
+  - critic.grounding_pct_threshold
+  - critic.non_obviousness_min
