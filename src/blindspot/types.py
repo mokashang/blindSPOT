@@ -87,6 +87,6 @@ class FinalResponse:
     situation: Situation
     community_outputs: list[CommunityAnalystOutput]
     risk_output: RiskOfficerOutput
-    critic_verdict: CriticVerdict
+    critic_verdict: CriticVerdict | None      # None when the pipeline short-circuits before Critic runs
     rendered_markdown: str           # what the user sees
     documents_used: list[Document]   # for citation rendering & ungrounded-claim logging
