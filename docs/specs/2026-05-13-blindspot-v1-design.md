@@ -440,14 +440,29 @@ The skill has write access to the entire repository, but **every change goes thr
 5. Run `blindspot eval` on the branch. If quality_score regresses by
    more than 0.02, abandon: delete branch, log NEGATIVE, exit.
 6. Push branch, `gh pr create` with structured PR body
-7. AUTO-REVIEW:
-   - Capture PR diff via `gh pr diff`
-   - Invoke `claude -p` with the reviewer prompt
-     (`.claude/skills/refine-blindspot/REVIEWER_PROMPT.md`) + diff
-   - Parse JSON verdict: {"approve": bool, "reason": "..."}
-8. Approve → `gh pr merge --squash` (lands on main, deletes branch)
-   Reject  → `gh pr comment` with the reason, leave PR open, log
-9. Append entry to refinements/log.jsonl with the verdict
+7. AUTO-REVIEW LOOP (max 3 iterations):
+   For each iteration:
+     a. Capture PR diff via `gh pr diff`
+     b. Invoke `claude -p` with REVIEWER_PROMPT.md + diff + any
+        prior-iteration rejections (so the reviewer can check whether
+        the fix actually addresses them)
+     c. Parse JSON verdict: {"approve": bool, "reason": "..."}
+     d. If approve → break and proceed to merge
+     e. If reject:
+        - `gh pr comment` with the rejection reason
+        - Anti-gaming guard: if this rejection looks substantively similar
+          to a prior one, bail out (the fix isn't converging)
+        - Apply Edit/Write changes to address the reviewer's specific
+          feedback; new commit + push to the same branch
+        - Continue to next iteration
+8. Merge: if the loop broke on approve, `gh pr merge --squash --delete-branch`
+   lands a single squashed commit on main.
+   Hold: if the loop bailed (max iterations exhausted, similar rejection
+   detected, or unparseable verdict twice), leave the PR open with all
+   iteration history visible in `gh pr comment` entries; output
+   HUMAN_REVIEW_REQUESTED.
+9. Append entry to refinements/log.jsonl recording all iterations'
+   verdicts and the final outcome.
 ```
 
 **Two complementary review layers:**
@@ -470,10 +485,12 @@ The auto-reviewer is biased toward **rejection** on uncertainty. Rejected PRs si
 
 **Bailout conditions** (skill self-stops with `HUMAN_REVIEW_REQUESTED:`):
 
-- 3 consecutive previous-runs classified NEGATIVE.
+- 3 consecutive previous-runs classified NEGATIVE or HELD.
 - Same dimension tried 5+ times in last 10 runs without movement.
 - Eval pipeline broken (can't run).
-- 3 consecutive PRs rejected by the auto-reviewer (something is wrong with refine's judgment OR with the reviewer's calibration).
+- A single PR exhausts MAX_ITERATIONS (= 3) of fix-and-retry.
+- Within one PR, the reviewer rejects with a substantively similar complaint to a prior iteration (anti-gaming).
+- Across runs, 3 consecutive PRs end in HELD status.
 - Git operations fail.
 
 ### Signal function
@@ -509,7 +526,8 @@ The routine does NOT auto-start. Sequence:
 - **30–60 s latency** is long for a CLI prompt. Mitigation: clear progress indicator per agent in V1; streaming editor output in V1.1.
 - **Subscription quota under refine-routine** — hourly autonomous runs use significant quota. Mitigation: skip-if-no-change throttle in the skill; manual cadence first.
 - **One-domain brittleness** — first user asking a non-tech-career question gets a poor answer. Mitigation: Triage Officer explicitly refuses out-of-domain queries with a clear message instead of generating low-quality output.
-- **Auto-reviewer miscalibration** — The PR auto-reviewer is itself an LLM call. False negatives (rejecting safe PRs) slow iteration but are otherwise harmless. False positives (approving bad PRs) are the real risk: e.g. the reviewer fails to flag a sneaky `.claude/settings.json` change. Mitigation: bias the reviewer prompt heavily toward rejection on uncertainty; weekly user audit of merged PRs; bailout condition triggers if 3 consecutive PRs are rejected (signals reviewer or refine is miscalibrated).
+- **Auto-reviewer miscalibration** — The PR auto-reviewer is itself an LLM call. False negatives (rejecting safe PRs) slow iteration but are otherwise harmless. False positives (approving bad PRs) are the real risk: e.g. the reviewer fails to flag a sneaky `.claude/settings.json` change. Mitigation: bias the reviewer prompt heavily toward rejection on uncertainty; weekly user audit of merged PRs; bailout condition triggers if 3 consecutive PRs end in HELD status (signals reviewer or refine is miscalibrated). With the fix-and-retry iteration loop, the reviewer also sees prior rejections so it can verify they're actually addressed before approving.
+- **Iteration loop gaming** — Refine can attempt to address rejections in ways that don't really fix the problem ("rename the bad change", "split into smaller diffs that each pass"). Mitigation: anti-gaming guard inside the loop — if a rejection reason is substantively similar to any prior one in the same PR, bail out instead of retrying. Cap at MAX_ITERATIONS = 3 so even non-gaming failure modes can't loop indefinitely.
 - **Self-referential safety failure** — Refine could theoretically open a PR that modifies `REVIEWER_PROMPT.md` or `SKILL.md`, the auto-reviewer (running with the OLD prompt) approves it, and the NEXT refine run uses the new, weakened constraints. Mitigation: REVIEWER_PROMPT.md is on the explicit "always REJECT" list inside REVIEWER_PROMPT.md itself; changes to those two files always sit for human review.
 
 ## 14. Implementation order

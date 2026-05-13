@@ -169,58 +169,85 @@ EOF
 
 Capture the PR number (e.g. `pr_number=$(gh pr view --json number -q .number)`).
 
-## Step 7 — Auto-review
+## Step 7 — Auto-review iteration loop
 
-Get the diff and invoke the reviewer:
+Auto-review iterates: if rejected, address the feedback, push the fix,
+re-review. Cap at **MAX_ITERATIONS = 3**. On each iteration the reviewer
+sees the prior rejection reasons so it can verify the fix actually
+addresses them.
 
-```bash
-diff_text="$(gh pr diff $pr_number)"
-pr_body="$(gh pr view $pr_number --json body -q .body)"
+```
+prior_rejections = []
+for iteration in 1..MAX_ITERATIONS:
+    diff_text = gh pr diff $pr_number
+    pr_body  = gh pr view $pr_number --json body -q .body
 
-reviewer_prompt="$(cat .claude/skills/refine-blindspot/REVIEWER_PROMPT.md)
+    prior_section = ""
+    if prior_rejections:
+        prior_section = "\n\n# Prior rejection reasons (this is iteration N)\n" \
+                        + "\n".join(f"- {r}" for r in prior_rejections)
 
----
+    reviewer_input = REVIEWER_PROMPT.md  +
+                     "\n\n---\n\n# PR description\n" + pr_body +
+                     prior_section +
+                     "\n\n# Diff\n```diff\n" + diff_text + "\n```" +
+                     "\n\nOutput your verdict as a single JSON object on one line."
 
-# PR description
-$pr_body
+    verdict = parse(timeout 180 claude -p "$reviewer_input")
+    # verdict: {"approve": bool, "reason": "..."}
 
-# Diff
-\`\`\`diff
-$diff_text
-\`\`\`
+    if not parsable(verdict):
+        # On TWO consecutive unparseable verdicts, bail out (see Boundaries).
+        if previous_was_unparseable: bail HUMAN_REVIEW_REQUESTED
+        previous_was_unparseable = True
+        continue
 
-Now output your verdict as a single JSON object on one line, nothing else."
+    gh pr comment $pr_number --body "🤖 Iteration ${iteration}: ${verdict.approve ? 'APPROVE' : 'REJECT'} — ${verdict.reason}"
 
-verdict_json="$(timeout 180 claude -p "$reviewer_prompt")"
+    if verdict.approve:
+        break  # proceed to Step 8 merge
+
+    # Anti-gaming: if this rejection looks substantively similar to a prior
+    # one (first 10 words match, or same noun phrase), the loop isn't
+    # converging — bail out.
+    if iteration > 1 and similar_to_any(verdict.reason, prior_rejections):
+        bail HUMAN_REVIEW_REQUESTED \
+             "reviewer rejected with the same complaint twice (iteration ${iteration}); not converging"
+
+    prior_rejections.append(verdict.reason)
+
+    # Apply fix addressing the rejection
+    # (use Edit/Write tools targeting the specific files / lines the reviewer flagged;
+    #  if the rejection is structural — e.g. "out of scope" — narrow the diff
+    #  rather than expand it)
+    git add <fixed-files>
+    git commit -m "refine: address review feedback (iteration ${iteration})"
+    git push origin "$branch"
+else:
+    # MAX_ITERATIONS exhausted
+    bail HUMAN_REVIEW_REQUESTED "reviewer rejected ${MAX_ITERATIONS} consecutive times"
 ```
 
-Parse `verdict_json` for `{"approve": bool, "reason": "..."}`.
+**Robustness:** if `claude -p` fails outright (network, timeout) for two
+consecutive iterations, bail with `HUMAN_REVIEW_REQUESTED:` — don't merge
+on broken parsing.
 
-**Robustness:** If `claude -p` fails or output is unparseable, treat as
-reject and leave the PR open (do not auto-merge on broken parsing).
+## Step 8 — Merge
 
-## Step 8 — Merge or hold
-
-**If approved:**
+If the iteration loop above broke on `approve`, merge:
 
 ```bash
 gh pr merge $pr_number --squash --delete-branch
 ```
 
-(The `gh pr merge` will land the squashed change on main. The pre-commit
-hook does not fire on merges, but the per-commit hook already reviewed
-the underlying commits when they were made on the branch.)
+The `--squash` collapses all iteration commits into a single commit on
+`main`, keeping history clean. The pre-commit code-review hook does not
+fire on the squash-merge commit, but each underlying iteration commit
+already passed the per-commit hook when made on the branch.
 
-**If rejected:**
-
-```bash
-gh pr comment $pr_number --body "🤖 Auto-review rejected: <reason>"
-git checkout main
-# Do NOT delete the branch — leave it for human review.
-```
-
-The PR stays open. The next refine run will see it via `gh pr list` and
-adjust strategy.
+If the iteration loop bailed (any `HUMAN_REVIEW_REQUESTED:` path above):
+do NOT merge. Leave the PR open with all iteration history visible via
+`gh pr comment` entries.
 
 ## Step 9 — Log
 
@@ -232,7 +259,7 @@ Append exactly one JSON line to `refinements/log.jsonl`:
   "run_id": "<short branch SHA, or 'pr-<n>' for held PRs>",
   "pr_number": 42,
   "pr_status": "merged|held|abandoned-pre-pr",
-  "classification_of_previous": "POSITIVE|NEUTRAL|NEGATIVE|REJECTED|BASELINE",
+  "classification_of_previous": "POSITIVE|NEUTRAL|NEGATIVE|HELD|BASELINE",
   "dimension": "prompt-clarity|coverage|signal-noise|failure-pattern",
   "files_touched": ["src/blindspot/prompts/risk_officer.md"],
   "summary": "<one-sentence what changed>",
@@ -245,8 +272,12 @@ Append exactly one JSON line to `refinements/log.jsonl`:
     "grounding_pct": 0,
     "diversity": 0.00
   },
-  "auto_review_verdict": "approve|reject",
-  "auto_review_reason": "<reviewer's reason verbatim>",
+  "auto_review_iterations": 2,
+  "auto_review_history": [
+    {"iteration": 1, "verdict": "reject", "reason": "Out of scope: diff touches src/blindspot/cli.py which wasn't in the PR description"},
+    {"iteration": 2, "verdict": "approve", "reason": "Scope narrowed to just the prompt edit; addresses prior rejection"}
+  ],
+  "final_verdict": "approve|held",
   "next_suggested_path": "Try tuning entity_weight if specificity holds gains."
 }
 ```
@@ -266,15 +297,19 @@ a short explanation, and exit without making further changes, if:
 
 - The eval suite fails to run at all (broken pipeline upstream).
 - Three consecutive `refinements/log.jsonl` entries classify previous as
-  NEGATIVE or REJECTED.
+  NEGATIVE or HELD.
 - The same `dimension` has been tried 5+ times in the last 10 runs with
   no POSITIVE merge.
-- Three consecutive PRs have been rejected by the auto-reviewer.
+- A single PR exhausts MAX_ITERATIONS (= 3) of auto-review fix-and-retry.
+- Within one PR, the reviewer rejects with a substantively similar
+  complaint to a prior iteration (anti-gaming guard — fix isn't actually
+  addressing what was flagged).
+- Across runs, three consecutive PRs have been held (not merged).
 - A git operation fails (push rejected, merge conflict, branch already
   exists).
 - The code-review hook blocks a commit you expected to pass.
 - The auto-reviewer's verdict output is unparseable on two consecutive
-  attempts.
+  iterations within a single PR.
 
 These conditions mean either refine's judgment, the reviewer's
 calibration, or the project state has drifted into a place that needs
