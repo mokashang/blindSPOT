@@ -27,10 +27,17 @@ class ClaudeAgentClient(LLMClient):
                 + json.dumps(json_schema, indent=2)
             )
 
+        # Pure text completion: blindspot's agents are text-in / JSON-out.
+        # tools=[] strips the SDK's default built-in tools and
+        # strict_mcp_config=True ignores the account's claude.ai MCP servers
+        # — otherwise the model can spend its single turn on a tool call and
+        # the run dies with "Reached maximum number of turns (1)".
         opts = ClaudeAgentOptions(
             system_prompt=system,
             model=model,
             max_turns=1,
+            tools=[],
+            strict_mcp_config=True,
         )
 
         result_text = ""

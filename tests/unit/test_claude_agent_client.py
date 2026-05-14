@@ -65,3 +65,28 @@ async def test_complete_json_schema_path_parses_textblock(monkeypatch):
         system="sys", user="hi", json_schema={"type": "object"}
     )
     assert out == {"answer": 42}
+
+
+async def test_complete_runs_as_pure_text_completion(monkeypatch):
+    """complete() must hard-disable tools and the account's claude.ai MCP servers.
+
+    The SDK leaves built-in tools (Bash, Task, ...) on by default and also
+    surfaces the user's connected claude.ai MCP servers. With max_turns=1, the
+    model can burn its only turn on a tool call → "Reached maximum number of
+    turns (1)". blindspot's agents are text-in / JSON-out — no tools, ever.
+    """
+    captured = {}
+
+    async def fake_query(*, prompt, options):
+        captured["options"] = options
+        yield AssistantMessage(
+            content=[TextBlock(text="ok")], model="claude-opus-4-7"
+        )
+
+    monkeypatch.setattr("blindspot.llm.claude_agent_client.query", fake_query)
+    await ClaudeAgentClient().complete(system="sys", user="hi")
+
+    opts = captured["options"]
+    assert opts.tools == [], "built-in tools must be disabled (--tools '')"
+    assert opts.strict_mcp_config is True, "account claude.ai MCP servers must be ignored"
+    assert opts.max_turns == 1
