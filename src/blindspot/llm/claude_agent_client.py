@@ -54,10 +54,19 @@ class ClaudeAgentClient(LLMClient):
 
     @staticmethod
     def _parse_json_response(text: str) -> dict[str, Any]:
-        # Tolerate JSON wrapped in markdown fences.
+        """Extract the first JSON object from a model response.
+
+        Tolerates a leading ```json fence, prose before the object, and any
+        trailing fence-close / commentary after it — models sometimes append
+        explanation despite a "JSON only" instruction.
+        """
         text = text.strip()
         if text.startswith("```"):
-            text = text.strip("`")
-            if text.startswith("json\n"):
-                text = text[len("json\n") :]
-        return json.loads(text)
+            newline = text.find("\n")
+            if newline != -1:
+                text = text[newline + 1 :]
+        start = text.find("{")
+        if start == -1:
+            raise ValueError(f"no JSON object in model response: {text[:80]!r}")
+        obj, _ = json.JSONDecoder().raw_decode(text[start:])
+        return obj

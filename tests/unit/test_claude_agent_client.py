@@ -20,6 +20,30 @@ def test_parse_json_response_invalid_raises():
         ClaudeAgentClient._parse_json_response("not json")
 
 
+def test_parse_json_response_trailing_prose():
+    """Models sometimes append commentary after the object despite "JSON only".
+
+    Regression: a fixture in `blindspot eval` returned `{...}\\n\\n<prose>`,
+    and json.loads() raised "Extra data" on the whole string.
+    """
+    out = ClaudeAgentClient._parse_json_response(
+        '{"a": 1}\n\nThat is the structured answer you asked for.'
+    )
+    assert out == {"a": 1}
+
+
+def test_parse_json_response_fenced_with_trailing_prose():
+    out = ClaudeAgentClient._parse_json_response(
+        '```json\n{"a": 1}\n```\n\nLet me know if you need anything else.'
+    )
+    assert out == {"a": 1}
+
+
+def test_parse_json_response_leading_prose():
+    out = ClaudeAgentClient._parse_json_response('Here is the JSON:\n{"a": 1}')
+    assert out == {"a": 1}
+
+
 async def test_complete_extracts_only_textblock_content(monkeypatch):
     """complete() reads text from AssistantMessage TextBlocks only.
 
