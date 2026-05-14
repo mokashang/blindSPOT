@@ -106,15 +106,43 @@ pytest tests/unit/test_<name>.py -v   # one file
 
 ## Quirks (real, hit during V1 dev)
 
-- **macOS Python 3.13 + editable install `.pth` corruption.** Every time
-  a new `.py` lands under `src/blindspot/`, the `__editable__.blindspot-
-  *.pth` file ends up unreadable by `site.py` (because of
-  `com.apple.provenance` xattr). Two fixes:
-  - One-shot: `xattr -cr .venv && pip install -e . --force-reinstall
-    --no-deps`
-  - Permanent: use `./bin/blindspot` instead of the system PATH
-    `blindspot` — the wrapper runs `python -m blindspot.cli` and doesn't
-    depend on the `.pth`.
+- **macOS Python 3.13 silently skips our editable `.pth`.** Symptom:
+  `import blindspot` raises `ModuleNotFoundError` even though
+  `pip install -e .` reported success and the `.pth` file is present
+  with correct content. Root cause: every file pip writes under `.venv/`
+  on macOS gets the BSD `UF_HIDDEN` flag (visible as the `hidden` column
+  in `ls -lO`). Python 3.13's `site.py` was hardened to skip `.pth`
+  files with that flag — see `site.py:177` (`st_flags & UF_HIDDEN`).
+  Verify with `python -v -c pass 2>&1 | grep blindspot`: you'll see
+  `Skipping hidden .pth file: ...`. The `com.apple.provenance` xattr
+  rides along on the same files and earlier diagnoses pinned the blame
+  on it, but `site.py` doesn't check xattrs — only `UF_HIDDEN`. Two
+  fixes:
+  - One-shot (must run *after* `pip install`, not before — pip re-flags
+    every file it writes): `chflags -R nohidden .venv`. Sticks until
+    the next pip operation; macOS does not auto-re-apply.
+  - Permanent: use `./bin/blindspot` instead of system-PATH `blindspot`
+    — the wrapper exports `PYTHONPATH=src` and runs
+    `python -m blindspot.cli`, bypassing `.pth` resolution entirely.
+
+- **claude-agent-sdk surfaces auth failures as `error result: success`.**
+  If the locally cached OAuth refresh token has been invalidated
+  server-side (happens silently — token TTL, password change, etc.),
+  every `blindspot ask` ends with
+  `Exception: Claude Code returned an error result: success` from
+  `claude_agent_sdk/_internal/query.py:852`. The word `success` is the
+  `subtype` field of the trailing `result` message; the SDK's fallback
+  formatter reaches for `subtype` when the structured `errors` array is
+  empty, which is wildly misleading. The real cause is one layer
+  deeper — capture it with
+  `claude -p "hi" --debug-file /tmp/claude.log` and grep
+  `oauth\|401\|auth`: you'll see `POST
+  https://platform.claude.com/v1/oauth/token → 400` followed by
+  `api.anthropic.com/... → 401 authentication_error`. Recovery:
+  `claude auth login --claudeai` interactively (browser flow) from a
+  real terminal. Don't trust `claude auth status` — it reports
+  `loggedIn: true` even while refresh is broken because it only checks
+  the local config. Stand-alone `claude -p "hi"` is the actual oracle.
 
 - **Reddit adapter constructs PRAW in `__init__`.** Missing
   `REDDIT_CLIENT_ID/SECRET` env vars cause a `KeyError` at adapter
