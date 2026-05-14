@@ -10,8 +10,16 @@ from blindspot.llm.base import Embedder
 
 
 class VoyageEmbedder(Embedder):
-    def __init__(self, model: str = "voyage-3", api_key: str | None = None):
-        self._client = voyageai.AsyncClient(api_key=api_key or os.environ["VOYAGE_API_KEY"])
+    def __init__(
+        self,
+        model: str = "voyage-3",
+        api_key: str | None = None,
+        max_retries: int = 6,
+    ):
+        self._client = voyageai.AsyncClient(
+            api_key=api_key or os.environ["VOYAGE_API_KEY"],
+            max_retries=max_retries,
+        )
         self._model = model
 
     async def embed(self, texts: list[str]) -> list[list[float]]:

@@ -81,8 +81,13 @@ async def add_or_merge_tag(
     facet: str,
     candidate: str,
     turn_id: int | None = None,
+    candidate_embedding: list[float] | None = None,
 ) -> TagResolution:
-    """Insert a new tag or merge into the closest existing one."""
+    """Insert a new tag or merge into the closest existing one.
+
+    Pass ``candidate_embedding`` to reuse a pre-computed vector and skip the
+    per-tag embedder call — lets callers batch many tags into one request.
+    """
 
     candidate = candidate.strip()
     if not candidate:
@@ -95,8 +100,9 @@ async def add_or_merge_tag(
         )
 
     threshold = cfg.normalization.embedding_similarity_threshold
-    candidate_emb_list = await embedder.embed([candidate])
-    candidate_emb = np.asarray(candidate_emb_list[0])
+    if candidate_embedding is None:
+        candidate_embedding = (await embedder.embed([candidate]))[0]
+    candidate_emb = np.asarray(candidate_embedding)
 
     rows: Iterable[TagVocabularyRow] = (
         db.query(TagVocabularyRow).filter_by(facet=facet, status="active").all()

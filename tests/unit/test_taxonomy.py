@@ -52,3 +52,42 @@ async def test_seed_populates_vocabulary(db):
     await seed_vocabulary(db, embedder, {"entity": ["ISO", "RSU"]})
     rows = db.query(TagVocabularyRow).all()
     assert {r.tag for r in rows} == {"ISO", "RSU"}
+
+
+@pytest.mark.asyncio
+async def test_precomputed_embedding_skips_embedder_call(db):
+    """When candidate_embedding is supplied the embedder is never hit.
+
+    Lets the orchestrator batch every tag into one Voyage request instead
+    of one request per tag (rate-limited free tier is 3 RPM).
+    """
+
+    class ExplodingEmbedder:
+        async def embed(self, texts):
+            raise AssertionError("embedder must not be called when embedding is precomputed")
+
+    cfg = Config()
+    res = await add_or_merge_tag(
+        db,
+        ExplodingEmbedder(),
+        cfg,
+        "entity",
+        "ISO",
+        candidate_embedding=[1.0, 0.0, 0.0],
+    )
+    assert res.accepted_tag == "ISO"
+    assert db.query(TagVocabularyRow).filter_by(tag="ISO").count() == 1
+
+
+@pytest.mark.asyncio
+async def test_precomputed_embedding_still_merges(db):
+    """A precomputed embedding feeds the same cosine-merge path as a fetched one."""
+    embedder = StubEmbedder({})
+    await seed_vocabulary(db, StubEmbedder({"ISO": [1.0, 0.0, 0.0]}), {"entity": ["ISO"]})
+    cfg = Config()
+    res = await add_or_merge_tag(
+        db, embedder, cfg, "entity", "incentive stock option",
+        candidate_embedding=[1.0, 0.0, 0.0],
+    )
+    assert res.was_merged is True
+    assert res.accepted_tag == "ISO"

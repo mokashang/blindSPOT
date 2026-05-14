@@ -6,6 +6,7 @@ models:
 embedder:
   provider: voyage
   model: voyage-3
+  max_retries: 6        # retry Voyage rate-limit / transient errors w/ backoff
 
 db:
   path: ~/.blindspot/blindspot.db

@@ -20,8 +20,10 @@ class StubLLM:
 
     async def complete(self, system, user, model="x", max_tokens=4096, json_schema=None):
         if "You are the Triage Officer" in system:
+            # Two domain tags that the StubEmbedder (identical vectors) will
+            # merge to one canonical tag — exercises tag de-duplication.
             return {
-                "domains": ["tech-career/equity"],
+                "domains": ["tech-career/equity", "tech-career/negotiation"],
                 "entities": ["ISO"],
                 "risk_surfaces": ["tax"],
                 "personas": ["first-time-offer"],
@@ -65,7 +67,11 @@ class StubLLM:
 
 
 class StubEmbedder:
+    def __init__(self):
+        self.calls: list[list[str]] = []
+
     async def embed(self, texts):
+        self.calls.append(list(texts))
         return [[0.0, 1.0]] * len(texts)
 
 
@@ -107,12 +113,29 @@ async def test_orchestrator_runs_full_pipeline_with_stubs(monkeypatch, tmp_path)
 """
     )
 
+    embedder = StubEmbedder()
     with Session(engine) as db:
         orch = Orchestrator.create(
-            Config(), StubLLM(), StubEmbedder(), db,
+            Config(), StubLLM(), embedder, db,
             registry_path=str(registry_yaml),
         )
         resp = await orch.run("Series B offer with ISOs")
 
+    # Reaching here at all means tag de-duplication worked: the two domain
+    # tags merge to one canonical tag, and inserting both as TurnTagRows
+    # would trip UNIQUE(turn_id, facet, tag) without the dedup.
     assert "Situation" in resp.rendered_markdown
     assert len(resp.documents_used) == 1
+
+    # Tag normalization must batch: every triage tag goes out as one Voyage
+    # request, not one request per tag (free tier is 3 RPM).
+    triage_tags = {
+        "tech-career/equity",
+        "tech-career/negotiation",
+        "ISO",
+        "tax",
+        "first-time-offer",
+    }
+    assert any(
+        set(call) == triage_tags for call in embedder.calls
+    ), f"tags were not batched into a single embed() call: {embedder.calls}"

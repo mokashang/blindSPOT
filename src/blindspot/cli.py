@@ -56,7 +56,9 @@ def _bootstrap_full():
             f"Unknown llm_backend in config.yaml: {cfg.llm_backend!r}. "
             f"Must be 'claude_agent_sdk' or 'anthropic_api'."
         )
-    embedder = VoyageEmbedder(model=cfg.embedder.model)
+    embedder = VoyageEmbedder(
+        model=cfg.embedder.model, max_retries=cfg.embedder.max_retries
+    )
     return cfg, engine, llm, embedder
 
 

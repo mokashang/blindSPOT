@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from claude_agent_sdk import ClaudeAgentOptions, query
+from claude_agent_sdk import ClaudeAgentOptions, TextBlock, query
 
 from blindspot.llm.base import LLMClient
 
@@ -36,7 +36,7 @@ class ClaudeAgentClient(LLMClient):
         result_text = ""
         async for message in query(prompt=prompt, options=opts):
             for block in getattr(message, "content", []) or []:
-                if getattr(block, "type", None) == "text":
+                if isinstance(block, TextBlock):
                     result_text += block.text
 
         if json_schema is not None:

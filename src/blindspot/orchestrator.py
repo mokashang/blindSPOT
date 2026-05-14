@@ -64,15 +64,34 @@ class Orchestrator:
         # Step 1: Triage.
         situation = await run_triage(situation_text, self.llm, self.cfg)
 
-        # Step 1.5: Normalize tags via the tag taxonomy.
+        # Step 1.5: Normalize tags via the tag taxonomy. Embed every candidate
+        # tag in one batched request — the Voyage free tier is 3 RPM, so a
+        # request per tag rate-limits the run.
+        candidates = [v.strip() for values in situation.tags.values() for v in values]
+        candidates = [c for c in candidates if c]
+        emb_by_tag: dict[str, list[float]] = {}
+        if candidates:
+            vectors = await self.embedder.embed(candidates)
+            emb_by_tag = dict(zip(candidates, vectors, strict=True))
+
         normalized: dict[Facet, list[str]] = {}
         for facet, values in situation.tags.items():
+            # Distinct candidates can merge to the same canonical tag; dedupe
+            # per facet (preserving order) so TurnTagRow's UNIQUE constraint
+            # on (turn_id, facet, tag) holds.
+            seen: set[str] = set()
             normalized[facet] = []
             for v in values:
                 res = await add_or_merge_tag(
-                    self.db, self.embedder, self.cfg, facet.value, v
+                    self.db,
+                    self.embedder,
+                    self.cfg,
+                    facet.value,
+                    v,
+                    candidate_embedding=emb_by_tag.get(v.strip()),
                 )
-                if res.accepted_tag:
+                if res.accepted_tag and res.accepted_tag not in seen:
+                    seen.add(res.accepted_tag)
                     normalized[facet].append(res.accepted_tag)
         situation.tags = normalized
 

@@ -29,6 +29,9 @@ class _Models(BaseModel):
 class _Embedder(BaseModel):
     provider: str = "voyage"
     model: str = "voyage-3"
+    # Voyage's own AsyncClient defaults to 0 retries; the free tier (3 RPM)
+    # rate-limits a single pipeline run, so retry with backoff by default.
+    max_retries: int = 6
 
 
 class _DB(BaseModel):
