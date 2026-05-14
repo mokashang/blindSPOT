@@ -1,6 +1,6 @@
 import pytest
 
-from claude_agent_sdk import TextBlock
+from claude_agent_sdk import AssistantMessage, TextBlock
 
 from blindspot.llm.claude_agent_client import ClaudeAgentClient
 
@@ -21,21 +21,28 @@ def test_parse_json_response_invalid_raises():
 
 
 async def test_complete_extracts_only_textblock_content(monkeypatch):
-    """complete() concatenates TextBlock text and ignores non-text blocks.
+    """complete() reads text from AssistantMessage TextBlocks only.
 
-    Regression: claude-agent-sdk's TextBlock dataclass has no `type`
-    attribute, so the old `block.type == "text"` guard matched nothing —
-    complete() returned "" and json.loads() blew up one frame up.
+    Mirrors the documented claude-agent-sdk pattern (isinstance message /
+    block checks). Regressions guarded:
+    - TextBlock has no `type` attr, so the old `block.type == "text"`
+      guard matched nothing and complete() returned "".
+    - non-AssistantMessage frames (SystemMessage, ResultMessage, ...) must
+      be skipped even if they carry a `content` attribute.
     """
 
     class NotAText:
         text = "SHOULD NOT APPEAR"
 
-    class FakeAssistantMessage:
-        content = [NotAText(), TextBlock(text="hel"), TextBlock(text="lo")]
+    class NotAnAssistantMessage:  # a SystemMessage-like frame
+        content = [TextBlock(text="SHOULD NOT APPEAR")]
 
     async def fake_query(*, prompt, options):
-        yield FakeAssistantMessage()
+        yield NotAnAssistantMessage()
+        yield AssistantMessage(
+            content=[NotAText(), TextBlock(text="hel"), TextBlock(text="lo")],
+            model="claude-opus-4-7",
+        )
 
     monkeypatch.setattr("blindspot.llm.claude_agent_client.query", fake_query)
 
@@ -46,11 +53,11 @@ async def test_complete_extracts_only_textblock_content(monkeypatch):
 async def test_complete_json_schema_path_parses_textblock(monkeypatch):
     """The json_schema path must parse text accumulated from TextBlocks."""
 
-    class FakeAssistantMessage:
-        content = [TextBlock(text='{"answer": 42}')]
-
     async def fake_query(*, prompt, options):
-        yield FakeAssistantMessage()
+        yield AssistantMessage(
+            content=[TextBlock(text='{"answer": 42}')],
+            model="claude-opus-4-7",
+        )
 
     monkeypatch.setattr("blindspot.llm.claude_agent_client.query", fake_query)
 
