@@ -112,6 +112,20 @@ refine:
     grounding_pct: 0.20
     source_diversity: 0.20   # absorbed the unused ungrounded_inverse=0.05 slot
 
+# eval: knobs for the offline eval runner (`./bin/blindspot eval`).
+# These only affect eval runs — the live `blindspot ask` path is
+# unaffected by anything here.
+eval:
+  # per_fixture_timeout_seconds: hard wall-clock cap on each fixture's
+  # pipeline + judge call. On timeout, that fixture's record gets
+  # quality_score:null + timed_out:true; the eval CONTINUES to the
+  # next fixture rather than aborting. Rationale: 5 consecutive refine
+  # runs failed because the claude-agent-sdk pipeline hangs (>8min, no
+  # stdout) on at least one fixture; without this cap the entire eval
+  # produces no result and refine delta math can't run. Safe-range
+  # 60–900 seconds. Override via the `--per-fixture-timeout` CLI flag.
+  per_fixture_timeout_seconds: 240
+
 # tunable_keys: whitelist of dotted-path config keys that refine
 # routines may modify automatically. Anything not on this list
 # requires a human-authored PR. The list is intentionally narrow:

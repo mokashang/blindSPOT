@@ -65,6 +65,14 @@ class _Refine(BaseModel):
     quality_score_weights: _RefineQualityWeights = Field(default_factory=_RefineQualityWeights)
 
 
+class _Eval(BaseModel):
+    # Per-fixture wall-clock timeout for the eval runner. See
+    # src/blindspot/eval/runner.py for the rationale (5-run hang
+    # history; safety net at the eval-orchestrator level so a single
+    # hung fixture doesn't sink the whole run).
+    per_fixture_timeout_seconds: int = 240
+
+
 class Config(BaseModel):
     llm_backend: str = "claude_agent_sdk"
     models: _Models = Field(default_factory=_Models)
@@ -75,6 +83,7 @@ class Config(BaseModel):
     critic: _Critic = Field(default_factory=_Critic)
     cache: _Cache = Field(default_factory=_Cache)
     refine: _Refine = Field(default_factory=_Refine)
+    eval: _Eval = Field(default_factory=_Eval)
     tunable_keys: list[str] = Field(default_factory=list)
 
 
@@ -98,6 +107,7 @@ _SAFE_RANGES: dict[str, tuple[float, float]] = {
     "critic.max_regenerations": (0, 3),
     "cache.fresh_ttl_days": (3, 14),
     "cache.evergreen_ttl_days": (14, 90),
+    "eval.per_fixture_timeout_seconds": (60, 900),
 }
 
 
