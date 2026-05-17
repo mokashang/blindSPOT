@@ -1,0 +1,23 @@
+[eval] starting; fixtures_path=fixtures/eval_situations.yaml out_dir=eval/results timeout=Nones
+[eval] loaded 15 fixtures: [('series-b-iso-cliff', 'tech-career'), ('late-stage-rsu-vs-base', 'tech-career'), ('pre-cliff-quit-dilemma', 'tech-career'), ('amt-exercise-decision', 'tech-career'), ('acquihire-double-trigger', 'tech-career'), ('first-job-equity-confusion', 'tech-career'), ('comparing-offers-3-companies', 'tech-career'), ('refresher-grant-negotiation', 'tech-career'), ('ipo-secondary-decision', 'tech-career'), ('founder-equity-cofounder', 'tech-career'), ('83b-deadline-missed', 'tech-career'), ('golden-handcuffs-eval', 'tech-career'), ('layoff-severance-negotiation', 'tech-career'), ('pip-accept-vs-exit', 'tech-career'), ('pre-ipo-tender-offer', 'tech-career')]
+[eval] init_schema + engine ready (db=/Users/moka/.blindspot/blindspot-eval.db)
+[eval] fixture 1/15 start: series-b-iso-cliff
+[eval]   series-b-iso-cliff: orchestrator.create
+[eval]   series-b-iso-cliff: orch.run
+[eval]   series-b-iso-cliff: judge_response
+[eval] fixture 1/15 done: series-b-iso-cliff timed_out=False
+[eval] fixture 2/15 start: late-stage-rsu-vs-base
+[eval]   late-stage-rsu-vs-base: orchestrator.create
+[eval]   late-stage-rsu-vs-base: orch.run
+WARNING:root:source reddit-experienceddevs failed: 'REDDIT_CLIENT_ID'
+[eval]   late-stage-rsu-vs-base: judge_response
+[eval] fixture 2/15 done: late-stage-rsu-vs-base timed_out=False
+[eval] fixture 3/15 start: pre-cliff-quit-dilemma
+[eval]   pre-cliff-quit-dilemma: orchestrator.create
+[eval]   pre-cliff-quit-dilemma: orch.run
+[eval]   pre-cliff-quit-dilemma: judge_response
+[eval] fixture 3/15 done: pre-cliff-quit-dilemma timed_out=False
+[eval] fixture 4/15 start: amt-exercise-decision
+[eval]   amt-exercise-decision: orchestrator.create
+[eval]   amt-exercise-decision: orch.run
+WARNING:root:source reddit-personalfinance-equity failed: 'REDDIT_CLIENT_ID'
