@@ -155,9 +155,9 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 
 ```
 Status: 🟡 in progress
-Progress: ███████░░░░░░░░░░░░░ 33% (2/6)
-Last completed: 5100e4d — eval-baseline-stability MAJOR ADVANCE: PR #43 ran eval with the 55-min outer budget PR #39 prescribed and produced the FIRST FULL 15/15 EVAL SWEEP since 2026-05-14. Aggregate quality_score=0.8164, zero timed-out fixtures. The diagnostic prediction held: eval finished in ~54 min with all fixtures scored. This is measurement #2 toward the 3-consecutive ±0.03 stability target. Caveat: not directly comparable to PR #24's 0.7906 baseline because PR #24 only scored 7/15 fixtures. The first apples-to-apples comparison happens at measurement #3 (next full-budget run on main). Concurrent runs also advanced V2 §4: tech-career fixtures migration (PR #41, 7/8) and immigration decisions.md (PR #42, immigration 1/8 — V2's second domain begun).
-Next up: Eval baseline stability — run eval ONE more time (single-subagent, 55-min budget) to gather measurement #3. If the aggregate lands within ±0.03 of 0.8164, the 3-consecutive criterion is met and v1.x/eval-baseline-stability flips to [x]. With that, PR #41's V2 layout has also been exercised end-to-end (closes the V2 tech-career sub-item 8 — "eval still passes on migrated layout") and tech-career becomes the FIRST fully-built V2 domain.
+Progress: ██████░░░░░░░░░░░░░░ 29% (2/7)
+Last completed: e2b9474 — PR #39 (eval diagnostic capture) remains the most recent V1.x advance. This run's framework split itself does NOT count as advancing any V1.x item; it decomposes the previously-too-broad `eval-baseline-stability` into a measurable prerequisite plus the original measurement criterion, so future detail-level runs have concrete bounded targets.
+Next up: Eval pipeline robustness — fix the JSON-truncation crash in `src/blindspot/llm/claude_agent_client.py:97` first (the most concrete next bounded change identified by run-20260517-1839's orch-direct experimental eval crash on fixture ~9 of 15). Then re-run eval to verify completion; if successful, the prerequisite item closes and eval-baseline-stability is unblocked.
 ```
 
 ### Per-task checklist
@@ -166,10 +166,19 @@ Next up: Eval baseline stability — run eval ONE more time (single-subagent, 55
   merged refine PRs across ≥ 3 of the 4 detail layers (Sources & knowledge
   / Agents / Config & scoring / Eval). The signal is that refine is
   producing diverse real progress, not stuck in one corner. **Done at b3a8d70 — 7 merged PRs (#1–#7) across all 4 layers.**
+- [ ] **Eval pipeline robustness** — `./bin/blindspot eval` (a) reliably
+  runs to completion in < 30 min wall-clock for the current 15-fixture
+  tech-career set (or shows partial-progress in a result file even if
+  cut short), (b) handles judge LLM output that exceeds max-tokens by
+  recording `quality_score=null` with reason `"judge response unparseable"`
+  rather than crashing the whole run, (c) survives per-fixture failures
+  (timeouts, JSON parse errors, Reddit credential absence) without
+  aborting the run. Three consecutive runs from `main` all produce a
+  result file with no Python exception in stdout.
 - [ ] **Eval baseline stability** — three consecutive `./bin/blindspot eval`
-  runs on `main` produce aggregate `quality_score` within ±0.03 of
-  each other. The baseline is the median of those three; this becomes
-  the V2 entry comparison.
+  runs on `main` (with **Eval pipeline robustness** above [x]) produce
+  aggregate `quality_score` within ±0.03 of each other. The baseline is
+  the median of those three; this becomes the V2 entry comparison.
 - [ ] **AnthropicAPIClient usable end-to-end** — set `llm_backend:
   anthropic_api` in `config.yaml`, run a full `blindspot ask`, and
   verify behavior matches the subscription backend on the eval
@@ -212,6 +221,12 @@ migration.
   touches Agents/Config; "Streaming editor" is Agents. Refine
   tackles them in whatever order data signals + roadmap-driven
   priorities pick this hour.
+- "Eval pipeline robustness" subsumes the JSON-truncation,
+  per-fixture-timeout-firing, and subagent-execution-model concerns
+  surfaced in runs 1340 / 1711 / 1810 / 1839. Detail-layer Eval slots
+  in upcoming runs should target ONE prerequisite at a time (e.g.
+  JSON-truncation handling first), not retry the full
+  eval-baseline-stability item.
 
 ## 4. V2.0 — Build 10 core domains under the 4-layer model
 
