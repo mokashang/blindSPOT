@@ -57,8 +57,7 @@ class _RefineQualityWeights(BaseModel):
     specificity: float = 0.35
     non_obviousness: float = 0.25
     grounding_pct: float = 0.20
-    source_diversity: float = 0.15
-    ungrounded_inverse: float = 0.05
+    source_diversity: float = 0.20
 
 
 class _Refine(BaseModel):

@@ -120,8 +120,13 @@ git commit -m "<concise message starting with 'refine:'>"
 ## Step 5 — Run eval on the branch
 
 ```bash
-blindspot eval     # writes eval/results/<timestamp>.json
+./bin/blindspot eval     # writes eval/results/<timestamp>.json
 ```
+
+(Use `./bin/blindspot` not the system-PATH `blindspot` — the wrapper
+exports `PYTHONPATH=src` and bypasses the editable `.pth` file, which
+on macOS Python 3.13 keeps getting `chflags hidden` re-applied by pip
+and silently skipped by `site.py`. Bare `blindspot` is unreliable.)
 
 Compute `new_quality_score - baseline_quality_score` from the report.
 

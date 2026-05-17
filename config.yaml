@@ -38,8 +38,7 @@ refine:
     specificity: 0.35
     non_obviousness: 0.25
     grounding_pct: 0.20
-    source_diversity: 0.15
-    ungrounded_inverse: 0.05
+    source_diversity: 0.20   # absorbed the unused ungrounded_inverse=0.05 slot
 
 tunable_keys:
   - tag_match.weights.domain
