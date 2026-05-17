@@ -82,3 +82,34 @@
     with a better tech stack. The unvested portion is worth ~$400k. Stay or go?
   expected_entities: [golden-handcuffs]
   expected_risk_surfaces: [opportunity-cost, regret]
+
+- id: layoff-severance-negotiation
+  text: |
+    I was laid off yesterday from a Series D startup after 3 years. They offered
+    8 weeks severance with a release that includes a 12-month non-compete and
+    waiver of unvested RSUs worth ~$180k. I have 7 days to sign. Can I push back?
+  expected_domains: [tech-career/negotiation, tech-career/comp]
+  expected_entities: [severance, non-compete, release, unvested-RSU]
+  expected_personas: [recently-laid-off]
+  expected_risk_surfaces: [non-compete-enforceability, release-waiver, signing-deadline]
+
+- id: pip-accept-vs-exit
+  text: |
+    My manager put me on a 60-day PIP yesterday. My RSU cliff is in 4 months
+    (~$220k vesting). HR hinted I could "negotiate a transition" instead. Should
+    I accept the PIP and fight, or take a managed exit now?
+  expected_domains: [tech-career/negotiation]
+  expected_entities: [PIP, RSU-cliff, managed-exit]
+  expected_personas: [on-PIP]
+  expected_risk_surfaces: [vesting-forfeiture, future-reference, signal-to-future-employer]
+
+- id: pre-ipo-tender-offer
+  text: |
+    My pre-IPO company (last valued at $4B, ~80% of my net worth in vested shares)
+    is running a tender offer letting employees sell up to 25% of vested equity
+    to a secondary investor at a 10% discount to the last round. IPO is "1-2 years
+    out" per the CEO. Sell the full 25% or hold?
+  expected_domains: [tech-career/equity]
+  expected_entities: [tender-offer, pre-IPO-secondary, vested-shares, secondary-discount]
+  expected_personas: [late-stage-pre-IPO]
+  expected_risk_surfaces: [concentration-risk, tender-offer-tax, signal-to-future-acquirer]
