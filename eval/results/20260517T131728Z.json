@@ -1,0 +1,143 @@
+{
+  "timestamp": "2026-05-17T13:17:28.375071+00:00",
+  "per_situation": [
+    {
+      "id": "series-b-iso-cliff",
+      "timed_out": true,
+      "timeout_seconds": 180,
+      "quality_score": null,
+      "reason": "fixture exceeded 180s timeout (pipeline or judge hung)"
+    },
+    {
+      "id": "late-stage-rsu-vs-base",
+      "timed_out": true,
+      "timeout_seconds": 180,
+      "quality_score": null,
+      "reason": "fixture exceeded 180s timeout (pipeline or judge hung)"
+    },
+    {
+      "id": "pre-cliff-quit-dilemma",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 0,
+      "diversity_count": 0,
+      "feedback": "Highly specific with concrete numbers (16.7%, 25%, 26-28% AMT, 90-day window, IRC sections, 409A mechanics) and surfaces strong blind spots (AMT trap, clawback/non-compete interactions, adverse selection from the B-side offer, strike-vs-count confusion). However, no [doc-X] citations are present \u2014 the response explicitly notes no corpus docs were retrieved, so grounding_pct is 0. The response also lacks the 'What [community] would tell you' section structure entirely, so diversity_count is 0.",
+      "timed_out": false
+    },
+    {
+      "id": "amt-exercise-decision",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 90,
+      "diversity_count": 3,
+      "feedback": "Highly specific with named forms (6251, 8801), IRC \u00a71202 thresholds ($75M gross assets, $15M/10x basis), AMT rates (26-28%), and dated mechanics (post-July-4-2025 issuances, 90-day post-termination). Non-obviousness is strong: AMT credit non-refundability, QSBS gross-asset test measured at exercise date, transfer-restriction pincer, adverse-selection reading of the 2-year guidance. Nearly all factual claims carry [doc-X] citations; a few sentences (e.g., LTCG vs ordinary rate framing, 90-day rule mentions) are cited but some procedural assertions about Form 8801 carryforward mechanics rely on doc-1 broadly. Three distinct community sections present: long-form-references, tax-and-finance-professionals, matt-levine-school.",
+      "timed_out": false
+    },
+    {
+      "id": "acquihire-double-trigger",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 80,
+      "diversity_count": 2,
+      "feedback": "Highly specific with IRC \u00a7280G mechanics, concrete vesting schedules (40/30/20/10), defined windows (12-24 months, 60 days, >35 miles), and named clauses (Good Reason, Cause, modified single-trigger). Non-obviousness is excellent: 280G excise tax for disqualified individuals, restrictive covenants smuggled into retention agreements, and probability-weighted NPV of retention grants are genuine blind spots. Most factual claims carry [doc-X] citations though a few mechanistic assertions (e.g., specific 280G 3x base/1x base math, PRAW-style empirical attrition claims) are uncited. Only two 'What [community] would tell you' sections present (matt-levine-school and long-form-references), despite three domains identified.",
+      "timed_out": false
+    },
+    {
+      "id": "first-job-equity-confusion",
+      "timed_out": true,
+      "timeout_seconds": 180,
+      "quality_score": null,
+      "reason": "fixture exceeded 180s timeout (pipeline or judge hung)"
+    },
+    {
+      "id": "comparing-offers-3-companies",
+      "timed_out": true,
+      "timeout_seconds": 180,
+      "quality_score": null,
+      "reason": "fixture exceeded 180s timeout (pipeline or judge hung)"
+    },
+    {
+      "id": "refresher-grant-negotiation",
+      "specificity": 4,
+      "non_obviousness": 5,
+      "grounding_pct": 80,
+      "diversity_count": 1,
+      "feedback": "Strong specificity with concrete month numbers (30, 42, 48, 78), the ISO $100K limit, and 409A mechanics. Non-obviousness is high \u2014 the 'cliff after the cliff' velocity drop, share-count vs dollar-value framing, and ISO-to-NSO silent conversion are genuine blind spots. Only one explicit 'What [community] would tell you' section (long-form-references). Most factual claims carry [doc-1] citations, though some specific mechanics (e.g., $100K ISO rule details, 4-year/1-year cliff standard) are asserted without grounding beyond the placeholder doc.",
+      "timed_out": false
+    },
+    {
+      "id": "ipo-secondary-decision",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 92,
+      "diversity_count": 3,
+      "feedback": "Exceptionally specific with named IRS sections (1202, 1045, 83(b)), concrete dollar thresholds ($15M exclusion, $50M/$75M gross-asset thresholds), specific dates (7/4/2025), rate gaps (22% vs 37%), and holding-period clocks (>1y exercise, >2y grant, 5-year QSBS, 60-day rollover, 180-day lockup). Surfaces genuinely non-obvious blind spots: QSBS forfeiture and the Section 1045 escape hatch, the Q1 estimated-tax under-withholding trap, the closed pre-IPO ISO exercise window, and adverse-selection reading of tender participation tables. Nearly every factual claim carries [doc-X] citations; only a few framing sentences lack markers. Three distinct community sections: long-form-references, matt-levine-school, and tax-and-finance-professionals.",
+      "timed_out": false
+    },
+    {
+      "id": "founder-equity-cofounder",
+      "timed_out": true,
+      "timeout_seconds": 180,
+      "quality_score": null,
+      "reason": "fixture exceeded 180s timeout (pipeline or judge hung)"
+    },
+    {
+      "id": "83b-deadline-missed",
+      "timed_out": true,
+      "timeout_seconds": 180,
+      "quality_score": null,
+      "reason": "fixture exceeded 180s timeout (pipeline or judge hung)"
+    },
+    {
+      "id": "golden-handcuffs-eval",
+      "timed_out": true,
+      "timeout_seconds": 180,
+      "quality_score": null,
+      "reason": "fixture exceeded 180s timeout (pipeline or judge hung)"
+    },
+    {
+      "id": "layoff-severance-negotiation",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 70,
+      "diversity_count": 1,
+      "feedback": "Highly specific with named statutes (WARN, OWBPA, ADEA, \u00a716600, \u00a77 NLRA), concrete numbers (21/45/7-day periods, 50/500/33% WARN thresholds, $500-$2,500 lawyer fees, 22% withholding), and named documents. Surfaces strong non-obvious angles: WARN consideration argument, OWBPA defect as leverage, adverse selection from 7-day rush, lump-sum vs continuation UI/COBRA mechanics, acceleration buried in plan docs. Only one 'What [community] would tell you' section (long-form-references); missing distinct community perspectives (employment lawyer, ex-startup-employee, etc.) which limits diversity. Many factual claims cite [doc-1] but the citations are overloaded onto a single equity guide that wouldn't actually support WARN/OWBPA/UI/COBRA claims \u2014 grounding is nominally present but substantively weak for ~30% of legal claims that exceed the source's scope.",
+      "timed_out": false
+    },
+    {
+      "id": "pip-accept-vs-exit",
+      "timed_out": true,
+      "timeout_seconds": 180,
+      "quality_score": null,
+      "reason": "fixture exceeded 180s timeout (pipeline or judge hung)"
+    },
+    {
+      "id": "pre-ipo-tender-offer",
+      "specificity": 4,
+      "non_obviousness": 5,
+      "grounding_pct": 85,
+      "diversity_count": 2,
+      "feedback": "Strong response with concrete mechanisms (ROFR, AMT, 180-day lockup, 10b5-1, 83(b), 409A, disqualifying disposition rules with \u22651yr/\u22652yr clocks). Non-obviousness is high \u2014 reframes the binary, surfaces adverse-selection signal from tender existence, distinguishes preferred-vs-common discount, and the post-tender 60% concentration math. Most factual claims carry [doc-X] citations; a few sentences (e.g., AMT mechanics specifics, 180-day standard lockup) are asserted without citation. Only two 'What [community] would tell you' sections (long-form-references, matt-levine-school) despite four domains identified. Could use more specific dollar/percentage projections on tax impact.",
+      "timed_out": false
+    }
+  ],
+  "aggregate": {
+    "specificity_mean": 4.714285714285714,
+    "non_obviousness_mean": 5.0,
+    "grounding_pct_mean": 71.0,
+    "diversity_mean": 1.7142857142857142,
+    "quality_score": 0.7905714285714286
+  },
+  "timed_out_count": 8,
+  "timed_out_ids": [
+    "series-b-iso-cliff",
+    "late-stage-rsu-vs-base",
+    "first-job-equity-confusion",
+    "comparing-offers-3-companies",
+    "founder-equity-cofounder",
+    "83b-deadline-missed",
+    "golden-handcuffs-eval",
+    "pip-accept-vs-exit"
+  ],
+  "per_fixture_timeout_seconds": 180
+}
