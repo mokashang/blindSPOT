@@ -57,8 +57,11 @@ async def _run_single_fixture(
     plus generic Exception separately.
     """
     with Session(engine) as db:
+        print(f"[eval]   {fix['id']}: orchestrator.create", flush=True)
         orch = Orchestrator.create(eval_cfg, llm, embedder, db)
+        print(f"[eval]   {fix['id']}: orch.run", flush=True)
         resp = await orch.run(fix["text"])
+    print(f"[eval]   {fix['id']}: judge_response", flush=True)
     verdict = await judge_response(fix["text"], resp.rendered_markdown, llm, cfg)
     return {"id": fix["id"], **verdict}
 
@@ -80,8 +83,17 @@ async def run_eval(
     `quality_score` is computed over only non-timed-out fixtures so that
     a single hang doesn't poison the running mean.
     """
+    print(
+        f"[eval] starting; fixtures_path={fixtures_path} out_dir={out_dir} "
+        f"timeout={per_fixture_timeout_seconds}s",
+        flush=True,
+    )
     out_dir.mkdir(parents=True, exist_ok=True)
     fixtures = yaml.safe_load(fixtures_path.read_text())
+    print(
+        f"[eval] loaded {len(fixtures)} fixtures: {[f['id'] for f in fixtures]}",
+        flush=True,
+    )
 
     # Resolve timeout: explicit arg > config > module default.
     if per_fixture_timeout_seconds is None:
@@ -97,10 +109,12 @@ async def run_eval(
     eval_cfg.db.path = str(eval_db_path)
     init_schema(eval_cfg)
     engine = get_engine(eval_cfg)
+    print(f"[eval] init_schema + engine ready (db={eval_db_path})", flush=True)
 
     per_situation: list[dict] = []
     timed_out_ids: list[str] = []
-    for fix in fixtures:
+    for i, fix in enumerate(fixtures):
+        print(f"[eval] fixture {i+1}/{len(fixtures)} start: {fix['id']}", flush=True)
         try:
             result = await asyncio.wait_for(
                 _run_single_fixture(fix, eval_cfg, cfg, llm, embedder, engine),
@@ -111,6 +125,11 @@ async def run_eval(
             # "missing" from "false".
             result["timed_out"] = False
             per_situation.append(result)
+            print(
+                f"[eval] fixture {i+1}/{len(fixtures)} done: {fix['id']} "
+                f"timed_out={result.get('timed_out', False)}",
+                flush=True,
+            )
         except asyncio.TimeoutError:
             timed_out_ids.append(fix["id"])
             per_situation.append(
@@ -125,6 +144,13 @@ async def run_eval(
                     ),
                 }
             )
+            print(
+                f"[eval] fixture {i+1}/{len(fixtures)} done: {fix['id']} "
+                f"timed_out=True",
+                flush=True,
+            )
+
+    print(f"[eval] all fixtures done; computing aggregate", flush=True)
 
     def m(key: str) -> float:
         # Aggregate only over fixtures that produced a real verdict —
@@ -160,5 +186,10 @@ async def run_eval(
         "per_fixture_timeout_seconds": per_fixture_timeout_seconds,
     }
     path = out_dir / f"{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}.json"
+    print(f"[eval] writing result file: {path}", flush=True)
     path.write_text(json.dumps(report, indent=2))
+    print(
+        f"[eval] wrote result file: {path}; quality_score={quality_score:.4f}",
+        flush=True,
+    )
     return path
