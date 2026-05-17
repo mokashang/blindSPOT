@@ -150,6 +150,26 @@ pytest tests/unit/test_<name>.py -v   # one file
   `try / except` so the turn proceeds without Reddit if creds are unset;
   expect a warning in stderr.
 
+- **Concurrent `./bin/blindspot eval` invocations deadlock under the
+  `claude_agent_sdk` backend.** Symptom: two or more `eval` runs from
+  sibling worktrees hang at 0% CPU for 15+ minutes while a standalone
+  `claude -p "hi"` from the same shell returns in ~5s. Diagnosed in
+  PR #19 (commit 7be8149) after 8 consecutive refine runs recorded
+  `eval_status: pipeline-unavailable`. Root cause: `claude_agent_sdk.query()`
+  spawns a subprocess that talks to the local Claude Code CLI; the CLI's
+  OAuth / IPC machinery serializes on a single user-home lock or socket
+  that doesn't tolerate concurrent callers from sibling processes. The
+  per-fixture timeout added in PR #15 never fires because the first
+  fixture's subprocess never produces a token. Escape hatch:
+  `BLINDSPOT_LLM_BACKEND=anthropic_api ANTHROPIC_API_KEY=... ./bin/blindspot eval`
+  routes through `AnthropicAPIClient` which uses direct HTTP and has no
+  subprocess contention. The env var overrides `config.yaml`'s
+  `llm_backend` for the current process only; a stderr notice prints so
+  it's visible which backend you're on. Refine implication: parallel
+  refine subagents can finally measure `branch_quality_score` instead of
+  recording `eval_status: pipeline-unavailable` indefinitely, once the
+  refine routine sets this env var for its eval invocations.
+
 ## Refine routine (autonomous)
 
 The skill at `.claude/skills/refine-blindspot/SKILL.md` is written but

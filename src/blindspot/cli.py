@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import asyncio
+import os
+import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -45,15 +47,41 @@ def _bootstrap_readonly():
 
 
 def _bootstrap_full():
-    """For commands that actually call the LLM / embedder."""
+    """For commands that actually call the LLM / embedder.
+
+    The LLM backend defaults to `config.yaml`'s ``llm_backend``, but can be
+    overridden per-process via the ``BLINDSPOT_LLM_BACKEND`` env var. The
+    env-var escape hatch exists for the refine routine's parallel eval
+    subagents: ``claude_agent_sdk.query()`` spawns a subprocess that
+    deadlocks under concurrent callers from sibling worktrees (see
+    CLAUDE.md "Quirks"), so a sibling can request ``anthropic_api`` —
+    which uses direct HTTP and has no subprocess contention — without
+    editing the shared config file. When the override is in effect we
+    emit a one-line stderr notice so users debugging eval can see which
+    backend they're actually on.
+    """
     cfg, engine = _bootstrap_readonly()
-    if cfg.llm_backend == "anthropic_api":
+    env_backend = os.environ.get("BLINDSPOT_LLM_BACKEND")
+    backend = env_backend if env_backend is not None else cfg.llm_backend
+    override_active = env_backend is not None and env_backend != cfg.llm_backend
+    if override_active:
+        print(
+            f"[blindspot] LLM backend overridden via BLINDSPOT_LLM_BACKEND: "
+            f"{cfg.llm_backend!r} -> {backend!r}",
+            file=sys.stderr,
+        )
+    if backend == "anthropic_api":
         llm = AnthropicAPIClient()
-    elif cfg.llm_backend == "claude_agent_sdk":
+    elif backend == "claude_agent_sdk":
         llm = ClaudeAgentClient()
     else:
+        source = (
+            "BLINDSPOT_LLM_BACKEND env var"
+            if env_backend is not None
+            else "config.yaml"
+        )
         raise typer.BadParameter(
-            f"Unknown llm_backend in config.yaml: {cfg.llm_backend!r}. "
+            f"Unknown llm_backend {backend!r} (from {source}). "
             f"Must be 'claude_agent_sdk' or 'anthropic_api'."
         )
     embedder = VoyageEmbedder(
