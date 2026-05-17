@@ -236,12 +236,24 @@ def sources_stats():
 
 
 @app.command(name="eval")
-def eval_cmd():
+def eval_cmd(
+    per_fixture_timeout: int = typer.Option(
+        None,
+        "--per-fixture-timeout",
+        help=(
+            "Wall-clock cap (seconds) per fixture. On timeout the fixture is "
+            "recorded as timed_out:true and the eval continues to the next. "
+            "Default falls back to config.yaml `eval.per_fixture_timeout_seconds`."
+        ),
+    ),
+):
     """Run the eval suite. Writes results to eval/results/<timestamp>.json."""
     cfg, _engine, llm, embedder = _bootstrap_full()
     from blindspot.eval.runner import run_eval
 
-    path = asyncio.run(run_eval(cfg, llm, embedder))
+    path = asyncio.run(
+        run_eval(cfg, llm, embedder, per_fixture_timeout_seconds=per_fixture_timeout)
+    )
     console.print(f"[green]Wrote results to {path}[/green]")
 
 
