@@ -226,8 +226,8 @@ automate parts of it.
 ```
 Status: ⬜ not started
 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/10 domains complete)
-Last completed: (none — V1.x must finish first)
-Next up: write _meta_ontology.md naming the 10 domains
+Last completed: 2026cba — V2 entry-gate item: `domain_knowledge/_meta_ontology.md` authored (10 domains: scope, maturity, high-stakes flags, sample decisions)
+Next up: V1.x exit criteria must be met before per-domain work begins; then `tech-career` migration is the first `[ ]` in the Per-domain checklist
 ```
 
 ### Entry gate
@@ -235,7 +235,7 @@ Next up: write _meta_ontology.md naming the 10 domains
 - V1.x exit criteria met (refine stable, eval flat-or-up, streaming
   output landed, API backend usable).
 - Author has drafted `_meta_ontology.md` naming the 10 chosen
-  domains.
+  domains. **✅ Done — [domain_knowledge/_meta_ontology.md](../../domain_knowledge/_meta_ontology.md) (2026cba)**
 
 ### Choosing the 10 domains
 
