@@ -59,7 +59,16 @@ class ClaudeAgentClient(LLMClient):
         Tolerates a leading ```json fence, prose before the object, and any
         trailing fence-close / commentary after it — models sometimes append
         explanation despite a "JSON only" instruction.
+
+        On `raw_decode` failure, attempts one recovery: re-try with the
+        substring ending at the LAST `}` in the buffer (handles cases where
+        prose after the object somehow confuses `raw_decode`). If that also
+        fails, raises ValueError with the FULL response text (truncated to
+        2000 chars) so the failure is diagnosable upstream — the prior
+        behaviour let JSONDecodeError propagate with no payload, leaving
+        eval failures undebuggable.
         """
+        original = text
         text = text.strip()
         if text.startswith("```"):
             newline = text.find("\n")
@@ -67,6 +76,31 @@ class ClaudeAgentClient(LLMClient):
                 text = text[newline + 1 :]
         start = text.find("{")
         if start == -1:
-            raise ValueError(f"no JSON object in model response: {text[:80]!r}")
-        obj, _ = json.JSONDecoder().raw_decode(text[start:])
-        return obj
+            raise ValueError(
+                f"no JSON object in model response: {_truncate(original)!r}"
+            )
+        try:
+            obj, _ = json.JSONDecoder().raw_decode(text[start:])
+            return obj
+        except json.JSONDecodeError:
+            # Recovery: trim back to the last closing brace and retry.
+            last_close = text.rfind("}")
+            if last_close > start:
+                try:
+                    obj, _ = json.JSONDecoder().raw_decode(
+                        text[start : last_close + 1]
+                    )
+                    return obj
+                except json.JSONDecodeError:
+                    pass
+            raise ValueError(
+                f"could not parse JSON object from model response: "
+                f"{_truncate(original)!r}"
+            ) from None
+
+
+def _truncate(text: str, limit: int = 2000) -> str:
+    """Truncate text to `limit` chars, appending an ellipsis marker if cut."""
+    if len(text) <= limit:
+        return text
+    return text[:limit] + f"...[truncated {len(text) - limit} chars]"
