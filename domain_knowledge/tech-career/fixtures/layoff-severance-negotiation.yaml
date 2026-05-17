@@ -1,0 +1,9 @@
+id: layoff-severance-negotiation
+text: |
+  I was laid off yesterday from a Series D startup after 3 years. They offered
+  8 weeks severance with a release that includes a 12-month non-compete and
+  waiver of unvested RSUs worth ~$180k. I have 7 days to sign. Can I push back?
+expected_domains: [tech-career/negotiation, tech-career/comp]
+expected_entities: [severance, non-compete, release, unvested-RSU]
+expected_personas: [recently-laid-off]
+expected_risk_surfaces: [non-compete-enforceability, release-waiver, signing-deadline]

@@ -1,0 +1,10 @@
+id: pre-ipo-tender-offer
+text: |
+  My pre-IPO company (last valued at $4B, ~80% of my net worth in vested shares)
+  is running a tender offer letting employees sell up to 25% of vested equity
+  to a secondary investor at a 10% discount to the last round. IPO is "1-2 years
+  out" per the CEO. Sell the full 25% or hold?
+expected_domains: [tech-career/equity]
+expected_entities: [tender-offer, pre-IPO-secondary, vested-shares, secondary-discount]
+expected_personas: [late-stage-pre-IPO]
+expected_risk_surfaces: [concentration-risk, tender-offer-tax, signal-to-future-acquirer]

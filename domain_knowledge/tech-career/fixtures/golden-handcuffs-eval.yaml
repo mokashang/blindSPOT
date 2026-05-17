@@ -1,0 +1,6 @@
+id: golden-handcuffs-eval
+text: |
+  I've vested half my grant at FAANG. I'm being recruited by a competitor
+  with a better tech stack. The unvested portion is worth ~$400k. Stay or go?
+expected_entities: [golden-handcuffs]
+expected_risk_surfaces: [opportunity-cost, regret]

@@ -1,0 +1,6 @@
+id: ipo-secondary-decision
+text: |
+  Company is filing for IPO in 3 months. I can do a secondary at the
+  last private valuation. Worth taking some liquidity?
+expected_entities: [IPO, secondary-sale]
+expected_risk_surfaces: [liquidity, timing]

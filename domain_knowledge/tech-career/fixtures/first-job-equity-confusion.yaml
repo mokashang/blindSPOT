@@ -1,0 +1,6 @@
+id: first-job-equity-confusion
+text: |
+  Just got my first offer out of school. $180k base + 0.05% equity at a
+  seed-stage startup. I don't understand the equity part.
+expected_personas: [first-time-offer, early-employee]
+expected_entities: [seed-stage]

@@ -257,23 +257,30 @@ def test_no_files_anywhere_returns_empty_list(tmp_path):
 
 
 def test_real_v1_fixtures_match_legacy():
-    """End-to-end: against the committed repo state, load_all_fixtures returns the V1 monolithic fixtures.
+    """End-to-end: against the committed repo state, load_all_fixtures returns the migrated tech-career fixtures bit-for-bit equivalent to the V1 monolith.
 
-    The repo currently has NO domain_knowledge/<domain>/fixtures/ — only
-    decisions.md and framings.md under domain_knowledge/tech-career/. So
-    load_all_fixtures() with no args (cwd=repo root) must hit the V1
-    fallback and return all V1 fixtures, each annotated with
-    ``domain: "tech-career"``.
+    The repo has migrated to per-domain fixture files under
+    ``domain_knowledge/tech-career/fixtures/*.yaml``; the V1 monolithic
+    ``fixtures/eval_situations.yaml`` is retained as a fallback for code
+    paths that still reference it by path, but ``load_all_fixtures()``
+    with no args (cwd=repo root) now hits the V2 per-domain path and
+    shadows the V1 file (a warning is printed when both exist).
 
-    This locks down the current-state invariant: V1 path is bit-for-bit
-    preserved (same fixture ids, same texts), with one additive key.
+    This locks down the migration invariant: V2 per-domain layout
+    produces the SAME set of fixtures as the V1 monolith — same ids,
+    same texts (bit-for-bit), all annotated with ``domain:
+    "tech-career"`` (V1's only domain). Order is not asserted because
+    V2 loads files in sorted filename order while the V1 monolith
+    preserved authoring order; only the set of ids and the per-id
+    content are part of the invariant.
     """
     fixtures = load_all_fixtures()
     legacy_raw = yaml.safe_load(Path("fixtures/eval_situations.yaml").read_text())
 
     assert len(fixtures) == len(legacy_raw)
-    assert [f["id"] for f in fixtures] == [r["id"] for r in legacy_raw]
+    assert {f["id"] for f in fixtures} == {r["id"] for r in legacy_raw}
     assert all(f["domain"] == V1_LEGACY_DOMAIN for f in fixtures)
-    # Texts preserved bit-for-bit.
-    for loaded, source in zip(fixtures, legacy_raw):
-        assert loaded["text"] == source["text"]
+    # Texts preserved bit-for-bit per id.
+    legacy_by_id = {r["id"]: r for r in legacy_raw}
+    for loaded in fixtures:
+        assert loaded["text"] == legacy_by_id[loaded["id"]]["text"]

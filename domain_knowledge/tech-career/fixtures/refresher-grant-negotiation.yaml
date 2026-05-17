@@ -1,0 +1,6 @@
+id: refresher-grant-negotiation
+text: |
+  I'm 2.5 years in. My initial grant is mostly vested. How do I bring up
+  a refresher grant without sounding ungrateful?
+expected_entities: [refresher]
+expected_personas: [senior-employee]

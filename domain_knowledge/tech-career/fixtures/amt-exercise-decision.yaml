@@ -1,0 +1,6 @@
+id: amt-exercise-decision
+text: |
+  My ISOs are deeply in the money. FMV is 10x my strike. Company says no
+  IPO planned for at least 2 years. Should I exercise now?
+expected_entities: [ISO, AMT, strike-price]
+expected_risk_surfaces: [tax, timing]

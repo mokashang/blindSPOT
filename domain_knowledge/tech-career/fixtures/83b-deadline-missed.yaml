@@ -1,0 +1,6 @@
+id: 83b-deadline-missed
+text: |
+  I joined a startup 5 weeks ago. They mentioned an 83(b) election. The
+  deadline is 30 days from grant. Did I miss it? What now?
+expected_entities: [83b-election]
+expected_risk_surfaces: [tax, regret]

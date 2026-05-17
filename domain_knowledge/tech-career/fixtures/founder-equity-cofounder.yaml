@@ -1,0 +1,6 @@
+id: founder-equity-cofounder
+text: |
+  My co-founder wants 50/50 equity but I had the idea, am doing most of
+  the early work, and brought in our first investor. How should I think?
+expected_personas: [founder]
+expected_domains: [tech-career/founder]
