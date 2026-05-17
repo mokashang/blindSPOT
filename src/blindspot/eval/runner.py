@@ -193,6 +193,16 @@ async def run_eval(
     the next fixture rather than aborting the whole run. The aggregate
     `quality_score` is computed over only non-timed-out fixtures so that
     a single hang doesn't poison the running mean.
+
+    The same continue-on-error contract applies when the judge LLM
+    returns a string that ``_parse_json_object`` cannot recover
+    (typically a truncated response that hit max_tokens mid-JSON,
+    leaving an unclosed string literal). The fixture's record carries
+    `quality_score: null`, `judge_unparseable: true`, a `reason` that
+    contains the first 200 chars of the exception message, and the run
+    continues. Aggregates (`quality_score`, sub-metric means, per-domain
+    block) skip these rows the same way they skip `timed_out: true`
+    rows so a single parse failure doesn't poison the running mean.
     """
     print(
         f"[eval] starting; fixtures_path={fixtures_path} out_dir={out_dir} "
@@ -234,6 +244,7 @@ async def run_eval(
 
     per_situation: list[dict] = []
     timed_out_ids: list[str] = []
+    judge_unparseable_ids: list[str] = []
     for i, fix in enumerate(fixtures):
         print(f"[eval] fixture {i+1}/{len(fixtures)} start: {fix['id']}", flush=True)
         domain = fix.get("domain", V1_LEGACY_DOMAIN)
@@ -274,17 +285,57 @@ async def run_eval(
                 f"timed_out=True",
                 flush=True,
             )
+        except (ValueError, json.JSONDecodeError) as exc:
+            # Judge LLM (or any pipeline LLM call) returned a string the
+            # ``_parse_json_object`` recovery couldn't repair — typically
+            # a truncated response that hit max_tokens mid-JSON, leaving
+            # an unclosed string literal that the ``last_close_brace``
+            # fallback can't recover from. Before this branch, any such
+            # ValueError aborted the whole eval run with EVAL_EXIT:1 and
+            # no result file was written; now we record the parse failure
+            # honestly on this fixture and continue, mirroring the
+            # asyncio.TimeoutError handling above. We catch the bare
+            # ``ValueError`` because that is what ``_parse_json_object``
+            # raises (it wraps the underlying ``json.JSONDecodeError``);
+            # ``json.JSONDecodeError`` is included defensively in case
+            # other callsites surface it directly. ``JSONDecodeError`` is
+            # itself a ``ValueError`` subclass, so listing it second is
+            # only documentation — the order matches the bug-report flow.
+            judge_unparseable_ids.append(fix["id"])
+            per_situation.append(
+                {
+                    "id": fix["id"],
+                    "domain": domain,
+                    "timed_out": False,
+                    "judge_unparseable": True,
+                    "quality_score": None,
+                    "reason": (
+                        f"judge response unparseable: {str(exc)[:200]}"
+                    ),
+                }
+            )
+            print(
+                f"[eval] fixture {i+1}/{len(fixtures)} done: {fix['id']} "
+                f"judge_unparseable=True",
+                flush=True,
+            )
 
     print(f"[eval] all fixtures done; computing aggregate", flush=True)
 
     def _mean_for(records: list[dict], key: str) -> float:
         # Aggregate only over fixtures that produced a real verdict —
-        # timed-out fixtures don't have rubric scores so including them
-        # as zeros would falsely lower the mean.
+        # timed-out and judge-unparseable fixtures don't have rubric
+        # scores so including them as zeros would falsely lower the
+        # mean. Both error paths set ``quality_score: null`` upstream;
+        # the same skip rule applies symmetrically here so the
+        # refine-routine delta math sees the average of fixtures that
+        # actually scored, not a punitive average diluted by failures.
         vals = [
             r[key]
             for r in records
-            if not r.get("timed_out", False) and key in r
+            if not r.get("timed_out", False)
+            and not r.get("judge_unparseable", False)
+            and key in r
         ]
         return sum(vals) / len(vals) if vals else 0.0
 
@@ -335,6 +386,9 @@ async def run_eval(
             "quality_score": _quality_score_for(recs),
             "fixture_count": len(recs),
             "timed_out_count": sum(1 for r in recs if r.get("timed_out", False)),
+            "judge_unparseable_count": sum(
+                1 for r in recs if r.get("judge_unparseable", False)
+            ),
         }
 
     report = {
@@ -351,6 +405,8 @@ async def run_eval(
         # New top-level fields, additive — existing consumers ignore them.
         "timed_out_count": len(timed_out_ids),
         "timed_out_ids": timed_out_ids,
+        "judge_unparseable_count": len(judge_unparseable_ids),
+        "judge_unparseable_ids": judge_unparseable_ids,
         "per_fixture_timeout_seconds": per_fixture_timeout_seconds,
     }
     path = out_dir / f"{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}.json"
