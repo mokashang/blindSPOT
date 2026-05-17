@@ -156,8 +156,8 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 ```
 Status: 🟡 in progress
 Progress: ███████░░░░░░░░░░░░░ 33% (2/6)
-Last completed: a46e5bd — V2 pulled-forward: tech-career/decisions.md (Layer 1 ontology, 11 decisions, 1210 words; first sub-item of V2 §4 tech-career per-domain checklist now [x]; parent stays [ ]). Eval-baseline-stability measurement #2 attempt **bailed** this run: eval ran 51min producing no result file and no per-fixture progress logs (only Reddit-creds warnings). PR #28's 240→360s timeout did NOT unblock — failure mode is UPSTREAM of per-fixture timeout enforcement (or SIGKILL bypasses safety-net write-on-exit). Candidate cause: regression in eval-startup path from a recent merge (PR #29 registry-loader is most-recent code change there). Worth diagnosing before measurement #3.
-Next up: Eval baseline stability — diagnose why PR #28's timeout didn't help. Hypothesis to test: (a) the first fixture's pipeline hangs at LLM client level (PR #15's asyncio.wait_for can't cancel a non-yielding coroutine), or (b) PR #29's registry loader changed startup so the runner is now blocked pre-fixture-loop. After diagnosis, measurement #2 should be re-attempted.
+Last completed: 5c1fcb9 — eval-baseline-stability advanced (not [x] yet) by PR #31, which added 9 unbuffered `[eval]`-prefixed stdout prints to `src/blindspot/eval/runner.py` covering all stages: `run_eval` entry, fixture-list load, init_schema + engine, per-fixture loop start/end, `_run_single_fixture`'s `Orchestrator.create` / `orch.run` / `judge_response` boundaries, post-loop aggregate marker, and result-file write start/end. Diagnostic step — does not measure. After this lands, the NEXT eval attempt's stdout will surface the exact stage where the 3-run lost-result pattern (run-1340 / run-1427 / run-1453) is hanging. Parent v1.x/eval-baseline-stability remains [ ] until 3 measurements within ±0.03 are achieved.
+Next up: Eval baseline stability — re-attempt measurement #2 with the new `[eval]` instrumentation in place. Read the stdout/stderr stream to identify the last printed stage before hang/SIGKILL. If the hang is inside `_run_single_fixture`'s `orch.run` (most likely per the hypothesis space), file a follow-up PR adding a hard outer timeout (e.g. SIGALRM-based) above asyncio.wait_for. If the hang is in `Orchestrator.create` (registry/profile loader startup), the next PR adds startup timing. If the result file is written but lost (post-write SIGKILL or wrong cwd), the next PR makes the write atomic + adds an absolute-path log line.
 ```
 
 ### Per-task checklist
@@ -226,8 +226,8 @@ automate parts of it.
 ```
 Status: ⬜ not started
 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/10 domains complete)
-Last completed: a46e5bd — V2 §4 tech-career per-domain checklist: first sub-item `decisions.md` written (PR #30, 11 decisions, 1210 words, infrastructure-ready since PRs #13 / #21 / #29 wired the per-domain readers). Parent `tech-career` checkbox stays [ ] because framings.md / blindspots.md / sources.yaml / fixtures/ / communities/ / domain_pack.md still remain. Architecture-changes checklist remains 3/6 this run (replace-hard-coded-scope-refusal at f098f7a, community-profile-loader at 6fd16d3, registry-loader at ee159d2). Earlier infra: `_schema.md` at 76e3c32, `_meta_ontology.md` at 2026cba.
-Next up: V1.x exit criteria must be met before V2 promotes to 🟡; meanwhile V2 work continues on either (a) the next tech-career sub-item (`framings.md` is the natural Layer 2 follow-on to PR #30's decisions.md), or (b) one of the 3 remaining V2 architecture-changes (eval-runner per-domain scanning, Triage two-pass split, refine-routine per-domain scoping).
+Last completed: bf2cb74 — V2 §4 tech-career per-domain checklist: second sub-item `framings.md` written (PR #32, 14 framings spanning all 11 decisions with ≥3 framings per major decision, ~4.9k words, voice anchored to the existing V1 `community_profiles/` so routing continuity is preserved once the V2 two-pass Triage / domain-pack loader is wired). tech-career parent stays [ ] (2 of 8 sub-items now [x]; blindspots.md / sources.yaml migration / communities move / fixtures move / domain_pack.md / eval still-passes remain). Architecture-changes checklist remains 3/6 (no change this run). Earlier per-domain artifacts: decisions.md at a46e5bd (PR #30). Earlier V2 infra: `_schema.md` at 76e3c32, `_meta_ontology.md` at 2026cba.
+Next up: V1.x exit criteria must be met before V2 promotes to 🟡; meanwhile V2 work continues on either (a) the next tech-career sub-item — `blindspots.md` (Layer 3) is the natural follow-on, sweeping `Excludes` bullets from every framing in PR #32's framings.md (≥56 candidate seeds already named there); the schema requires ≥5 blindspots per framing and grounded in source evidence rather than LLM extrapolation — or (b) one of the 3 remaining V2 architecture-changes (eval-runner per-domain scanning, Triage two-pass split, refine-routine per-domain scoping).
 ```
 
 ### Entry gate
@@ -280,7 +280,7 @@ Each of the 10 domains independently requires this checklist.
 
 - [ ] **tech-career** (migration only — convert existing artifacts to new layout)
   - [x] `domain_knowledge/tech-career/decisions.md` written **— done at a46e5bd (PR #30, 11 decisions, 1210 words)**
-  - [ ] `domain_knowledge/tech-career/framings.md` written
+  - [x] `domain_knowledge/tech-career/framings.md` written **— done at bf2cb74 (PR #32, 14 framings, ~4.9k words; each framing has name + decisions-it-applies-to + 3–6-sentence mental model + 5–10-phrase characteristic vocabulary + 3–5-bullet `Excludes` list; every decision D1–D11 has ≥3 framings; voice anchored to existing V1 community_profiles for routing continuity; ≥56 candidate blindspot seeds named across all framings' `Excludes` lines)**
   - [ ] `domain_knowledge/tech-career/blindspots.md` written
   - [ ] `data/source_registry.yaml` migrated to `domain_knowledge/tech-career/sources.yaml`
   - [ ] community profiles moved to `domain_knowledge/tech-career/communities/`
