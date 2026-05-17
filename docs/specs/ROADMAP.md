@@ -156,7 +156,7 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 ```
 Status: 🟡 in progress
 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/6)
-Last completed: (none — V1.x is the active hardening phase)
+Last completed: 26e9d25 — refine-routine-maturity advance: 4 merged refine PRs total across 4 layers (sources/agents/eval/config); 1 more merged PR completes the ≥ 5 PRs criterion. Eval-baseline-stability also advanced (judge rubric anchored at fafb6aa).
 Next up: refine routine produces ≥ 5 merged PRs across ≥ 3 layers
 ```
 
