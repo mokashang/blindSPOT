@@ -43,19 +43,36 @@ evaluating an offer.
   if a founder leaves early. Signals to employees about company stability.
 
 ## Known blind spots OF this community
-- **Pro-investor / pro-founder by default.** The framing implicitly serves
-  the people designing the cap table, not the employee taking the offer.
-  "What's fair" answers tend to land where investors want them to.
-- **Survivorship bias toward winning portfolios.** Public-facing VC writing
-  is implicitly about deals that worked. The failure modes of equity
-  (down rounds, recap wipeouts, acquihires) are underweighted.
-- **AMT and personal tax mechanics largely absent.** VCs care about
-  pre-money/post-money, not about an employee's individual exercise tax.
-- **Big-tech / public-company RSUs ignored.** This world is startup-centric
-  and treats public-company comp as someone else's domain.
-- **Employee #50 vs employee #5 is collapsed.** The "early employee"
-  category as discussed is mostly the first few hires; the next 45 face
-  very different math.
+- **Underweights employee-level tax timing because the partnership
+  tax model doesn't apply to W-2 grantees.** VCs reason at the fund
+  level (carry, K-1s, QSBS); the AMT spread on ISO exercise, the
+  90-day post-termination exercise-or-forfeit cliff, and the NSO
+  ordinary-income hit on a tender live in a W-2 world VC writers
+  rarely model. "Exercise early" gets repeated as conventional
+  wisdom without naming the AMT bill or the cash requirement.
+- **Pattern-matches to the YC / power-law playbook and dismisses
+  lifestyle, indie, or bootstrapped paths** even when they fit the
+  asker's risk profile. A $400k salary at a profitable 20-person
+  bootstrapped company is invisible to a frame that scores outcomes
+  against a fund's MOIC target; the community has no vocabulary for
+  "good enough" outcomes that aren't venture-scale.
+- **Survivorship bias toward winning portfolios.** Public VC writing
+  is implicitly about deals that worked. Down rounds, recap wipeouts
+  where common is washed out by participating-preferred stacks,
+  acquihires that pay the team but zero out option-holders, and
+  10-year stretches where the company is neither dead nor liquid are
+  systematically underweighted.
+- **"Early employee" collapses employees #5 and #50.** Grant sizes,
+  refresher cadence, and dilution exposure differ by an order of
+  magnitude between a pre-seed 1.0% hire and a Series B 0.05% hire;
+  VC posts about "what early employees should expect" usually mean
+  the first five hires and don't say so.
+- **Big-tech / public-company RSU comp is treated as someone else's
+  domain.** RSU withholding shortfalls at supplemental rates (22%
+  federal vs the grantee's actual marginal), concentrated-position
+  risk on a single ticker, ESPP, and 10b5-1 plans don't appear here
+  even when they dominate the asker's actual decision (e.g. leaving
+  a $600k TC public-company job for a Series B startup).
 
 ## Representative voices
 Fred Wilson (AVC), Mark Suster (Both Sides of the Table), Sam Altman's
