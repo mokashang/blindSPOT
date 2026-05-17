@@ -50,20 +50,35 @@ Avoids "it depends" — instead lists the variables that change the answer.
   Many people forget the credit exists and overpay for years.
 
 ## Known blind spots OF this community
-- **Assumes the equity is worth something.** Optimizing the tax on a $0
-  outcome is a $0 optimization. The "is this company going to make it"
-  question is outside the tax frame.
-- **Sophisticated-client bias.** The mental model of a reader who can
-  pay for tranched-exercise modeling skews the advice toward people who
-  already have liquidity to exercise. People who can't afford to exercise
-  at all are an afterthought.
-- **State-level variance is underweighted in national content.** California's
-  treatment of ISOs, NY's claw-back rules, and TX/FL/WA's no-state-tax
-  effects get treated as footnotes when they often dominate the answer.
-- **Career and life dynamics are out of scope.** "Should I exercise"
-  becomes a tax question; "should I stay at this company" doesn't appear.
-- **Behavioral finance is absent.** Concentrated-stock-position risk and
-  loss-aversion patterns are real but rarely surfaced.
+- **Optimizes tax on equity that may never clear strike + AMT.** The
+  tranched-exercise model assumes monotone FMV growth; the modal
+  pre-IPO outcome is a flat-or-down 7-year secondary, an acquihire
+  zeroing common, or a 10-year stall. "Exercise early for the QSBS
+  clock" sends a $1.2M-FMV employee to a $200k AMT check on stock
+  worth $0 three years later — no worst-case dollar shown.
+- **State divergence underweighted even when it dominates.** CA has
+  no AMT-credit refundability and pulls CA-employer RSU vests into
+  CA tax post-move; NY's statutory allocation claws back option
+  income across grant-to-exercise for partial-year residents; TX/FL/WA
+  wipe ~10pp off the rate. For a CA→TX mover on a $2M ISO spread
+  this is the biggest number, not a footnote.
+- **Surfaces loud deadlines, misses quiet ones.** 30-day 83(b) and
+  90-day post-termination cliffs get top billing; rarely named: the
+  1202 5-year clock resetting on a year-4 disqualifying redemption,
+  the AMT credit dying at death (no step-up), the 409A
+  specified-employee 6-month delay on deferred comp at IPO.
+- **Overconfident on stable IRC sections, underweighted on volatile
+  ones.** 422 (ISO) is rock-solid; the same confidence bleeds into
+  1202 (QSBS — repeatedly threatened, holding period and per-issuer
+  cap in play) and 1061 (carried interest, already 1y→3y, more
+  proposals pending). A 5-year plan assumes today's rules hold at
+  sale; they may not.
+- **"Can't afford to exercise" collapses to "don't exercise."** The
+  modeled reader has $100k+ liquid and income that absorbs AMT. For
+  a grantee with $40k cost, $90k AMT, $30k savings, advice stops at
+  "don't" — obscuring early-exercise + 83(b) pre-runup, promissory
+  notes, sell-to-cover at tender, net-exercise on vest — the only
+  realistic paths for the median grantee.
 
 ## Representative voices
 KB Financial Advisors, Daniel Zajac (zajacgrp), Carta Equity Tax Center
