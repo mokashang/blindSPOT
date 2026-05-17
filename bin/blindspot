@@ -3,6 +3,12 @@
 # of whether the macOS com.apple.provenance xattr has corrupted the
 # install. Always finds the package via PYTHONPATH=<repo>/src.
 #
+# Worktree-aware: when invoked from a git worktree (e.g. a refine
+# subagent's `.claude/worktrees/<name>/`), the worktree doesn't carry
+# its own `.venv/`. Fall back to the main worktree's `.venv` discovered
+# via `git rev-parse --git-common-dir`. PYTHONPATH stays pinned to the
+# CURRENT worktree's `src/` so we exercise the branch's code, not main.
+#
 # Usage: ./bin/blindspot ask "..."
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -19,4 +25,38 @@ if [ -f "${HOME}/.blindspot/.env" ]; then
 fi
 
 export PYTHONPATH="${REPO_ROOT}/src${PYTHONPATH:+:${PYTHONPATH}}"
-exec "${REPO_ROOT}/.venv/bin/python" -m blindspot.cli "$@"
+
+# Resolve a python interpreter. Prefer the local `.venv/` (normal clones
+# and the main worktree both have one). When running inside a secondary
+# git worktree, `.venv/` is absent — fall back to the main worktree's
+# `.venv/` via `git rev-parse --git-common-dir` (returns the main repo's
+# `.git` path; its parent directory is the main worktree root).
+LOCAL_PYTHON="${REPO_ROOT}/.venv/bin/python"
+MAIN_PYTHON=""
+if [ -x "${LOCAL_PYTHON}" ]; then
+  VENV_PYTHON="${LOCAL_PYTHON}"
+else
+  if GIT_COMMON_DIR="$( git -C "${SCRIPT_DIR}" rev-parse --git-common-dir 2>/dev/null )"; then
+    # `--git-common-dir` may be relative (e.g. ".git") — resolve to abs.
+    GIT_COMMON_DIR="$( cd "${SCRIPT_DIR}" && cd "${GIT_COMMON_DIR}" && pwd )"
+    MAIN_REPO_ROOT="$( dirname "${GIT_COMMON_DIR}" )"
+    MAIN_PYTHON="${MAIN_REPO_ROOT}/.venv/bin/python"
+    if [ -x "${MAIN_PYTHON}" ]; then
+      VENV_PYTHON="${MAIN_PYTHON}"
+    fi
+  fi
+fi
+
+if [ -z "${VENV_PYTHON:-}" ]; then
+  echo "blindspot: cannot locate a Python interpreter." >&2
+  echo "  Looked for: ${LOCAL_PYTHON}" >&2
+  if [ -n "${MAIN_PYTHON}" ]; then
+    echo "  Also tried (main worktree): ${MAIN_PYTHON}" >&2
+  else
+    echo "  (could not determine main worktree via git rev-parse --git-common-dir)" >&2
+  fi
+  echo "  Run 'python3 -m venv .venv && .venv/bin/pip install -e .' in the main repo." >&2
+  exit 1
+fi
+
+exec "${VENV_PYTHON}" -m blindspot.cli "$@"
