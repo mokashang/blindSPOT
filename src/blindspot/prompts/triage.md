@@ -65,9 +65,49 @@ this Scope list is for *refusing*. They are distinct.
 
 # Rules
 
-- Be liberal with tags — better to over-extract than miss.
+- **Quality over quantity.** Triage is the entry point for the entire
+  pipeline — every padded facet value propagates into expensive
+  downstream agent calls and produces worse blind spots. Prefer
+  narrow, specific facet values over wide vague ones, and emit FEWER
+  facets rather than pad with low-confidence guesses. Empty arrays
+  for one or more facets are valid output when the situation
+  genuinely doesn't support them.
+- **Narrow-over-wide.** When a candidate facet value could apply to
+  almost any situation, pick the narrower one anchored to the
+  situation's specifics. Examples:
+  - persona: prefer `tech-employee-with-equity` over `professional`;
+    prefer `pre-vest-cliff` over `early-employee` when the situation
+    names cliff timing.
+  - risk_surfaces: prefer `AMT-crossover-on-ISO-exercise` over `tax`;
+    prefer `single-trigger-acceleration-missing` over `legal`. Name
+    the specific category rooted in named mechanisms, not the
+    generic family.
+  - entities: prefer the specific instrument named
+    (`ISO`, `83b-election`, `series-B-preferred`) over generic
+    placeholders (`equity`, `tax-election`, `stock`).
+- **Don't fabricate.** If the situation text does not support a
+  facet value, leave that facet's array empty. Do NOT invent
+  personas, entities, or risk_surfaces to fill the array. The
+  downstream Editor and Risk Officer react appropriately to sparse
+  triage; padding produces hallucinated blind spots two hops later.
+  Per facet:
+  - personas — only assign a persona when the situation names or
+    clearly implies the user's current decision posture. If unclear,
+    return `[]`.
+  - entities — only list instruments / clauses / mechanisms the
+    situation actually mentions or unambiguously implies. Don't
+    enumerate all equity instruments because "equity" appears once.
+  - risk_surfaces — only list risk categories the situation's
+    specifics actually expose. Don't list all 9 surfaces because the
+    situation involves a job offer.
+- Be liberal with tags ONLY within the bounds above — better to
+  over-extract genuine signal than miss it, but never pad. The
+  bias toward extraction does NOT override the narrow-over-wide
+  and don't-fabricate rules.
 - You MAY propose new tags not in the lists above when the situation
-  genuinely calls for one. They'll be normalized downstream.
+  genuinely calls for one. They'll be normalized downstream. New
+  tags should also follow narrow-over-wide — propose
+  `golden-handcuffs-from-deferred-RSU-vest` not `retention-risk`.
 - If the situation does not match any of the 10 in-scope domains
   named in the Scope section above, return all-empty arrays. The
   orchestrator will refuse the request. (Tech-career situations
