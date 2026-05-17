@@ -156,8 +156,8 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 ```
 Status: 🟡 in progress
 Progress: ███░░░░░░░░░░░░░░░░░ 17% (1/6)
-Last completed: b3a8d70 — V1.x refine-routine-maturity COMPLETED: 7 merged refine PRs total (verifiable via `git log origin/main | grep "(#"`: PRs #1–#7) across all 4 layers (sources: #1,#5 / agents: #2,#6 / eval: #3,#7 / config: #4). Eval-baseline-stability also advanced (3 new fixtures at b3a8d70 widen coverage).
-Next up: Eval baseline stability — three consecutive `./bin/blindspot eval` runs on `main` produce aggregate `quality_score` within ±0.03 of each other
+Last completed: 1357c03 — V1.x refine-routine-maturity COMPLETED at b3a8d70; eval-baseline-stability advanced at 1357c03 (PR #11 hardened `_parse_json_response` with last-`}` recovery + diagnostic ValueError, directly targeting the JSONDecodeError-at-Community-Analyst blocker); source-view-audit advanced at c8ef89f (PR #9 tightened vc-blogosphere blind-spots with schema-rigor).
+Next up: Eval baseline stability — three consecutive `./bin/blindspot eval` runs on `main` produce aggregate `quality_score` within ±0.03 of each other (currently blocked on upstream `bin/blindspot eval` hang ≥8min; JSON-parse hardened in PR #11, next diagnose via claude-agent-sdk debug-file or auth check)
 ```
 
 ### Per-task checklist
