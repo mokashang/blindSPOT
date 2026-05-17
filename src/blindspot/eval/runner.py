@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
+import signal
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -153,6 +155,134 @@ def load_all_fixtures(
     return fixtures
 
 
+def _write_report_atomic(path: Path, report: dict) -> None:
+    """Write ``report`` to ``path`` atomically.
+
+    Concrete steps: dump JSON to ``<path>.tmp`` then ``os.replace()`` it
+    onto ``path``. ``os.replace`` is atomic on POSIX (and on NTFS in
+    practice) so a concurrent reader can never observe a half-written
+    file — they either see the previous full snapshot or the new full
+    snapshot. The ``.tmp`` file never lingers after a successful run.
+    """
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(report, indent=2))
+    os.replace(tmp, path)
+
+
+def _build_report(
+    per_situation: list[dict],
+    timed_out_ids: list[str],
+    judge_unparseable_ids: list[str],
+    per_fixture_timeout_seconds: int,
+    cfg: Config,
+    *,
+    partial: bool,
+    completed_count: int,
+    total_count: int,
+) -> dict:
+    """Assemble the eval result dict from accumulated per-situation rows.
+
+    Same shape whether ``partial`` is ``True`` (eval was cut short) or
+    ``False`` (full run completed). Aggregates and per-domain rollups
+    are computed over the records present in ``per_situation`` at call
+    time — for partial reports this is the subset that ran to a verdict
+    before interruption; for a final report this is every fixture. The
+    ``partial`` / ``completed_count`` / ``total_count`` fields let a
+    consumer distinguish the two modes without inspecting list lengths.
+    """
+
+    def _mean_for(records: list[dict], key: str) -> float:
+        # Aggregate only over fixtures that produced a real verdict —
+        # timed-out and judge-unparseable fixtures don't have rubric
+        # scores so including them as zeros would falsely lower the
+        # mean. Both error paths set ``quality_score: null`` upstream;
+        # the same skip rule applies symmetrically here so the
+        # refine-routine delta math sees the average of fixtures that
+        # actually scored, not a punitive average diluted by failures.
+        vals = [
+            r[key]
+            for r in records
+            if not r.get("timed_out", False)
+            and not r.get("judge_unparseable", False)
+            and key in r
+        ]
+        return sum(vals) / len(vals) if vals else 0.0
+
+    def _quality_score_for(records: list[dict]) -> float:
+        # Same weighted formula the global aggregate uses, just scoped
+        # to a subset of per_situation records.
+        return (
+            cfg.refine.quality_score_weights.specificity
+            * (_mean_for(records, "specificity") / 5)
+            + cfg.refine.quality_score_weights.non_obviousness
+            * (_mean_for(records, "non_obviousness") / 5)
+            + cfg.refine.quality_score_weights.grounding_pct
+            * (_mean_for(records, "grounding_pct") / 100)
+            + cfg.refine.quality_score_weights.source_diversity
+            * (_mean_for(records, "diversity_count") / 5)
+        )
+
+    # Global aggregate — UNCHANGED behavior for a complete run. Scoped
+    # to whatever records exist for a partial run (mean over what we
+    # got, not what we expected).
+    quality_score = _quality_score_for(per_situation)
+
+    # Per-domain aggregate — additive, same sub-metric computation as
+    # the global block, scoped per domain bucket. Lets the refine
+    # routine spot regressions in one domain that a global mean would
+    # mask once V2 spans more than one domain.
+    domains_seen: list[str] = []
+    domain_records: dict[str, list[dict]] = {}
+    for r in per_situation:
+        d = r.get("domain", V1_LEGACY_DOMAIN)
+        if d not in domain_records:
+            domain_records[d] = []
+            domains_seen.append(d)
+        domain_records[d].append(r)
+
+    per_domain: dict[str, dict] = {}
+    for d in domains_seen:
+        recs = domain_records[d]
+        per_domain[d] = {
+            "specificity_mean": _mean_for(recs, "specificity"),
+            "non_obviousness_mean": _mean_for(recs, "non_obviousness"),
+            "grounding_pct_mean": _mean_for(recs, "grounding_pct"),
+            "diversity_mean": _mean_for(recs, "diversity_count"),
+            "quality_score": _quality_score_for(recs),
+            "fixture_count": len(recs),
+            "timed_out_count": sum(1 for r in recs if r.get("timed_out", False)),
+            "judge_unparseable_count": sum(
+                1 for r in recs if r.get("judge_unparseable", False)
+            ),
+        }
+
+    return {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "per_situation": per_situation,
+        "aggregate": {
+            "specificity_mean": _mean_for(per_situation, "specificity"),
+            "non_obviousness_mean": _mean_for(per_situation, "non_obviousness"),
+            "grounding_pct_mean": _mean_for(per_situation, "grounding_pct"),
+            "diversity_mean": _mean_for(per_situation, "diversity_count"),
+            "quality_score": quality_score,
+        },
+        "per_domain": per_domain,
+        # Top-level summary / progress fields. ``timed_out_*`` and
+        # ``judge_unparseable_*`` are existing; ``partial`` /
+        # ``completed_count`` / ``total_count`` are new and let a
+        # consumer distinguish "killed mid-run" from "successful
+        # complete run" without comparing list lengths.
+        "timed_out_count": len(timed_out_ids),
+        "timed_out_ids": timed_out_ids,
+        "judge_unparseable_count": len(judge_unparseable_ids),
+        "judge_unparseable_ids": judge_unparseable_ids,
+        "per_fixture_timeout_seconds": per_fixture_timeout_seconds,
+        "partial": partial,
+        "completed_count": completed_count,
+        "total_count": total_count,
+    }
+
+
 async def _run_single_fixture(
     fix: dict,
     eval_cfg: Config,
@@ -245,175 +375,204 @@ async def run_eval(
     per_situation: list[dict] = []
     timed_out_ids: list[str] = []
     judge_unparseable_ids: list[str] = []
-    for i, fix in enumerate(fixtures):
-        print(f"[eval] fixture {i+1}/{len(fixtures)} start: {fix['id']}", flush=True)
-        domain = fix.get("domain", V1_LEGACY_DOMAIN)
-        try:
-            result = await asyncio.wait_for(
-                _run_single_fixture(fix, eval_cfg, cfg, llm, embedder, engine),
-                timeout=per_fixture_timeout_seconds,
-            )
-            # Existing fields preserved; explicitly mark non-timed-out
-            # records so downstream tooling never has to disambiguate
-            # "missing" from "false". ``domain`` carried through so the
-            # per-domain aggregation block can group below.
-            result["timed_out"] = False
-            result["domain"] = domain
-            per_situation.append(result)
-            print(
-                f"[eval] fixture {i+1}/{len(fixtures)} done: {fix['id']} "
-                f"timed_out={result.get('timed_out', False)}",
-                flush=True,
-            )
-        except asyncio.TimeoutError:
-            timed_out_ids.append(fix["id"])
-            per_situation.append(
-                {
-                    "id": fix["id"],
-                    "domain": domain,
-                    "timed_out": True,
-                    "timeout_seconds": per_fixture_timeout_seconds,
-                    "quality_score": None,
-                    "reason": (
-                        f"fixture exceeded {per_fixture_timeout_seconds}s timeout "
-                        f"(pipeline or judge hung)"
-                    ),
-                }
-            )
-            print(
-                f"[eval] fixture {i+1}/{len(fixtures)} done: {fix['id']} "
-                f"timed_out=True",
-                flush=True,
-            )
-        except (ValueError, json.JSONDecodeError) as exc:
-            # Judge LLM (or any pipeline LLM call) returned a string the
-            # ``_parse_json_object`` recovery couldn't repair — typically
-            # a truncated response that hit max_tokens mid-JSON, leaving
-            # an unclosed string literal that the ``last_close_brace``
-            # fallback can't recover from. Before this branch, any such
-            # ValueError aborted the whole eval run with EVAL_EXIT:1 and
-            # no result file was written; now we record the parse failure
-            # honestly on this fixture and continue, mirroring the
-            # asyncio.TimeoutError handling above. We catch the bare
-            # ``ValueError`` because that is what ``_parse_json_object``
-            # raises (it wraps the underlying ``json.JSONDecodeError``);
-            # ``json.JSONDecodeError`` is included defensively in case
-            # other callsites surface it directly. ``JSONDecodeError`` is
-            # itself a ``ValueError`` subclass, so listing it second is
-            # only documentation — the order matches the bug-report flow.
-            judge_unparseable_ids.append(fix["id"])
-            per_situation.append(
-                {
-                    "id": fix["id"],
-                    "domain": domain,
-                    "timed_out": False,
-                    "judge_unparseable": True,
-                    "quality_score": None,
-                    "reason": (
-                        f"judge response unparseable: {str(exc)[:200]}"
-                    ),
-                }
-            )
-            print(
-                f"[eval] fixture {i+1}/{len(fixtures)} done: {fix['id']} "
-                f"judge_unparseable=True",
-                flush=True,
-            )
+    total_count = len(fixtures)
 
-    print(f"[eval] all fixtures done; computing aggregate", flush=True)
-
-    def _mean_for(records: list[dict], key: str) -> float:
-        # Aggregate only over fixtures that produced a real verdict —
-        # timed-out and judge-unparseable fixtures don't have rubric
-        # scores so including them as zeros would falsely lower the
-        # mean. Both error paths set ``quality_score: null`` upstream;
-        # the same skip rule applies symmetrically here so the
-        # refine-routine delta math sees the average of fixtures that
-        # actually scored, not a punitive average diluted by failures.
-        vals = [
-            r[key]
-            for r in records
-            if not r.get("timed_out", False)
-            and not r.get("judge_unparseable", False)
-            and key in r
-        ]
-        return sum(vals) / len(vals) if vals else 0.0
-
-    def _quality_score_for(records: list[dict]) -> float:
-        # Same weighted formula the global aggregate uses, just scoped
-        # to a subset of per_situation records.
-        return (
-            cfg.refine.quality_score_weights.specificity
-            * (_mean_for(records, "specificity") / 5)
-            + cfg.refine.quality_score_weights.non_obviousness
-            * (_mean_for(records, "non_obviousness") / 5)
-            + cfg.refine.quality_score_weights.grounding_pct
-            * (_mean_for(records, "grounding_pct") / 100)
-            + cfg.refine.quality_score_weights.source_diversity
-            * (_mean_for(records, "diversity_count") / 5)
-        )
-
-    # Global aggregate — UNCHANGED behavior. Bit-for-bit identical to
-    # the prior single-block computation (refine routine's delta math
-    # consumes this exact field; V1 fallback path must produce the same
-    # number as before).
-    quality_score = _quality_score_for(per_situation)
-
-    # Per-domain aggregate (additive) — the same sub-metric computation
-    # as the global block, scoped to each domain bucket. Lets the
-    # refine routine spot regressions in one domain that a global mean
-    # would mask once V2 spans more than one domain. In V1 fallback
-    # state (no per-domain fixtures yet), the per_domain block has a
-    # single ``tech-career`` key whose numbers equal the global
-    # aggregate; this is the intentional, identity-preserving shape.
-    domains_seen: list[str] = []
-    domain_records: dict[str, list[dict]] = {}
-    for r in per_situation:
-        d = r.get("domain", V1_LEGACY_DOMAIN)
-        if d not in domain_records:
-            domain_records[d] = []
-            domains_seen.append(d)
-        domain_records[d].append(r)
-
-    per_domain: dict[str, dict] = {}
-    for d in domains_seen:
-        recs = domain_records[d]
-        per_domain[d] = {
-            "specificity_mean": _mean_for(recs, "specificity"),
-            "non_obviousness_mean": _mean_for(recs, "non_obviousness"),
-            "grounding_pct_mean": _mean_for(recs, "grounding_pct"),
-            "diversity_mean": _mean_for(recs, "diversity_count"),
-            "quality_score": _quality_score_for(recs),
-            "fixture_count": len(recs),
-            "timed_out_count": sum(1 for r in recs if r.get("timed_out", False)),
-            "judge_unparseable_count": sum(
-                1 for r in recs if r.get("judge_unparseable", False)
-            ),
-        }
-
-    report = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "per_situation": per_situation,
-        "aggregate": {
-            "specificity_mean": _mean_for(per_situation, "specificity"),
-            "non_obviousness_mean": _mean_for(per_situation, "non_obviousness"),
-            "grounding_pct_mean": _mean_for(per_situation, "grounding_pct"),
-            "diversity_mean": _mean_for(per_situation, "diversity_count"),
-            "quality_score": quality_score,
-        },
-        "per_domain": per_domain,
-        # New top-level fields, additive — existing consumers ignore them.
-        "timed_out_count": len(timed_out_ids),
-        "timed_out_ids": timed_out_ids,
-        "judge_unparseable_count": len(judge_unparseable_ids),
-        "judge_unparseable_ids": judge_unparseable_ids,
-        "per_fixture_timeout_seconds": per_fixture_timeout_seconds,
-    }
+    # Pin the result-file path up front so every incremental write
+    # lands in the SAME file. Previously the timestamp was sampled at
+    # the very end of the run; now we need a stable target so that a
+    # SIGTERM mid-run can write a partial snapshot that a later reader
+    # (the refine routine, an operator, or a sibling eval invocation)
+    # can still locate by `ls -t eval/results/`.
     path = out_dir / f"{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}.json"
-    print(f"[eval] writing result file: {path}", flush=True)
-    path.write_text(json.dumps(report, indent=2))
-    print(
-        f"[eval] wrote result file: {path}; quality_score={quality_score:.4f}",
-        flush=True,
-    )
-    return path
+
+    # Signal-handler plumbing. The handler MUST be lightweight (signal
+    # handlers run in the main thread and can re-enter arbitrary code);
+    # we just flip a flag and write whatever snapshot we have on hand,
+    # then re-raise the default behavior. Two reasons to write here
+    # rather than relying solely on the per-fixture writes:
+    #
+    # 1. SIGTERM may arrive *between* fixtures, after the per-fixture
+    #    write already happened — that's fine, but the flag-flip
+    #    ensures we mark ``partial: true`` honestly even if the
+    #    last-fixture write happened to land moments before the
+    #    signal.
+    # 2. SIGINT (Ctrl-C) from a developer or a wrapper script needs
+    #    the same treatment — they want the partial snapshot too.
+    #
+    # The handler is registered only when running on the main thread
+    # of the main interpreter (Python's signal module raises
+    # ``ValueError`` otherwise — e.g. when run_eval is invoked from a
+    # worker thread under pytest). The try/except below makes the
+    # signal path opt-in but the per-fixture incremental writes still
+    # fire in every environment.
+    _state = {"interrupted": False}
+
+    def _snapshot_partial() -> None:
+        report_partial = _build_report(
+            per_situation,
+            timed_out_ids,
+            judge_unparseable_ids,
+            per_fixture_timeout_seconds,
+            cfg,
+            partial=True,
+            completed_count=len(per_situation),
+            total_count=total_count,
+        )
+        _write_report_atomic(path, report_partial)
+
+    def _on_signal(signum, frame):  # noqa: ARG001 — signal-handler signature
+        _state["interrupted"] = True
+        try:
+            _snapshot_partial()
+            print(
+                f"[eval] received signal {signum}; wrote partial result: "
+                f"{path} ({len(per_situation)}/{total_count} fixtures)",
+                flush=True,
+            )
+        finally:
+            # Re-raise as KeyboardInterrupt so the asyncio event loop
+            # unwinds cleanly. SIGTERM normally terminates immediately;
+            # converting to KeyboardInterrupt lets the ``finally``
+            # blocks in any in-flight orchestrator code run.
+            raise KeyboardInterrupt(
+                f"eval interrupted by signal {signum}; partial result at {path}"
+            )
+
+    previous_handlers: dict[int, object] = {}
+    for _sig in (signal.SIGINT, signal.SIGTERM):
+        try:
+            previous_handlers[_sig] = signal.signal(_sig, _on_signal)
+        except (ValueError, OSError):
+            # Not on main thread (pytest worker, threaded host, etc.)
+            # or signal not supported on this platform — fall back to
+            # per-fixture incremental writes only.
+            pass
+
+    try:
+        for i, fix in enumerate(fixtures):
+            print(
+                f"[eval] fixture {i+1}/{total_count} start: {fix['id']}",
+                flush=True,
+            )
+            domain = fix.get("domain", V1_LEGACY_DOMAIN)
+            try:
+                result = await asyncio.wait_for(
+                    _run_single_fixture(fix, eval_cfg, cfg, llm, embedder, engine),
+                    timeout=per_fixture_timeout_seconds,
+                )
+                # Existing fields preserved; explicitly mark non-timed-out
+                # records so downstream tooling never has to disambiguate
+                # "missing" from "false". ``domain`` carried through so the
+                # per-domain aggregation block can group below.
+                result["timed_out"] = False
+                result["domain"] = domain
+                per_situation.append(result)
+                print(
+                    f"[eval] fixture {i+1}/{total_count} done: {fix['id']} "
+                    f"timed_out={result.get('timed_out', False)}",
+                    flush=True,
+                )
+            except asyncio.TimeoutError:
+                timed_out_ids.append(fix["id"])
+                per_situation.append(
+                    {
+                        "id": fix["id"],
+                        "domain": domain,
+                        "timed_out": True,
+                        "timeout_seconds": per_fixture_timeout_seconds,
+                        "quality_score": None,
+                        "reason": (
+                            f"fixture exceeded {per_fixture_timeout_seconds}s timeout "
+                            f"(pipeline or judge hung)"
+                        ),
+                    }
+                )
+                print(
+                    f"[eval] fixture {i+1}/{total_count} done: {fix['id']} "
+                    f"timed_out=True",
+                    flush=True,
+                )
+            except (ValueError, json.JSONDecodeError) as exc:
+                # Judge LLM (or any pipeline LLM call) returned a string the
+                # ``_parse_json_object`` recovery couldn't repair — typically
+                # a truncated response that hit max_tokens mid-JSON, leaving
+                # an unclosed string literal that the ``last_close_brace``
+                # fallback can't recover from. Before this branch, any such
+                # ValueError aborted the whole eval run with EVAL_EXIT:1 and
+                # no result file was written; now we record the parse failure
+                # honestly on this fixture and continue, mirroring the
+                # asyncio.TimeoutError handling above. We catch the bare
+                # ``ValueError`` because that is what ``_parse_json_object``
+                # raises (it wraps the underlying ``json.JSONDecodeError``);
+                # ``json.JSONDecodeError`` is included defensively in case
+                # other callsites surface it directly. ``JSONDecodeError`` is
+                # itself a ``ValueError`` subclass, so listing it second is
+                # only documentation — the order matches the bug-report flow.
+                judge_unparseable_ids.append(fix["id"])
+                per_situation.append(
+                    {
+                        "id": fix["id"],
+                        "domain": domain,
+                        "timed_out": False,
+                        "judge_unparseable": True,
+                        "quality_score": None,
+                        "reason": (
+                            f"judge response unparseable: {str(exc)[:200]}"
+                        ),
+                    }
+                )
+                print(
+                    f"[eval] fixture {i+1}/{total_count} done: {fix['id']} "
+                    f"judge_unparseable=True",
+                    flush=True,
+                )
+
+            # Incremental write: after every fixture (K=1) the result
+            # file reflects the completed-so-far set with
+            # ``partial: true``. If eval is killed (SIGTERM, OOM,
+            # power loss) the file already on disk is a valid partial
+            # snapshot — the refine routine reading
+            # ``ls -t eval/results/`` will see it and know to
+            # interpret it via ``partial``/``completed_count``. This
+            # closes the OR-branch of v1.x/eval-pipeline-robustness
+            # sub-criterion (a): "shows partial-progress in a result
+            # file even if cut short".
+            _snapshot_partial()
+
+        print(f"[eval] all fixtures done; computing aggregate", flush=True)
+
+        # Final write: ``partial: false``, ``completed_count == total_count``.
+        # Atomic replace means the file's previous (partial) snapshot
+        # is overwritten as a single filesystem operation — no
+        # ``.tmp`` leftover, no half-written state visible to readers.
+        report = _build_report(
+            per_situation,
+            timed_out_ids,
+            judge_unparseable_ids,
+            per_fixture_timeout_seconds,
+            cfg,
+            partial=False,
+            completed_count=len(per_situation),
+            total_count=total_count,
+        )
+        print(f"[eval] writing result file: {path}", flush=True)
+        _write_report_atomic(path, report)
+        print(
+            f"[eval] wrote result file: {path}; "
+            f"quality_score={report['aggregate']['quality_score']:.4f}",
+            flush=True,
+        )
+        return path
+    finally:
+        # Restore prior signal handlers regardless of how we exit
+        # (normal return, exception, KeyboardInterrupt from the
+        # signal handler). This matters when run_eval is invoked
+        # repeatedly in the same process (the CLI does this once per
+        # invocation, but pytest invokes it many times in a single
+        # interpreter — leaving our handler installed would break
+        # other tests' SIGINT semantics).
+        for _sig, _prev in previous_handlers.items():
+            try:
+                signal.signal(_sig, _prev)
+            except (ValueError, OSError):
+                pass
