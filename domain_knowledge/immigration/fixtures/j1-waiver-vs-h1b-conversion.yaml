@@ -1,0 +1,35 @@
+id: j1-waiver-vs-h1b-conversion
+text: |
+  I finished a 3-year postdoc on J-1 last month. My J-1 carries a
+  two-year home-country physical-presence requirement (212(e)). A US
+  university has offered me a faculty position and is willing to file
+  H-1B as a cap-exempt employer — they say the cap-exempt H-1B "should
+  work" without me doing a waiver first. My home country is India. The
+  three plausible paths I see: (a) Conrad-30-style waiver (but that's
+  physician-focused and I'm a chemist), (b) "no objection" statement
+  waiver from my home government — process is opaque and slow, or (c)
+  the university files H-1B and we hope the 212(e) bar doesn't surface
+  at the eventual green-card stage. How do I think about whether the
+  cap-exempt H-1B actually clears the 212(e) problem?
+expected_domains: [immigration]
+expected_entities:
+  - J-1
+  - 212(e)
+  - two-year-home-residency
+  - cap-exempt-H-1B
+  - no-objection-waiver
+  - Conrad-30
+  - postdoc
+expected_personas: [self-petitioner-niw-candidate]
+expected_risk_surfaces:
+  - 212(e)-two-year-home-residency-bar
+  - cap-exempt-employer-options
+  - I-140-eligibility-blocked-by-unsatisfied-212(e)
+expected_decisions: [D1, D9]
+expected_framings: [F1, F2, F9]
+expected_blindspot_categories:
+  - 212(e)-blocks-EB-AOS-and-immigrant-visa-issuance-even-on-cap-exempt-H-1B
+  - waiver-route-selection-Conrad-vs-no-objection-vs-IGA-vs-hardship-vs-persecution
+  - DOS-J-Visa-Waiver-Review-Division-process-and-USCIS-I-612-coordination
+  - cap-exempt-H-1B-permits-work-but-does-not-cure-212(e)
+  - high-stakes-consult-licensed-immigration-attorney

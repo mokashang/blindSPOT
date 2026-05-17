@@ -1,0 +1,40 @@
+id: o1-vs-eb1a-self-petition
+text: |
+  Senior research engineer, currently on H-1B, year 4. India-born, EB-2
+  India PERM filed last year (PD will be late 2025), employer is willing
+  to continue sponsoring. My CV: 12 first-author papers (top-tier ML
+  venues), ~800 citations on Google Scholar, 2 program committee roles,
+  invited talks at 3 conferences, 4 patents. I'm being recruited by a
+  smaller AI startup that wants me as a tech-lead and would file O-1 to
+  bridge to a self-petitioned EB-1A. Three real questions: (1) Is my
+  CV actually EB-1A-defensible at the current USCIS RFE temperature?
+  (2) If I file EB-1A self-petition, does it cancel the employer's
+  pending EB-2 I-140 / priority date? (3) What's the actual attorney
+  spend and timeline, and is it worth ~$15k + 150 hours of evidence
+  curation against an EB-2 India wait?
+expected_domains: [immigration, tech-career/founder]
+expected_entities:
+  - O-1
+  - EB-1A
+  - EB-2
+  - I-140
+  - PERM
+  - priority-date
+  - Matter-of-Dhanasar
+  - Kazarian-two-step
+  - NIW
+expected_personas: [h1b-with-approved-i140-backlogged, self-petitioner-eb1a-candidate]
+expected_risk_surfaces:
+  - Kazarian-two-step-RFE
+  - service-center-RFE-rate-variance
+  - priority-date-preservation-across-self-petition
+  - attorney-spend-and-evidence-curation-time
+expected_decisions: [D1, D9]
+expected_framings: [F2, F7, F9, F10]
+expected_blindspot_categories:
+  - EB-1A-RFE-rate-varies-2-to-3x-by-service-center-and-political-administration
+  - self-petition-does-not-cancel-employer-I-140-or-priority-date
+  - template-letter-pattern-triggers-adjudicator-skepticism
+  - EB-1A-approval-creates-post-approval-paperwork-burden-medical-exam-I-864-etc
+  - opportunity-cost-of-evidence-curation-time-vs-day-job
+  - high-stakes-consult-licensed-immigration-attorney

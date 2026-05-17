@@ -257,30 +257,35 @@ def test_no_files_anywhere_returns_empty_list(tmp_path):
 
 
 def test_real_v1_fixtures_match_legacy():
-    """End-to-end: against the committed repo state, load_all_fixtures returns the migrated tech-career fixtures bit-for-bit equivalent to the V1 monolith.
+    """End-to-end: against the committed repo state, the tech-career SUBSET of load_all_fixtures is bit-for-bit equivalent to the V1 monolith.
 
     The repo has migrated to per-domain fixture files under
-    ``domain_knowledge/tech-career/fixtures/*.yaml``; the V1 monolithic
+    ``domain_knowledge/<domain>/fixtures/*.yaml``; the V1 monolithic
     ``fixtures/eval_situations.yaml`` is retained as a fallback for code
     paths that still reference it by path, but ``load_all_fixtures()``
     with no args (cwd=repo root) now hits the V2 per-domain path and
     shadows the V1 file (a warning is printed when both exist).
 
-    This locks down the migration invariant: V2 per-domain layout
-    produces the SAME set of fixtures as the V1 monolith — same ids,
-    same texts (bit-for-bit), all annotated with ``domain:
-    "tech-career"`` (V1's only domain). Order is not asserted because
-    V2 loads files in sorted filename order while the V1 monolith
-    preserved authoring order; only the set of ids and the per-id
-    content are part of the invariant.
+    Once V2 added additional domains beyond ``tech-career`` (immigration
+    being the first), the loaded list is no longer the same length as
+    the V1 monolith — additional per-domain fixtures live alongside the
+    migrated tech-career set. The V1-preservation invariant therefore
+    scopes to the ``tech-career`` subset: filter loaded fixtures by
+    ``domain == V1_LEGACY_DOMAIN`` before comparing to the legacy
+    monolith. The tech-career subset must still match the monolith
+    bit-for-bit (same ids, same texts) — that is the migration contract
+    PR #34 established and that subsequent V2 buildout must preserve.
+    Order is not asserted because V2 loads files in sorted filename
+    order while the V1 monolith preserved authoring order.
     """
     fixtures = load_all_fixtures()
     legacy_raw = yaml.safe_load(Path("fixtures/eval_situations.yaml").read_text())
 
-    assert len(fixtures) == len(legacy_raw)
-    assert {f["id"] for f in fixtures} == {r["id"] for r in legacy_raw}
-    assert all(f["domain"] == V1_LEGACY_DOMAIN for f in fixtures)
+    tech_career_loaded = [f for f in fixtures if f["domain"] == V1_LEGACY_DOMAIN]
+
+    assert len(tech_career_loaded) == len(legacy_raw)
+    assert {f["id"] for f in tech_career_loaded} == {r["id"] for r in legacy_raw}
     # Texts preserved bit-for-bit per id.
     legacy_by_id = {r["id"]: r for r in legacy_raw}
-    for loaded in fixtures:
+    for loaded in tech_career_loaded:
         assert loaded["text"] == legacy_by_id[loaded["id"]]["text"]

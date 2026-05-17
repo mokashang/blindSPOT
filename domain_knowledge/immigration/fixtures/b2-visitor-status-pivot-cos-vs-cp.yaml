@@ -1,0 +1,39 @@
+id: b2-visitor-status-pivot-cos-vs-cp
+text: |
+  Entered the US on a B-2 visitor visa 7 weeks ago to visit family. While
+  here, I had an interview with a startup that wants to hire me as a
+  senior engineer and is willing to file an H-1B (they qualify as
+  cap-exempt as a research-affiliated nonprofit). Two paths the employer's
+  immigration counsel sketched: (a) file I-129 + I-539 change-of-status
+  here in the US so I don't have to leave, or (b) fly home to my country
+  and consular-process the H-1B. The COS route is faster but my B-2
+  entry is now in week 7 — the "90-day preconceived intent" guideline
+  feels close. The CP route is cleaner on the intent question but my
+  home consulate (Chennai) has long visa wait times right now. How do I
+  weigh COS speed against the 90-day-rule risk and CP delay?
+expected_domains: [immigration]
+expected_entities:
+  - B-2
+  - H-1B
+  - cap-exempt-H-1B
+  - I-129
+  - I-539
+  - change-of-status
+  - consular-processing
+  - 90-day-preconceived-intent
+  - INA-§214(b)
+expected_personas: [b1-b2-visitor-with-status-pivot]
+expected_risk_surfaces:
+  - 90-day-preconceived-intent
+  - consular-§214(b)-refusal-risk
+  - consular-administrative-processing-221(g)
+  - CBP-secondary-inspection-at-re-entry
+expected_decisions: [D8]
+expected_framings: [F1, F4, F13, F14]
+expected_blindspot_categories:
+  - 90-day-rule-is-DOS-FAM-guideline-not-hard-line-§214(b)-can-apply-outside-window
+  - consulate-specific-refusal-rate-patterns-Chennai-vs-Mumbai-etc-not-uniform
+  - administrative-processing-221(g)-can-strand-applicant-abroad-3-to-18-months
+  - approved-CP-stamp-still-subject-to-CBP-secondary-inspection-at-port-of-entry
+  - COS-pendency-during-B-2-status-expiry-bridge-application-mechanics
+  - high-stakes-consult-licensed-immigration-attorney

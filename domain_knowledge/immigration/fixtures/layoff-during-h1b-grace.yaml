@@ -1,0 +1,35 @@
+id: layoff-during-h1b-grace
+text: |
+  Laid off on Tuesday. H-1B, year 3 of 6, no I-140 yet (PERM was filed
+  4 months ago, still pre-audit). My 60-day grace period starts from
+  the last day of employment in the termination letter — which is 2
+  weeks of severance from now, so my real grace clock starts in 14
+  days. My H-4 spouse has no EAD (we never qualified since no approved
+  I-140). She's the primary caregiver for our toddler. Two questions:
+  (a) does the severance period extend the grace clock or not, and
+  (b) my spouse and child are on H-4 — when does THEIR status end if
+  I can't find a new H-1B sponsor in 60 days?
+expected_domains: [immigration]
+expected_entities:
+  - H-1B
+  - 60-day-grace-period
+  - PERM
+  - I-140
+  - H-4
+  - severance
+  - layoff
+expected_personas: [recently-terminated-on-h1b, h4-spouse-with-ead]
+expected_risk_surfaces:
+  - 60-day-grace-period
+  - 8-CFR-§214.1(l)(2)
+  - H-4-dependent-status-tracks-principal
+  - 245(c)-bar-on-unauthorized-work-during-grace
+expected_decisions: [D1, D10]
+expected_framings: [F1, F8, F10]
+expected_blindspot_categories:
+  - grace-clock-starts-from-cessation-of-employment-not-from-severance-end
+  - H-4-status-ends-with-principal-grace-clock-not-after-its-own-window
+  - severance-paid-but-not-working-may-still-count-as-end-of-employment-for-grace
+  - portfolio-of-recovery-options-COS-to-B-2-vs-H-1B-transfer-vs-departure
+  - dependent-child-school-enrollment-and-state-residency-coupling
+  - high-stakes-consult-licensed-immigration-attorney
