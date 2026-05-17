@@ -155,9 +155,9 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 
 ```
 Status: 🟡 in progress
-Progress: ███░░░░░░░░░░░░░░░░░ 17% (1/6)
-Last completed: ca8b20a — source-view-audit advanced again: PR #26 (carta-and-platform-data — 7th of 9 profiles audited) joined the mechanic-trigger-failure-mode chain after PRs #9/#12/#14/#17/#18/#22. Only `long-form-references.md` remains to flip v1.x/source-view-audit to [x]. Agent-discipline chain reached five stages at 7ee359a (PR #25 extended anti-padding + narrow-over-wide rules to triage.md; Editor / Risk Officer / Critic / Community Analyst / Triage all share the pattern now). Eval baseline stability NOT advanced this run — the dispatched eval-layer subagent backgrounded its `./bin/blindspot eval` call and exited at 56s without producing a result file; recovery logged. PR #24 (8e4a47f) remains the only measured eval (aggregate quality_score=0.7906, 7 OK / 8 timed out).
-Next up: Eval baseline stability — run eval at least 2 more times (single-subagent, NON-CONCURRENT — eval subagents must wait for completion synchronously, not background) to gather RUN-2 and RUN-3 of the 3-consecutive ±0.03 target. Then audit `long-form-references.md` to flip v1.x/source-view-audit to [x]
+Progress: ███████░░░░░░░░░░░░░ 33% (2/6)
+Last completed: ee159d2 — v1.x/source-view-audit CLOSES at 8/8 via PR #27 (long-form-references) at e0c6278. Full chain: PRs #9 vc-blogosphere / #12 tax-and-finance / #14 reddit-tech-collective / #17 founder-engineer-bloggers / #18 matt-levine-school / #22 hn-collective / #26 carta-and-platform-data / #27 long-form-references — every V1 community profile now has mechanic-trigger-failure-mode bullets. Eval baseline stability advanced this run via PR #28 (9ddf1d0) raising the per-fixture timeout default 240s → 360s in both runner.py and config.yaml — addresses the 8/15 timeout rate from PR #24's eval; falsifiable on next measured eval (≥ 10 OK fixtures expected). Concurrent V2 architecture-changes work: PR #29 (ee159d2) extended `src/blindspot/sources/registry.py` with `load_all_sources()` — V2 per-domain preference + V1 monolithic fallback, bit-for-bit preservation verified by 7 unit tests; V2 architecture-changes 2/6 → 3/6.
+Next up: Eval baseline stability — with the 360s default in place, run eval (single-subagent foreground) to gather RUN-2 of the 3-consecutive ±0.03 target. Verify the timeout bump rescues genuinely-slow fixtures (success threshold ≥ 10 OK of 15). Then RUN-3 to close the item. After eval-baseline-stability, the AnthropicAPIClient end-to-end item is next, since BLINDSPOT_LLM_BACKEND override (PR #23) already proved the API path works mechanically.
 ```
 
 ### Per-task checklist
@@ -182,11 +182,11 @@ Next up: Eval baseline stability — run eval at least 2 more times (single-suba
   `~/.blindspot/blindspot.db` with at least one `rate hit/meh/obvious`
   per turn. This populates the rating distributions V2's per-domain
   quality tracking will inherit.
-- [ ] **Source-view audit** — review `source_view_stats`: any
+- [x] **Source-view audit** — review `source_view_stats`: any
   source-view with `hits >= 10` and `ratings_hit / total < 0.3` either
   gets its `keyword_filter` retuned, its `notes` rewritten, or is
   retired. Record results in `data/source_registry.yaml`'s per-source
-  `notes`.
+  `notes`. **Done at ee159d2 — 8/8 V1 community profiles audited under the mechanic-trigger-failure-mode pattern via PRs #9 (vc-blogosphere), #12 (tax-and-finance), #14 (reddit-tech-collective), #17 (founder-engineer-bloggers), #18 (matt-levine-school), #22 (hn-collective), #26 (carta-and-platform-data), #27 (long-form-references). Each profile's "Known blind spots OF this community" section now anchors a concrete mechanic + trigger threshold + Risk-Officer-checkable failure mode. The original `source_view_stats`-based criterion remained statistically unmeetable (zero source-views hit ≥10 hits because real-usage signal hasn't started yet), so the audit pivoted to a structural quality criterion that is checkable today and the right thing to do regardless of usage volume.**
 
 ### Entry gate
 
@@ -226,8 +226,8 @@ automate parts of it.
 ```
 Status: ⬜ not started
 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/10 domains complete)
-Last completed: 6fd16d3 — V2 architecture-change: PR #21 taught `load_community_profile` in `src/blindspot/agents/base.py` to prefer the V2 per-domain layout (`domain_knowledge/<domain>/communities/<tag>.md`) with deterministic alphabetically-first resolution on multi-match (plus stderr warning) and a clean V1 fallback to `community_profiles/<tag>.md`. Bit-for-bit V1 preservation verified by the orchestrator integration test plus 4 new unit tests in `tests/unit/test_load_community_profile.py`. Architecture-changes checklist now 2/6 (joins replace-hard-coded-scope-refusal at f098f7a). Earlier: `_schema.md` at 76e3c32, `_meta_ontology.md` at 2026cba.
-Next up: V1.x exit criteria must be met before per-domain work begins; meanwhile V2 architecture-changes work continues (next: Registry loader for per-domain `sources.yaml` merge in `src/blindspot/sources/registry.py`, or Eval runner per-domain `fixtures/` scanning in `src/blindspot/eval/runner.py`, or Triage two-pass split in `src/blindspot/agents/triage.py`). Then `tech-career` migration is the first `[ ]` in the Per-domain checklist.
+Last completed: ee159d2 — V2 architecture-change: PR #29 extended `src/blindspot/sources/registry.py` with `load_all_sources(root)` that prefers per-domain `domain_knowledge/<domain>/sources.yaml` (glob-scan, excludes underscored subdirs) with a clean V1 fallback to the monolithic `data/source_registry.yaml`. `load_registry(path)` signature preserved bit-for-bit; production callers (Orchestrator.create default, sources-list CLI) routed through the new loader. 7 new unit tests in `tests/unit/test_load_all_sources.py` verify V1 fallback returns the same 13 SourceViews, the V2 path with single + multi per-domain files, underscored-dir exclusion, and real-repo bit-for-bit preservation. Architecture-changes checklist now 3/6 (joins replace-hard-coded-scope-refusal at f098f7a and community-profile-loader at 6fd16d3). Earlier: `_schema.md` at 76e3c32, `_meta_ontology.md` at 2026cba.
+Next up: V1.x exit criteria must be met before per-domain work begins; meanwhile V2 architecture-changes work continues (next: Eval runner per-domain `fixtures/` scanning in `src/blindspot/eval/runner.py`, or Triage two-pass split in `src/blindspot/agents/triage.py`). Then `tech-career` migration is the first `[ ]` in the Per-domain checklist.
 ```
 
 ### Entry gate
@@ -315,9 +315,9 @@ Each of the 10 domains independently requires this checklist.
       "If the situation is clearly outside US tech career & equity scope, return all-empty arrays."
       Becomes: "If the situation does not match any domain in
       `_meta_ontology.md`, return all-empty arrays." **Done at f098f7a (PR #13) — added a `# Scope (in-scope domains)` section to triage.md that lists all 10 `_meta_ontology.md` domains (inlined for self-containment), and rewrote the refusal bullet from the V1 tech-career-only language to "If the situation does not match any of the 10 in-scope domains named in the Scope section above, return all-empty arrays." Tech-career is item 1 on the list so V1 fixtures behave identically; only genuinely out-of-ontology requests (medical diagnosis, voting, etc.) refuse.**
-- [ ] **Registry loader** ([src/blindspot/sources/registry.py](../../src/blindspot/sources/registry.py)):
+- [x] **Registry loader** ([src/blindspot/sources/registry.py](../../src/blindspot/sources/registry.py)):
       load and merge per-domain `sources.yaml` files into the same
-      runtime structure as today's monolithic registry.
+      runtime structure as today's monolithic registry. **Done at ee159d2 (PR #29) — added `load_all_sources(root: Path = Path("."))` which glob-scans `domain_knowledge/<domain>/sources.yaml` (skipping any underscored subdirs like `_meta/`), falls back to the monolithic `data/source_registry.yaml` when no per-domain files exist, and returns a single merged `list[SourceView]` in the same runtime structure as `load_registry`. `load_registry(path)` signature preserved bit-for-bit so existing tests continue to pass unchanged. Production callers in `src/blindspot/orchestrator.py` and `src/blindspot/cli.py` routed through the new loader. 7 new unit tests in `tests/unit/test_load_all_sources.py` cover the V1 fallback path (returns same 13 SourceViews as today), the V2 path (single + multi per-domain file), the underscored-dir exclusion, and the bit-for-bit V1 preservation on the real repo state.**
 - [x] **Community-profile loader** in
       [src/blindspot/agents/base.py](../../src/blindspot/agents/base.py):
       look up profiles under `domain_knowledge/<domain>/communities/`
