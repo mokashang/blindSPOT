@@ -1,0 +1,259 @@
+# Blindspot V2 per-domain source registry for tech-career.
+#
+# Layer 4 of the 4-layer knowledge model
+# (per docs/specs/ROADMAP.md §3). This file holds the source-view
+# inventory scoped to the `tech-career` domain. It is bit-for-bit
+# equivalent to the V1 monolithic data/source_registry.yaml at the
+# time of migration — the per-source `domain: tech-career` annotation
+# is metadata only; the loader (src/blindspot/sources/registry.py
+# `load_all_sources`) ignores unknown keys via `.get()`.
+#
+# Each entry is a "source-view": a configured, filtered, annotated lens into one source.
+# Schema:
+#   id              unique slug
+#   adapter         rss | reddit_search | hn_search | static_corpus
+#   fetch_config    adapter-specific
+#   domains         hierarchical tag paths (multi-label)
+#   community_tag   single community label (drives diversity constraint)
+#   reliability     1-5, initial value; auto-adjusted via rating feedback
+#   freshness_required  true → cache TTL 7 days; false → 30 days
+#   notes           multi-paragraph; what this view is good for, bad for, caveats
+#   domain          (V2) the per-domain folder this source-view lives in
+
+# ─── community: founder-engineer-bloggers ─────────────────────────────────────
+
+- id: pmck-equity
+  adapter: rss
+  fetch_config:
+    feed: https://www.kalzumeus.com/feed/
+    keyword_filter: [equity, negotiation, salary, ISO, RSU, vesting]
+  domains: [tech-career/equity, tech-career/negotiation]
+  community_tag: founder-engineer-bloggers
+  reliability: 5
+  freshness_required: false
+  domain: tech-career
+  notes: |
+    Patrick McKenzie's blog. Gold standard for salary negotiation,
+    equity grant structure, and "how employers actually think" framing.
+    Best for: ISO/NSO mechanics, salary negotiation tactics, BATNA framing,
+    first-offer dynamics.
+    Weak: late-stage / public-company contexts, non-US, hourly/contract work.
+
+- id: danluu-career
+  adapter: rss
+  fetch_config:
+    feed: https://danluu.com/atom.xml
+    keyword_filter: [salary, comp, interview, level, career]
+  domains: [tech-career/comp, tech-career/job-search]
+  community_tag: founder-engineer-bloggers
+  reliability: 5
+  freshness_required: false
+  domain: tech-career
+  notes: |
+    Dan Luu's blog. Heavily data-driven analysis of comp, interview
+    practices, big-tech-vs-startup tradeoffs. Often surfaces structural
+    misconceptions that junior engineers hold.
+    Best for: comp comparisons across tiers, hidden costs of startups,
+    interview/leveling mechanics, perf-review pathology.
+
+- id: pragmatic-engineer
+  adapter: rss
+  fetch_config:
+    feed: https://newsletter.pragmaticengineer.com/feed
+    keyword_filter: [comp, equity, layoff, hiring, level]
+  domains: [tech-career/comp, tech-career/job-search, tech-career/exit]
+  community_tag: founder-engineer-bloggers
+  reliability: 4
+  freshness_required: true
+  domain: tech-career
+  notes: |
+    Gergely Orosz's newsletter. Current tech-industry market intel,
+    layoff dynamics, hiring trends, recent comp shifts.
+    Best for: timely market context, big-tech HR practices, EU/UK angles.
+    Weak: deep technical equity mechanics (defer to pmck/holloway).
+
+# ─── community: reddit-tech-collective ────────────────────────────────────────
+
+- id: reddit-cscareerquestions-equity
+  adapter: reddit_search
+  fetch_config:
+    subreddit: cscareerquestions
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 50
+  domains: [tech-career/equity, tech-career/comp]
+  community_tag: reddit-tech-collective
+  reliability: 3
+  freshness_required: true
+  domain: tech-career
+  notes: |
+    Largest US tech career subreddit, junior-skewed but high volume.
+    High-upvote threads on equity/comp surface common misconceptions and
+    real war stories. Anonymity makes honesty high.
+    Caveats: skews young, sometimes confidently wrong. Filter heavily by
+    upvotes; prefer threaded explanations over hot takes.
+
+- id: reddit-experienceddevs
+  adapter: reddit_search
+  fetch_config:
+    subreddit: ExperiencedDevs
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 30
+  domains: [tech-career/comp, tech-career/exit, tech-career/negotiation]
+  community_tag: reddit-tech-collective
+  reliability: 4
+  freshness_required: true
+  domain: tech-career
+  notes: |
+    Senior-IC filter on r/cscareerquestions. Higher signal on negotiation,
+    exit decisions, equity-vs-cash tradeoffs at senior levels.
+    Best for: realistic senior-IC tradeoffs, post-IPO regret stories,
+    manager-vs-IC track perspective.
+
+- id: reddit-personalfinance-equity
+  adapter: reddit_search
+  fetch_config:
+    subreddit: personalfinance
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 50
+  domains: [tech-career/equity]
+  community_tag: reddit-tech-collective
+  reliability: 3
+  freshness_required: false
+  domain: tech-career
+  notes: |
+    Equity from a tax-aware angle rather than a tech angle. Catches things
+    the tech subs miss — state tax interactions, ESPP gotchas, qualified
+    vs disqualified dispositions, AMT credit recovery.
+
+# ─── community: vc-blogosphere ────────────────────────────────────────────────
+
+- id: avc-fred-wilson
+  adapter: rss
+  fetch_config:
+    feed: https://avc.com/feed/
+    keyword_filter: [equity, employee, founder, vesting, exit]
+  domains: [tech-career/equity, tech-career/founder, tech-career/exit]
+  community_tag: vc-blogosphere
+  reliability: 4
+  freshness_required: false
+  domain: tech-career
+  notes: |
+    Fred Wilson's blog. VC perspective on startup employee equity,
+    typical grant sizes by stage, what founders/VCs are thinking when
+    structuring offers. Important counterparty intel.
+
+# ─── community: hn-collective ─────────────────────────────────────────────────
+
+- id: hn-equity-discussions
+  adapter: hn_search
+  fetch_config:
+    query_template: "{entities}"
+    min_points: 100
+    types: [story]
+  domains: [tech-career/equity, tech-career/comp, tech-career/startup-stage]
+  community_tag: hn-collective
+  reliability: 3
+  freshness_required: false
+  domain: tech-career
+  notes: |
+    Hacker News stories and top comments on equity, comp, IPOs, acquisitions.
+    Adversarial signal in comments — useful for surfacing counter-takes
+    that don't make it into the headline narrative.
+    Caveats: noise high. The dissent in comments often points to real
+    blind-spots in the original story.
+
+# ─── community: tax-and-finance-professionals ─────────────────────────────────
+
+- id: kb-financial-equity
+  adapter: rss
+  fetch_config:
+    feed: https://kbfinancialadvisors.com/feed/
+    keyword_filter: [equity, AMT, ISO, secondary, tender]
+  domains: [tech-career/equity]
+  community_tag: tax-and-finance-professionals
+  reliability: 4
+  freshness_required: false
+  domain: tech-career
+  notes: |
+    KB Financial Advisors. CPA / financial-advisor practice specializing
+    in tech equity. Concrete AMT / qualifying-disposition mechanics,
+    secondary tax planning, exercise-and-hold strategies.
+    Best for: tax-side blind spots that non-tax sources miss.
+
+# ─── community: matt-levine-school ────────────────────────────────────────────
+
+- id: matt-levine-money-stuff
+  adapter: rss
+  fetch_config:
+    feed: https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss
+    keyword_filter: [IPO, SPAC, secondary, tender, acquisition, comp]
+  domains: [tech-career/equity, tech-career/exit]
+  community_tag: matt-levine-school
+  reliability: 4
+  freshness_required: true
+  domain: tech-career
+  notes: |
+    Matt Levine's Money Stuff. Adversarial framing of M&A, IPO, and
+    acquisition deals — surfaces what dealmakers actually optimize for
+    (often at the expense of rank-and-file employees). Unique
+    counter-narrative source.
+    Best for: blind spots about IPO mechanics, dilution math, SPAC traps,
+    "why is this happening this way" answers.
+
+# ─── community: carta-and-platform-data ───────────────────────────────────────
+
+- id: carta-blog
+  adapter: rss
+  fetch_config:
+    feed: https://carta.com/blog/feed/
+    keyword_filter: [equity, vesting, grant, dilution, cap-table, 409a]
+  domains: [tech-career/equity, tech-career/startup-stage]
+  community_tag: carta-and-platform-data
+  reliability: 4
+  freshness_required: true
+  domain: tech-career
+  notes: |
+    Carta's blog/research. Aggregated cap-table data — typical grants
+    by stage, dilution patterns, recent industry trends.
+    Best for: benchmarking — "is what I'm being offered normal for this
+    stage / role / location?".
+
+- id: levels-fyi-blog
+  adapter: rss
+  fetch_config:
+    feed: https://www.levels.fyi/blog/rss.xml
+    keyword_filter: [comp, equity, levels, negotiation]
+  domains: [tech-career/comp, tech-career/negotiation]
+  community_tag: carta-and-platform-data
+  reliability: 4
+  freshness_required: true
+  domain: tech-career
+  notes: |
+    NOTE: Only the public BLOG is included. The levels.fyi comp database
+    is NOT used — its ToS forbids scraping and requires a partnership.
+    Blog topics: industry comp benchmarks, level mapping, recent shifts.
+
+# ─── community: long-form-references ──────────────────────────────────────────
+
+- id: holloway-equity-guide
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/holloway-equity-guide.md
+  domains: [tech-career/equity]
+  community_tag: long-form-references
+  reliability: 5
+  freshness_required: false
+  domain: tech-career
+  notes: |
+    The Holloway Guide to Equity Compensation (free version). Comprehensive
+    reference text on ISOs, NSOs, RSUs, AMT, vesting schedules, exercise
+    windows, secondary sales, etc.
+    Best for: ground-truth definitions and corner-case mechanics.
+    Manual ingest — paste the relevant chapters into the static markdown
+    file. Update annually or when major tax/regulatory changes occur.
