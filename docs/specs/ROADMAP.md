@@ -156,8 +156,8 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 ```
 Status: 🟡 in progress
 Progress: ███░░░░░░░░░░░░░░░░░ 17% (1/6)
-Last completed: c0a9130 — eval-baseline-stability advanced again: PR #15 adds per-fixture timeout in `src/blindspot/eval/runner.py` (asyncio.wait_for, default 240s) so a single hung fixture no longer sinks the whole eval — surfaces `timed_out_count` / `timed_out_ids` for future debug. Source-view-audit also advanced at fb24fe9 (PR #12 tightened tax-and-finance-professionals blind spots with same PR #9 mechanic-trigger-failure-mode pattern).
-Next up: Eval baseline stability — three consecutive `./bin/blindspot eval` runs on `main` produce aggregate `quality_score` within ±0.03 of each other (PR #15 timeout safety-net now allows eval to complete even when individual fixtures hang; next concrete step is to actually run eval 3× and capture the numbers — orchestrator or human can do this once worktree environment can reach the LLM backends)
+Last completed: 7e5108e — eval-baseline-stability advanced again: PR #16 fixed `bin/blindspot` to find the main repo's `.venv/bin/python` via `git rev-parse --git-common-dir` when invoked from a secondary worktree (subagent worktrees were silently failing wrapper resolution → "pipeline-unavailable" everywhere). Combined with PR #11 (JSON-parse hardening) and PR #15 (per-fixture timeout), the eval pipeline should now actually be runnable inside refine subagents. Source-view-audit also advanced at d3354f4 (PR #14 tightened reddit-tech-collective.md — 3rd of 9 profiles audited).
+Next up: Eval baseline stability — three consecutive `./bin/blindspot eval` runs on `main` produce aggregate `quality_score` within ±0.03 of each other (PR #11+#15+#16 trifecta now in; the actual 3-run measurement is the next concrete step, doable in any future refine attempt or human session)
 ```
 
 ### Per-task checklist
@@ -226,8 +226,8 @@ automate parts of it.
 ```
 Status: ⬜ not started
 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/10 domains complete)
-Last completed: 76e3c32 — V2 file-layout infra: `domain_knowledge/_schema.md` per-domain writing guide authored (per ROADMAP §3 file-layout block). Earlier: `_meta_ontology.md` at 2026cba.
-Next up: V1.x exit criteria must be met before per-domain work begins; then `tech-career` migration is the first `[ ]` in the Per-domain checklist
+Last completed: f098f7a — V2 architecture-change: PR #13 replaced the hard-coded triage scope refusal in `src/blindspot/prompts/triage.md` with a Scope section referencing the 10 `_meta_ontology.md` domains. Architecture-changes checklist now 1/6. Earlier: `_schema.md` at 76e3c32, `_meta_ontology.md` at 2026cba.
+Next up: V1.x exit criteria must be met before per-domain work begins; meanwhile V2 architecture-changes work continues (next: Registry loader for per-domain `sources.yaml` merge, or Community-profile loader fallback path). Then `tech-career` migration is the first `[ ]` in the Per-domain checklist
 ```
 
 ### Entry gate
@@ -311,10 +311,10 @@ Each of the 10 domains independently requires this checklist.
   - Pass 1: classify situation into ≥ 1 of the 10 domains (multi-label allowed)
   - Pass 2: with the relevant `domain_pack.md` files concatenated into the system prompt, extract full Triage facets
   - File: [src/blindspot/agents/triage.py](../../src/blindspot/agents/triage.py)
-- [ ] **Replace hard-coded scope refusal** at [src/blindspot/prompts/triage.md:46](../../src/blindspot/prompts/triage.md):
+- [x] **Replace hard-coded scope refusal** at [src/blindspot/prompts/triage.md:46](../../src/blindspot/prompts/triage.md):
       "If the situation is clearly outside US tech career & equity scope, return all-empty arrays."
       Becomes: "If the situation does not match any domain in
-      `_meta_ontology.md`, return all-empty arrays."
+      `_meta_ontology.md`, return all-empty arrays." **Done at f098f7a (PR #13) — added a `# Scope (in-scope domains)` section to triage.md that lists all 10 `_meta_ontology.md` domains (inlined for self-containment), and rewrote the refusal bullet from the V1 tech-career-only language to "If the situation does not match any of the 10 in-scope domains named in the Scope section above, return all-empty arrays." Tech-career is item 1 on the list so V1 fixtures behave identically; only genuinely out-of-ontology requests (medical diagnosis, voting, etc.) refuse.**
 - [ ] **Registry loader** ([src/blindspot/sources/registry.py](../../src/blindspot/sources/registry.py)):
       load and merge per-domain `sources.yaml` files into the same
       runtime structure as today's monolithic registry.
