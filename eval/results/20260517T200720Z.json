@@ -1,0 +1,102 @@
+{
+  "timestamp": "2026-05-17T20:27:40.725379+00:00",
+  "per_situation": [
+    {
+      "id": "83b-deadline-missed",
+      "domain": "tech-career",
+      "timed_out": false,
+      "judge_unparseable": true,
+      "quality_score": null,
+      "reason": "judge response unparseable: could not parse JSON object from model response: '{\\n  \"prose\": \"Before assuming you missed anything, get the instrument right: a Section 83(b) election only applies to property transferred subject to"
+    },
+    {
+      "id": "acquihire-double-trigger",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 70,
+      "diversity_count": 2,
+      "feedback": "Exceptional specificity with named IRS sections (\u00a71202, \u00a71045, \u00a7368), dollar thresholds ($10M/10\u00d7 basis), tax rates (23.8%), and time windows (60-day, 12-month, 35-mile). Non-obviousness is very high \u2014 QSBS preservation via \u00a7368 reorg, subsequent-change-of-control gap in double-trigger language, and retention-pool carveout from common waterfall are all genuinely surprising angles. Most factual claims carry [doc-X] markers, though some assertions (QSBS thresholds, \u00a71045 window, Holloway 'assumed/substituted/cancelled' framework) lack inline citations where they could be added. Only two distinct community sections present (matt-levine-school, long-form-references).",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "amt-exercise-decision",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 85,
+      "diversity_count": 3,
+      "feedback": "Highly specific with named IRS sections (\u00a71202, \u00a7422), concrete thresholds ($75M/$50M gross assets cap, $100k ISO vesting limit, 26-28% AMT rate, 90-day PTEP, 13.3% CA rate), and named forms (Form 6251). Non-obviousness is strong: QSBS-already-disqualified-by-spread, survivor bias in advisory canon, tender-as-real-next-event, and PTEP reclassification at day 91 are genuine blind spots. Three distinct community sections present (long-form, tax-pros, Matt Levine). Most factual claims carry [doc-X] citations, though a few mechanical assertions (AMT rate ranges, CA non-conformity specifics) appear without explicit markers.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "comparing-offers-3-companies",
+      "specificity": 4,
+      "non_obviousness": 5,
+      "grounding_pct": 75,
+      "diversity_count": 1,
+      "feedback": "Strong specificity with named clauses (\u00a7422, \u00a7422(d), 1x non-participating, double-trigger, PTEP, 409A, $100k ISO limit, AMT) and concrete numbers (90-day PTEP, 15-25% dilution per round, 2yr/1yr qualifying disposition). Non-obviousness is excellent \u2014 liquidation preference stack mechanics, adverse selection from equity weighting, PTEP auto-conversion to NSO, and survivor bias on startup outcomes are genuine blind spots. Grounding is decent but many factual claims (dilution percentages, base rates of Series A outcomes, $100k ISO limit, 90-day PTEP) lack citations or repetitively cite only [doc-1]. Only one community perspective section ('long-form-references') is present despite three domains being identified \u2014 missing distinct voices from negotiation or career communities.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "first-job-equity-confusion",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 60,
+      "diversity_count": 1,
+      "feedback": "Highly specific with named IRS sections (\u00a7422, \u00a783), concrete percentages (20-40% dilution, ~28% AMT), specific timelines (90-day PTEP, 30-day 83(b), 1-year cliff), and dollar examples. Surfaces genuinely non-obvious blind spots: PTEP as forced-decision mechanism, AMT on illiquid shares, 83(b) clock from exercise not vest, adverse-selection reading of the offer itself. Many factual claims carry [doc-1] citations but several specific numerical claims (60-75% seed failure rate, 26-28% AMT rate, Carta/AngelList bands) lack citations. Only one 'What [community] would tell you' section present (long-form-references) \u2014 missing diversity across multiple community voices despite identifying tech-career sub-domains.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "founder-equity-cofounder",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 90,
+      "diversity_count": 2,
+      "feedback": "Highly specific with concrete dollar amounts ($15M/10x QSBS cap, $75M asset threshold, 30-day 83(b) window, 5%/2% redemption traps, 13.3% CA tax, 4-year/1-year cliff). Surfaces strong non-obvious angles: QSBS redemption disqualification, timing-of-ask as adverse selection signal, tax-shelter allocation as fairness reframe, 83(b) clock starting at original grant. Nearly all factual claims carry [doc-X] citations, though a few sentences (e.g., CA 13.3% state rate, certified-mail receipt advice) have citations attached to broader claims. Two distinct community sections: long-form-references and tax-and-finance-professionals.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "golden-handcuffs-eval",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 70,
+      "diversity_count": 2,
+      "feedback": "Highly specific with named statutes (CA Bus. & Prof. Code \u00a716600, \u00a783, \u00a7422), concrete vesting curves (Amazon 5/15/40/40), specific clause names (continuous service, service through settlement date, double-trigger), and dollar/timeframe specifics. Non-obviousness is excellent: garden leave vesting interaction, adverse selection on the seat, RSU-vs-option PTEP distinction, tranche-matched bridge vs cash sign-on, and the tax-year mismatch are all genuinely surprising angles. Two distinct community sections present (long-form-references and matt-levine-school). Grounding is solid but not complete \u2014 many factual claims (e.g., FTC 2024 rule status, state law specifics, Amazon vesting curve, ISO \u00a7422 90-day default) lack citations, while the more general framing claims do carry [doc-X] markers.",
+      "timed_out": false,
+      "domain": "tech-career"
+    }
+  ],
+  "aggregate": {
+    "specificity_mean": 4.833333333333333,
+    "non_obviousness_mean": 5.0,
+    "grounding_pct_mean": 75.0,
+    "diversity_mean": 1.8333333333333333,
+    "quality_score": 0.8116666666666666
+  },
+  "per_domain": {
+    "tech-career": {
+      "specificity_mean": 4.833333333333333,
+      "non_obviousness_mean": 5.0,
+      "grounding_pct_mean": 75.0,
+      "diversity_mean": 1.8333333333333333,
+      "quality_score": 0.8116666666666666,
+      "fixture_count": 7,
+      "timed_out_count": 0,
+      "judge_unparseable_count": 1
+    }
+  },
+  "timed_out_count": 0,
+  "timed_out_ids": [],
+  "judge_unparseable_count": 1,
+  "judge_unparseable_ids": [
+    "83b-deadline-missed"
+  ],
+  "per_fixture_timeout_seconds": 360,
+  "partial": true,
+  "completed_count": 7,
+  "total_count": 15
+}
