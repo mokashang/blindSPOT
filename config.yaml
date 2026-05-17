@@ -124,7 +124,18 @@ eval:
   # stdout) on at least one fixture; without this cap the entire eval
   # produces no result and refine delta math can't run. Safe-range
   # 60–900 seconds. Override via the `--per-fixture-timeout` CLI flag.
-  per_fixture_timeout_seconds: 240
+  #
+  # Empirical calibration: the most recent measured eval at
+  # eval/results/20260517T131728Z.json (run with the 180s CLI override)
+  # had 8 of 15 fixtures hit the cap — strong signal that the prior
+  # default of 240s was still under-provisioned for genuinely-slow
+  # fixtures. Raising to 360s gives the slow half room to complete
+  # while leaving the fast half unaffected (they finish in well under
+  # the cap). Expected effect: more fixtures contribute to the
+  # aggregate quality_score, making it a denser / more representative
+  # measurement. Aggregate may TREND DOWN as harder fixtures complete
+  # — that's correct, not a regression.
+  per_fixture_timeout_seconds: 360
 
 # tunable_keys: whitelist of dotted-path config keys that refine
 # routines may modify automatically. Anything not on this list
