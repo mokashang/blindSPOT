@@ -29,7 +29,17 @@ from blindspot.orchestrator import Orchestrator
 # take arbitrarily long; only the eval loop has the cap, so refine
 # delta math always has a numeric answer to compute against. Override
 # via config (`eval.per_fixture_timeout_seconds`) or CLI flag.
-DEFAULT_PER_FIXTURE_TIMEOUT_SECONDS = 240
+#
+# Empirical calibration: the eval at eval/results/20260517T131728Z.json
+# (run with --per-fixture-timeout 180) had 8 of 15 fixtures hit the cap.
+# 240s offered modest headroom but the data shows genuinely-slow
+# fixtures need more than that. 360s gives the slow fixtures room to
+# complete without padding the fast ones (which complete in well under
+# the cap regardless). Trade-off: worst-case wall-clock per eval grows
+# from 8*180 = 1440s of waited-then-discarded work to 8*360 = 2880s if
+# none of the slow fixtures rescue from the higher cap; if rescues
+# happen, wall-clock per fixture-completed drops.
+DEFAULT_PER_FIXTURE_TIMEOUT_SECONDS = 360
 
 
 async def _run_single_fixture(
