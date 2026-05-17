@@ -1,0 +1,105 @@
+[eval] starting; fixtures_path=fixtures/eval_situations.yaml out_dir=eval/results timeout=360s
+warning: per-domain fixtures take precedence; shadowing legacy fixtures/eval_situations.yaml
+[eval] loaded 15 fixtures: [('83b-deadline-missed', 'tech-career'), ('acquihire-double-trigger', 'tech-career'), ('amt-exercise-decision', 'tech-career'), ('comparing-offers-3-companies', 'tech-career'), ('first-job-equity-confusion', 'tech-career'), ('founder-equity-cofounder', 'tech-career'), ('golden-handcuffs-eval', 'tech-career'), ('ipo-secondary-decision', 'tech-career'), ('late-stage-rsu-vs-base', 'tech-career'), ('layoff-severance-negotiation', 'tech-career'), ('pip-accept-vs-exit', 'tech-career'), ('pre-cliff-quit-dilemma', 'tech-career'), ('pre-ipo-tender-offer', 'tech-career'), ('refresher-grant-negotiation', 'tech-career'), ('series-b-iso-cliff', 'tech-career')]
+[eval] init_schema + engine ready (db=/Users/moka/.blindspot/blindspot-eval.db)
+[eval] fixture 1/15 start: 83b-deadline-missed
+[eval]   83b-deadline-missed: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   83b-deadline-missed: orch.run
+[eval]   83b-deadline-missed: judge_response
+[eval] fixture 1/15 done: 83b-deadline-missed timed_out=False
+[eval] fixture 2/15 start: acquihire-double-trigger
+[eval]   acquihire-double-trigger: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   acquihire-double-trigger: orch.run
+[eval]   acquihire-double-trigger: judge_response
+[eval] fixture 2/15 done: acquihire-double-trigger timed_out=False
+[eval] fixture 3/15 start: amt-exercise-decision
+[eval]   amt-exercise-decision: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   amt-exercise-decision: orch.run
+WARNING:root:source reddit-personalfinance-equity failed: 'REDDIT_CLIENT_ID'
+[eval]   amt-exercise-decision: judge_response
+[eval] fixture 3/15 done: amt-exercise-decision timed_out=False
+[eval] fixture 4/15 start: comparing-offers-3-companies
+[eval]   comparing-offers-3-companies: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   comparing-offers-3-companies: orch.run
+[eval]   comparing-offers-3-companies: judge_response
+[eval] fixture 4/15 done: comparing-offers-3-companies timed_out=False
+[eval] fixture 5/15 start: first-job-equity-confusion
+[eval]   first-job-equity-confusion: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   first-job-equity-confusion: orch.run
+WARNING:root:source reddit-experienceddevs failed: 'REDDIT_CLIENT_ID'
+[eval]   first-job-equity-confusion: judge_response
+[eval] fixture 5/15 done: first-job-equity-confusion timed_out=False
+[eval] fixture 6/15 start: founder-equity-cofounder
+[eval]   founder-equity-cofounder: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   founder-equity-cofounder: orch.run
+WARNING:root:source reddit-experienceddevs failed: 'REDDIT_CLIENT_ID'
+[eval]   founder-equity-cofounder: judge_response
+[eval] fixture 6/15 done: founder-equity-cofounder timed_out=False
+[eval] fixture 7/15 start: golden-handcuffs-eval
+[eval]   golden-handcuffs-eval: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   golden-handcuffs-eval: orch.run
+[eval]   golden-handcuffs-eval: judge_response
+[eval] fixture 7/15 done: golden-handcuffs-eval timed_out=False
+[eval] fixture 8/15 start: ipo-secondary-decision
+[eval]   ipo-secondary-decision: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   ipo-secondary-decision: orch.run
+[eval]   ipo-secondary-decision: judge_response
+[eval] fixture 8/15 done: ipo-secondary-decision timed_out=False
+[eval] fixture 9/15 start: late-stage-rsu-vs-base
+[eval]   late-stage-rsu-vs-base: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   late-stage-rsu-vs-base: orch.run
+WARNING:root:source reddit-experienceddevs failed: 'REDDIT_CLIENT_ID'
+[eval]   late-stage-rsu-vs-base: judge_response
+[eval] fixture 9/15 done: late-stage-rsu-vs-base timed_out=False
+[eval] fixture 10/15 start: layoff-severance-negotiation
+[eval]   layoff-severance-negotiation: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   layoff-severance-negotiation: orch.run
+WARNING:root:source reddit-experienceddevs failed: 'REDDIT_CLIENT_ID'
+[eval]   layoff-severance-negotiation: judge_response
+[eval] fixture 10/15 done: layoff-severance-negotiation timed_out=False
+[eval] fixture 11/15 start: pip-accept-vs-exit
+[eval]   pip-accept-vs-exit: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   pip-accept-vs-exit: orch.run
+WARNING:root:source reddit-experienceddevs failed: 'REDDIT_CLIENT_ID'
+[eval]   pip-accept-vs-exit: judge_response
+[eval] fixture 11/15 done: pip-accept-vs-exit timed_out=False
+[eval] fixture 12/15 start: pre-cliff-quit-dilemma
+[eval]   pre-cliff-quit-dilemma: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   pre-cliff-quit-dilemma: orch.run
+[eval]   pre-cliff-quit-dilemma: judge_response
+[eval] fixture 12/15 done: pre-cliff-quit-dilemma timed_out=False
+[eval] fixture 13/15 start: pre-ipo-tender-offer
+[eval]   pre-ipo-tender-offer: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   pre-ipo-tender-offer: orch.run
+[eval]   pre-ipo-tender-offer: judge_response
+[eval] fixture 13/15 done: pre-ipo-tender-offer timed_out=False
+[eval] fixture 14/15 start: refresher-grant-negotiation
+[eval]   refresher-grant-negotiation: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   refresher-grant-negotiation: orch.run
+WARNING:root:source reddit-experienceddevs failed: 'REDDIT_CLIENT_ID'
+[eval]   refresher-grant-negotiation: judge_response
+[eval] fixture 14/15 done: refresher-grant-negotiation timed_out=False
+[eval] fixture 15/15 start: series-b-iso-cliff
+[eval]   series-b-iso-cliff: orchestrator.create
+warning: per-domain sources.yaml files take precedence; shadowing legacy data/source_registry.yaml
+[eval]   series-b-iso-cliff: orch.run
+[eval]   series-b-iso-cliff: judge_response
+[eval] fixture 15/15 done: series-b-iso-cliff timed_out=False
+[eval] all fixtures done; computing aggregate
+[eval] writing result file: eval/results/20260517T203938Z.json
+[eval] wrote result file: eval/results/20260517T203938Z.json; quality_score=0.8207
+Wrote results to eval/results/20260517T203938Z.json
