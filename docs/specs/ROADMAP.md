@@ -155,17 +155,17 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 
 ```
 Status: 🟡 in progress
-Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/6)
-Last completed: 26e9d25 — refine-routine-maturity advance: 4 merged refine PRs total across 4 layers (sources/agents/eval/config); 1 more merged PR completes the ≥ 5 PRs criterion. Eval-baseline-stability also advanced (judge rubric anchored at fafb6aa).
-Next up: refine routine produces ≥ 5 merged PRs across ≥ 3 layers
+Progress: ███░░░░░░░░░░░░░░░░░ 17% (1/6)
+Last completed: b3a8d70 — V1.x refine-routine-maturity COMPLETED: 7 merged refine PRs total (verifiable via `git log origin/main | grep "(#"`: PRs #1–#7) across all 4 layers (sources: #1,#5 / agents: #2,#6 / eval: #3,#7 / config: #4). Eval-baseline-stability also advanced (3 new fixtures at b3a8d70 widen coverage).
+Next up: Eval baseline stability — three consecutive `./bin/blindspot eval` runs on `main` produce aggregate `quality_score` within ±0.03 of each other
 ```
 
 ### Per-task checklist
 
-- [ ] **Refine routine maturity** — `refinements/log.jsonl` shows ≥ 5
+- [x] **Refine routine maturity** — `refinements/log.jsonl` shows ≥ 5
   merged refine PRs across ≥ 3 of the 4 detail layers (Sources & knowledge
   / Agents / Config & scoring / Eval). The signal is that refine is
-  producing diverse real progress, not stuck in one corner.
+  producing diverse real progress, not stuck in one corner. **Done at b3a8d70 — 7 merged PRs (#1–#7) across all 4 layers.**
 - [ ] **Eval baseline stability** — three consecutive `./bin/blindspot eval`
   runs on `main` produce aggregate `quality_score` within ±0.03 of
   each other. The baseline is the median of those three; this becomes
@@ -226,7 +226,7 @@ automate parts of it.
 ```
 Status: ⬜ not started
 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/10 domains complete)
-Last completed: 2026cba — V2 entry-gate item: `domain_knowledge/_meta_ontology.md` authored (10 domains: scope, maturity, high-stakes flags, sample decisions)
+Last completed: 76e3c32 — V2 file-layout infra: `domain_knowledge/_schema.md` per-domain writing guide authored (per ROADMAP §3 file-layout block). Earlier: `_meta_ontology.md` at 2026cba.
 Next up: V1.x exit criteria must be met before per-domain work begins; then `tech-career` migration is the first `[ ]` in the Per-domain checklist
 ```
 
