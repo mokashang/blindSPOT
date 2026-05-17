@@ -136,12 +136,42 @@ does not bake in priorities — they live in the roadmap.
 
 ### What to read
 
-1. **The roadmap itself** — `docs/specs/ROADMAP.md`. Read the full file. It
-   describes the path from V1 to north star as a set of bounded items
-   (milestones, capabilities, source-view additions, eval extensions,
-   etc.). Each item should be concrete enough that a refinement run
-   can attempt it — if an item is too vague, the right move is to
-   either skip it or, in Step 2.5, propose splitting it.
+1. **The roadmap itself** — `docs/specs/ROADMAP.md`. Read the full file.
+   It is **version-sectioned**: V1.x / V2.0 / V3.0 / V4.0 / V5.0 each
+   live in their own `##` section. Inside each version section:
+
+   - A `Status:` line — `⬜ not started` | `🟡 in progress` | `✅ complete`
+   - A `Progress: ████░░░░ X% (N/M)` bar where `N/M` is checked-vs-total
+     `[ ]` checkboxes in that section
+   - A `Last completed:` line (git SHA or short task id)
+   - A `Next up:` line (text of the first remaining `[ ]` item)
+   - **Markdown checkbox sub-tasks** (`- [ ]` / `- [x]`) — these are
+     the bounded items refinement attempts. Some checkboxes nest
+     sub-checkboxes for per-item definition-of-done; a parent flips
+     to `[x]` only when all its children are `[x]`.
+   - Sub-bullets under a checkbox (without their own `[ ]`) are the
+     acceptance criteria.
+
+   **Finding the active item:**
+   - The section currently marked `🟡` is the active version.
+   - The first `- [ ]` checkbox in that section is the next concrete
+     item; its nested children / sub-bullets define done.
+
+   **Fallback when the active 🟡 section has no `[ ]` items of its own**
+   (e.g. V1.x in the current roadmap — it's tracked only in the §1
+   version table with no enumerated checklist): scan ahead into the
+   next ⬜ section's `### Per-task checklist` and `### Architecture
+   changes` lists. Pick items that do NOT depend on the next
+   version's `### Entry gate` conditions — typically infra refactors,
+   registry-loader prep, eval-runner extensions, refine-routine
+   self-improvements. These unblock the version transition and are
+   concrete enough to attempt now. Tag the resulting
+   `roadmap_progress` entry with `pulled_forward: true` so future
+   runs see what was promoted.
+
+   **Items too vague to drive one refinement run**: either skip
+   (record `deferred` with reason in Step 10d) or propose splitting
+   in Step 2.5 — roadmap edits are framework-level changes.
 
 2. **Progress log** — filter `refinements/log.jsonl` for entries with
    `type: "roadmap_progress"`. Read at least the last 20 such entries.
@@ -156,18 +186,31 @@ does not bake in priorities — they live in the roadmap.
 For each open (not-yet-completed) roadmap item, build a short mental
 record:
 
-- `item_id` (slug from the roadmap; if the roadmap doesn't already
-  assign ids, derive one stably from the item's heading — `kebab-case`
-  of the heading text)
+- `item_id` — derive stably as `<version>/<kebab-case of checkbox text,
+  truncated to ~60 chars, stop-words removed>`. The roadmap doesn't
+  assign ids, so consistency comes from this rule. Examples:
+  - `- [ ] **Triage Officer becomes two-pass.**` in V2 §4 "Architecture
+    changes" → `v2/arch/triage-officer-two-pass`.
+  - `- [ ] decisions.md (≥ 8 distinct decisions ...)` under V2's
+    `immigration` domain → `v2/immigration/decisions-md`.
+  - `- [ ] domain_knowledge/_playbook.md ...` → `v2/playbook`.
+
+  Slugs MUST be deterministic so future runs find the same item
+  even when surrounding text drifts.
+- `version` — `v1.x` | `v2` | `v3` | `v4` | `v5`.
+- `pulled_forward` — `true` if the item came from the fallback path
+  (active 🟡 section had no checklist; item was picked from a future
+  ⬜ section).
 - `layer` — which layer of the codebase advancing this item touches
-  (sources / agents / config / eval / framework; see Step 3)
+  (sources / agents / config / eval / framework; see Step 3).
 - `last_advanced_run_id` — most recent run that advanced or completed
-  it (None if never)
+  it (None if never).
 - `recent_attempts` — count of advanced + blocked entries in the last
-  10 runs
+  10 runs.
 - `dependencies` — other open items this depends on (only if the
-  roadmap declares dependencies)
-- `status` — `open` | `in-progress` | `blocked` | `completed`
+  roadmap declares dependencies, typically via "after V2 reaches X%"
+  language or explicit Entry gate lines).
+- `status` — `open` | `in-progress` | `blocked` | `completed`.
 
 ### How this feeds Step 3 and Step 2.5
 
@@ -425,12 +468,18 @@ future run can pick it up.
 
 ### Layers
 
-1. **Sources** — `community_profiles/`, `data/source_registry.yaml`.
-   Changes: add a source-view, retire a low-signal one, retune
-   `keyword_filter` / `reliability`, add cross-link annotation to
-   `_schema.md`. Reactive signals: `ungrounded_claims` clustering on
-   uncovered topics, `source_view_stats` dud sources. Roadmap signals:
-   coverage-expansion items, source-backlog items.
+1. **Sources & knowledge** — `community_profiles/`,
+   `data/source_registry.yaml`, plus (once V2 migration begins)
+   `domain_knowledge/<domain>/{decisions,framings,blindspots,sources}.{md,yaml}`
+   files representing Layers 1–4 of the knowledge model from
+   `docs/specs/ROADMAP.md` §3. Changes: add a source-view, retire a
+   low-signal one, retune `keyword_filter` / `reliability`, add
+   cross-link annotation to `_schema.md`, author or extend a domain's
+   decisions / framings / blindspots files (V2+). Reactive signals:
+   `ungrounded_claims` clustering on uncovered topics,
+   `source_view_stats` dud sources. Roadmap signals:
+   coverage-expansion items, per-domain checklist sub-tasks
+   (V2 §4 per-domain block), source-backlog items.
 
 2. **Agents** — `src/blindspot/prompts/`. Changes: refine an agent's
    system prompt for clarity, instruction-following, framing breadth,
@@ -905,11 +954,55 @@ subagent bailed/held without an advanced merge, emit a `blocked`
 entry. If the item was named in Step 3 but skipped in favor of a
 reactive candidate, emit a `deferred` entry.
 
-Commit and push the log atomically (one commit total per run,
-regardless of how many attempts), with one rebase-retry on push race:
+### Update ROADMAP.md when items advance or complete
+
+For every `roadmap_progress` entry written above with
+`action: "advanced"` or `"completed"`, ALSO edit
+`docs/specs/ROADMAP.md` so its checkbox / progress / last-completed /
+next-up state matches reality. ROADMAP §2 declares "the progress bar
+is the contract" — without these edits a human reader has no way to
+see what's done. ROADMAP.md edits go into the SAME commit as the log
+append below.
+
+For each such entry, in the relevant version section:
+
+1. **Checkbox**. If `action: "completed"`, change the matching
+   `- [ ]` to `- [x]`. Match by the slug used in `item_id` — if the
+   checkbox text drifted since the run started and the slug no
+   longer round-trips, BAIL with `HUMAN_REVIEW_REQUESTED: cannot
+   locate ROADMAP.md checkbox for item <id>; manual reconciliation
+   needed`. For `action: "advanced"` (item still has more work),
+   leave the box unchecked but still update Last completed / Next up.
+2. **Progress bar**. Recompute the version's
+   `Progress: ████░░░░ X% (N/M)` line. `N` = count of `[x]` in that
+   section, `M` = count of `[ ]` + `[x]`. Render exactly 20
+   characters: `█` × round(X / 5), then `░` for the remainder. Show
+   the percentage rounded to nearest integer.
+3. **Last completed**. Replace with the squash-merge short SHA of
+   the PR that advanced this item (`git rev-parse --short
+   origin/main` after Step 10c). If multiple items in the same
+   section advanced this run, use the SHA of the highest-leverage
+   advance (or the most recent).
+4. **Next up**. Replace with the text of the first remaining
+   `- [ ]` checkbox in the same section. If the section has no
+   remaining `[ ]`, write `(none — version complete)`.
+5. **Status promotion**. If every sub-task in a `🟡 in progress`
+   section is now `[x]`, change `Status: 🟡 in progress` to
+   `Status: ✅ complete` AND promote the next `⬜ not started`
+   section to `🟡 in progress`.
+
+If the item was `pulled_forward: true` (the fallback path picked it
+from a future ⬜ section), flip the checkbox in that future
+section. Its progress bar will start showing non-zero. Do NOT
+promote that future section to `🟡` yet — promotion only happens
+once the currently-active 🟡 version's checkboxes are all `[x]`.
+
+Commit and push the log + ROADMAP.md edits atomically (one commit
+total per run, regardless of how many attempts), with one rebase-
+retry on push race:
 
 ```bash
-git add refinements/log.jsonl
+git add refinements/log.jsonl docs/specs/ROADMAP.md
 git commit -m "refine: log iteration $ts (N attempts, M merged, K held; framework: A|B; roadmap: P advanced, Q completed)"
 
 # Push, with one retry on race (someone else pushed between our pull
@@ -927,10 +1020,10 @@ local has commit not on remote — resolve manually before next run"
 fi
 ```
 
-If the rebase itself fails (conflict on `refinements/log.jsonl` —
-extremely rare, would require two refine runs racing), bail with
-`HUMAN_REVIEW_REQUESTED: log rebase conflict; concurrent refine run
-suspected`.
+If the rebase itself fails (conflict on `refinements/log.jsonl` or
+`docs/specs/ROADMAP.md` — extremely rare, would require two refine
+runs racing), bail with `HUMAN_REVIEW_REQUESTED: log/roadmap rebase
+conflict; concurrent refine run suspected`.
 
 ### 10e — Sync verification (invariant check)
 
@@ -996,7 +1089,9 @@ by a short explanation, and exit without making further changes, if:
   - `git pull --ff-only` fails at 10a or 10c (local main diverged
     from remote).
   - Log push fails twice in 10d (after rebase-retry).
-  - Log rebase conflict in 10d (concurrent refine run suspected).
+  - Log / ROADMAP.md rebase conflict in 10d (concurrent refine run suspected).
+  - ROADMAP.md checkbox cannot be located for an item to mark in 10d
+    (slug round-trip failure; manual reconciliation needed).
   - 10e sync verification fails (local main SHA ≠ remote main SHA at
     end of run).
 - A git operation in Step 10 fails in some other unexpected way
