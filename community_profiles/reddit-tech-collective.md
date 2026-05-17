@@ -37,17 +37,49 @@ got wrong."
   immediately vs holding 1y+2y for long-term cap gains treatment.
 
 ## Known blind spots OF this community
-- **Upvote-driven popularity bias** — the most-upvoted answer is often the
-  most-confidently-stated, not the most-correct. Edge cases get buried.
-- **Skews young, US, male, single, no dependents.** Advice implicitly
-  assumes high optionality, no visa constraints, no caregiving obligations,
-  and a ~10y time horizon to "exit and chill".
-- **Survivorship bias on big-tech worship** — successful FAANG ICs post
-  TC screenshots; people who washed out of FAANG perf reviews don't.
-- **Limited corporate-finance literacy** — confidently wrong on dilution math,
-  liquidation preferences, and what a 409A actually represents.
-- **Founder/employer perspective absent.** The threads almost never model
-  what the company is optimizing for, which makes negotiation framing thin.
+- **Upvote-skew collapses dispersion into a single "right answer."**
+  r/cscareerquestions and r/ExperiencedDevs both surface the
+  confidently-stated top comment first; posts with `[deleted]` parents,
+  late-arriving corrections, and contrarian senior takes sit below the
+  fold. The pattern is visible in any thread where the +400 top comment
+  ("just sell-to-cover, it's all the same tax") is contradicted by a +20
+  reply explaining the supplemental-vs-marginal withholding gap. Risk
+  Officer should treat single-answer consensus on tax / vesting /
+  negotiation mechanics as a popularity signal, not an accuracy signal.
+- **Demographic scope is US-citizen, single, no dependents, ~5–10y
+  horizon — visa, caregiving, and dual-income constraints fall off the
+  map.** H-1B 60-day grace-period math after layoff, the I-140-pending
+  job-change risk, EAD-dependent spouses, and the "can't quit because
+  daycare is $2400/mo and partner's job is in this metro" calculus
+  rarely surface on r/cscareerquestions; when they do they get redirected
+  to r/h1b or r/personalfinance and lose the comp-context. Advice
+  implicitly assumes the asker can walk away from any offer in 30 days.
+- **FAANG-survivor TC screenshots; FAANG-washout PIP threads anonymized
+  and rarely cross-linked.** levels.fyi-style "I got L5 at $480k"
+  posts get pinned; the matching "got managed out at 18 months, lost
+  unvested cliff, signed non-disparagement for 8 weeks severance"
+  story lives in throwaway accounts on r/cscareerquestions and never
+  pairs back. The base rate of FAANG exits within 2y (≥ 20% at most
+  big-tech orgs in any given year) is invisible in the comp-comparison
+  framing.
+- **Corporate-finance vocabulary is consistently wrong on cap-table
+  mechanics.** Specific recurring errors: confusing 409A strike price
+  with preferred-share price; treating dilution as proportional across
+  share classes when participating-preferred or 1x-non-participating
+  with cap changes the waterfall; assuming "fully diluted" includes the
+  unissued option pool when calculating ownership %; ignoring that
+  liquidation preference is paid before common at exit. r/startups
+  threads about acquisition payouts routinely overstate employee
+  outcomes by 2–10× because they ignore the preference stack.
+- **Employer-side optimization (retention budget, comp-band ceiling,
+  level-vs-band fit, recruiter quota timing) is treated as adversarial
+  rather than modeled.** Threads frame negotiation as "extract maximum
+  TC" without naming what the recruiter is incentivized for (signed
+  offers per quarter, not TC), what the hiring manager's level budget
+  actually permits, or how a counter-offer triggers a retention-comp
+  review the asker can't see. Asking "what would the company say no
+  to and why" is structurally absent — the symmetric view that would
+  improve negotiation framing is missing.
 
 ## Representative voices
 Top-comment authors on r/ExperiencedDevs comp-negotiation threads;
