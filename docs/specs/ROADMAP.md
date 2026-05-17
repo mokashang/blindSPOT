@@ -156,8 +156,8 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 ```
 Status: 🟡 in progress
 Progress: ███░░░░░░░░░░░░░░░░░ 17% (1/6)
-Last completed: 1357c03 — V1.x refine-routine-maturity COMPLETED at b3a8d70; eval-baseline-stability advanced at 1357c03 (PR #11 hardened `_parse_json_response` with last-`}` recovery + diagnostic ValueError, directly targeting the JSONDecodeError-at-Community-Analyst blocker); source-view-audit advanced at c8ef89f (PR #9 tightened vc-blogosphere blind-spots with schema-rigor).
-Next up: Eval baseline stability — three consecutive `./bin/blindspot eval` runs on `main` produce aggregate `quality_score` within ±0.03 of each other (currently blocked on upstream `bin/blindspot eval` hang ≥8min; JSON-parse hardened in PR #11, next diagnose via claude-agent-sdk debug-file or auth check)
+Last completed: c0a9130 — eval-baseline-stability advanced again: PR #15 adds per-fixture timeout in `src/blindspot/eval/runner.py` (asyncio.wait_for, default 240s) so a single hung fixture no longer sinks the whole eval — surfaces `timed_out_count` / `timed_out_ids` for future debug. Source-view-audit also advanced at fb24fe9 (PR #12 tightened tax-and-finance-professionals blind spots with same PR #9 mechanic-trigger-failure-mode pattern).
+Next up: Eval baseline stability — three consecutive `./bin/blindspot eval` runs on `main` produce aggregate `quality_score` within ±0.03 of each other (PR #15 timeout safety-net now allows eval to complete even when individual fixtures hang; next concrete step is to actually run eval 3× and capture the numbers — orchestrator or human can do this once worktree environment can reach the LLM backends)
 ```
 
 ### Per-task checklist
