@@ -1,0 +1,6 @@
+id: acquihire-double-trigger
+text: |
+  Our startup got acquired. The buyer wants me to re-vest over 4 years
+  with double-trigger acceleration. Is this normal?
+expected_entities: [acquisition, double-trigger]
+expected_risk_surfaces: [counterparty]

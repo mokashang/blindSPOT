@@ -1,0 +1,6 @@
+id: pre-cliff-quit-dilemma
+text: |
+  I'm 10 months in at a Series A startup. I want to leave for a competing
+  Series B offer. Should I wait two months for the cliff?
+expected_entities: [vesting-cliff, series-A, series-B]
+expected_personas: [pre-vest-cliff, considering-quit]

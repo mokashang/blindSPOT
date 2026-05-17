@@ -1,0 +1,6 @@
+id: series-b-iso-cliff
+text: |
+  I got a Series B offer with 0.1% in ISOs over 4 years with a 1-year cliff.
+  Comp is below market but the team is exceptional. Take it?
+expected_domains: [tech-career/equity, tech-career/comp]
+expected_entities: [ISO, series-B, vesting-cliff]

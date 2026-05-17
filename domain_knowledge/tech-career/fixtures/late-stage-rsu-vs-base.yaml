@@ -1,0 +1,7 @@
+id: late-stage-rsu-vs-base
+text: |
+  Public co offered me $250k base + $400k RSUs vesting over 4 years.
+  Current employer counter-offered $310k base + smaller RSU grant.
+  Which is better?
+expected_domains: [tech-career/comp, tech-career/negotiation]
+expected_entities: [RSU]

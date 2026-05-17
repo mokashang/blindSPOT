@@ -1,0 +1,6 @@
+id: comparing-offers-3-companies
+text: |
+  I have offers from a FAANG, a Series C company, and a Series A startup.
+  Compensation packages are very different in structure. Help me think.
+expected_personas: [comparing-offers]
+expected_domains: [tech-career/comp]

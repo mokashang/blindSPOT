@@ -1,0 +1,9 @@
+id: pip-accept-vs-exit
+text: |
+  My manager put me on a 60-day PIP yesterday. My RSU cliff is in 4 months
+  (~$220k vesting). HR hinted I could "negotiate a transition" instead. Should
+  I accept the PIP and fight, or take a managed exit now?
+expected_domains: [tech-career/negotiation]
+expected_entities: [PIP, RSU-cliff, managed-exit]
+expected_personas: [on-PIP]
+expected_risk_surfaces: [vesting-forfeiture, future-reference, signal-to-future-employer]
