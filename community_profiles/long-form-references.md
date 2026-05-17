@@ -47,22 +47,105 @@ is your decision."
   what holding periods apply.
 
 ## Known blind spots OF this community
-- **Not timely.** Reference material updates annually at best. Recent
-  market shifts, current valuation environments, and live regulatory
-  changes (new IRS guidance, recent case law) won't appear until the
-  next revision.
-- **Dry and behaviorally neutral.** Doesn't surface the emotional or
-  decision-making angles: what it feels like to face a $300k AMT bill,
-  whether to exercise at the cliff vs hold, the psychology of
-  concentrated-stock-position risk.
-- **No company-specific or current-deal context.** Tells you what an
-  ISO is; doesn't tell you whether your specific company's ISO grant is
-  worth exercising.
-- **Assumes a US tax context.** Non-US instruments and cross-border
-  tax issues are out of scope or covered cursorily.
-- **Can't replace a real advisor.** A reference text is necessary but
-  not sufficient — the user still needs someone who can apply the
-  rules to their specific facts.
+- **Edition cadence is annual-at-best, so the corpus lags any rule
+  change inside its publication cycle and continues asserting the
+  prior rule with full textbook confidence.** The Holloway Guide
+  ships a new edition roughly yearly; NCEO publications and AICPA
+  practice guides on the same cadence; IRS Pub 525 / Pub 550 update
+  on the IRS's own schedule. Trigger: any question that turns on a
+  rule changed in the last 18 months — QSBS §1202 holding period
+  and per-issuer cap (OBBBA 2025), Section 174 R&D capitalization
+  flip-flops (TCJA → 2025 partial reversal), 10b5-1 cooling-off
+  tightening (SEC December 2022), Inflation-Reduction-Act stock-
+  buyback excise, AMT exemption / phaseout adjustments inside the
+  current tax year. Failure mode: Risk Officer surfaces a
+  citation-backed mechanic ("ISO disqualifying-disposition spread
+  is ordinary income") that is still correct but pairs it with a
+  numeric anchor (AMT exemption $X, QSBS cap $10M) that was true
+  for the prior tax year and is now wrong by 10–30%. Sanity check:
+  if a numeric threshold appears in a reference-text citation,
+  cross-check it against the current Form 6251 / Pub 525 PDF before
+  using the number; treat any reference number more than 12 months
+  old as stale unless re-verified.
+- **Voice is mechanism-first and decision-silent by editorial
+  policy, so triggers that hinge on action timing or psychological
+  load get described and not resolved.** The guide tells you what
+  an 83(b) election is and when it's available; it does not tell
+  you whether to file one for your specific grant. Trigger:
+  decision-shaped questions — exercise-now-vs-wait, file-83(b)-or-
+  not, take-tender-or-hold, accept-extended-PTEP-or-walk, choose-
+  ISO-vs-NSO-at-grant — especially when the asker is staring at a
+  deadline (30 days for 83(b), 90 days for default PTEP, end of
+  calendar year for AMT-crossover sequencing). Failure mode: Risk
+  Officer pulls a precise mechanism description from the reference
+  text, surfaces it as the answer, and silently omits the decision
+  framing ("which path produces less regret given these specific
+  facts?"). The asker walks away knowing what ISO §422 says and
+  still doesn't know which button to press by Friday. Calibration:
+  on decision-shaped triggers, treat reference text as input to
+  the decision, not the decision itself; pair it with an
+  opportunity-cost or regret-frame surface from another community.
+- **The unit of analysis is the instrument class, not the asker's
+  specific grant, so company-level structural defects that
+  invalidate the textbook treatment are systematically invisible.**
+  The Holloway Guide describes the canonical ISO; it cannot see
+  your company's specific plan document, board resolutions,
+  individual grant notice, or 409A-stale strike. Trigger: any
+  situation where the asker's specific plan deviates from the
+  canonical instrument — extended-PTEP windows that auto-convert
+  ISO→NSO at day 91, early-exercise-permitted plans (need the
+  80/20 split + 83(b) within 30 days of exercise, not vest), single-
+  trigger acceleration in the plan that the asker doesn't realize
+  fires on a stock sale, repriced grants that reset the ISO
+  $100k-per-year vesting limit, 409A valuations older than 12
+  months that lose the safe-harbor presumption. Failure mode: Risk
+  Officer surfaces the canonical mechanic ("ISOs become NSOs 90
+  days after termination") and misses that THIS asker's plan
+  document extends PTEP to 5 years and the conversion already
+  happened, OR that the asker's 409A is 14 months stale and the
+  strike they're being quoted is not the safe-harbor strike. Sanity
+  check: if the answer turns on plan-document or 409A specifics,
+  flag "verify against your actual grant notice" rather than
+  asserting the canonical default.
+- **The reference corpus is US-tax-and-Delaware-corporate by
+  construction; non-US instruments and cross-border situations get
+  coerced into the US template or footnoted away.** Holloway is
+  US-focused; NCEO is US-focused; AICPA practice guides are
+  US-focused; IRS publications are by definition US-only.
+  Trigger: the asker is a non-US resident, a US person working
+  abroad (PFIC reporting on foreign employer stock, FBAR/FATCA on
+  foreign-broker accounts), a non-US person granted US-parent
+  equity (UK EMI / Irish KEEP / French BSPCE / Israeli §102 /
+  German RSU dry-tax-on-vest / Indian ESOP perquisite tax), or a
+  US-to-non-US mover mid-vest (treaty sourcing, dual-tax
+  exposure). Failure mode: Risk Officer reaches for the canonical
+  US ISO/RSU/AMT framework and confidently produces advice that is
+  legally and tax-mechanically wrong in the asker's actual
+  jurisdiction — e.g. "exercise early to start the LTCG clock"
+  given to a German tax resident whose dry-tax fires at vest
+  regardless of exercise timing, or "file 83(b)" given to a UK EMI
+  holder where the equivalent election is a Section 431 election
+  with different timing and substance.
+- **Necessary-but-not-sufficient: the corpus stops at the rule and
+  defers application to a professional, but Risk Officer needs a
+  CHECKABLE next step, not an "ask your advisor" hand-off.** The
+  Holloway Guide explicitly positions itself as preparation for
+  productive advisor conversations, not as a substitute. Trigger:
+  any situation where the asker has no advisor relationship,
+  cannot afford one ($400–$800/hr for a startup-equity-literate
+  CPA in SF/NYC), faces a deadline shorter than the typical
+  3–6-week intake cycle for a new tax-attorney engagement, or
+  whose facts cross specialties (immigration + tax + corporate)
+  such that no single advisor sees the full picture. Failure
+  mode: Risk Officer surfaces "consult a CPA familiar with ISO
+  AMT" as the named action, the asker doesn't have one, the
+  deadline lapses, and the textbook-correct mechanic ("you had 30
+  days to file 83(b)") becomes the explanation for why the
+  outcome is now locked in. Sanity check: if the surfaced action
+  is "consult an advisor", also surface the specific question the
+  asker should walk in with AND the deadline by which that
+  conversation has to happen, so the answer is actionable even if
+  the advisor relationship is on the critical path.
 
 ## Representative voices
 The Holloway Guide to Equity Compensation (Holloway, Joshua Levy and
