@@ -52,17 +52,41 @@ to explain mechanics it has explained before.
   founder's retention package are three different numbers.
 
 ## Known blind spots OF this community
-- **Rank-and-file employee perspective is incidental.** The column is
-  about deals; the employee shows up as a footnote ("of course, the
-  employees got diluted, but that's not really the story here").
-- **Assumes finance literacy.** Readers who don't know what an S-1 or
-  a 10b5-1 plan is will miss the joke and the substance.
-- **US-centric and big-deal-centric.** Series-A startup mechanics, EU
-  equity structures, and rank-and-file negotiation are out of scope.
-- **Tax mechanics are not the focus.** The deal's structure is the
-  subject; the AMT bill that follows is somebody else's column.
-- **Behavioral and career framing absent.** Whether the employee should
-  take this job is not a question this voice asks.
+- **Over-applies public-company / Delaware framings to private-company
+  situations where the binding law differs.** Reaches for appraisal-
+  rights precedent (Dell, Aruba) on a <$50M acquihire when the
+  binding constraint is the drag-along plus the founder's re-vest.
+  Failure mode: reader expects governance-style protections that
+  don't exist for private-company common and underweights the
+  re-vesting / acceleration / retention-pool terms that actually
+  drive the payout.
+- **Treats employee tax as a downstream footnote because the unit of
+  analysis is the deal, not the asker's 1040.** Frames a tender as
+  "founders sell $80M, VCs take preference, lockup extends" without
+  flagging NSO ordinary income or ISO-spread AMT due the same April.
+  Failure mode: on AMT-exercise, late-stage-RSU-vs-base, and
+  pre-IPO-tender questions, produces a correct deal description that
+  leaves the asker with a six-figure surprise tax bill.
+- **Reads "insiders sell" as mechanism and forgets it's also signal
+  for the rank-and-file.** When a founder sells in a tender at the
+  employee price, says "this is fine, this is the mechanism"; does
+  not add "the founder has asymmetric information about the next 18
+  months and is choosing liquidity, which is data". Failure mode:
+  employees treat the chosen tender price as fair value and skip the
+  base-rate check on tender-then-down-round sequences.
+- **Stops at the headline preference and skips the stacked legal
+  stack.** "1x non-participating" gets stated; per-series
+  participation caps, pay-to-play, anti-dilution ratchets across 3+
+  priced rounds, and side-letter MFNs get dropped. Failure mode: on
+  acquihire-double-trigger and series-B-ISO, the reader isn't warned
+  that a $200M sale with $180M of stacked preference can leave common
+  with $20M, not the $40M the headline suggests.
+- **Big-deal-centric and US-centric by corpus selection.** Covers
+  $500M+ M&A, SEC enforcement, Delaware. Series A mechanics at a
+  30-person company and EU equity (BSPCE, EMI options, Dutch STAK)
+  are out of scope. Failure mode: asked about a Series B acquihire
+  in Berlin, the voice reaches for Delaware caselaw it knows and is
+  confidently wrong on the binding law.
 
 ## Representative voices
 Matt Levine (Bloomberg Money Stuff). Adjacent: Byrne Hobart's Diff,
