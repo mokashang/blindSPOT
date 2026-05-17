@@ -1,0 +1,176 @@
+{
+  "timestamp": "2026-05-17T18:39:16.372771+00:00",
+  "per_situation": [
+    {
+      "id": "series-b-iso-cliff",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 70,
+      "diversity_count": 2,
+      "feedback": "Highly specific with IRC \u00a7422, \u00a7422(d) $100K cap, 83(b) 30-day window, Section 1202 $75M cap, 409A details, and concrete dilution percentages. Surfaces non-obvious blind spots (preference stack waterfall, denominator decay, refresh-grant cliff at month 48, QSBS state non-conformity). Two distinct 'What [community] would tell you' sections (long-form-references and tax-and-finance-professionals). Most factual claims carry citations, though some quantitative claims (e.g., '$40-80M preferences typical at Series B', '15-25% dilution per round', 'median 5-7 years to liquidity') lack citation markers.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "late-stage-rsu-vs-base",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 80,
+      "diversity_count": 1,
+      "feedback": "Highly specific with concrete dollar ranges (15-25% bonus, 25-40% refresh grants, 50-80% counter-offer attrition), named mechanisms (83(b), RSA vs RSU, sell-to-cover, vesting schedules like 6/19/19/56). Strong non-obvious blind spots: counter-offer adverse selection, month-48 refresh cliff, unvested equity walk-away cost, hidden comp stack. Most factual claims carry [doc-1] citations though some statistics (attrition rates, bonus ranges) are asserted without clear grounding in the cited Holloway equity guide. Only one 'What [community] would tell you' section present (long-form-references), despite three domains identified.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "pre-cliff-quit-dilemma",
+      "specificity": 4,
+      "non_obviousness": 5,
+      "grounding_pct": 70,
+      "diversity_count": 1,
+      "feedback": "Strong specificity with named clauses (ROFR, PTEP, ISO/NSO, Section 422, DTSA), concrete numbers (25%, 90 days, $20k exercise example, 20-30% liquidity, 30-50% dilution), and actionable search strings. Non-obviousness is excellent \u2014 competitor clawback, ISO\u2192NSO day-91 reclassification, binary cliff termination risk, and EV haircut math are all genuine blind spots. Grounding is reasonable but inconsistent: many factual claims carry [doc-1] but several (DTSA reference, 20-30% liquidity stat, 30-50% dilution stat, Section 422 specifics, recruiter behavior claims) are uncited. Only one community section ('long-form-references') is present, limiting diversity.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "amt-exercise-decision",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 90,
+      "diversity_count": 3,
+      "feedback": "Exceptional specificity with named clauses (\u00a7422, \u00a7422(d), \u00a71202), specific dollar thresholds ($75M/$50M gross assets, $100k vesting limit, $15M QSBS cap), concrete dates (7/4/2025), and percentages (28% AMT cliff, 180-day lockup). Non-obviousness is high: AMT credit unrecoverable under QSBS success, 90-day post-termination ISO cliff as layoff-risk vector, QSBS asset-threshold likely already blown, preference-stack compression at acquihire, and the adverse-selection read of '10x + no IPO'. Three distinct community sections present (long-form-references, tax-and-finance-professionals, matt-levine-school). Nearly all factual claims carry [doc-X] citations; a few sentences in the matt-levine section and concrete-steps lack inline cites but most do.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "acquihire-double-trigger",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 45,
+      "diversity_count": 2,
+      "feedback": "Highly specific with named IRC \u00a7280G mechanics, 3\u00d7 base-amount threshold, 20% excise tax, specific escrow percentages (10-15%), and concrete redline language (>10% base cut, 35-mile relocation, 30-day cure). Strong non-obvious surfacing of 280G exposure for low-W2 founders, restrictive-covenant survival, retention-rate asymmetry, and the assumed/substituted/cancelled trichotomy. Only 2 distinct 'What [community] would tell you' sections (matt-levine-school and long-form-references). Many factual claims about 280G mechanics, escrow norms, and attrition curves lack citations \u2014 roughly half of factual assertions carry [doc-X] markers.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "first-job-equity-confusion",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 80,
+      "diversity_count": 1,
+      "feedback": "Highly specific with concrete dollar examples ($40M exit math, 0.05% \u2192 $7,500), named IRS sections (422, 83, 83(b)), specific timelines (90-day PTEP, 30-day 83(b) deadline), and named mechanisms (AMT preference, liquidation preference stack, 409A). Strong non-obvious content: AMT cash-trap on illiquid shares, ISO\u2192NSO reclassification at day 91, dilution mechanics, percentage-as-signal framing. Grounding is solid but uniformly cites only [doc-1]; some quantitative claims (e.g., '1 in 10 seed startups reach liquidity', '0.1%-1% range for first-10 hires') are presented as facts with citations but the single-source citation pattern is weak. Diversity_count is 1 \u2014 only one 'What long-form-references would tell you' section; no distinct community analyst voices (no separate sections for e.g. founders, investors, employees).",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "comparing-offers-3-companies",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 85,
+      "diversity_count": 2,
+      "feedback": "Highly specific with named clauses (IRC \u00a7422, Section 1202, 83(b), $75M gross-assets cap, 90-day PTEP, $100K ISO limit, 26-28% AMT, 22% supplemental withholding, 180-day lockup) and concrete dollar examples. Surfaces strong blind spots: liquidation preference stack, adverse-selection signal of high Series A TC, PTEP cash trap vs. modal tenure, double-trigger phantom income, QSBS asset-threshold timing, and secondary tenders. Most factual claims carry [doc-X] citations though a few sentences in long-form sections (e.g., RSU withholding rate, ISO $100K rule mention, median tenure stats) lack inline markers. Only two 'What [community] would tell you' sections present (long-form-references and tax-and-finance-professionals); a third community voice (e.g., startup-employees or negotiation) would improve diversity.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "refresher-grant-negotiation",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 90,
+      "diversity_count": 1,
+      "feedback": "Highly specific with IRC \u00a7422(d), $100k ISO limit, 409A mechanics, 1-year cliff, and concrete percentages (62.5% vested, 18 months remaining). Surfaces non-obvious blind spots like 409A timing arbitrage, refresher-as-new-grant with fresh cliff, acceleration/CoC clause diffs, and ISO-to-NSO silent conversion. Nearly all factual claims carry [doc-1] citations though all citations point to a single source. Only one 'What [community] would tell you' section present (long-form-references), despite three domains being identified \u2014 diversity is limited.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "ipo-secondary-decision",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 90,
+      "diversity_count": 3,
+      "feedback": "Highly specific with named IRS sections (1202, 1045), dollar thresholds ($15M, $75M asset cap), specific rates (22% supplemental, 32-37% marginal), and concrete timelines (180-day lockup, 60-day rollover, 2-year/1-year ISO clocks). Surfaces strong blind spots: QSBS 1045 rollover window, adverse selection from informed buyers, withholding gap and Form 2210, 9-12 month real liquidity window vs. 3-month framing, 409A revaluation cascading to colleagues' ISO AMT. Nearly all factual claims carry [doc-X] citations; a few sentences in the long-form sections make general framing claims without inline cites. Three distinct community sections present: long-form-references, matt-levine-school, tax-and-finance-professionals.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "founder-equity-cofounder",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 85,
+      "diversity_count": 2,
+      "feedback": "Highly specific with concrete numbers ($75M asset threshold, 5% / 2% redemption windows, $15M/10x QSBS cap, 30-day 83(b) deadline, 13.3% CA rate, 4-year vest / 1-year cliff). Non-obviousness is strong: reframes the percentage fight as a vesting/mechanics problem, surfaces QSBS redemption trap with cross-founder disqualification, and flags investor doc asymmetry. Most factual claims carry [doc-X] citations though a few sentences (e.g., NVCA-style rep claims, CA non-conformity framing portions, survivor-bias mechanics) are partially uncited. Two distinct 'What X would tell you' sections (long-form-references, tax-and-finance-professionals).",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "83b-deadline-missed",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 75,
+      "diversity_count": 2,
+      "feedback": "Highly specific with named IRC sections (\u00a783(b), \u00a71202), Treas. Reg. citations (\u00a71.83-2(a), (b), (c)), Form 15620, community-property state list, and concrete calculation formulas. Non-obvious angles are strong: board-consent-date vs start-date distinction, spouse signature requirement, forfeiture-no-refund asymmetry at pre-cliff tenure, and instrument-type gating. Grounding is solid but imperfect \u2014 several factual claims (community-property spouse signature, Form 15620, the specific Treas. Reg. subsection citations, QSBS per-tranche clock restart wording) carry citations, but a few assertions (RSU ineligibility mechanics, the asymmetric-cost framing numbers) appear without markers. Two distinct community sections present: long-form-references and tax-and-finance-professionals.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "golden-handcuffs-eval",
+      "specificity": 4,
+      "non_obviousness": 5,
+      "grounding_pct": 70,
+      "diversity_count": 2,
+      "feedback": "Strong specificity with concrete tax brackets (37% federal, 13.3% CA, 0.9% Medicare surtax), Amazon vesting schedule (5/15/40/40), and named clauses to ctrl-F in the grant agreement. Non-obviousness is excellent \u2014 adverse-selection timing question, share-denominated vs dollar-pinned make-whole, lump-sum tax compression, and survivor bias on 'better stack' are genuinely non-obvious angles. Grounding is solid but uneven: tax bracket numbers, vesting schedule specifics (5/15/40/40, 25/25/25/25), and several mechanism claims lack citations. Two distinct community sections (long-form-references and matt-levine-school).",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "layoff-severance-negotiation",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 35,
+      "diversity_count": 1,
+      "feedback": "Exceptional specificity: names OWBPA, 29 U.S.C. \u00a7626(f), 21/45-day windows, 90-day ISO cliff, ~22%/37% supplemental withholding, CA \u00a716600, double-trigger mechanics, 409A. Non-obviousness is high \u2014 ADEA/OWBPA deadline non-compliance as diagnostic, the 'waiver is cosmetic boilerplate' insight, chilling effect even of unenforceable non-competes, lump-sum vs continuation effect on ISO window. Grounding is weak: most factual claims (OWBPA timing, supplemental withholding rates, CA \u00a716600, 90-day ISO rule, double-trigger mechanics) lack citations; [doc-1] is applied generically and one claim is explicitly flagged 'Unsourced.' Roughly 35% of factual sentences carry markers. Only one explicit community section ('What long-form-references would tell you') is present \u2014 the blind spots are not partitioned by community.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "pip-accept-vs-exit",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 80,
+      "diversity_count": 2,
+      "feedback": "Highly specific with concrete dollar ranges ($25-40k tax shortfall), specific tax rates (22% supplemental, 32-37% marginal, CA/NY state rates, 0.9% additional Medicare), named clauses (Termination of Service, Grant Notice, garden leave, release-of-claims), and actionable document requests. Non-obvious angles include the supplemental withholding under-withholding trap, survivor bias on PIP-fight narratives, the counsel asymmetry, and the structural distinction between continued-service vesting vs. discretionary acceleration. Most factual claims carry [doc-X] citations though some assertions (tax rates, specific withholding mechanics, 90-day ISO window aside) lack direct citation. Two distinct 'What X would tell you' sections: long-form-references and matt-levine-school \u2014 only 2, which is light for diversity.",
+      "timed_out": false,
+      "domain": "tech-career"
+    },
+    {
+      "id": "pre-ipo-tender-offer",
+      "specificity": 5,
+      "non_obviousness": 5,
+      "grounding_pct": 88,
+      "diversity_count": 3,
+      "feedback": "Highly specific with named IRS sections (\u00a7422, \u00a71202, \u00a71045), concrete percentages (22%/37% withholding, 23.8% LTCG, $10M/10x basis QSBS cap, $50M/$75M gross assets thresholds), and actionable per-lot mechanics. Non-obviousness is strong: adverse-selection signal from insider participation tables, stacked-haircut compounding, post-tender concentration math, and CEO-anchor base-rate reframing all surface blind spots a typical reader wouldn't generate. Three community sections present (long-form-references, matt-levine-school, tax-and-finance-professionals). Grounding is high \u2014 nearly every factual sentence carries a [doc-X] marker, though a few claims (e.g., specific \u00a71202 threshold dates, 22%/37% supplemental withholding numbers) are asserted with citations to docs that may not directly support those exact numerics, and a couple of framing-adjacent sentences lack markers.",
+      "timed_out": false,
+      "domain": "tech-career"
+    }
+  ],
+  "aggregate": {
+    "specificity_mean": 4.866666666666666,
+    "non_obviousness_mean": 5.0,
+    "grounding_pct_mean": 75.53333333333333,
+    "diversity_mean": 1.8666666666666667,
+    "quality_score": 0.8164
+  },
+  "per_domain": {
+    "tech-career": {
+      "specificity_mean": 4.866666666666666,
+      "non_obviousness_mean": 5.0,
+      "grounding_pct_mean": 75.53333333333333,
+      "diversity_mean": 1.8666666666666667,
+      "quality_score": 0.8164,
+      "fixture_count": 15,
+      "timed_out_count": 0
+    }
+  },
+  "timed_out_count": 0,
+  "timed_out_ids": [],
+  "per_fixture_timeout_seconds": 360
+}
