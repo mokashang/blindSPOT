@@ -1,0 +1,35 @@
+id: marry-for-status-timing
+text: |
+  I'm on F-1 OPT, which expires in 4 months. H-1B lottery missed in March.
+  My US-citizen partner and I have been together 2.5 years; we'd planned
+  to marry next year but my OPT clock is forcing the conversation. If we
+  marry in the next 6 weeks I can file concurrent I-130 / I-485 and get
+  an EAD. If we wait until after OPT lapses I'm out of status before any
+  filing receipt arrives. Does it actually matter whether we marry before
+  or after OPT expires — and does the timing make the marriage look
+  "for status" to USCIS at the I-485 interview?
+expected_domains: [immigration, family-planning]
+expected_entities:
+  - F-1
+  - OPT
+  - H-1B-cap-lottery
+  - I-130
+  - I-485
+  - EAD
+  - good-faith-marriage
+  - I-751
+expected_personas: [f1-student-on-opt, marriage-based-petitioner-usc-spouse]
+expected_risk_surfaces:
+  - 245(a)-eligibility
+  - 245(c)-bar
+  - bona-fide-marriage-evidence
+  - conditional-PR-I-751
+  - I-864-affidavit-of-support-obligation
+expected_decisions: [D2]
+expected_framings: [F1, F6, F11]
+expected_blindspot_categories:
+  - good-faith-marriage-evidence-builds-from-month-one-not-retroactively
+  - status-timing-can-trigger-Stokes-interview-or-fraud-unit-referral
+  - I-864-is-a-10-year-financial-obligation-surviving-divorce
+  - F-1-not-statutory-dual-intent-vs-immediate-relative-245(a)-eligibility
+  - high-stakes-consult-licensed-immigration-attorney

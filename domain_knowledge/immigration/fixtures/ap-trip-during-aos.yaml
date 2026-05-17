@@ -1,0 +1,36 @@
+id: ap-trip-during-aos
+text: |
+  I-485 filed 4 months ago (EB-2, concurrent with I-140 under DFF
+  eligibility). My H-1B is still valid for 18 more months; visa stamp in
+  passport is current through next year. Advance Parole I-131 was filed
+  the same day as the I-485 but is still pending. My mother was just
+  hospitalized in Mumbai — likely 1–2 week trip needed within the next
+  10 days. Options I see: (a) emergency AP appointment at a USCIS field
+  office, (b) travel on the still-valid H-1B visa stamp on the theory
+  that H-1B is dual-intent so my I-485 isn't abandoned, (c) wait for
+  regular AP. The H-1B option feels fastest but my attorney's office is
+  closed for the weekend. What am I missing?
+expected_domains: [immigration]
+expected_entities:
+  - I-485
+  - I-140
+  - I-131
+  - Advance-Parole
+  - H-1B
+  - dual-intent
+  - emergency-AP
+  - visa-stamp
+expected_personas: [aos-applicant-with-pending-i485]
+expected_risk_surfaces:
+  - AOS-abandonment-on-non-AP-departure
+  - dual-intent-statutory
+  - CBP-secondary-inspection-at-re-entry
+  - visa-stamp-expiration-during-AOS-pendency
+expected_decisions: [D5]
+expected_framings: [F1, F3, F4]
+expected_blindspot_categories:
+  - H-1B-dual-intent-permits-travel-but-visa-stamp-renewal-at-consulate-needed-if-expired
+  - emergency-AP-USCIS-field-office-appointment-evidence-standard
+  - travel-on-AP-can-trigger-CBP-secondary-inspection-not-just-AOS-abandonment-question
+  - 245(k)-180-day-aggregate-grace-may-cover-brief-status-gaps-but-not-departure
+  - high-stakes-consult-licensed-immigration-attorney

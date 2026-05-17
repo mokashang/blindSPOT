@@ -1,0 +1,31 @@
+id: ac21-portability-mid-perm
+text: |
+  H-1B, India-born, EB-2. Current employer filed PERM 5 months ago — still
+  in audit, no approval yet. A competitor offered me 35% more cash and a
+  staff-engineer title; the role is in the same broad area (backend
+  infrastructure) but the SOC code at the 6-digit level is slightly
+  different (15-1252 today vs 15-1257 at the new place). My I-140 is not
+  yet filed because PERM hasn't certified. If I jump now, what actually
+  ports — anything? If I wait, how long until I've banked enough
+  portability to move without restarting from zero?
+expected_domains: [immigration, tech-career/comp]
+expected_entities:
+  - H-1B
+  - PERM
+  - I-140
+  - AC21
+  - SOC-code
+  - priority-date
+expected_personas: [h1b-cap-subject-pre-i140, comparing-offers]
+expected_risk_surfaces:
+  - AC21-§106(c)-same-or-similar-SOC
+  - priority-date-retrogression
+  - PERM-restart-on-employer-change
+expected_decisions: [D4, D6]
+expected_framings: [F2, F5, F10]
+expected_blindspot_categories:
+  - SOC-code-literalism-on-promotion-or-team-shift
+  - I-140-must-be-approved-before-portability-unlocks
+  - priority-date-loss-on-pre-approval-employer-change
+  - new-employer-immigration-team-capacity-asymmetry
+  - high-stakes-consult-licensed-immigration-attorney

@@ -1,0 +1,38 @@
+id: stem-opt-vs-capgap-employer-choice
+text: |
+  Graduated MS Computer Science in May; started 12-month OPT in June.
+  H-1B lottery March cycle came back as not-selected. I have two offers
+  on the table now (month 4 of OPT): a Series B startup (no E-Verify,
+  +20% comp) and a mid-size enterprise SaaS company (E-Verify, base
+  comp). If I take the startup I cannot extend onto the 24-month
+  STEM-OPT — STEM-OPT requires the employer to be enrolled in E-Verify
+  AND to file an I-983 training plan. The startup has said they'd "look
+  into E-Verify enrollment by the time my STEM extension is needed"
+  but won't commit. If I take the E-Verify employer I'm safer on the
+  STEM route but burn ~$30k/yr in comp. STEM-eligible CIP code on my
+  degree is confirmed. What am I actually trading?
+expected_domains: [immigration, tech-career/comp]
+expected_entities:
+  - F-1
+  - OPT
+  - STEM-OPT
+  - cap-gap
+  - E-Verify
+  - I-983
+  - H-1B-cap-lottery
+  - CIP-code
+expected_personas: [f1-student-on-opt, comparing-offers]
+expected_risk_surfaces:
+  - STEM-OPT-eligibility
+  - H-1B-cap-lottery
+  - cap-gap-bridge
+  - employer-procedural-reliability-on-H-1B-filing
+expected_decisions: [D7]
+expected_framings: [F1, F12]
+expected_blindspot_categories:
+  - employer-E-Verify-enrollment-not-instantaneous-cannot-time-to-STEM-deadline
+  - 2024-beneficiary-centric-H-1B-multi-registration-rule-changed-lottery-math
+  - 90-day-unemployment-tolerance-on-OPT-clock-start-interpreted-variably-by-DSO
+  - I-983-training-plan-burden-on-employer-not-just-administrative
+  - employer-H-1B-filing-track-record-asymmetric-information-at-offer-time
+  - high-stakes-consult-licensed-immigration-attorney

@@ -1,0 +1,35 @@
+id: eb2-vs-eb3-downgrade-tradeoff
+text: |
+  EB-2 India, priority date May 2014. I-140 approved 6 years ago. Current
+  Visa Bulletin shows EB-3 India about 8 months ahead of EB-2 India on
+  the Final Action Date. My attorney mentioned a "downgrade and interfile"
+  option — file a second I-140 in EB-3 using the same approved PERM, then
+  interfile my pending I-485 onto the EB-3 file. Filing fee + attorney
+  time is ~$5k. EB-3 has been faster than EB-2 for India once before
+  (2020–22) and then reversed. Worth doing now, or is this a one-month
+  bulletin artifact I'd regret chasing?
+expected_domains: [immigration]
+expected_entities:
+  - EB-2
+  - EB-3
+  - I-140
+  - I-485
+  - PERM
+  - priority-date
+  - Visa-Bulletin
+  - Final-Action-Date
+  - interfile
+expected_personas: [h1b-with-approved-i140-backlogged]
+expected_risk_surfaces:
+  - DFF-vs-FAD-divergence
+  - priority-date-retrogression
+  - Visa-Bulletin-forecasting-error
+  - interfile-procedural-variance-by-service-center
+expected_decisions: [D6, D3]
+expected_framings: [F2, F3, F7]
+expected_blindspot_categories:
+  - Visa-Bulletin-reversal-risk-EB-3-India-2020-22-precedent
+  - PD-portability-only-when-same-PERM-and-employer-sponsored
+  - interfile-administrative-variance-across-USCIS-service-centers
+  - 8-CFR-§204.5(e)-priority-date-retention-mechanics
+  - high-stakes-consult-licensed-immigration-attorney

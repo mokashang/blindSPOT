@@ -1,0 +1,30 @@
+id: h1b-renewal-during-pip
+text: |
+  I'm on H-1B, year 4 of 6, at a FAANG. PERM is approved, I-140 was filed
+  3 months ago, not yet approved. Yesterday my manager put me on a 60-day
+  PIP. My H-1B extension was supposed to be filed by HR next month. If I'm
+  terminated mid-PIP I'll have 60 days of grace period. Should I push HR
+  to file the extension NOW, start interviewing for an H-1B transfer
+  immediately, or focus on surviving the PIP?
+expected_domains: [immigration, tech-career/negotiation]
+expected_entities:
+  - H-1B
+  - PIP
+  - PERM
+  - I-140
+  - 60-day-grace-period
+  - H-1B-extension
+  - H-1B-transfer
+expected_personas: [h1b-cap-subject-pre-i140, on-PIP]
+expected_risk_surfaces:
+  - 60-day-grace-period
+  - 240-day-work-auth-extension
+  - AC21-§106(c)-same-or-similar-SOC
+  - employer-dependency
+expected_decisions: [D1, D4]
+expected_framings: [F1, F5, F10]
+expected_blindspot_categories:
+  - status-continuity-vs-employer-leverage-asymmetry
+  - 60-day-grace-clock-mechanics-on-termination
+  - I-140-not-yet-approved-restricts-portability-options
+  - high-stakes-consult-licensed-immigration-attorney
