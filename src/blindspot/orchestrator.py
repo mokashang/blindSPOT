@@ -28,7 +28,7 @@ from blindspot.db.models import (
 from blindspot.filters.grounding import find_unmarked_claims
 from blindspot.llm.base import Embedder, LLMClient
 from blindspot.sources.base import SourceView
-from blindspot.sources.registry import load_registry
+from blindspot.sources.registry import load_all_sources, load_registry
 from blindspot.sources.tag_match import select_top_n
 from blindspot.tags.taxonomy import add_or_merge_tag
 from blindspot.types import (
@@ -49,10 +49,24 @@ class Orchestrator:
     registry: list[SourceView]
 
     @classmethod
-    def create(cls, cfg, llm, embedder, db, registry_path="data/source_registry.yaml"):
+    def create(cls, cfg, llm, embedder, db, registry_path=None):
+        """Build an Orchestrator with its source-view registry loaded.
+
+        - ``registry_path=None`` (production default): use
+          ``load_all_sources()`` which prefers per-domain
+          ``domain_knowledge/<domain>/sources.yaml`` files and falls
+          back to ``data/source_registry.yaml`` when none exist.
+        - ``registry_path=<path>``: load that single YAML file via the
+          legacy ``load_registry`` path. Used by the orchestrator
+          integration test to feed a tmp_path registry.
+        """
+        if registry_path is None:
+            registry = load_all_sources()
+        else:
+            registry = load_registry(registry_path)
         return cls(
             cfg=cfg, llm=llm, embedder=embedder, db=db,
-            registry=load_registry(registry_path),
+            registry=registry,
         )
 
     async def run(

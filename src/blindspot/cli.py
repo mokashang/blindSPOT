@@ -26,7 +26,7 @@ from blindspot.llm.anthropic_api_client import AnthropicAPIClient
 from blindspot.llm.claude_agent_client import ClaudeAgentClient
 from blindspot.llm.voyage_embedder import VoyageEmbedder
 from blindspot.orchestrator import Orchestrator
-from blindspot.sources.registry import load_registry
+from blindspot.sources.registry import load_all_sources
 
 app = typer.Typer(no_args_is_help=True)
 sources_app = typer.Typer(no_args_is_help=True)
@@ -221,7 +221,7 @@ def stats():
 @sources_app.command(name="list")
 def sources_list():
     """List all source-views in the registry."""
-    for v in load_registry():
+    for v in load_all_sources():
         console.print(
             f"  [cyan]{v.id}[/cyan]  "
             f"({v.community_tag}, reliability {v.reliability})  "
