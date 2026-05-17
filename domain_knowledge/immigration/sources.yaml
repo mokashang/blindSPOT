@@ -1,0 +1,373 @@
+# Blindspot V2 per-domain source registry for immigration.
+#
+# Layer 4 of the 4-layer knowledge model (per docs/specs/ROADMAP.md §3).
+# This file holds the source-view inventory scoped to the `immigration`
+# domain. Mirrors the schema of domain_knowledge/tech-career/sources.yaml
+# and the V1 monolithic data/source_registry.yaml.
+#
+# `immigration` is **high_stakes: true** per
+# domain_knowledge/_meta_ontology.md §2. Mechanism E (ROADMAP §5) applies
+# at runtime: Editor labels output "decision-support, not legal advice";
+# Critic applies stricter grounding on citation-bearing claims (statute,
+# CFR section, USCIS Policy Manual reference). These sources feed that
+# pipeline — they are reference / community signal, not adjudicative
+# answers. Per-case decisions still come from a licensed immigration
+# attorney with current facts.
+#
+# Each entry is a "source-view": a configured, filtered, annotated lens
+# into one source.
+# Schema:
+#   id              unique slug
+#   adapter         rss | reddit_search | hn_search | static_corpus
+#   fetch_config    adapter-specific
+#   domains         hierarchical tag paths (multi-label)
+#   community_tag   single community label (drives diversity constraint)
+#   reliability     1-5, initial value; auto-adjusted via rating feedback
+#                   (per ROADMAP §5 Mechanism C "cite-and-promote": new
+#                   sources start at 1 and earn higher reliability via
+#                   runtime usage / rating feedback)
+#   freshness_required  true → cache TTL 7 days; false → 30 days
+#   notes           multi-paragraph; what this view is good for, bad
+#                   for, caveats
+#   domain          (V2) the per-domain folder this source-view lives in
+#
+# Community-tag coverage maps the framings.md §"Voice anchors" classes:
+#   immigration-attorney-blogs       → immigration-attorney voice (procedural rigor)
+#   government-and-ombudsman         → DOS-watcher + USCIS-policy authority voice
+#   practitioner-forums              → AILA-practitioner voice (RFE patterns, adjudicator temperature)
+#   community-experience-forums      → MurthyDotCom-style consumer-rights + F-1 student-forum voice
+#   journalists-and-explainers       → policy-context voice (administration-level shifts)
+#
+# URL caveat: where a feed URL could not be live-verified at authoring
+# time, the entry carries a `notes:` line flagging
+# "URL placeholder — verify before enabling". The registry loader is
+# tolerant of non-resolving feeds (fetch failures are caught per-source
+# in the Collection layer and the turn proceeds); a placeholder entry
+# is inert until verified, not breaking.
+
+# ─── community: immigration-attorney-blogs ────────────────────────────
+
+- id: murthy-newsletter
+  adapter: rss
+  fetch_config:
+    feed: https://www.murthy.com/feed/
+    keyword_filter: [H-1B, I-140, I-485, EAD, AP, PERM, EB-1, EB-2, EB-3, NIW, AC21, CSPA, priority date, Visa Bulletin]
+  domains: [immigration/h-1b, immigration/i-140, immigration/i-485, immigration/visa-bulletin, immigration/ac21]
+  community_tag: immigration-attorney-blogs
+  reliability: 1
+  freshness_required: true
+  domain: immigration
+  notes: |
+    Murthy Law Firm bulletin / blog. Long-running practitioner outlet
+    with reliable Visa Bulletin commentary, AC21 portability nuance,
+    and priority-date reading. Matches the "MurthyDotCom-style
+    consumer-rights" voice anchor in framings.md §"Voice anchors":
+    bulletin watching, retrogression archeology, priority-date math.
+    Best for: priority-date and Visa Bulletin context, AC21 §106(c)
+    same-or-similar adjudication patterns, H-1B extension mechanics.
+    Weak: case-specific RFE drafting, in-house counsel coordination,
+    family-side filings.
+    URL placeholder — verify before enabling.
+
+- id: boundless-blog
+  adapter: rss
+  fetch_config:
+    feed: https://www.boundless.com/blog/feed/
+    keyword_filter: [marriage, I-130, I-485, CR-1, IR-1, conditional, I-751, K-1, fiancé, naturalization, citizenship]
+  domains: [immigration/marriage-based, immigration/i-130, immigration/i-485, immigration/i-751, immigration/naturalization]
+  community_tag: immigration-attorney-blogs
+  reliability: 1
+  freshness_required: true
+  domain: immigration
+  notes: |
+    Boundless Immigration blog. Consumer-facing explainer outlet
+    specializing in marriage-based filings (I-130, AOS, CR-1/IR-1,
+    I-751 removal-of-conditions) and naturalization. Strong on
+    process-level "what evidence does USCIS want" for bona-fide-
+    marriage filings — pairs with framings.md §11 (marriage-good-
+    faith) Excludes line on evidence-build cadence.
+    Best for: I-130/I-485 marriage filings, I-751 evidence patterns,
+    K-1 fiancé visa, naturalization eligibility timing.
+    Weak: employment-based petitions, RFE response drafting, complex
+    immigration history (prior denials, unlawful presence, removal).
+    URL placeholder — verify before enabling.
+
+- id: cyrus-mehta-blog
+  adapter: rss
+  fetch_config:
+    feed: https://blog.cyrusmehta.com/feed
+    keyword_filter: [EB-1, EB-2, EB-3, NIW, AC21, priority date, retrogression, downgrade, interfile, CSPA, EB-5]
+  domains: [immigration/eb-1, immigration/eb-2, immigration/eb-3, immigration/ac21, immigration/cspa]
+  community_tag: immigration-attorney-blogs
+  reliability: 1
+  freshness_required: true
+  domain: immigration
+  notes: |
+    Cyrus D. Mehta & Partners blog. Practitioner-academic voice with
+    deep coverage of employment-based GC categories, downgrade /
+    interfile strategy, CSPA formula nuance, and recent AAO precedent.
+    Among the most-cited firm blogs in the AILA practitioner ecosystem.
+    Best for: EB-2/EB-3 downgrade-and-interfile mechanics, CSPA "sought
+    to acquire" interpretation (Cuellar de Osorio + 2023 USCIS policy
+    update), priority-date portability under 8 CFR §204.5(e).
+    Weak: F-1/OPT student mechanics, consular processing nuance,
+    investor visas (EB-5 is partial coverage only).
+    URL placeholder — verify before enabling.
+
+- id: nation-of-immigrants-blog
+  adapter: rss
+  fetch_config:
+    feed: https://nationofimmigrators.com/feed/
+    keyword_filter: [policy, USCIS, DOS, immigration reform, EAD, asylum, parole, refugee, DACA]
+  domains: [immigration/policy, immigration/employment-based, immigration/family-based, immigration/humanitarian]
+  community_tag: immigration-attorney-blogs
+  reliability: 1
+  freshness_required: true
+  domain: immigration
+  notes: |
+    Greg Siskind's "Nation of Immigrators" blog. Senior practitioner +
+    policy-watcher voice; tracks administration-level shifts, USCIS
+    policy memos, and litigation developments that ripple into RFE
+    rates and adjudication patterns (framings.md §9 Excludes on
+    political-administration calibration is the framing-side anchor).
+    Best for: policy-shift early warning, litigation impact on
+    adjudication, EAD-rule changes, parole programs.
+    Weak: case-specific filing strategy, individual-case RFE drafting.
+    URL placeholder — verify before enabling.
+
+# ─── community: government-and-ombudsman ──────────────────────────────
+
+- id: uscis-policy-manual
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/uscis-policy-manual-excerpts.md
+  domains: [immigration/policy-manual, immigration/h-1b, immigration/i-485, immigration/ac21, immigration/cspa, immigration/naturalization]
+  community_tag: government-and-ombudsman
+  reliability: 1
+  freshness_required: false
+  domain: immigration
+  notes: |
+    USCIS Policy Manual — the binding adjudicative reference USCIS
+    officers consult. Ground-truth source for definitions, eligibility
+    criteria, and policy interpretation (e.g. Volume 6 Part E on
+    EB-1A/EB-2/NIW; Volume 7 on AOS; Volume 12 on naturalization).
+    Critic should weight citations to the Policy Manual heavily under
+    the high_stakes posture (Mechanism E grounding tightening).
+    Manual ingest — paste the relevant chapters into the static
+    markdown file. Update when USCIS revises a volume (the manual is
+    versioned and updates are dated; track at
+    uscis.gov/policy-manual/updates).
+    Best for: ground-truth eligibility / criteria definitions, AC21
+    §106(c) "same or similar" guidance, CSPA formula and policy
+    update history (Feb 2023 update on "sought to acquire").
+    Weak: real-world adjudicator variance (the manual states the
+    rule; service centers apply it inconsistently — pair with
+    practitioner-forum sources for that variance).
+
+- id: uscis-ombudsman-reports
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/uscis-ombudsman-annual-reports.md
+  domains: [immigration/processing-times, immigration/ead, immigration/i-485, immigration/h-4, immigration/policy]
+  community_tag: government-and-ombudsman
+  reliability: 1
+  freshness_required: false
+  domain: immigration
+  notes: |
+    USCIS Ombudsman Annual Reports to Congress (CIS Ombudsman, part
+    of DHS, statutorily independent of USCIS). Documents systemic
+    processing-time problems, EAD-backlog data, recurring RFE
+    patterns, and recommendations USCIS has accepted or rejected.
+    Cross-referenced in framings.md §8 source-evidence (H-4 EAD
+    renewal lag data).
+    Best for: backlog data with provenance, systemic-issue evidence
+    (vs. anecdotal forum reports), USCIS responsiveness patterns.
+    Weak: case-specific advice, real-time updates (annual cadence).
+    Manual ingest — download annual report PDFs from
+    dhs.gov/topic/cis-ombudsman and paste relevant sections.
+
+- id: dol-flag-updates
+  adapter: rss
+  fetch_config:
+    feed: https://www.dol.gov/agencies/eta/foreign-labor/rss
+    keyword_filter: [PERM, prevailing wage, LCA, H-1B, H-2A, H-2B, labor certification]
+  domains: [immigration/perm, immigration/h-1b, immigration/prevailing-wage, immigration/employment-based]
+  community_tag: government-and-ombudsman
+  reliability: 1
+  freshness_required: true
+  domain: immigration
+  notes: |
+    DOL Office of Foreign Labor Certification (OFLC / FLAG) updates.
+    Authoritative source for PERM processing timelines, prevailing-
+    wage determinations, LCA filing rules, and H-2A/H-2B program
+    bulletins. The wage and PERM clock is upstream of every
+    employment-based GC timeline; DOL bottlenecks ripple into the
+    EB-2/EB-3 visibility framings.md §2 (route-optimality) reasons
+    about.
+    Best for: PERM processing queue, prevailing-wage rules, LCA
+    requirements, BALCA decision summaries.
+    Weak: post-DOL USCIS adjudication (different agency, different
+    timeline).
+    URL placeholder — verify before enabling.
+
+# ─── community: practitioner-forums ───────────────────────────────────
+
+- id: aila-think-tank
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/aila-essays-and-position-papers.md
+  domains: [immigration/employment-based, immigration/family-based, immigration/ac21, immigration/cspa, immigration/eb-1, immigration/eb-2, immigration/h-1b]
+  community_tag: practitioner-forums
+  reliability: 1
+  freshness_required: false
+  domain: immigration
+  notes: |
+    AILA (American Immigration Lawyers Association) public-facing
+    essays, position papers, practice advisories, and conference
+    summaries (NOT the members-only InfoNet, which is behind a
+    paywall). AILA's collective practitioner-voice on adjudicator
+    temperature, recurring RFE templates, service-center variance,
+    and USCIS-policy interpretation is the principal source of the
+    "AILA-practitioner voice" referenced throughout
+    domain_knowledge/immigration/framings.md and blindspots.md
+    "Source evidence" lines.
+    Best for: AC21 SOC-code adjudication patterns, EB-1A RFE
+    trends, service-center variance, recent policy-shift
+    interpretation, template-letter risk on EB-1A petitions.
+    Weak: individual-case strategy (members-only resources hold
+    case-specific guidance), real-time bulletin commentary.
+    Manual ingest — collect AILA's public position papers, AAO
+    practice-pointer essays, and conference summary slides into
+    the static file. Update quarterly or when major policy memos
+    drop.
+
+# ─── community: community-experience-forums ───────────────────────────
+
+- id: reddit-immigration
+  adapter: reddit_search
+  fetch_config:
+    subreddit: immigration
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 25
+  domains: [immigration/marriage-based, immigration/employment-based, immigration/family-based, immigration/aos, immigration/visa]
+  community_tag: community-experience-forums
+  reliability: 1
+  freshness_required: true
+  domain: immigration
+  notes: |
+    r/immigration on Reddit. Generalist immigration subreddit covering
+    marriage-based filings, employment-based, family-based, asylum,
+    and naturalization. High-upvote threads surface common
+    misconceptions and real-world filing experiences across many
+    categories. Matches the "consumer-experience" voice the framings
+    name as MurthyDotCom-style.
+    Caveats: skews toward marriage-based and family-based questions;
+    self-petitioning EB-1A / NIW seekers prefer r/EB1 / r/NIW.
+    Filter aggressively by upvotes; honest war-stories outnumber
+    expert answers. Soft-fails without REDDIT_CLIENT_ID/SECRET (the
+    Reddit adapter wraps PRAW construction in try/except at the
+    Collection layer — see CLAUDE.md "Quirks").
+
+- id: reddit-uscis
+  adapter: reddit_search
+  fetch_config:
+    subreddit: USCIS
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 25
+  domains: [immigration/processing-times, immigration/i-485, immigration/ead, immigration/biometrics, immigration/rfe]
+  community_tag: community-experience-forums
+  reliability: 1
+  freshness_required: true
+  domain: immigration
+  notes: |
+    r/USCIS on Reddit. Narrower than r/immigration — focuses on
+    USCIS-side mechanics: receipt notices, biometrics scheduling,
+    EAD renewal timing, RFE patterns, case-status interpretation,
+    field-office and service-center experience reports. Useful for
+    the framings.md §3 (filing-window-arbitrage) and §5 (AC21)
+    Excludes lines on service-center variance and EAD-renewal lag.
+    Caveats: anecdotal — single data points should not move the
+    Critic's confidence; look for thread-volume convergence. Soft-
+    fails without REDDIT_CLIENT_ID/SECRET (same Collection-layer
+    try/except as r/immigration above).
+
+- id: visajourney-corpus
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/visajourney-thread-archive.md
+  domains: [immigration/marriage-based, immigration/k-1, immigration/cr-1, immigration/i-751, immigration/aos]
+  community_tag: community-experience-forums
+  reliability: 1
+  freshness_required: false
+  domain: immigration
+  notes: |
+    VisaJourney.com forum archive. Long-running community focused on
+    fiancé (K-1) and spouse (CR-1/IR-1) visa applicants. Members
+    document their full timelines (NOA1, NOA2, NVC, consular
+    interview, POE) with dates; the aggregated timelines are the
+    de-facto crowdsourced processing-time database for marriage-
+    based filings — sometimes more current than USCIS's own published
+    "case processing times" tool.
+    Best for: marriage-based filing timeline expectations, K-1 vs
+    CR-1 process differences, NVC document submission cadence,
+    consular-interview prep by post.
+    Weak: employment-based filings, complex immigration history,
+    asylum / humanitarian. Static ingest — periodically scrape /
+    paste high-signal long-threads (the site's ToS does not allow
+    full-database scraping; pick representative threads).
+    URL placeholder — verify before enabling.
+
+- id: trackitt-corpus
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/trackitt-thread-archive.md
+  domains: [immigration/employment-based, immigration/i-140, immigration/i-485, immigration/eb-2, immigration/eb-3, immigration/visa-bulletin]
+  community_tag: community-experience-forums
+  reliability: 1
+  freshness_required: false
+  domain: immigration
+  notes: |
+    Trackitt.com forum + tracker archive. Employment-based GC
+    counterpart to VisaJourney — heavy on EB-2 / EB-3 India and
+    China backlogs, priority-date watching, downgrade-and-interfile
+    war stories, retrogression community knowledge. The crowdsourced
+    "EB-1 India" / "EB-2 China" forums are the source-of-truth for
+    real-time bulletin-impact reporting that practitioner blogs
+    publish a week later.
+    Best for: priority-date community knowledge (framings.md §3
+    "bulletin watch" tactical lore), interfile experience reports
+    by service center, retrogression-month tactical adjustments.
+    Weak: family-based filings, F-1 student mechanics, asylum.
+    Static ingest — same approach as visajourney-corpus; scrape /
+    paste high-signal threads from the bulletin-discussion forums.
+    URL placeholder — verify before enabling.
+
+# ─── community: journalists-and-explainers ────────────────────────────
+
+- id: propublica-immigration
+  adapter: rss
+  fetch_config:
+    feed: https://www.propublica.org/feeds/topics/topic/immigration
+    keyword_filter: [USCIS, ICE, asylum, detention, deportation, policy, enforcement, EB-5, fraud]
+  domains: [immigration/policy, immigration/enforcement, immigration/humanitarian, immigration/eb-5]
+  community_tag: journalists-and-explainers
+  reliability: 1
+  freshness_required: true
+  domain: immigration
+  notes: |
+    ProPublica's immigration topic feed. Investigative long-form
+    journalism — exposes enforcement-system pathology, USCIS
+    contractor failures, EB-5 fraud rings, detention-system data.
+    Adversarial framing useful for surfacing the "what could go
+    wrong with the system itself" blind spots that practitioner
+    blogs (which work *within* the system) rarely name. Pairs with
+    framings.md §10 (visa-as-employer-leverage) Excludes lines on
+    the asymmetry between asker and institutional counterparties.
+    Best for: systemic-risk framing, enforcement-side context,
+    fraud-pattern context for EB-5 / investor visas.
+    Weak: filing strategy, statutory mechanics, real-time bulletin
+    commentary. URL placeholder — verify before enabling.
