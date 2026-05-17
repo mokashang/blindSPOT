@@ -48,23 +48,77 @@ here is what it looks like in aggregate." Doesn't moralize.
   (Amazon, Snap) are outliers worth flagging.
 
 ## Known blind spots OF this community
-- **Aggregates can hide your specific company.** "Series B median grant
-  is X" doesn't tell you whether your offer reflects this company's
-  practice. The dataset is a comparator, not a verdict.
-- **Survivorship in the dataset.** Companies that fold quickly may exit
-  the dataset before steady-state benchmarks stabilize. Successful
-  companies are overrepresented in late-stage cuts.
-- **Carta data is Carta-customer data.** It's broad but not the whole
-  market. Non-Carta-using companies (some sectors, some geographies,
-  some stages) are absent.
-- **Levels.fyi data is self-reported.** Selection bias toward high-comp,
-  high-confidence reporters at well-known companies. Long tail is thin.
-- **No tax, behavioral, or personal-situation context.** The benchmark
-  tells you what's typical; it can't tell you whether typical is right
-  for your AMT exposure, visa status, family situation, or risk tolerance.
-- **Lagged.** Aggregate datasets reflect grants and comp decisions made
-  6–18 months ago. Fast-moving market shifts (downturns, AI-boom comp
-  inflation) take time to appear.
+- **The data publisher is also the cap-table vendor selling to the
+  issuer, so findings that would embarrass the paying customer
+  don't get surfaced.** Carta's contract holder is the CFO / GC /
+  People Ops, not the employee whose grant is the data point.
+  Systematically under-reported: pre-409A repricings that wiped out
+  underwater grants, 90-day post-termination exercise windows that
+  consumed vested grants the employee couldn't afford to exercise,
+  refresher-grant gaps for employees who didn't get the equity-
+  review meeting, option-pool top-ups timed right before priced
+  rounds. Failure mode: a "median Series C refresher is 25–50% of
+  original grant" benchmark is computed over employees who
+  *received* a refresher; the denominator of "year-4 employees who
+  got zero" is invisible. Flag any "Carta says X is typical" claim
+  that would, if true, generate bad press for an issuer customer.
+- **Stage coverage tilts toward funded Delaware C-corps that closed
+  a priced round; bootstrapped, SAFE-only-seed, revenue-funded, and
+  non-startup employees are under- or unrepresented.** The
+  onboarding hook is 409A valuation + cap-table service, which
+  doesn't bind until there's preferred-stock capital. Pulley,
+  AngelList Stack, Vesthouse follow the same acquisition shape.
+  Specific gaps: SAFE-only seed companies with no 409A-anchored
+  strike; revenue-funded SaaS offering profit-share or phantom
+  equity; PE-backed / family-office-backed companies with closed
+  cap tables. Failure mode: "Series A senior-eng median grant is
+  0.25–0.75%" sets the asker's anchor for a bootstrapped company
+  where the right comparator is profit-share or phantom equity,
+  not a cap-table percentage.
+- **Tax content is organized around form mechanics (1099-B, 3921,
+  83(b) within 30 days, W-2 box 12 code V) instead of the
+  decisions that move the tax outcome.** The product exists to put
+  the right form in the inbox at the right time, not to advise on
+  AMT-crossover sequencing, partial-exercise across calendar-year
+  boundaries, QSBS §1202 5-year tracking, or ISO disqualifying-vs-
+  qualifying disposition trade-offs. Failure mode: the flow walks
+  the asker through "file your 83(b) in 30 days" without naming the
+  prior-step decision (early-exercise unvested ISOs to start the
+  QSBS clock vs. preserve cash and exercise vested ISOs later) that
+  determines whether 83(b) is the right move at all. Form-
+  completion succeeds; strategy goes unexamined.
+- **Structural default is Delaware C-corp + W-2 employee in a US
+  state; international employees, LLC members, S-corp shareholders,
+  and partnerships get coerced into that template or dropped.**
+  Concrete coverage gaps: LLC profits-interest grants (Rev. Proc.
+  93-27, threshold-value requirement, capital-vs-profits-interest
+  distinction) displayed in the UI as if they were options;
+  non-qualified deferred comp (§409A timing) at later-stage
+  companies; UK EMI / Irish KEEP / French BSPCE / Israeli §102
+  issued by a US parent to a foreign subsidiary's employees;
+  contractors paid in tokens or equity by non-corporate entities.
+  Failure mode: presenting "0.4% ISOs at $0.12 strike" when the
+  underlying instrument is a profits interest with a $0.12
+  threshold value — a benchmark-matched answer that is legally and
+  tax-mechanically wrong.
+- **Frames outcomes through priced-round and secondary-liquidity
+  events because those are the moments the dataset captures; the
+  per-employee mechanics that destroy more grants in aggregate
+  (90-day PTEP lapse on departure, AMT cash-bind on exercise,
+  expiration of unexercised vested options at 10-year option-grant
+  end, refresher-cliff trap) are under-covered.** State of Private
+  Markets and Equity Almanac measure round velocity, valuation
+  multiples, secondary volume, founder-secondary participation;
+  Levels.fyi measures offer TC at signing. Neither reports the
+  cohort of employees who left between years 2 and 4, hit the
+  90-day PTEP, couldn't afford exercise cost, and let options
+  expire — the modal outcome at most late-stage private companies.
+  Failure mode: on pre-IPO-tender-offer or AMT-exercise questions,
+  the framing reaches for "median tender participation is 23%" or
+  "median Series C secondary discount is 25%" and skips the
+  asker's binding constraint — whether they have $40k of after-tax
+  cash available the quarter they have to decide to exercise or
+  walk away from vested options.
 
 ## Representative voices
 Carta Equity Research blog, Carta's State of Private Markets quarterly,
