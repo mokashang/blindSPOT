@@ -156,8 +156,8 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 ```
 Status: 🟡 in progress
 Progress: ███████░░░░░░░░░░░░░ 33% (2/6)
-Last completed: ee159d2 — v1.x/source-view-audit CLOSES at 8/8 via PR #27 (long-form-references) at e0c6278. Full chain: PRs #9 vc-blogosphere / #12 tax-and-finance / #14 reddit-tech-collective / #17 founder-engineer-bloggers / #18 matt-levine-school / #22 hn-collective / #26 carta-and-platform-data / #27 long-form-references — every V1 community profile now has mechanic-trigger-failure-mode bullets. Eval baseline stability advanced this run via PR #28 (9ddf1d0) raising the per-fixture timeout default 240s → 360s in both runner.py and config.yaml — addresses the 8/15 timeout rate from PR #24's eval; falsifiable on next measured eval (≥ 10 OK fixtures expected). Concurrent V2 architecture-changes work: PR #29 (ee159d2) extended `src/blindspot/sources/registry.py` with `load_all_sources()` — V2 per-domain preference + V1 monolithic fallback, bit-for-bit preservation verified by 7 unit tests; V2 architecture-changes 2/6 → 3/6.
-Next up: Eval baseline stability — with the 360s default in place, run eval (single-subagent foreground) to gather RUN-2 of the 3-consecutive ±0.03 target. Verify the timeout bump rescues genuinely-slow fixtures (success threshold ≥ 10 OK of 15). Then RUN-3 to close the item. After eval-baseline-stability, the AnthropicAPIClient end-to-end item is next, since BLINDSPOT_LLM_BACKEND override (PR #23) already proved the API path works mechanically.
+Last completed: a46e5bd — V2 pulled-forward: tech-career/decisions.md (Layer 1 ontology, 11 decisions, 1210 words; first sub-item of V2 §4 tech-career per-domain checklist now [x]; parent stays [ ]). Eval-baseline-stability measurement #2 attempt **bailed** this run: eval ran 51min producing no result file and no per-fixture progress logs (only Reddit-creds warnings). PR #28's 240→360s timeout did NOT unblock — failure mode is UPSTREAM of per-fixture timeout enforcement (or SIGKILL bypasses safety-net write-on-exit). Candidate cause: regression in eval-startup path from a recent merge (PR #29 registry-loader is most-recent code change there). Worth diagnosing before measurement #3.
+Next up: Eval baseline stability — diagnose why PR #28's timeout didn't help. Hypothesis to test: (a) the first fixture's pipeline hangs at LLM client level (PR #15's asyncio.wait_for can't cancel a non-yielding coroutine), or (b) PR #29's registry loader changed startup so the runner is now blocked pre-fixture-loop. After diagnosis, measurement #2 should be re-attempted.
 ```
 
 ### Per-task checklist
@@ -226,8 +226,8 @@ automate parts of it.
 ```
 Status: ⬜ not started
 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/10 domains complete)
-Last completed: ee159d2 — V2 architecture-change: PR #29 extended `src/blindspot/sources/registry.py` with `load_all_sources(root)` that prefers per-domain `domain_knowledge/<domain>/sources.yaml` (glob-scan, excludes underscored subdirs) with a clean V1 fallback to the monolithic `data/source_registry.yaml`. `load_registry(path)` signature preserved bit-for-bit; production callers (Orchestrator.create default, sources-list CLI) routed through the new loader. 7 new unit tests in `tests/unit/test_load_all_sources.py` verify V1 fallback returns the same 13 SourceViews, the V2 path with single + multi per-domain files, underscored-dir exclusion, and real-repo bit-for-bit preservation. Architecture-changes checklist now 3/6 (joins replace-hard-coded-scope-refusal at f098f7a and community-profile-loader at 6fd16d3). Earlier: `_schema.md` at 76e3c32, `_meta_ontology.md` at 2026cba.
-Next up: V1.x exit criteria must be met before per-domain work begins; meanwhile V2 architecture-changes work continues (next: Eval runner per-domain `fixtures/` scanning in `src/blindspot/eval/runner.py`, or Triage two-pass split in `src/blindspot/agents/triage.py`). Then `tech-career` migration is the first `[ ]` in the Per-domain checklist.
+Last completed: a46e5bd — V2 §4 tech-career per-domain checklist: first sub-item `decisions.md` written (PR #30, 11 decisions, 1210 words, infrastructure-ready since PRs #13 / #21 / #29 wired the per-domain readers). Parent `tech-career` checkbox stays [ ] because framings.md / blindspots.md / sources.yaml / fixtures/ / communities/ / domain_pack.md still remain. Architecture-changes checklist remains 3/6 this run (replace-hard-coded-scope-refusal at f098f7a, community-profile-loader at 6fd16d3, registry-loader at ee159d2). Earlier infra: `_schema.md` at 76e3c32, `_meta_ontology.md` at 2026cba.
+Next up: V1.x exit criteria must be met before V2 promotes to 🟡; meanwhile V2 work continues on either (a) the next tech-career sub-item (`framings.md` is the natural Layer 2 follow-on to PR #30's decisions.md), or (b) one of the 3 remaining V2 architecture-changes (eval-runner per-domain scanning, Triage two-pass split, refine-routine per-domain scoping).
 ```
 
 ### Entry gate
@@ -279,7 +279,7 @@ Each of the 10 domains independently requires this checklist.
 **A domain is `[x]` only when all sub-items below are `[x]`.**
 
 - [ ] **tech-career** (migration only — convert existing artifacts to new layout)
-  - [ ] `domain_knowledge/tech-career/decisions.md` written
+  - [x] `domain_knowledge/tech-career/decisions.md` written **— done at a46e5bd (PR #30, 11 decisions, 1210 words)**
   - [ ] `domain_knowledge/tech-career/framings.md` written
   - [ ] `domain_knowledge/tech-career/blindspots.md` written
   - [ ] `data/source_registry.yaml` migrated to `domain_knowledge/tech-career/sources.yaml`
