@@ -36,20 +36,27 @@ this hour, and log progress so the next run picks up cleanly.
 
 Specifics — which domain comes next, which cross-domain capability
 to add, which deferred V1 item to promote — are roadmap decisions,
-not skill decisions. If the roadmap is missing or empty, bail with
-`HUMAN_REVIEW_REQUESTED: roadmap missing or empty` (Boundaries).
+not skill decisions. If the roadmap is missing or empty, **recover**
+(see "Recovery strategies" below): work on infrastructure tasks
+(refresh source notes, fix a docstring, add an eval fixture) and
+log the anomaly. The run still completes; the next hour tries again.
 
 ## Fully autonomous — no human in the loop
 
 Once this skill starts, it runs end-to-end without asking the user
 anything. No confirmations, no clarifying questions, no waiting for
-approval. The only ways the run ends are:
+approval. **The run always ends with a final summary line** — never
+with `HUMAN_REVIEW_REQUESTED:`, never silently. The two paths:
 
-- **Success** — approved PRs are merged automatically and the log is
-  pushed (see Step 10).
-- **Explicit bail** — a `HUMAN_REVIEW_REQUESTED:` line is emitted when
-  a bail-out condition triggers (see "Boundaries"), and the run exits
-  cleanly.
+- **Happy path** — approved PRs are merged automatically, the log is
+  pushed, ROADMAP.md is updated (see Step 10). Summary line names
+  the merges and the `quality_score` delta.
+- **Recovery path** — something went wrong (eval broken, sync drifted,
+  no candidates, all subagents abandoned, etc.). The orchestrator
+  follows the table in "Recovery strategies" below: log the anomaly
+  as a `recovery_attempt` entry, take the safest progress-producing
+  action, continue. Summary line still gets emitted; the run is
+  "completed with anomalies" rather than "failed / blocked".
 
 The "human review" step in the workflow is **not** the user — it is a
 separate `claude -p` session invoked at Step 8 with `REVIEWER_PROMPT.md`.
@@ -60,7 +67,7 @@ main to the new remote tip (Step 10c) and pushes the run log
 (Step 10d). The user does NOT
 manually merge anything; the user does NOT click an "approve" button;
 the user does NOT see PRs queued up for their attention (except when a
-PR is left open because it was held / bailed / conflicted, which is the
+PR is left open because it was held / abandoned / conflicted, which is the
 exception path, not the happy path).
 
 Make every detail decision yourself: which dimensions to try, which
@@ -223,21 +230,28 @@ record:
   itself needs amendment — items mis-scoped, gating wrong, north-star
   alignment drifting. Roadmap edits are framework-level changes.
 
-### Bail conditions
+### Recovery when the roadmap is in bad shape
 
-- `docs/specs/ROADMAP.md` does not exist → `HUMAN_REVIEW_REQUESTED:
-  docs/specs/ROADMAP.md missing — skill cannot self-direct without one`.
-- The roadmap exists but every concrete item is marked completed →
-  `HUMAN_REVIEW_REQUESTED: roadmap fully consumed — extend it before
-  next run`.
-- The roadmap exists but contains no concrete items (only vague
-  intent) → `HUMAN_REVIEW_REQUESTED: roadmap has no bounded items;
-  add concrete next-steps before running`.
+- **`docs/specs/ROADMAP.md` does not exist** → fall back to the V1.x
+  table from §1 of the missing roadmap (synthesized from this skill's
+  description: refine routine maturity / API backend / eval baseline
+  / streaming editor / source-view audit). Pick the most data-driven
+  item this hour; log `recovery_attempt: roadmap_missing` with the
+  chosen work-around. A future Step 2.5 outcome B can propose
+  bootstrapping the roadmap file itself.
+- **Roadmap exists but every concrete `[ ]` item is `[x]`** → pick a
+  low-bar maintenance task (refresh notes, tighten docs, add an eval
+  fixture). Log `recovery_attempt: roadmap_consumed`. A future
+  Step 2.5 can propose adding more items as a framework-level
+  roadmap edit.
+- **Roadmap exists but contains no concrete `[ ]` items** (only vague
+  prose intent) → same recovery: pick maintenance work. Log
+  `recovery_attempt: roadmap_no_bounded_items`. Step 2.5 can promote
+  some prose intent to checkboxes (≤ 2 files scope).
 
-These bail conditions exist because the user explicitly chose to
-drive priorities from the roadmap, not the skill — running without
-a usable roadmap would mean the skill invents priorities, which is
-the wrong direction.
+These recoveries replace the old "bail and ask human" path. The
+roadmap is still the source of truth for priorities; refine recovers
+gracefully when the file is in transition.
 
 ## Step 2 — Evaluate previous run's PRs (orchestrator)
 
@@ -366,8 +380,11 @@ Step 4 alongside detail-level subagents.
   a new agent / new sub-metric / new fixture set, rather than rewrite
   existing). If the change is structurally invasive (refactor agent
   dispatching, change data model, swap LLM provider), it's too big for
-  this loop — bail with `HUMAN_REVIEW_REQUESTED: framework change too
-  large for autonomous attempt; description: ...` and exit. Do not
+  this loop — **don't dispatch it**. Instead, the framework slot for
+  this run becomes a tiny roadmap edit (≤ 2 files: usually just
+  ROADMAP.md) that **splits** the invasive change into smaller bounded
+  checklist items. Those split items become future runs' detail-level
+  work. Log `framework_split_proposed` in the run summary. Never
   attempt large changes silently.
 - **Predicted eval delta with rationale**. Not "this should help" but
   "this should lift specificity from 0.6 to 0.65 because <causal
@@ -488,15 +505,22 @@ future run can pick it up.
    considered", etc.) that map cleanly to a single agent. Roadmap
    signals: items like "agent X should also do Y".
 
-3. **Config & scoring** — `config.yaml`, scoring module. Changes:
-   tune weights / filters / thresholds, adjust sub-metric definitions
-   (when the sub-metric itself already exists; *adding* one is
+3. **Config & scoring** — `config.yaml` (top-level knobs:
+   `refine.quality_score_weights`, `tag_match.*`, `diversity.*`,
+   `critic.thresholds`, etc.), plus the `quality_score` computation
+   in `src/blindspot/eval/runner.py` (currently inline — no separate
+   scoring module). Changes: tune weights / filters / thresholds,
+   adjust how sub-metrics combine into `quality_score` (when the
+   sub-metric itself already exists; *adding* a new sub-metric is
    framework-level). Reactive signals: signal-to-noise observations,
    sub-metric saturation. Roadmap signals: gated tuning items.
 
-4. **Eval** — `eval/` fixtures and judges. Changes: add fixtures
-   (especially as the roadmap advances into new personas / domains /
-   cross-domain situations), refine judge prompts, fix scoring bugs.
+4. **Eval** — `fixtures/eval_situations.yaml` (the fixture file),
+   `src/blindspot/eval/runner.py` (the runner + `quality_score`
+   aggregation), `src/blindspot/eval/judge.py` (the LLM-as-judge
+   prompts and parsing). Changes: add fixtures (especially as the
+   roadmap advances into new personas / domains / cross-domain
+   situations), refine judge prompts, fix scoring bugs in the runner.
    Reactive signals: persona / situation coverage gaps. Roadmap
    signals: items like "add fixture set for X".
 
@@ -536,21 +560,26 @@ Unacceptable (too vague): "improve coverage", "make prompts clearer",
 - **NEGATIVE** → if the previous merged change caused a regression
   that branch-eval missed, plan a `git revert` PR in this slot.
 - **REJECTED** → read the auto-reviewer's reason. Address it (don't
-  retry the same thing). If the rejection seems wrong, escalate via
-  `HUMAN_REVIEW_REQUESTED:` rather than gaming the reviewer.
+  retry the same thing). If the rejection seems wrong, abandon this
+  candidate and pick a different change rather than gaming the
+  reviewer; log the reviewer-disagreement as `reviewer_disputed: <reason>`
+  for weekly human audit, then continue.
 - **HELD (merge conflict)** → rebase and retry in this slot, OR pick
   a different candidate for this layer.
 - **BASELINE** → start anywhere reasonable (typically Sources or Eval
   first, to establish ground truth before tuning Agents or Config).
 
-### Bail-out at this step
+### Recovery at this step
 
 If Step 2.5 chose outcome A AND zero detail layers have a concrete
 candidate (rare — the roadmap should usually supply at least one in
-some layer), emit `HUMAN_REVIEW_REQUESTED: no concrete change
-available in any layer this run; roadmap may be stale or fully
-consumed`. Do not dispatch any subagents. (If Step 2.5 chose B, the
-framework slot alone is enough to proceed.)
+some layer), don't quit. Pick a maintenance task in the Sources or
+Eval layer: refresh a source-view's `notes`, tighten a fixture's
+expected-output annotation, format a YAML file, add a code comment
+flagging a known dud. Dispatch one subagent on that single
+maintenance change. Log `recovery_attempt: no_candidates` in the
+run summary. (If Step 2.5 chose B, the framework slot alone is
+enough to proceed — no recovery needed.)
 
 ## Step 4 — Fan out parallel subagents (orchestrator)
 
@@ -595,13 +624,17 @@ Steps 10+ (the orchestrator will do them after you return).
 
 Do NOT merge the PR. Do NOT push to main. Return a single JSON object
 in the shape described in Step 9 — that is your only output to the
-orchestrator. If you hit any bail-out condition listed in "Boundaries",
-return the JSON with verdict "bailed" and a short reason.
+orchestrator. If you hit any abandon condition listed in "Recovery
+strategies" (subagent-level), return the JSON with verdict
+"abandoned" and a short reason. Try the recoveries first (smaller
+change for eval regression, parse + fix for hook block, etc.) before
+giving up.
 
 The non-negotiables (see SKILL.md "Non-negotiables") apply to you too:
 never push to main, never use --force, never bypass the pre-commit
-hook, never modify SKILL.md / REVIEWER_PROMPT.md / .claude/hooks/** /
-.claude/settings.json.
+hook, never modify SKILL.md / REVIEWER_PROMPT.md / .claude/settings.json
+/ $HOME/.claude/hooks/blindspot-code-review-on-commit.py (the actual
+hook script lives in user-home, NOT in the project tree).
 """
 })
 ```
@@ -609,7 +642,7 @@ hook, never modify SKILL.md / REVIEWER_PROMPT.md / .claude/hooks/** /
 For a framework subagent (Step 2.5 outcome B), the brief MUST also
 include: the data signal that motivated this attempt, the theoretical
 reason it will lift the ceiling, the bounded scope (file list), the
-heightened bail bar ("abandon on ANY regression, not just `< -0.02`"),
+heightened abandon bar ("abandon on ANY regression, not just `< -0.02`"),
 and the requirement to write an explicit `## Framework change` section
 in the PR description.
 
@@ -657,7 +690,7 @@ and silently skipped by `site.py`. Bare `blindspot` is unreliable.)
 Compute `new_quality_score - baseline_quality_score` from the report.
 
 - If delta `< -0.02` (clear regression):
-  - Abandon. Return JSON with verdict `bailed`, reason
+  - Abandon. Return JSON with verdict `abandoned`, reason
     `branch-eval regression: delta=<n>`. The orchestrator will not
     merge anything from this attempt.
 - If delta `>= -0.02`, proceed.
@@ -726,9 +759,9 @@ for iteration in 1..MAX_ITERATIONS:
     # verdict: {"approve": bool, "reason": "..."}
 
     if not parsable(verdict):
-        # On TWO consecutive unparseable verdicts, bail.
+        # On TWO consecutive unparseable verdicts, abandon this attempt.
         if previous_was_unparseable:
-            return {verdict: "bailed", reason: "reviewer output unparseable twice"}
+            return {verdict: "abandoned", reason: "reviewer output unparseable twice"}
         previous_was_unparseable = True
         continue
 
@@ -739,9 +772,9 @@ for iteration in 1..MAX_ITERATIONS:
 
     # Anti-gaming: if this rejection looks substantively similar to a
     # prior one (first 10 words match, or same noun phrase), the loop
-    # isn't converging — bail.
+    # isn't converging — abandon this PR (anti-gaming guard).
     if iteration > 1 and similar_to_any(verdict.reason, prior_rejections):
-        return {verdict: "bailed", reason: "reviewer rejected with same complaint twice; not converging"}
+        return {verdict: "abandoned", reason: "reviewer rejected with same complaint twice; not converging"}
 
     prior_rejections.append(verdict.reason)
 
@@ -751,16 +784,16 @@ for iteration in 1..MAX_ITERATIONS:
     git push origin "$branch"
 else:
     # MAX_ITERATIONS exhausted
-    return {verdict: "bailed", reason: "reviewer rejected ${MAX_ITERATIONS} consecutive times"}
+    return {verdict: "abandoned", reason: "reviewer rejected ${MAX_ITERATIONS} consecutive times"}
 ```
 
 **Robustness:** if `claude -p` fails outright (network, timeout) for
-two consecutive iterations, return verdict `bailed` —
+two consecutive iterations, return verdict `abandoned` —
 don't approve on broken parsing.
 
 ## Step 9 — Return verdict to orchestrator (inside subagent)
 
-When auto-review approves OR a bail-out condition triggers, return a
+When auto-review approves OR an abandon condition triggers, return a
 single JSON object to the orchestrator (this is the subagent's final
 output to the Agent tool). The subagent does **not** merge and does
 **not** push to main.
@@ -772,8 +805,8 @@ Shape:
   "dimension": "prompt-clarity",
   "pr_number": 42,
   "branch": "refine/20260516-220000-risk-officer-clarity",
-  "verdict": "approved" | "held" | "bailed",
-  "reason": "<for held/bailed: explain. for approved: leave empty or short note>",
+  "verdict": "approved" | "held" | "abandoned",
+  "reason": "<for held/abandoned: explain. for approved: leave empty or short note>",
   "baseline_quality_score": 0.71,
   "branch_quality_score": 0.74,
   "expected_signal_delta": {
@@ -795,9 +828,10 @@ Shape:
 
 `verdict` values:
 - `approved` — auto-reviewer approved. Orchestrator should attempt merge.
-- `bailed` — abandoned pre-PR (branch-eval regression, hook block, or
-  subagent-level bail). PR may or may not exist; if it does, it's left
-  open for human review.
+- `abandoned` — abandoned pre-PR or during PR (branch-eval regression
+  the subagent couldn't recover from, hook block it couldn't fix,
+  reviewer-unparseable, etc.). PR may or may not exist; if it does,
+  it's left open as evidence rather than blocking next run.
 - `held` — reviewer rejected after MAX_ITERATIONS or anti-gaming
   triggered. PR is open with iteration history visible.
 
@@ -815,16 +849,34 @@ is on `main` and clean:
 
 ```bash
 git checkout main
-git status --porcelain     # MUST be empty; if not, BAIL (see Boundaries)
-git fetch --prune origin   # update remote refs, prune deleted branches
-git pull --ff-only origin main   # bring local main to remote tip
+
+# Working tree must be clean. If it's not (untracked files / unstaged
+# edits from a previous run that didn't fully clean up), auto-stash
+# and proceed — see "Recovery strategies" for the unpop-at-end logic.
+if [ -n "$(git status --porcelain)" ]; then
+    git stash push -u -m "refine: auto-stash $ts"
+    auto_stashed=1
+fi
+
+git fetch --prune origin    # update remote refs, prune deleted branches
+
+# Replay any pending-push files from prior stuck runs (see Recovery).
+for pending in refinements/pending-push-*.json; do
+    [ -f "$pending" ] || continue
+    apply_pending "$pending" && rm "$pending"
+done
+
+git pull --ff-only origin main   # try fast-forward to remote tip
 ```
 
-If `git pull --ff-only` fails (local main has commits not on remote),
+If `git pull --ff-only` fails (local main has commits not on remote —
 something earlier in this run pushed local-only commits, OR an outside
-push happened — bail with `HUMAN_REVIEW_REQUESTED: local main
-diverged from remote at start of Step 10; manual reconciliation
-needed`.
+push happened), don't quit. Switch to `git pull --rebase origin main`.
+If clean, continue. If conflict on `refinements/log.jsonl` or
+`docs/specs/ROADMAP.md`, auto-resolve as described in "Recovery
+strategies". If conflict on a real code file, drop the local commit
+(`git reset --keep ORIG_HEAD`) and log `local_code_diverged_dropped`
+with the file list, then continue.
 
 ### 10b — Auto-merge approved PRs (remote main)
 
@@ -859,15 +911,17 @@ git fetch --prune origin
 git pull --ff-only origin main
 ```
 
-`--ff-only` is mandatory: if local has any commit not on remote,
-fast-forward fails and we bail rather than create a merge commit on
-main. The orchestrator's only commit to main is the log append in
-10d, which hasn't happened yet — so at this point local should
-cleanly fast-forward over the squash-merge commits gh created.
+`--ff-only` is the preferred path: if local has any commit not on
+remote, fast-forward fails and we don't create a merge commit on
+main. The orchestrator's only commit to main is the log + ROADMAP
+append in 10d, which hasn't happened yet — so at this point local
+should cleanly fast-forward over the squash-merge commits gh
+created.
 
-If `git pull --ff-only` fails: bail with `HUMAN_REVIEW_REQUESTED:
-local main cannot fast-forward to remote after auto-merges; manual
-reconciliation needed`. Do not run 10d.
+If `git pull --ff-only` fails (rare — would mean someone pushed
+between Step 10b's `gh pr merge` and now), don't quit. Switch to
+`git pull --rebase origin main`; auto-resolve any log.jsonl /
+ROADMAP.md conflicts (see "Recovery strategies"). Continue to 10d.
 
 ### 10d — Append log + push (atomic both-side sync)
 
@@ -880,7 +934,7 @@ Use the subagent's returned JSON, plus:
 
 - `timestamp`: orchestrator's start-of-run timestamp (UTC, ISO 8601)
 - `run_id`: orchestrator-assigned run id (e.g. `run-20260516-2200`)
-- `final_verdict`: `merged` | `held` | `bailed` (orchestrator's call,
+- `final_verdict`: `merged` | `held` | `abandoned` (orchestrator's call,
   not the subagent's — reflects what actually happened after merge attempt)
 - `pr_status`: `merged` | `held` | `abandoned-pre-pr`
 - `classification_of_previous`: from Step 2
@@ -892,7 +946,7 @@ Use the subagent's returned JSON, plus:
 
 - `timestamp`: orchestrator's start-of-run timestamp (UTC, ISO 8601)
 - `run_id`: orchestrator-assigned run id (e.g. `run-20260516-2200`)
-- `final_verdict`: `merged` | `held` | `bailed` (orchestrator's call,
+- `final_verdict`: `merged` | `held` | `abandoned` (orchestrator's call,
   not the subagent's — reflects what actually happened after merge attempt)
 - `pr_status`: `merged` | `held` | `abandoned-pre-pr`
 - `classification_of_previous`: from Step 2
@@ -931,7 +985,7 @@ advanced, completed, blocked, or deferred), append one
   "layer": "sources" | "agents" | "config" | "eval" | "framework",
   "action": "advanced" | "completed" | "blocked" | "deferred",
   "pr_number": 42,
-  "final_verdict": "merged" | "held" | "bailed",
+  "final_verdict": "merged" | "held" | "abandoned",
   "summary": "<one-sentence what this run did toward the item>",
   "reason": "<for blocked/deferred: why; for advanced/completed: empty or short note>",
   "next_step_hint": "<optional one-sentence pointer for the next run>"
@@ -943,14 +997,14 @@ Action semantics:
   still has more work.
 - `completed` — item finished. The next Step 1.5 should treat this
   item as done.
-- `blocked` — attempted, subagent bailed / held / the auto-reviewer
+- `blocked` — attempted, subagent abandoned / held / the auto-reviewer
   flagged something the orchestrator can't fix in this run.
 - `deferred` — orchestrator chose not to attempt this item this run
   (e.g. reactive signal preempted it, or another item was
   higher-leverage). Not a failure, just sequencing.
 
 If a roadmap item was the source of a subagent's slot but the
-subagent bailed/held without an advanced merge, emit a `blocked`
+subagent abandoned/held without an advanced merge, emit a `blocked`
 entry. If the item was named in Step 3 but skipped in favor of a
 reactive candidate, emit a `deferred` entry.
 
@@ -969,10 +1023,14 @@ For each such entry, in the relevant version section:
 1. **Checkbox**. If `action: "completed"`, change the matching
    `- [ ]` to `- [x]`. Match by the slug used in `item_id` — if the
    checkbox text drifted since the run started and the slug no
-   longer round-trips, BAIL with `HUMAN_REVIEW_REQUESTED: cannot
-   locate ROADMAP.md checkbox for item <id>; manual reconciliation
-   needed`. For `action: "advanced"` (item still has more work),
-   leave the box unchecked but still update Last completed / Next up.
+   longer round-trips, search by fuzzy substring of the original
+   checkbox text (case-insensitive, ignore punctuation). If still no
+   match (item heading changed substantively), record
+   `roadmap_drift: item <id> no longer locatable` in the log instead
+   of editing ROADMAP.md, and skip the rest of this entry's ROADMAP
+   updates. The log still captures progress; humans can reconcile
+   later. For `action: "advanced"` (item still has more work), leave
+   the box unchecked but still update Last completed / Next up.
 2. **Progress bar**. Recompute the version's
    `Progress: ████░░░░ X% (N/M)` line. `N` = count of `[x]` in that
    section, `M` = count of `[ ]` + `[x]`. Render exactly 20
@@ -1005,25 +1063,45 @@ retry on push race:
 git add refinements/log.jsonl docs/specs/ROADMAP.md
 git commit -m "refine: log iteration $ts (N attempts, M merged, K held; framework: A|B; roadmap: P advanced, Q completed)"
 
-# Push, with one retry on race (someone else pushed between our pull
-# and now). On the retry, rebase onto the new remote tip and try again.
-if ! git push origin main; then
-    git fetch origin
-    git pull --rebase origin main   # rebase our log commit onto new tip
-    if ! git push origin main; then
-        # Still failing — bail. Local has the log commit but remote doesn't.
-        # Next run's 10a fast-forward will fail until this is resolved.
-        echo "HUMAN_REVIEW_REQUESTED: log push to remote main failed twice; \
-local has commit not on remote — resolve manually before next run"
-        exit 1
+# Push, with up to 5 attempts and exponential backoff on race
+# (someone else pushed between our pull and now). On each retry,
+# rebase onto the new remote tip and try again.
+attempt=1
+backoff=2
+while ! git push origin main; do
+    if [ $attempt -ge 5 ]; then
+        # All 5 push attempts failed. Save pending log + ROADMAP edits
+        # to a side file so the next run can replay them at Step 10a.
+        # Don't quit the run — emit a final summary line saying push
+        # deferred and exit cleanly.
+        save_pending_push "refinements/pending-push-$ts.json"
+        log_anomaly "push_deferred" "after 5 attempts, $attempt × backoff"
+        break
     fi
-fi
+    sleep $backoff
+    backoff=$((backoff * 2))
+    attempt=$((attempt + 1))
+    git fetch origin
+    if ! git pull --rebase origin main; then
+        # Rebase conflict on log.jsonl or ROADMAP.md (auto-resolvable;
+        # see Recovery strategies — log.jsonl is append-only, ROADMAP
+        # checkbox flips union). If auto-resolve also fails, save
+        # pending and break out.
+        if ! auto_resolve_rebase_conflict; then
+            save_pending_push "refinements/pending-push-$ts.json"
+            log_anomaly "rebase_unresolvable" "$(git status --porcelain)"
+            git reset --keep origin/main   # safe — fails if would lose work
+            break
+        fi
+    fi
+done
 ```
 
-If the rebase itself fails (conflict on `refinements/log.jsonl` or
-`docs/specs/ROADMAP.md` — extremely rare, would require two refine
-runs racing), bail with `HUMAN_REVIEW_REQUESTED: log/roadmap rebase
-conflict; concurrent refine run suspected`.
+The `save_pending_push` / `apply_pending` / `auto_resolve_rebase_conflict`
+helpers are conceptual — implement them inline as needed. The
+invariant is: **the run always completes**, even if push couldn't
+land this hour; pending files get replayed at the next run's
+Step 10a (see Recovery strategies).
 
 ### 10e — Sync verification (invariant check)
 
@@ -1035,13 +1113,22 @@ git fetch origin
 local_sha=$(git rev-parse main)
 remote_sha=$(git rev-parse origin/main)
 if [ "$local_sha" != "$remote_sha" ]; then
-    echo "HUMAN_REVIEW_REQUESTED: end-of-run sync invariant broken — \
-local main $local_sha != remote main $remote_sha"
-    exit 1
+    # Re-fetch once in case the prior fetch hit a transient hiccup,
+    # then log the observed divergence and continue. The run still
+    # completes; the next run's Step 10a will reconcile via stash +
+    # rebase recovery.
+    git fetch origin
+    local_sha=$(git rev-parse main)
+    remote_sha=$(git rev-parse origin/main)
+    if [ "$local_sha" != "$remote_sha" ]; then
+        log_anomaly "sync_divergence_observed" "local=$local_sha remote=$remote_sha"
+    fi
 fi
 ```
 
-Only when this check passes is the run considered successful.
+The happy path is local SHA == remote SHA. The recovery path logs
+the divergence and continues; the run still emits its final summary
+line.
 
 ### 10f — Worktree cleanup (best-effort)
 
@@ -1067,92 +1154,156 @@ run-20260516-2200: 3 dimensions attempted (prompt-clarity, coverage, signal-nois
 
 ---
 
-## Boundaries — when to bail out
+## Recovery strategies — never stop, always make progress
 
-Output a single line starting with `HUMAN_REVIEW_REQUESTED:` followed
-by a short explanation, and exit without making further changes, if:
+The orchestrator NEVER terminates the run early. Every run ends with
+the final summary line + log appends + ROADMAP.md update (if any
+item advanced or completed) — never with a `HUMAN_REVIEW_REQUESTED:`
+line. When a situation in the tables below applies, do the recovery
+action; when none applies, fall back to: **log the anomaly as a
+`recovery_attempt` entry, take the safest action that still produces
+some progress, continue the run.**
 
-### Orchestrator-level bail-outs
+The hourly cron makes this design choice non-negotiable: a stuck run
+blocks the entire automation pipeline for an hour. Recovering from a
+problem and trying alternatives is always better than stopping. The
+log captures what was tried so weekly human review can spot patterns
+that need real attention.
 
-- The eval suite fails to run at all (broken pipeline upstream) — detected during Step 1 sanity-checks.
-- Step 2.5 chose A AND zero detail dimensions have a concrete
-  improvement available (Step 3).
-- All subagents in this run returned `bailed` or `held`.
-- The same `dimension` has produced 5+ `held` or `bailed` outcomes in
-  the last 10 log lines, with no `merged` interspersed.
-- A framework change identified in Step 2.5 is structurally invasive
-  (> ~5 files, refactor-style, or LLM-provider swap) — emit
-  `HUMAN_REVIEW_REQUESTED: framework change too large for autonomous
-  attempt` without dispatching the framework subagent.
-- **Sync-invariant bail-outs** (Step 10):
-  - Orchestrator's working tree is not clean at Step 10a start.
-  - `git pull --ff-only` fails at 10a or 10c (local main diverged
-    from remote).
-  - Log push fails twice in 10d (after rebase-retry).
-  - Log / ROADMAP.md rebase conflict in 10d (concurrent refine run suspected).
-  - ROADMAP.md checkbox cannot be located for an item to mark in 10d
-    (slug round-trip failure; manual reconciliation needed).
-  - 10e sync verification fails (local main SHA ≠ remote main SHA at
-    end of run).
-- A git operation in Step 10 fails in some other unexpected way
-  (network, permission, repo state corrupted).
-- Across runs, the last three full runs produced zero merged PRs.
+### Orchestrator-level recoveries
 
-### Subagent-level bail-outs (return verdict `bailed`)
+| Situation | Recovery action |
+|---|---|
+| Eval suite fails to run at all (Step 1 sanity check) | Try `pip install -e .`; on macOS Python 3.13 also `chflags -R nohidden .venv` (see CLAUDE.md "Quirks"); re-run eval. If still broken, scope this run to dimensions that don't need eval (e.g. doc/comment refinement) and queue "fix eval pipeline" as a V1.x roadmap item via Step 2.5 outcome B. Log `recovery_attempt: eval_broken`. |
+| Step 2.5 = A AND zero detail layers have a concrete candidate (Step 3) | Pick a low-bar maintenance task: refresh a source-view's `notes`; tighten a docstring; add an eval fixture; lint a YAML file. Log `recovery_attempt: no_candidates`. |
+| All subagents in this run returned `abandoned` or `held` | Don't quit. Run a second round with cheaper attempts — smaller scope, lower-bar dimensions (cosmetic doc edits, formatting). If round two also produces 0 merges, log `recovery_attempt: round_two_empty` and finish the run with a summary "0 merged, recovery rounds exhausted". Cron retries next hour. |
+| Same `dimension` produced 5+ `held` / `abandoned` in last 10 log lines (no `merged` interspersed) | Don't attempt that dimension this run; pick others. Log `dimension_paused: <dim>` once. Resumes automatically when stale entries roll off the 10-line window. |
+| Framework change identified in Step 2.5 is structurally invasive (> ~5 files, refactor-style, LLM-provider swap, etc.) | Don't dispatch the large change. Instead: propose a roadmap edit (a tiny Step 2.5 outcome B with scope ≤ 2 files) that **splits** the large item into smaller bounded checklist items in ROADMAP.md. The split items become future runs' detail-level work. Log `framework_split_proposed`. |
+| **Step 10a — orchestrator's working tree not clean** | `git stash push -u -m "refine: auto-stash $ts"`, proceed. At end of 10d, attempt `git stash pop`; on conflicts, leave the stash entry in place (don't drop), log `auto_stash_unpopped`. Manual cleanup becomes a no-rush task; the run still completed. |
+| **Step 10a / 10c — `git pull --ff-only` fails** (local diverged from remote) | Switch to `git pull --rebase origin main`. If clean, continue. If conflict on `refinements/log.jsonl` or `docs/specs/ROADMAP.md`, auto-resolve: log.jsonl is append-only — take both sides sorted by `timestamp`; ROADMAP.md — prefer the union of `[x]` flips and recompute the progress bar afterward. If conflict on a real code file (unexpected — orchestrator shouldn't have local code changes), drop the local commit (`git reset --keep ORIG_HEAD`) and log `local_code_diverged_dropped` with the file list. |
+| **Step 10d — log push fails after first rebase-retry** | Retry up to 5 total attempts with exponential backoff (2 s, 4 s, 8 s, 16 s, 32 s — ~62 s max). On each retry: `git fetch origin && git rebase origin/main`, then push. If all 5 fail, save the pending log + ROADMAP edits to `refinements/pending-push-<ts>.json` (one file per stuck attempt), log `push_deferred`, continue. Next run's Step 10a / 10c detects `refinements/pending-push-*.json` files and replays them before doing its own work. |
+| **Step 10d — rebase auto-resolve impossible** (extremely rare) | Save changes to `refinements/pending-push-<ts>.json`; log `rebase_unresolvable` with the rebase stderr. Reset local to `origin/main` (`git reset --keep origin/main` is safe — only succeeds if no local changes would be lost). Continue. |
+| **Step 10d — cannot locate ROADMAP.md checkbox for an `item_id`** (slug round-trip failure) | Search by fuzzy substring of the original checkbox text (case-insensitive, ignore punctuation). If still no match (item heading changed substantively between runs), record `roadmap_drift: item <id> no longer locatable` in the log instead of editing ROADMAP.md. The log + the unedited ROADMAP.md still capture progress; humans can reconcile later. |
+| **Step 10e — SHA mismatch** (local main ≠ remote main at end) | Re-fetch (`git fetch origin`), re-compare. If still mismatched, log `sync_divergence_observed: local=<sha> remote=<sha>` and continue. Next run's 10a sees a non-clean tree and uses the stash recovery. |
+| Git op fails for unknown reason (network, permission, transient) | Retry once with 3× timeout. If still failing, log `git_op_failed: <op> <error>` and continue with the next operation in the sequence. Skip the failed one; orchestrator does its best to make the rest of the run still produce a summary. |
+| Across runs, the last 3 produced zero merged PRs | A trend, not an event. Log `cold_streak_observed` (a marker entry, NOT an exit signal). Continue this run normally. The trend will self-correct or weekly human review will catch it via the log. |
+| **Pending push files exist at Step 10a start** (`refinements/pending-push-*.json` from a prior stuck run) | Before this run's own work, attempt to replay each pending file in chronological order: load its log entries + ROADMAP edits, apply on top of current local main, push. On success, delete the pending file. On failure, leave it and log `pending_replay_failed: <file>`. Then proceed with this run's normal work. |
+| Catastrophic unexpected error (uncaught exception anywhere) | Wrap `try / except Exception` at the orchestrator's top level. On any uncaught exception: log `unexpected_error: <type> <reason>` with traceback to `refinements/log.jsonl`, emit a final summary line saying "errored; see log", exit cleanly. The run produces SOMETHING the user can read — never a silent dead end. |
 
-- Branch eval shows regression `< -0.02` (Step 6). For framework
-  subagents, the threshold is stricter: abandon on ANY regression on
-  aggregate `quality_score` (not just `< -0.02`).
-- Pre-commit code-review hook blocks a commit you expected to pass (Step 5).
-- A single PR exhausts MAX_ITERATIONS (= 3) of auto-review fix-and-retry (Step 8).
-- Within one PR, the reviewer rejects with a substantively similar
-  complaint to a prior iteration (anti-gaming guard).
-- The auto-reviewer's verdict output is unparseable on two consecutive
-  iterations within a single PR.
+### Subagent-level recoveries
 
-These conditions mean either refine's judgment, the reviewer's
-calibration, or the project state has drifted into a place that needs
-human eyes. Bailing out is the correct behavior.
+Subagents return verdicts (`approved` / `held` / `abandoned`) for
+per-attempt outcomes. These are NOT run terminations — the
+orchestrator absorbs them and counts in the summary. Before returning
+`abandoned`, a subagent should TRY:
+
+- **Branch eval regression `< -0.02`** (or any regression for a
+  framework subagent): try ONE smaller version of the change — cut
+  the knob delta in half, or pick a narrower file scope. If that
+  still regresses, return `abandoned` with reason.
+- **Pre-commit hook block**: parse the hook's stderr. If it names a
+  specific fixable issue (style, missing type hint, unused import),
+  apply the fix and retry the commit. If the same block fires twice
+  in a row on the same file, return `abandoned`. Never bypass with
+  `--no-verify` or env-var skips.
+- **MAX_ITERATIONS (= 3) auto-review exhausted**: return `held`. The
+  PR stays open; orchestrator's next-run Step 3 picks a different
+  candidate in this layer.
+- **Reviewer rejects with substantively similar complaint** to a
+  prior iteration: return `held` with reason `not_converging`.
+  Anti-gaming guard. (This is the one place "trying harder to fix
+  it" is actively wrong — if the same complaint recurs, the loop
+  has stopped making real progress and should stop spinning.)
+- **Reviewer verdict unparseable twice in a row**: return `abandoned`
+  with reason `reviewer_unparseable`. The reviewer may be in a bad
+  state; orchestrator can retry this layer next run with a fresh
+  reviewer invocation.
+
+The verdict name is `abandoned` (renamed from `bailed` in earlier
+versions of this skill — the new name reflects the design intent:
+this specific change didn't work, the run continues). "Abandon this attempt"
+captures the intent: this specific change didn't work, but the run as
+a whole continues with other attempts.
+
+### What stays as hard "don't do"
+
+These are constraints, not recovery conditions. The orchestrator and
+subagents must refuse to attempt them in the first place; the PR
+auto-reviewer rejects any PR that tries them, which makes the subagent
+abandon that attempt (not retry harder):
+
+- **Push directly to `main`** from anywhere — only Step 10d's single
+  log + ROADMAP commit is allowed, and only on `main` itself.
+- **`git push --force`** or any destructive git operation (`reset
+  --hard`, `branch -D` on a branch with unpushed commits, `clean -f -d`,
+  etc.).
+- **Bypass the pre-commit code-review hook** (`--no-verify`,
+  `BLINDSPOT_SKIP_REVIEW=1`, deleting / disabling the hook script,
+  removing the matcher in `.claude/settings.json`, etc.).
+- **Modify any of:** `REVIEWER_PROMPT.md`, this `SKILL.md`,
+  `.claude/settings.json` (repo-level hook config), OR the hook
+  scripts at `$HOME/.claude/hooks/blindspot-code-review-on-commit.py`
+  (and any sibling files under `$HOME/.claude/hooks/`). The hook
+  system spans both: repo `settings.json` wires it up, user-home
+  script does the actual review. Modifying either silently weakens
+  pre-commit safety. The reviewer rejects PRs that touch any of
+  these paths.
+- **Schedule itself.** Scheduling is a deliberate user action via the
+  `schedule` skill, after the user watches this skill run 3–5 times
+  manually.
+- **Modify a closed or merged PR.**
+
+If a PR or commit attempts any of these, the reviewer rejects it,
+the subagent abandons that attempt, and the orchestrator picks a
+different change. No bail, just routing.
 
 ## Non-negotiables
 
 These apply to BOTH the orchestrator and every subagent.
 
-- **Never ask the user any question during the run.** Make every detail
-  decision yourself. The rules in this skill are the decision boundary;
-  when they say "if X then Y," do Y; when silent, use your judgment.
-  The only allowed user-facing output is the final summary line or a
-  single `HUMAN_REVIEW_REQUESTED:` bail line.
+- **Never ask the user any question during the run.** Make every
+  detail decision yourself. The rules in this skill are the decision
+  boundary; when they say "if X then Y," do Y; when silent, use your
+  judgment. The only user-facing output is the final summary line at
+  end of run.
+- **Never emit `HUMAN_REVIEW_REQUESTED:`.** Every situation that
+  would historically have bailed now has a recovery action above. If
+  none applies, log the anomaly and continue with the safest
+  progress-producing action. Cron must never get stuck.
 - **Auto-merge on auto-review approval.** When the Step 8 reviewer
-  (`claude -p` session with `REVIEWER_PROMPT.md`) approves a PR, the
+  (`claude -p` with `REVIEWER_PROMPT.md`) approves a PR, the
   orchestrator merges it in Step 10b via `gh pr merge --squash
   --delete-branch` without any further confirmation. Never leave an
   approved PR open waiting for a human.
-- **End-of-run sync invariant.** When the run ends successfully
-  (i.e. without a `HUMAN_REVIEW_REQUESTED:` bail), local `main` and
-  remote `origin/main` MUST be at the same commit SHA. Step 10's
-  fetch / fast-forward-only pull / push-with-rebase-retry /
-  end-of-run SHA check are not optional. Every change made by this
-  run (code changes via squash-merges, log appends via direct
-  commit) lands on both local and remote main, or the run bails.
+- **End-of-run sync is best-effort, not a gate.** On the happy path,
+  local `main` and remote `origin/main` end at the same commit SHA.
+  Step 10's fetch / fast-forward-only pull / push-with-rebase-retry /
+  end-of-run SHA check are the mechanisms. When something goes wrong,
+  the recovery strategies above keep the run going even if perfect
+  sync isn't achievable this hour — the next run reconciles. Sync is
+  a goal, not a termination gate.
 - Never push directly to `main` from any session. All code changes go
   through PR + auto-review. The orchestrator's only direct-to-main
-  commit is the single log-append in Step 10d.
+  commit is the single log + ROADMAP commit in Step 10d.
 - Never use `git push --force` or any destructive git operation.
 - Never schedule yourself. Scheduling is a deliberate user action via
-  the separate `schedule` skill, after the user has watched this skill
-  run 3–5 times manually.
-- Never modify `REVIEWER_PROMPT.md`, this `SKILL.md`, or any file under
-  `.claude/hooks/` or `.claude/settings.json` — the auto-reviewer
-  rejects PRs touching these. If you think they need a change, output
-  `HUMAN_REVIEW_REQUESTED:` and explain.
+  the separate `schedule` skill.
+- Never modify `REVIEWER_PROMPT.md`, this `SKILL.md`,
+  `.claude/settings.json`, or any file under `$HOME/.claude/hooks/`
+  (where the pre-commit review script actually lives). The
+  auto-reviewer rejects PRs touching these; if a subagent thinks one
+  of these needs a change, it abandons and the orchestrator picks a
+  different change. Roadmap edits to `docs/specs/ROADMAP.md` are
+  explicitly allowed (Step 2.5 outcome B for content, Step 10d for
+  automatic checkbox / progress / Last completed / Next up).
 - Never bypass the pre-commit code-review hook (no `--no-verify`,
-  `BLINDSPOT_SKIP_REVIEW=1`, or similar). If the hook blocks a commit,
-  abandon and try a different change.
+  `BLINDSPOT_SKIP_REVIEW=1`, no deleting the hook script). If the
+  hook blocks a commit, address the issue or abandon.
 - If the auto-reviewer rejects, do not retry the same idea. Either
   address the reviewer's concern or move to a different dimension.
-- Subagents do not merge their own PRs and do not push to main.
+- Subagents do not merge their own PRs and do not push to `main`.
   Sequential merge + conflict handling is the orchestrator's job —
-  this avoids races between parallel subagents racing on `main`.
-- Subagents do not write to `refinements/log.jsonl`. The orchestrator
-  appends all log lines at end of run in a single commit.
+  this avoids races between parallel subagents on `main`.
+- Subagents do not write to `refinements/log.jsonl` or
+  `docs/specs/ROADMAP.md`. The orchestrator appends all log lines and
+  applies ROADMAP edits at end of run in a single commit (Step 10d).

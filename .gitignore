@@ -57,3 +57,6 @@ config.local.yaml
 
 # Claude Code local overrides
 .claude/settings.local.json
+
+# refine-blindspot subagent worktrees (transient per-run)
+.claude/worktrees/

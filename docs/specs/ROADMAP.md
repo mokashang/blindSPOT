@@ -142,6 +142,77 @@ artifacts for one domain co-located, so adding a new domain is "fork
 the folder, fill it in." It also makes the progress tracker in §4
 trivially correspond to "is this folder complete."
 
+## V1.x — Stabilize foundations before scaling
+
+**Capability jump:** V1 reaches a state where (a) the refinement loop
+runs reliably enough that the hourly cron can be trusted to make
+real progress, (b) the LLM backend swap from subscription to API
+key is fully usable, (c) the eval suite gives a stable baseline
+against which V2 per-domain work can measure regressions. V1.x is
+hardening, not new features; it makes V2's scale-up safe to begin.
+
+### Status
+
+```
+Status: 🟡 in progress
+Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/6)
+Last completed: (none — V1.x is the active hardening phase)
+Next up: refine routine produces ≥ 5 merged PRs across ≥ 3 layers
+```
+
+### Per-task checklist
+
+- [ ] **Refine routine maturity** — `refinements/log.jsonl` shows ≥ 5
+  merged refine PRs across ≥ 3 of the 4 detail layers (Sources & knowledge
+  / Agents / Config & scoring / Eval). The signal is that refine is
+  producing diverse real progress, not stuck in one corner.
+- [ ] **Eval baseline stability** — three consecutive `./bin/blindspot eval`
+  runs on `main` produce aggregate `quality_score` within ±0.03 of
+  each other. The baseline is the median of those three; this becomes
+  the V2 entry comparison.
+- [ ] **AnthropicAPIClient usable end-to-end** — set `llm_backend:
+  anthropic_api` in `config.yaml`, run a full `blindspot ask`, and
+  verify behavior matches the subscription backend on the eval
+  fixtures (per-situation `quality_score` delta < 0.05).
+- [ ] **Streaming editor output** — Editor agent streams tokens as
+  they arrive instead of buffering the whole response. Cuts the
+  30–60s perceived latency from
+  [V1 design §13](./2026-05-13-blindspot-v1-design.md).
+- [ ] **Real-usage signal** — ≥ 10 `blindspot ask` turns logged in
+  `~/.blindspot/blindspot.db` with at least one `rate hit/meh/obvious`
+  per turn. This populates the rating distributions V2's per-domain
+  quality tracking will inherit.
+- [ ] **Source-view audit** — review `source_view_stats`: any
+  source-view with `hits >= 10` and `ratings_hit / total < 0.3` either
+  gets its `keyword_filter` retuned, its `notes` rewritten, or is
+  retired. Record results in `data/source_registry.yaml`'s per-source
+  `notes`.
+
+### Entry gate
+
+(None — V1.0 already shipped; V1.x is the post-ship hardening phase.)
+
+### Exit criteria
+
+All checklist items are `[x]`. Then promote V2.0 from `⬜` to `🟡`
+and set its `Next up:` to the first sub-task of `tech-career`
+migration.
+
+### Notes for refine
+
+- Most V1.x items are infra / quality, not new product features.
+  Refine can scope work into any of the 4 detail layers (Sources,
+  Agents, Config, Eval) and find relevant items here without
+  pulling forward from V2.
+- "Refine routine maturity" is the meta-item — its completion is
+  determined by reading the log, not by any single PR. Mark it
+  `[x]` when the orchestrator detects ≥ 5 merged PRs spanning ≥ 3
+  layers.
+- "Source-view audit" is Sources-layer; "AnthropicAPIClient usable"
+  touches Agents/Config; "Streaming editor" is Agents. Refine
+  tackles them in whatever order data signals + roadmap-driven
+  priorities pick this hour.
+
 ## 4. V2.0 — Build 10 core domains under the 4-layer model
 
 **Capability jump:** the system answers decisions across 10 domains,
