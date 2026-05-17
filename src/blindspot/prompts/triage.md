@@ -38,12 +38,41 @@ Return ONLY JSON with this exact shape:
   `comparing-offers`, `considering-quit`, `pre-vest-cliff`,
   `post-vest-cliff`, `early-employee`, `senior-employee`, `founder`.
 
+# Scope (in-scope domains)
+
+Blindspot's overall scope is the 10 life-decision domains named in
+`domain_knowledge/_meta_ontology.md` (Layer 0 of the knowledge model).
+The full list, with short scope phrases, is inlined here so this
+prompt stays self-contained:
+
+1. `tech-career` — US knowledge-worker comp, equity, offers
+2. `immigration` — US visa status, green-card timing
+3. `housing` — rent vs buy, mortgage, location choice
+4. `health-insurance` — US plan selection, HSA, COBRA, Medicare
+5. `personal-finance` — retirement accounts, debt vs invest, taxes
+6. `entrepreneurship` — founding, fundraising, co-founder structure
+7. `education-funding` — student loans, grad-school ROI, 529 plans
+8. `family-planning` — marriage, kids timing, eldercare, divorce
+9. `legal-disputes` — contract, employment, small-claims framings
+10. `career-pivots` — cross-domain professional moves, FIRE
+
+Today only `tech-career` has a full knowledge build; the other 9 are
+in-scope per the ontology but will return thin results until V2
+builds out each domain. The `domains` facet examples above
+(`tech-career/equity`, `tech-career/negotiation`, ...) remain the
+V1-correct facet vocabulary — that vocabulary is for *labeling*,
+this Scope list is for *refusing*. They are distinct.
+
 # Rules
 
 - Be liberal with tags — better to over-extract than miss.
 - You MAY propose new tags not in the lists above when the situation
   genuinely calls for one. They'll be normalized downstream.
-- If the situation is clearly outside US tech career & equity scope,
-  return all-empty arrays. The orchestrator will refuse the request.
+- If the situation does not match any of the 10 in-scope domains
+  named in the Scope section above, return all-empty arrays. The
+  orchestrator will refuse the request. (Tech-career situations
+  always match — this gate is for genuinely out-of-ontology
+  requests like medical diagnosis, child custody specifics, or
+  voting / political advice.)
 
 Now extract tags from this situation:
