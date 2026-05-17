@@ -1,0 +1,347 @@
+# Blindspot V2 per-domain source registry for immigration.
+#
+# Layer 4 of the 4-layer knowledge model
+# (per docs/specs/ROADMAP.md §3). New file — immigration is V2's
+# second domain after tech-career; no V1 immigration sources existed
+# to migrate.
+#
+# Decision and framing names this file's `domains` and `notes` fields
+# reference are defined in:
+#   - domain_knowledge/immigration/decisions.md (10 decisions)
+#   - domain_knowledge/immigration/framings.md  (14 framings)
+#   - domain_knowledge/immigration/blindspots.md
+#
+# `immigration` is high_stakes=true per _meta_ontology.md §2. Mechanism E
+# gating applies downstream: Editor labels output "decision-support, not
+# legal advice"; Critic applies stricter grounding. Sources here are
+# chosen with that in mind — primary-source authority (USCIS / DOS /
+# Federal Register) is weighted heavily; community sources are
+# corroborative, not load-bearing for legal-fact claims.
+#
+# Schema (same as data/source_registry.yaml + V2 `domain` annotation):
+#   id              unique slug, kebab-case
+#   adapter         rss | reddit_search | hn_search | static_corpus
+#   fetch_config    adapter-specific
+#   domains         hierarchical tag paths (multi-label) referencing
+#                   decisions.md / framings.md / personas in this domain
+#   community_tag   single community label (drives diversity constraint).
+#                   matching domain_knowledge/immigration/communities/<tag>.md
+#                   profile files are a separate, pending refine artifact
+#                   per V2 §4 sub-item 5 — the registry loader (PR #21)
+#                   handles missing profile files gracefully.
+#   reliability     1-5, initial value; auto-adjusted via rating feedback
+#   freshness_required  true → cache TTL 7 days; false → 30 days
+#   notes           multi-paragraph; what this view is good for, bad for,
+#                   caveats. Required for high_stakes domains.
+#   domain          (V2) the per-domain folder this source-view lives in
+
+# ─── community: uscis-and-dos-official ────────────────────────────────────────
+# Primary-source documentation from the agencies that adjudicate the
+# decisions. Highest reliability tier. These are the only sources that
+# can ground a legal-fact claim without attorney corroboration.
+
+- id: uscis-policy-manual-rss
+  adapter: rss
+  fetch_config:
+    feed: https://www.uscis.gov/news/rss-feed/56
+    keyword_filter:
+      [policy alert, policy manual, AFM, employment-based, family-based,
+       adjustment of status, AC21, premium processing]
+  domains:
+    [immigration/H-1B, immigration/I-140, immigration/I-485, immigration/AC21,
+     immigration/AOS]
+  community_tag: uscis-and-dos-official
+  reliability: 5
+  freshness_required: true
+  domain: immigration
+  notes: |
+    USCIS Policy Alerts RSS feed. The authoritative announcement channel
+    for changes to the Policy Manual — supersedes the old Adjudicators
+    Field Manual. Updates here precede most secondary commentary by 1–4
+    weeks; Risk Officer should weight these above any blog or subreddit
+    when they conflict.
+    Best for: AC21 portability rule changes, AOS eligibility refinements,
+    premium-processing expansions, new evidentiary guidance for I-140
+    classifications.
+    Weak: does not interpret the changes in plain English — pair with a
+    secondary source for user-facing framing.
+
+- id: dos-visa-bulletin
+  adapter: rss
+  fetch_config:
+    feed: https://travel.state.gov/content/travel/en/News/visas-news.xml
+    keyword_filter:
+      [visa bulletin, priority date, retrogression, final action,
+       dates for filing, EB-1, EB-2, EB-3, F2A, F2B]
+  domains:
+    [immigration/priority-date, immigration/I-485, immigration/retrogression,
+     immigration/CSPA, immigration/concurrent-filing]
+  community_tag: uscis-and-dos-official
+  reliability: 5
+  freshness_required: true
+  domain: immigration
+  notes: |
+    Department of State Visa Bulletin announcements. Monthly publication
+    setting Final Action and Dates-for-Filing cutoffs by category and
+    chargeability — the single source of truth for retrogression timing.
+    Critical for decision 3 (concurrent vs sequential filing) and
+    decision 6 (EB-2/EB-3 downgrade timing). USCIS announces "which
+    chart applies for AOS" separately each month — that announcement is
+    on the USCIS site, not here, so pair sources for the full picture.
+    Best for: priority-date movement claims, CSPA aging calculations,
+    retrogression forecasting (movement patterns over rolling 24 months).
+    Weak: not predictive — bulletin tells you *what is*, not what will
+    move next month. Combine with charlesoppenheim-style commentary.
+
+- id: federal-register-immigration
+  adapter: rss
+  fetch_config:
+    feed: https://www.federalregister.gov/api/v1/articles.rss?conditions%5Bagencies%5D%5B%5D=u-s-citizenship-and-immigration-services
+    keyword_filter:
+      [final rule, proposed rule, interim final rule, notice, Form I-,
+       fee, public charge, premium processing, H-1B, H-2B]
+  domains:
+    [immigration/H-1B, immigration/I-140, immigration/I-485,
+     immigration/H-4-EAD, immigration/STEM-OPT, immigration/fee-rule]
+  community_tag: uscis-and-dos-official
+  reliability: 5
+  freshness_required: true
+  domain: immigration
+  notes: |
+    Federal Register RSS filtered to USCIS-published rules and notices.
+    The legally operative version of every policy change — by statute,
+    nothing USCIS does has effect until it publishes here. Useful
+    specifically for fee-rule windows (decision 4: filing-window-
+    arbitrage) and for the actual effective dates of policy changes
+    that USCIS announces in a press release before the rule clears
+    OMB review.
+    Best for: confirming the effective date of a rule change, catching
+    proposed rules in the comment-period window (decision 4
+    arbitrage), reading the legally-operative regulatory text.
+    Weak: dense; the policy-manual feed surfaces user-facing intent
+    more readably. Use both, not one.
+
+# ─── community: immigration-attorneys ─────────────────────────────────────────
+# Practicing immigration counsel and AILA-adjacent commentators. Lower
+# reliability than primary sources for the rule itself, but higher
+# reliability than primary sources for "what happens in practice at the
+# service center" — i.e. for RFE patterns, evidentiary preferences,
+# adjudication trends. Pair with primary sources for triangulation.
+
+- id: cyrus-mehta-blog
+  adapter: rss
+  fetch_config:
+    feed: https://blog.cyrusmehta.com/feed
+    keyword_filter:
+      [I-140, AC21, AOS, H-1B, O-1, EB-1, EB-2, NIW, PERM, priority date,
+       portability]
+  domains:
+    [immigration/AC21, immigration/I-140, immigration/EB-1, immigration/NIW,
+     immigration/H-1B-to-O-1, immigration/PERM]
+  community_tag: immigration-attorneys
+  reliability: 4
+  freshness_required: false
+  domain: immigration
+  notes: |
+    Cyrus Mehta & Partners blog — long-running, frequently-cited
+    practitioner blog with deep coverage of AC21 portability mechanics,
+    EB-1/NIW evidentiary frameworks, and 245(a) edge cases. Often the
+    first published practitioner take on USCIS policy alerts.
+    Best for: route-optimality framing (decision 9 EB-1A/NIW vs EB-2/3),
+    AC21 portability questions (decision 4), I-140 priority-date
+    portability claims.
+    Weak: skews toward complex / litigation-facing cases — for "is this
+    normal RFE" volume questions, defer to the AILA-adjacent or
+    practitioner-forum sources.
+
+- id: nation-of-immigrators-rss
+  adapter: rss
+  fetch_config:
+    feed: https://discuss.ilw.com/syndication.php?type=rss2&fid=1
+    keyword_filter:
+      [RFE, NOID, denial, premium processing, NIW, EB-1A,
+       extraordinary ability, peer review, adjudication]
+  domains:
+    [immigration/NIW, immigration/EB-1, immigration/RFE-response,
+     immigration/evidentiary-bar]
+  community_tag: immigration-attorneys
+  reliability: 4
+  freshness_required: true
+  domain: immigration
+  notes: |
+    ILW.com practitioner discussion (RSS-syndicated section). Working
+    immigration attorneys discussing RFE trends, adjudication patterns
+    by service center, and recent denials. Most useful as a
+    leading-indicator on what evidence USCIS is currently asking for
+    in NIW / EB-1A petitions — practitioners share patterns weeks
+    before they show up in policy manual updates.
+    Best for: evidentiary-bar framing (framing #9), current RFE
+    patterns, service-center-specific adjudication trends.
+    Weak: anecdotal in tone; needs corroboration before any claim is
+    cited as a fact rather than a pattern.
+
+# ─── community: h1b-tech-employees ────────────────────────────────────────────
+# Actual nonimmigrant-visa holders in tech, sharing lived experience.
+# Lower reliability for legal claims but high signal for "what
+# actually happens" — RFE response timelines, port-of-entry secondaries,
+# stamping wait times, H-4 EAD pickup lag, employer behavior during
+# layoffs. Overlap with `reddit-tech-collective` (tech-career domain)
+# but the immigration-specific source-views below filter for visa
+# vocabulary, which makes them topically distinct lenses.
+
+- id: reddit-h1b
+  adapter: reddit_search
+  fetch_config:
+    subreddit: h1b
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 25
+  domains:
+    [immigration/H-1B, immigration/RFE-response, immigration/stamping,
+     immigration/employer-behavior, immigration/layoff-status]
+  community_tag: h1b-tech-employees
+  reliability: 3
+  freshness_required: true
+  domain: immigration
+  notes: |
+    r/h1b — primary lived-experience subreddit for H-1B holders.
+    High-upvote threads on stamping wait times, RFE patterns, layoff /
+    60-day grace-period mechanics, and employer behavior during PERM
+    are unusually candid (anonymity helps).
+    Best for: status-continuity framing (framing #1), visa-as-employer-
+    leverage framing (framing #10), stamping / consular processing
+    practical questions, 60-day grace period concrete experiences.
+    Caveats: skews India/China-chargeable engineers in big-tech — the
+    retrogression context shapes most threads. Filter heavily by
+    upvotes; the loud majority is sometimes wrong on legal mechanics
+    (always defer to USCIS / counsel sources when they conflict).
+
+- id: reddit-uscis
+  adapter: reddit_search
+  fetch_config:
+    subreddit: USCIS
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 25
+  domains:
+    [immigration/I-485, immigration/EAD, immigration/AP,
+     immigration/H-4-EAD, immigration/case-processing, immigration/AOS]
+  community_tag: h1b-tech-employees
+  reliability: 3
+  freshness_required: true
+  domain: immigration
+  notes: |
+    r/USCIS — broader AOS / I-485 / EAD / Advance-Parole lived
+    experience. Less tech-skewed than r/h1b, so useful as a
+    cross-check on family-based and concurrent-filing situations.
+    High signal on processing-time anecdotes by service center,
+    biometrics scheduling lag, and EAD/AP pickup delays.
+    Best for: decision 3 (concurrent filing), decision 5 (advance
+    parole travel timing), decision 10 (H-4 EAD continuity), AOS
+    process questions.
+    Caveats: case-by-case anecdotes; treat as pattern indicators,
+    not as legal rules. Combine with USCIS processing-time page for
+    quantitative claims.
+
+# ─── community: diaspora-communities ──────────────────────────────────────────
+# Country-of-origin / chargeability-specific forums. Most US
+# employment-based decisions are dominated by India- and China-born
+# applicants because of EB-2 / EB-3 retrogression. Surfaces concerns
+# (CSPA aging-out of children, F2A/F2B priority dates, spouse
+# chargeability transfers) that other communities skip past.
+
+- id: trackitt-priority-date-discussion
+  adapter: rss
+  fetch_config:
+    feed: https://forums.trackitt.com/index.php?forums/_rss
+    keyword_filter:
+      [priority date, retrogression, EB-2, EB-3, India, China, CSPA,
+       downgrade, ROW, chargeability]
+  domains:
+    [immigration/priority-date, immigration/retrogression,
+     immigration/EB-2-EB-3-downgrade, immigration/CSPA,
+     immigration/chargeability]
+  community_tag: diaspora-communities
+  reliability: 3
+  freshness_required: true
+  domain: immigration
+  notes: |
+    Trackitt forums — long-running community of mostly India- and
+    China-born EB-2 / EB-3 applicants tracking priority-date movement.
+    Threads on EB-2-to-EB-3 downgrade timing (decision 6),
+    chargeability transfers via spouse, and CSPA aging-out calculations
+    are deeper here than anywhere else on the open web. Member-curated
+    spreadsheets aggregate priority-date trajectories that the State
+    Department bulletin does not publish.
+    Best for: retrogression-affected decisions (3, 6), CSPA-and-
+    family-clock framing (framing #6), chargeability arbitrage
+    discussions.
+    Caveats: heavy speculation about future bulletin movement; treat
+    forecasts as opinions, not data. Hard pre-filter by chargeability
+    in keyword_filter to avoid noise from unrelated countries.
+
+# ─── community: long-form-immigration-references ──────────────────────────────
+# Hand-curated reference texts. Lower freshness but highest reliability
+# for definitions, mechanics, and corner-case rules. Required for any
+# claim about statutory thresholds (INA §245(a) bars, AC21 §106(c),
+# 240-day rule, etc.).
+
+- id: aila-handbook-static
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/aila-handbook-excerpts.md
+  domains:
+    [immigration/AC21, immigration/I-140, immigration/I-485,
+     immigration/AOS, immigration/245-a-eligibility]
+  community_tag: long-form-immigration-references
+  reliability: 5
+  freshness_required: false
+  domain: immigration
+  notes: |
+    Manually-ingested excerpts of public-domain or fair-use sections
+    of AILA / Kurzban-style reference texts on AC21 portability,
+    INA §245(a) eligibility, and AOS mechanics. Ground-truth for
+    statutory thresholds — what counts as "same or similar
+    occupation" under AC21, what unlawful presence triggers a
+    bar, what counts as a "covered" employer for fee exemptions.
+    Best for: any claim about whether a statutory bar / exception
+    applies. Risk Officer should require this as a citation for
+    "is X eligible for Y" questions, not blog or subreddit sources.
+    Manual ingest. Update annually or after any AC21 / 245(a)
+    case-law shift.
+
+# ─── community: hn-immigration-threads ────────────────────────────────────────
+# Hacker News threads on visa / immigration policy. Tech-employee-heavy,
+# US-policy-aware, often surfaces ex-Googler / ex-Meta / startup-
+# founder perspectives that other communities miss (e.g. founder visa
+# alternatives, EB-1C multinational manager mechanics, NIW for
+# AI / quantum researchers).
+
+- id: hn-immigration-search
+  adapter: hn_search
+  fetch_config:
+    query_template: "{entities} {risk_surfaces} (visa OR immigration OR H-1B OR green card OR EB-1 OR NIW OR O-1)"
+    min_points: 50
+    time_window: year
+  domains:
+    [immigration/O-1, immigration/EB-1, immigration/NIW,
+     immigration/founder-visa, immigration/self-petition]
+  community_tag: hn-immigration-threads
+  reliability: 3
+  freshness_required: true
+  domain: immigration
+  notes: |
+    Hacker News search filtered to immigration-tagged threads with
+    50+ points. Specialty signal: O-1 / EB-1A / NIW self-petition
+    discussions among founders and senior IC engineers — a slice
+    that r/h1b and Trackitt under-cover. Often surfaces concrete
+    examples of evidentiary packages that cleared (or didn't), which
+    helps calibrate the evidentiary-bar framing (framing #9).
+    Best for: decision 1 (H-1B-to-O-1 transition), decision 9
+    (EB-1A/NIW self-petition vs employer EB-2/3), founder-visa
+    alternatives (parole, IER under DACA / start-up parole rule).
+    Caveats: HN comments often blend personal anecdote with
+    out-of-date rule descriptions; the rule itself must be
+    verified against USCIS / Federal Register sources.
