@@ -226,8 +226,8 @@ automate parts of it.
 ```
 Status: ⬜ not started
 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/10 domains complete)
-Last completed: f098f7a — V2 architecture-change: PR #13 replaced the hard-coded triage scope refusal in `src/blindspot/prompts/triage.md` with a Scope section referencing the 10 `_meta_ontology.md` domains. Architecture-changes checklist now 1/6. Earlier: `_schema.md` at 76e3c32, `_meta_ontology.md` at 2026cba.
-Next up: V1.x exit criteria must be met before per-domain work begins; meanwhile V2 architecture-changes work continues (next: Registry loader for per-domain `sources.yaml` merge, or Community-profile loader fallback path). Then `tech-career` migration is the first `[ ]` in the Per-domain checklist
+Last completed: 6fd16d3 — V2 architecture-change: PR #21 taught `load_community_profile` in `src/blindspot/agents/base.py` to prefer the V2 per-domain layout (`domain_knowledge/<domain>/communities/<tag>.md`) with deterministic alphabetically-first resolution on multi-match (plus stderr warning) and a clean V1 fallback to `community_profiles/<tag>.md`. Bit-for-bit V1 preservation verified by the orchestrator integration test plus 4 new unit tests in `tests/unit/test_load_community_profile.py`. Architecture-changes checklist now 2/6 (joins replace-hard-coded-scope-refusal at f098f7a). Earlier: `_schema.md` at 76e3c32, `_meta_ontology.md` at 2026cba.
+Next up: V1.x exit criteria must be met before per-domain work begins; meanwhile V2 architecture-changes work continues (next: Registry loader for per-domain `sources.yaml` merge in `src/blindspot/sources/registry.py`, or Eval runner per-domain `fixtures/` scanning in `src/blindspot/eval/runner.py`, or Triage two-pass split in `src/blindspot/agents/triage.py`). Then `tech-career` migration is the first `[ ]` in the Per-domain checklist.
 ```
 
 ### Entry gate
@@ -318,10 +318,10 @@ Each of the 10 domains independently requires this checklist.
 - [ ] **Registry loader** ([src/blindspot/sources/registry.py](../../src/blindspot/sources/registry.py)):
       load and merge per-domain `sources.yaml` files into the same
       runtime structure as today's monolithic registry.
-- [ ] **Community-profile loader** in
+- [x] **Community-profile loader** in
       [src/blindspot/agents/base.py](../../src/blindspot/agents/base.py):
       look up profiles under `domain_knowledge/<domain>/communities/`
-      with fallback to the legacy top-level path during migration.
+      with fallback to the legacy top-level path during migration. **Done at 6fd16d3 (PR #21) — added `DOMAIN_KNOWLEDGE_DIR` module constant; `load_community_profile(community_tag)` glob-scans `domain_knowledge/*/communities/<tag>.md` first (deterministic alphabetically-first resolution on multi-match with stderr warning), falls back to `community_profiles/<tag>.md`, raises a clearer FileNotFoundError naming both attempted paths when neither exists. V1 behavior preserved bit-for-bit on the current 8 V1 communities, verified by the orchestrator integration test plus 4 new unit tests in `tests/unit/test_load_community_profile.py`.**
 - [ ] **Eval runner** ([src/blindspot/eval/runner.py](../../src/blindspot/eval/runner.py)):
       scan all per-domain `fixtures/` subfolders. Aggregate
       `quality_score` is per-domain plus a global mean. Refine routine
