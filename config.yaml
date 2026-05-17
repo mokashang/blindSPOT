@@ -1,45 +1,123 @@
+# Blindspot runtime configuration. Every knob below is loaded by
+# src/blindspot/config.py at startup. The `tunable_keys` block at the
+# bottom is the whitelist refine routines may modify automatically;
+# anything outside that whitelist requires a human-authored change.
+
+# llm_backend: which LLM client wires into the 6-agent pipeline.
+#   claude_agent_sdk  — default; uses the local Claude Code subscription
+#                       via claude-agent-sdk. Free for the developer but
+#                       depends on a working OAuth refresh token (see
+#                       CLAUDE.md "Quirks" — auth failures surface as
+#                       a misleading "error result: success").
+#   anthropic_api     — production; uses ANTHROPIC_API_KEY. Pay-per-token
+#                       but no refresh-token surprises.
 llm_backend: claude_agent_sdk        # or: anthropic_api
 
+# models: which model id every agent uses. A single default today;
+# per-role overrides may be added later (e.g. a cheaper model for
+# Triage, a stronger one for Editor) without changing this schema.
 models:
   default: claude-opus-4-7
 
+# embedder: Voyage configuration. Embeddings power tag normalization
+# (cosine-merge into existing tags) and tag_match similarity scoring.
+# Requires VOYAGE_API_KEY in the environment.
 embedder:
   provider: voyage
   model: voyage-3
+  # max_retries: how many times to retry on Voyage 429 / transient
+  # network errors with exponential backoff. Default 6 covers a few
+  # minutes of rate-limit pressure during eval bursts. Safe-range 3–10;
+  # going much higher just delays surfacing a real outage.
   max_retries: 6        # retry Voyage rate-limit / transient errors w/ backoff
 
+# db: SQLite path for live history (sessions, turns, citations,
+# ungrounded_claims, tag audits, source_view_stats). Eval runs write
+# to a separate ~/.blindspot/blindspot-eval.db so they don't pollute
+# this file. Tilde expansion is handled by the loader.
 db:
   path: ~/.blindspot/blindspot.db
 
+# tag_match: scoring formula that picks which source-views feed the
+# situation. Each source-view's score is a weighted sum of how many
+# of its tags match the Triage Officer's facets, plus an embedding-
+# similarity tiebreaker. The weights below tune which facet matters
+# most. Default reasoning: domain is the strongest signal (a
+# comp question must not pull legal sources); entity is next (named
+# terms like "ISO" or "AMT" are highly discriminative); risk_surface
+# and persona are softer modifiers; similarity (cosine) is the
+# tiebreaker when weighted-tag scores are close.
 tag_match:
   weights:
-    domain: 3.0
-    entity: 2.0
-    risk_surface: 1.5
-    persona: 1.5
-    similarity: 1.0
+    domain: 3.0          # strongest signal; rarely tune below 2.5 or above 4.0
+    entity: 2.0          # specific named terms; safe-range 1.5–2.5
+    risk_surface: 1.5    # soft modifier; safe-range 1.0–2.0
+    persona: 1.5         # soft modifier; safe-range 1.0–2.0
+    similarity: 1.0      # tiebreaker; rarely worth tuning above 1.5
+  # top_n: how many top-scoring source-views the Collection layer
+  # fetches per turn. Higher = more coverage but more latency and
+  # cache pressure. Safe-range 3–8.
   top_n: 5
+  # max_per_community: diversity cap — at most this many source-views
+  # from any single community per turn. Prevents one community
+  # dominating when its tags happen to match heavily. Safe-range 1–3.
   max_per_community: 2
 
+# normalization: how new tags emitted by Triage get merged into the
+# existing tag taxonomy. The cosine threshold below is the gate:
+# if a new tag's embedding is cosine-similar above the threshold to
+# any existing tag, it merges into that tag; otherwise it's inserted
+# as a fresh node. A TagAuditRow is written either way. Lower = more
+# aggressive merging (risk: collapsing distinct concepts); higher =
+# more proliferation (risk: synonym sprawl). Safe-range 0.80–0.92.
 normalization:
   embedding_similarity_threshold: 0.85
 
+# critic: gates the Critic agent uses when judging the draft answer.
 critic:
+  # grounding_pct_threshold: minimum % of claims that must carry a
+  # [doc-X] citation for the draft to pass without regeneration.
+  # Below this, the Editor is asked to regenerate. Safe-range 60–90;
+  # higher pushes harder for citations but increases regen frequency.
   grounding_pct_threshold: 80
+  # non_obviousness_min: minimum LLM-judged non-obviousness score
+  # (1–5) the draft must clear. Below this triggers regeneration.
+  # Safe-range 2–4.
   non_obviousness_min: 3
+  # max_regenerations: how many times the Editor can be asked to
+  # regenerate a single turn before the Critic gives up and emits
+  # the latest draft. Higher = better quality but worse latency.
+  # Safe-range 0–3.
   max_regenerations: 1
 
+# cache: TTLs for the source-view fetch cache. Sources with the
+# `evergreen` tag (canonical references, IRS publications, etc.) get
+# the longer TTL; everything else gets the fresh TTL. TTLs are in
+# whole days. Safe-ranges: fresh 3–14, evergreen 14–90.
 cache:
   fresh_ttl_days: 7
   evergreen_ttl_days: 30
 
+# refine: configuration the autonomous refine routine reads to
+# self-evaluate its changes.
 refine:
+  # quality_score_weights: how the 4 sub-metrics combine into the
+  # single quality_score the refine routine optimizes. Each weight
+  # reflects the importance of that sub-metric. Sum should be ~1.0
+  # (small drift is tolerated; the aggregate is comparable across
+  # runs only when the weights themselves don't change).
   quality_score_weights:
     specificity: 0.35
     non_obviousness: 0.25
     grounding_pct: 0.20
     source_diversity: 0.20   # absorbed the unused ungrounded_inverse=0.05 slot
 
+# tunable_keys: whitelist of dotted-path config keys that refine
+# routines may modify automatically. Anything not on this list
+# requires a human-authored PR. The list is intentionally narrow:
+# scoring weights, the few thresholds with clear safe-ranges, and
+# the two cap values. Backend / model / db / cache TTLs are out of
+# scope for automated tuning.
 tunable_keys:
   - tag_match.weights.domain
   - tag_match.weights.entity
