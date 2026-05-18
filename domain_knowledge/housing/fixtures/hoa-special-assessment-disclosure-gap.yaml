@@ -1,0 +1,45 @@
+id: hoa-special-assessment-disclosure-gap
+text: |
+  Under contract on a $625k condo in Aventura, FL (north Miami-Dade).
+  Building is 18 floors, 1996 construction, 154 units. HOA fee in the
+  MLS listing was $720/mo. After paying for the resale package (HOA
+  estoppel + reserve study + last 12 months of board meeting minutes
+  — $300), I learned: (a) HOA voted in Feb to raise dues to $980/mo
+  starting January (will hit me in month 1 as owner), (b) the building
+  failed its post-Surfside Florida SB 4-D milestone inspection on the
+  pool deck and exterior balconies, requiring a structural repair
+  estimated at $4.2M; the HOA reserve study shows only $1.1M reserved
+  for this. Board is voting on the funding mechanism in 3 weeks — early
+  estimates float a $25–35k per-unit special assessment, payable either
+  lump sum at vote or financed by HOA over 5 years. Closing is in 18
+  days. My buyer's agent says "every condo in FL is dealing with this,
+  it's priced in." Should I close, negotiate a credit, or walk and forfeit
+  $12k earnest money?
+expected_domains: [housing]
+expected_entities:
+  - Aventura
+  - Miami-Dade
+  - $625k-condo
+  - 1996-construction
+  - 18-day-closing
+  - HOA-estoppel
+  - SB-4-D-milestone-inspection
+  - $4.2M-structural-repair
+  - $25-35k-special-assessment
+  - $12k-earnest-money
+  - $980/mo-HOA-from-$720
+expected_personas: [hoa-skeptic, first-time-buyer]
+expected_risk_surfaces:
+  - SB-4-D-Florida-milestone-inspection-post-Surfside
+  - HOA-special-assessment-imminent-vote
+  - master-insurance-and-loss-assessment-rider
+  - earnest-money-forfeit-vs-walk-away
+  - estoppel-disclosure-timing-relative-to-closing
+expected_decisions: [D5]
+expected_framings: [F4, F8, F13]
+expected_blindspot_categories:
+  - hoa-disclosure-gap-reserve-study-special-assessment-trajectory
+  - climate-risk-undervaluation-coastal-condo-stock
+  - counterparty-incentive-alignment-against-buyer
+  - insurance-pricing-lags-underlying-climate-risk-5-to-15-years
+  - high-stakes-consult-real-estate-attorney-florida-condo-conversion

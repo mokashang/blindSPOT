@@ -1,0 +1,49 @@
+id: house-hack-duplex-fha-first-time
+text: |
+  First-time buyer, single, 28, software engineer in Austin TX, $185k
+  base + ~$60k bonus. Have $58k saved. Looking at a $620k duplex in
+  East Austin — 2BR/2BA on each side, both currently leased ($2,100/mo
+  + $2,250/mo = $4,350/mo total rent). Plan: FHA 3.5% down on owner-
+  occupied 2–4 unit ($21.7k down), move into one unit when current
+  tenant's lease ends in 4 months, rent the other side ($2,250/mo
+  offsets mortgage). FHA mortgage insurance ($350/mo for life of loan
+  unless I refi out at 80% LTV later), 6.875% rate. The FHA self-
+  sufficiency test for 3–4 unit doesn't apply here (it's a 2-unit), so
+  the underwriting math works on my W-2 alone with 75% of projected
+  rent credited toward DTI. Risks I see: (a) tenant in my unit might
+  not leave when lease ends — Texas eviction is landlord-friendly but
+  still 30–60 days; (b) I'd be landlord on my first property while
+  living next door; (c) I'm single but expect to partner-up in the next
+  5 years; living in half a duplex with a tenant on the other side may
+  be a hard sell. House-hack play vs save longer for SFR vs keep
+  renting and invest the down payment?
+expected_domains: [housing, tech-career]
+expected_entities:
+  - Austin
+  - East-Austin
+  - $620k-duplex
+  - FHA-3.5%-down
+  - $21.7k-down
+  - $185k-base
+  - 6.875%
+  - $4,350/mo-total-rent
+  - $350/mo-FHA-MIP
+  - 75%-projected-rent-DTI-credit
+  - first-time-buyer-single
+expected_personas: [landlord-prospect, first-time-buyer, house-hacker]
+expected_risk_surfaces:
+  - FHA-3.5%-owner-occupied-2-to-4-unit-rules
+  - FHA-MIP-for-life-of-loan-vs-conventional-PMI-cancellable
+  - tenant-side-eviction-process-Texas-30-to-60-days
+  - landlord-liability-while-living-on-site
+  - partner-finding-and-housing-decoupling-5-year-horizon
+  - depreciation-of-rental-unit-half-of-duplex
+expected_decisions: [D9, D10]
+expected_framings: [F1, F2, F10, F12]
+expected_blindspot_categories:
+  - FHA-MIP-for-life-vs-conventional-PMI-cancellable-cost-asymmetry
+  - operational-drag-eats-10pct-of-cap-rate-spreadsheet-doesnt-model
+  - house-hackers-straddle-both-sides-statute-polarity-flip
+  - household-is-moving-target-partnered-up-changes-housing-thesis
+  - single-property-concentration-risk-inverse-of-leverage
+  - real-estate-professional-status-unavailable-for-w-2-tech-workers

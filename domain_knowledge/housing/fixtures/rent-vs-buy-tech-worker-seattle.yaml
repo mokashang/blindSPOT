@@ -1,0 +1,43 @@
+id: rent-vs-buy-tech-worker-seattle
+text: |
+  Renting a $4,200/mo 2BR in Capitol Hill, Seattle, for the last 3 years.
+  Dual-income couple, $480k combined base + ~$320k RSU (mostly vested
+  Amazon stock, also some unvested Microsoft from my partner). We have
+  $310k liquid plus another $180k in brokerage. A 1,650sqft townhome in
+  Ravenna is asking $895k; 20% down at 6.75% on a 30-year fixed pencils
+  out to roughly $4,650/mo P&I + ~$725/mo property tax + ~$110/mo
+  insurance + $0 HOA = ~$5,485/mo all-in before maintenance. Seattle
+  price-to-rent on equivalent SFRs hovers around 22. Friends keep telling
+  us we're "throwing money away on rent" but I keep running the NYT
+  calculator and it spits out rent-favored. We expect to stay 5–7 years
+  unless one of us takes a Bay Area offer (~30% probability over that
+  window). Do we buy or stay renting?
+expected_domains: [housing, tech-career]
+expected_entities:
+  - Seattle
+  - Capitol-Hill
+  - Ravenna
+  - $4,200/mo
+  - $895k
+  - 20%-down
+  - 6.75%
+  - 30-year-fixed
+  - $480k-base
+  - RSU
+  - price-to-rent-22
+  - 5-to-7-year-horizon
+expected_personas: [rent-vs-buy-on-the-fence, comparing-offers]
+expected_risk_surfaces:
+  - price-to-rent-ratio-above-20
+  - transaction-cost-round-trip-8-to-12-pct
+  - RSU-concentration-and-volatility
+  - opportunity-cost-of-down-payment-vs-VTSAX
+  - relocation-probability-shortening-effective-hold
+expected_decisions: [D1, D3]
+expected_framings: [F1, F2, F4, F7, F11]
+expected_blindspot_categories:
+  - IRR-superiority-over-rent-ignores-consumption-value-of-tenure-security
+  - maintenance-averaging-hides-lumpy-cash-shock-distribution
+  - opportunity-cost-presumes-counterfactual-investment-that-rarely-occurs
+  - transaction-cost-amortization-error-under-relocation-uncertainty
+  - rsu-as-down-payment-concentration-risk-cross-domain-tech-career

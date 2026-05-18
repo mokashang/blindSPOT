@@ -1,0 +1,43 @@
+id: refi-cash-out-vs-heloc-decision
+text: |
+  Bought our home in late 2024 — $780k purchase, $156k down, $624k loan
+  at 7.25% on 30-year fixed. Current balance $618k, home now appraises
+  around $840k (Zestimate but recent comps in zip support it). We want to
+  pull $80k for a kitchen + primary-bath renovation. Three options the
+  broker laid out: (a) rate-and-term refi at 5.875% with no cash-out
+  ($9k closing, ~$540/mo P&I savings, ~17-month break-even); (b) cash-
+  out refi to $720k loan at 6.25% (cash-out adds ~37bp), $10.5k closing,
+  pulls the $80k and lowers rate; (c) keep existing mortgage, take a
+  HELOC at prime + 0.5% = 8.0% variable, $0 closing, 10-year draw,
+  interest-only allowed for first 5 years. The reno would otherwise come
+  from selling RSU lots that would trigger ~$11k in long-term capital
+  gains this year. Fed pricing implies maybe 75bp of cuts over next 12
+  months. Which path and why?
+expected_domains: [housing, tech-career]
+expected_entities:
+  - $780k-purchase
+  - 7.25%-current-rate
+  - $618k-balance
+  - $840k-appraisal
+  - $80k-kitchen-reno
+  - 5.875%-refi
+  - 6.25%-cash-out
+  - 8.0%-HELOC
+  - 17-month-break-even
+  - 75bp-implied-cuts
+  - $11k-long-term-capital-gains
+expected_personas: [refi-decider]
+expected_risk_surfaces:
+  - refinance-break-even-vs-rate-trajectory
+  - amortization-clock-reset-on-30-year-refi
+  - cash-out-LTV-cap-and-rate-premium
+  - HELOC-variable-rate-and-interest-only-payment-shock
+  - tax-treatment-of-cash-out-non-improvement-use
+expected_decisions: [D8]
+expected_framings: [F1, F5, F11, F14]
+expected_blindspot_categories:
+  - refinance-monthly-savings-view-hides-amortization-clock-reset
+  - rate-forecasts-weakly-accurate-beyond-6-months
+  - tax-treatment-cash-out-deductible-only-for-improvement-use-tcja
+  - heloc-variable-rate-payment-shock-on-reset-or-rate-rise
+  - buy-in-buyers-market-coincides-with-credit-tightening

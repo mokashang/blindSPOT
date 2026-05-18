@@ -1,0 +1,47 @@
+id: climate-relocation-wildfire-flood-call
+text: |
+  Relocating from Brooklyn to Boulder for partner's tenure-track offer.
+  Two finalist properties, both 4BR/3BA SFRs around $1.2M: (a) house in
+  Boulder proper, foothills-adjacent, 0.4 miles from the Marshall Fire
+  burn scar (Dec 2021); current insurance quote $5,400/yr from a
+  surplus-lines carrier — State Farm and USAA both declined; (b) house
+  in Longmont, 17 miles east, no wildfire-urban-interface exposure,
+  insurance quote $1,650/yr from USAA standard. FEMA flood maps show
+  both as Zone X (minimal); First Street Foundation puts the Boulder
+  property at "moderate" wildfire risk and "minor" flood, Longmont at
+  "minor" both. School district is meaningfully better in Boulder
+  (BVSD top quartile vs SVVSD mid). Premium history: the Boulder house
+  was $2,800/yr in 2021, $3,900 in 2023, now $5,400 — that's a 92%
+  premium trajectory in 3 years. Sellers in Boulder dropped price $90k
+  in last 60 days. How do I weigh the climate-trajectory math against
+  the school premium?
+expected_domains: [housing]
+expected_entities:
+  - Brooklyn-to-Boulder
+  - Longmont
+  - Marshall-Fire-burn-scar
+  - $1.2M
+  - $5,400/yr-insurance
+  - State-Farm-decline
+  - USAA-decline
+  - surplus-lines-carrier
+  - FEMA-Zone-X
+  - First-Street-Foundation
+  - BVSD
+  - SVVSD
+  - 92%-premium-trajectory
+expected_personas: [climate-relocation-mover, neighborhood-evaluator]
+expected_risk_surfaces:
+  - wildfire-urban-interface-WUI-exposure
+  - insurance-non-renewal-and-surplus-lines-trajectory
+  - premium-doubling-in-3-years-as-leading-indicator
+  - school-district-premium-against-climate-risk
+  - IBHS-FORTIFIED-retrofit-as-insurability-preservation
+expected_decisions: [D6]
+expected_framings: [F6, F8, F9]
+expected_blindspot_categories:
+  - climate-risk-undervaluation-wildfire-zone
+  - insurance-market-itself-mispriced-via-insurer-of-last-resort
+  - uninsurable-property-has-no-liquidity
+  - greatschools-rating-partly-demographic-sorting
+  - first-street-modeled-not-measured-triangulate-against-fema-and-state-maps

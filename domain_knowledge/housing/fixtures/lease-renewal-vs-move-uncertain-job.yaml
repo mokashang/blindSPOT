@@ -1,0 +1,42 @@
+id: lease-renewal-vs-move-uncertain-job
+text: |
+  Current rent in a 1BR in Long Island City NYC is $3,250/mo, lease
+  expires in 47 days. Landlord offered renewal at $3,575/mo (+10%) for
+  12 months OR $3,400/mo for 24 months. Comparable 1BRs in the building
+  are listed at $3,450; one block over they're $3,350. My company just
+  announced a re-org and there's a non-trivial chance (~35%) my role gets
+  moved to the Austin office in the next 6–9 months, which would
+  presumably come with a relo package. The early-termination clause in
+  the lease is 2 months' rent + forfeit of security deposit ($6,500 +
+  $3,250 = $9,750 to break early). My building is NOT rent-stabilized
+  (post-1974 construction over 6 units, so it would be — but landlord
+  claims exemption based on co-op-conversion history; I haven't dug into
+  whether that's accurate). Renew 12mo, renew 24mo, or move now to
+  something cheaper while I have leverage?
+expected_domains: [housing]
+expected_entities:
+  - Long-Island-City
+  - NYC
+  - $3,250/mo
+  - $3,575/mo
+  - 24-month-lease
+  - 47-day-lease-expiry
+  - Austin-relocation
+  - 35%-relocation-probability
+  - $9,750-early-termination
+  - rent-stabilization
+expected_personas: [lease-renewal-vs-move, comparing-offers]
+expected_risk_surfaces:
+  - rent-stabilization-status-misrepresented-by-landlord
+  - early-termination-clause-vs-relocation-probability
+  - lease-length-vs-flexibility-premium
+  - comparable-unit-pricing-as-renewal-anchor
+  - rent-trajectory-and-renewal-negotiation
+expected_decisions: [D2]
+expected_framings: [F2, F3, F7, F12]
+expected_blindspot_categories:
+  - rent-stabilization-status-verification-not-landlord-self-report
+  - flexibility-monotonically-valuable-misses-commitment-effect-goods
+  - externally-imposed-moves-are-base-rate-trigger
+  - tenant-rights-statutes-dead-letter-without-legal-aid-funding
+  - rent-stabilization-complex-exit-conditions-erode-protection
