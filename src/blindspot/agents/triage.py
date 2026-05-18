@@ -1,28 +1,35 @@
 """Triage Officer agent — two-pass with V1 fallback.
 
-V2 design (ROADMAP §4 "Architecture changes"):
+Design (kept from the original two-pass introduction in the
+pre-pivot ROADMAP §4 "Architecture changes" — applies as-is to the
+narrow single-vertical scope, with one in-scope domain instead of
+ten):
 
-- **Pass 1** classifies the situation into ≥ 1 of the 10 domains named
-  in `domain_knowledge/_meta_ontology.md` (multi-label allowed). Uses
-  `prompts/triage_pass1.md` — a deliberately small prompt that only
-  asks for the `domains` field. If pass 1 returns an empty list (no
-  matched domain), the agent follows the existing scope-refusal path
-  and returns all-empty arrays without calling pass 2 — consistent with
-  PR #13's refusal logic.
+- **Pass 1** classifies the situation as in-scope (`cn-sde-jobhunt`)
+  or out-of-scope (empty list). Uses `prompts/triage_pass1.md` — a
+  deliberately small prompt that only asks for the `domains` field.
+  If pass 1 returns an empty list, the agent follows the existing
+  scope-refusal path and returns all-empty arrays without calling
+  pass 2.
 
 - **Pass 2** runs the full triage extraction (entities / risk_surfaces
-  / personas / domain sub-paths) using `prompts/triage.md`. For each
-  domain matched in pass 1, any `domain_knowledge/<domain>/domain_pack.md`
-  is concatenated into the system prompt so the LLM has domain-specific
+  / personas / domain sub-paths) using `prompts/triage.md`. For the
+  matched domain, any `domain_knowledge/<domain>/domain_pack.md` is
+  concatenated into the system prompt so the LLM has vertical-specific
   context. Missing pack files are silently ignored (best-effort).
 
 - **Fallback to V1**: if NO `domain_pack.md` exists anywhere on disk
-  (the current state — no domain has authored one yet), the two-pass
-  detour adds zero value and would only burn a second LLM call per
-  turn. In that case the agent SKIPS pass 1 entirely and calls the V1
-  triage prompt directly, preserving bit-for-bit V1 behavior. As soon
-  as the first `domain_pack.md` lands, two-pass activates
-  automatically — no config flag required.
+  the two-pass detour adds zero value and would only burn a second
+  LLM call per turn. In that case the agent SKIPS pass 1 entirely
+  and calls the legacy triage prompt directly. As soon as the first
+  `domain_pack.md` lands, two-pass activates automatically — no
+  config flag required.
+
+Post-2026-05-18 scope-narrow note: with a single in-scope vertical,
+the two-pass design is structurally redundant (pass 1 is a yes/no
+classifier). The ROADMAP's V4-freeze checklist contains an item to
+fold the two passes into one. Until that lands, the two-pass code
+path is kept as-is — it works correctly for one vertical too.
 
 The mirror of this pattern is `sources.registry.load_all_sources` (PR
 #29) which does per-domain glob with V1 fallback. Same shape: V2 path
@@ -65,7 +72,7 @@ def _domain_pack_path(domain_slug: str, root: Path | None = None) -> Path:
     """Resolve the on-disk path of a domain's pack file (existence not checked)."""
     base = root if root is not None else DOMAIN_KNOWLEDGE_DIR
     # Strip any sub-path (pass 1 only emits top-level slugs, but defend
-    # in case a stray `tech-career/equity` slips through).
+    # in case a stray `cn-sde-jobhunt/visa` slips through).
     top = domain_slug.split("/", 1)[0]
     return base / top / "domain_pack.md"
 
