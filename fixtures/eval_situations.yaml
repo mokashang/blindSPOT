@@ -201,3 +201,87 @@
   expected_personas: [h1b-on-lottery-fail]
   expected_risk_surfaces: [legal, regret, info-asymmetry,
                            visa-status-pressure, lottery-failure]
+
+- id: day1-cpt-bridge-after-h1b-miss
+  text: |
+    Just finished my CS MS at CMU, on F-1 STEM-OPT, working as
+    backend SDE at a Series C. H-1B lottery 没中 this March —
+    employer says they can refile next year but I only have ~14
+    months of OPT left after STEM extension. 朋友 in similar
+    situation last cycle started a day-1-CPT MS at Westcliff /
+    Sofia / one of those NJ programs and said it "保持身份" plus
+    keeps you working. Lawyer I consulted is hedging — says
+    "technically fine" but also "if you re-enter on F-1 visa
+    stamp with day-1-CPT history, 221(g) administrative
+    processing is the realistic outcome", and any future H-1B
+    petition will eat RFE. 也在考虑 F-1 restoration if I just
+    let OPT expire and re-enroll in a real program. Bridge to
+    next H-1B lottery feels like the obvious play but the
+    visa-mechanic mortality of CPT used in year 1 of an MS
+    keeps me up at night.
+  expected_domains: [cn-sde-jobhunt/visa]
+  expected_entities: [F-1, F-1-CPT, day-1-CPT, OPT, STEM-OPT,
+                      H-1B-lottery, RFE]
+  expected_personas: [post-opt-h1b-not-selected, h1b-on-lottery-fail]
+  expected_risk_surfaces: [day-1-cpt-scrutiny, f1-restoration-alternative,
+                           ms-pipeline-as-status-strategy,
+                           visa-status-pressure, legal,
+                           lottery-failure, info-asymmetry]
+
+- id: postdoc-eb1a-vs-h1b-route
+  text: |
+    Finishing my second postdoc year at Stanford ML systems lab,
+    H-1B cap-exempt currently. 有 28 citations on a first-author
+    NeurIPS paper, two patents pending, served as reviewer for
+    ICLR/NeurIPS the last 2 cycles. Meta GenAI just made me an
+    L5 research engineer offer — cap-subject H-1B transfer means
+    I'd need to enter the regular lottery (or rely on H-1B-cap-
+    exempt-to-cap-subject portability mechanics, which my
+    immigration attorney calls "underused but real"). She's also
+    pitching me to self-petition EB-1A in parallel — says my
+    citation count + reviewer service + patents probably clears
+    3 of the Matter of Dhanasar prongs but EB-1A is a different
+    standard (extraordinary ability, not national interest).
+    Advisor is supportive of the move but our co-authored
+    follow-up paper is mid-review and a clean recommendation
+    letter from him in 6 months is worth more than one written
+    under time pressure now. NIW vs EB-1A 到底哪个更稳? And
+    can I time the petition filing such that I don't burn the
+    advisor relationship?
+  expected_domains: [cn-sde-jobhunt/visa]
+  expected_entities: [H-1B, H-1B-cap-exempt, EB-1A, EB-2-NIW, I-140,
+                      Matter-of-Dhanasar, advance-parole, FAANG]
+  expected_personas: [phd-pivot-to-industry, cs-phd-post-defense]
+  expected_risk_surfaces: [niw-vs-eb1a-evidentiary-bar,
+                           cap-exempt-to-cap-subject-portability,
+                           postdoc-advisor-recommendation-timing,
+                           timing, opportunity-cost, info-asymmetry]
+
+- id: h4-ead-spouse-primary-h1b-switch
+  text: |
+    I've been working as a senior SDE at a mid-stage fintech in
+    Austin for ~3 years on H-4 EAD. 我老公 is the principal H-1B
+    holder at Amazon, his PERM is filed but priority date is
+    Aug 2024 — looking at 5+ years to I-485. Last month his
+    skip-level got let go in a team reorg and even though my
+    husband is fine, it shook me: if HE loses his job, I lose
+    my EAD the day his 60-day grace runs out, regardless of
+    how my own job is going. 公司刚跟我提说愿意 sponsor 我自己的
+    H-1B next cycle. Math is messy though: my own H-1B = my
+    status no longer depends on him, but it ALSO means I'm in
+    my own GC queue (priority date reset to whenever the new
+    PERM files), and we lose the option of him riding my
+    eventual GC if my employer ends up faster. Plus the kid is
+    starting kindergarten in Travis ISD next fall — state
+    residency for in-state tuition someday depends on continuous
+    domicile and his job tying us to TX. Should I switch primary
+    or stay H-4-EAD and just accept the dependency?
+  expected_domains: [cn-sde-jobhunt/visa]
+  expected_entities: [H-4, H-4-EAD, H-1B, EAD, state-residency,
+                      PERM, priority-date, 60-day-grace-period]
+  expected_personas: [h4-spouse-eligible-for-ead, h4-spouse-on-ead]
+  expected_risk_surfaces: [h4-ead-vulnerability-to-principal-job-loss,
+                           state-residency-coupling-to-spouse-status,
+                           h1b-primary-vs-h4-ead-stability-tradeoff,
+                           family-coupling, visa-status-pressure,
+                           opportunity-cost]
