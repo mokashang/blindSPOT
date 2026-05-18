@@ -1,0 +1,58 @@
+id: h1b-lottery-not-selected-backup-paths
+domain: cn-sde-jobhunt
+text: |
+  Just got the email — H-1B not selected in the FY2027 lottery. Second
+  attempt; same FAANG employer, they filed for me both years. I'm on
+  STEM-OPT, second of two years, EAD expires Aug 14, 2026. Sixty-day
+  grace clock isn't running yet (still in valid status), but the
+  options window is closing fast. Three paths people on 1p3a and
+  Reddit have been pushing me toward:
+  (1) Day-1-CPT enrollment at a school like CIAM / Sofia / Westcliff —
+      friends have done it, but I keep seeing Murthy / Reddy & Neumann
+      bulletins flagging it as "high RFE risk" and the 2024 USCIS
+      memo seems to have tightened scrutiny.
+  (2) O-1 — my employer says they'd consider sponsoring, I have 2
+      first-author papers from undergrad and a patent from work, but
+      the lawyer they suggested wants $18k all-in and won't quote a
+      probability.
+  (3) Return to a US MS-pipeline (PhD admit possible, second master's
+      possible) to reset the F-1 clock and get a fresh cap-subject
+      lottery cycle.
+  How do I think about this with EAD expiring in 4 months? Is there
+  an ordering — try X first, fall back to Y? My manager is
+  supportive but the company has done O-1 sponsorships exactly twice
+  in their history.
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/visa]
+expected_entities:
+  - F-1
+  - day-1-CPT
+  - OPT
+  - STEM-OPT
+  - H-1B
+  - lottery-failure
+  - O-1
+  - 60-day-grace-period
+  - EAD
+  - RFE
+  - sponsorship-history-of-employer
+expected_personas:
+  - h1b-on-lottery-fail
+  - opt-active-h1b-pending
+  - stem-opt-extension
+expected_risk_surfaces:
+  - lottery-failure
+  - visa-status-pressure
+  - legal
+  - sponsorship-fit
+  - timing
+  - info-asymmetry
+  - regret
+expected_decisions: [3, 10]
+expected_framings: [F1, F4, F6]
+expected_blindspot_categories:
+  - day-1-cpt-rfe-risk-policy-drift-2024-2025
+  - o1-evidentiary-bar-confused-with-publication-count
+  - ms-pipeline-reset-as-status-restoration-not-just-credential
+  - employer-sponsorship-history-as-base-rate-for-o1-quote
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step
+  - second-master-vs-phd-arc-asymmetric-on-future-cap-subject-lottery

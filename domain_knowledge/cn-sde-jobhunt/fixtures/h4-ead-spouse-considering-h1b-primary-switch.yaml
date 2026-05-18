@@ -1,0 +1,53 @@
+id: h4-ead-spouse-considering-h1b-primary-switch
+domain: cn-sde-jobhunt
+text: |
+  我老公 H-1B Year 5,I-140 approved 2023 (EB-2 China,priority date
+  2021-09)。我现在在 H-4 上,持 H-4-EAD,在一个 Series-B 做 Senior
+  SDE,base $185k + equity。老板最近想给我升 staff,但说她 "想稳一点
+  hire 一个 H-1B primary,不依赖 spousal-EAD"。她说公司可以 sponsor
+  我自己的 H-1B,但我得参加 March 2027 的 lottery —— 如果不中,我就
+  从 staff-track 掉回 senior-track,equity refresh 也会有 gap。
+  Coupling 问题:我们有一个 4 岁的孩子,目前在 H-4,刚刚开始 pre-K,
+  我们刚 lock 进了一个学区的 lease。如果我转 H-1B primary 中了,
+  我老公能不能转 H-4-EAD 跟着我 ride along?他的 priority date 2021-09
+  比我有的任何 backup 都靠前 —— 我们一家三口的 GC 路径是不是应该
+  continue to anchor 在他那边?另外:H-4-EAD 在 2024-2025 有几次
+  policy chatter 说 Trump-2 上台后可能 rescind,1p3a 上 panic 帖子
+  一堆,Murthy 的 bulletin 倒是说 rescission would require notice
+  and comment, takes time。我应该多 hedge 一点 (转 H-1B primary)
+  还是 hold 在 H-4-EAD?
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/visa]
+expected_entities:
+  - H-1B
+  - H-4
+  - H-4-EAD
+  - EAD
+  - I-140
+  - I-140-approved
+  - EB-2
+  - priority-date
+  - lottery-selection
+  - lottery-failure
+  - series-B
+  - RSU
+  - refresher-grant
+expected_personas:
+  - h4-spouse-on-ead
+  - dual-citizenship-family
+expected_risk_surfaces:
+  - family-coupling
+  - lottery-failure
+  - visa-status-pressure
+  - regret
+  - timing
+  - priority-date-retrogression
+  - counterparty
+expected_decisions: [7, 9, 11]
+expected_framings: [F1, F5, F6]
+expected_blindspot_categories:
+  - h4-ead-rescission-policy-half-life-vs-1p3a-panic-amplitude
+  - family-anchor-priority-date-asymmetric-across-spouses
+  - h1b-primary-switch-cost-when-spouse-i140-already-approved
+  - school-lease-residency-coupling-on-status-change
+  - retention-equity-refresh-arithmetic-vs-status-stability
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step

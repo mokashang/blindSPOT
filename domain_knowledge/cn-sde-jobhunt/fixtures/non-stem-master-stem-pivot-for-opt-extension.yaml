@@ -1,0 +1,57 @@
+id: non-stem-master-stem-pivot-for-opt-extension
+domain: cn-sde-jobhunt
+text: |
+  F-1, MS in Information Systems at a state school (Tier-2),
+  third semester of four. My program is on the non-STEM CIP
+  code (11.0401 — Information Science/Studies) so I only get
+  12 months of OPT, no STEM extension. I've been doing SDE
+  internships and I have a return offer from a mid-size
+  fintech as a backend engineer ($135k base + sign-on, no
+  equity). They'll file H-1B in March 2027 if I'm still here.
+  My advisor mentioned I can switch to the school's MS-CS
+  program (CIP 11.0701 — Computer Science) — it would add
+  1 extra semester to my graduation but the degree itself
+  would be STEM-eligible. The catch: my I-20 transfer would
+  reset some F-1 things and the new CS program requires me
+  to take 3 specific prereqs I haven't taken (DSA, OS,
+  compilers), which would push graduation to Dec 2027 instead
+  of May 2027. Cost: ~$18k tuition + 1 semester of living
+  expenses (~$15k). 1p3a 帖子 says STEM-OPT extension is
+  "almost mandatory" because of the lottery-failure-fallback
+  math (2 extra lottery cycles + cap-gap protection). But
+  Reddit r/h1b voices argue "just take the H-1B path with
+  your current degree, don't waste 8 months waiting." Murthy
+  bulletins emphasize CIP-code documentation matching the
+  diploma. How do I think about: tuition + delayed earnings
+  vs probabilistic lottery insurance from STEM extension?
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/visa]
+expected_entities:
+  - F-1
+  - F-1-CPT
+  - OPT
+  - STEM-OPT
+  - cap-gap
+  - H-1B
+  - lottery-selection
+  - lottery-failure
+  - STEM-extension-window
+  - sign-on
+expected_personas:
+  - f1-final-year-cs-master
+  - opt-active-h1b-not-yet-filed
+expected_risk_surfaces:
+  - cap-gap-timing
+  - lottery-failure
+  - opportunity-cost
+  - timing
+  - info-asymmetry
+  - regret
+expected_decisions: [2, 3, 12]
+expected_framings: [F1, F3, F6]
+expected_blindspot_categories:
+  - cip-code-on-diploma-must-match-stem-list-not-just-coursework
+  - stem-extension-as-lottery-insurance-policy-value
+  - tuition-plus-deferred-salary-arithmetic-flattens-status-asymmetry
+  - 1p3a-stem-mandatory-claim-vs-individual-base-rate
+  - reddit-tc-arithmetic-flattens-visa-security-premium
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step

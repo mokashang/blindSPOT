@@ -1,0 +1,56 @@
+id: ac21-employer-switch-mid-perm-with-priority-date
+domain: cn-sde-jobhunt
+text: |
+  H-1B Year 4 of 6 at a Series-C unicorn. PERM filed April 2022,
+  priority date 2022-04-15 (EB-2 China). I-140 approved March 2024
+  (>180 days ago). A FAANG L5 offer just landed — $90k TC bump plus
+  much better RSU refresh trajectory. The FAANG recruiter pitched
+  AC21 §106(c) portability: "you keep your 2022 priority date, we
+  refile PERM later, you get cap-exempt H-1B extensions past Year 6
+  via the I-140-pending-3-years rule." Their immigration team will
+  do the H-1B transfer but won't commit to a refile-PERM timeline.
+  My questions: (a) AC21 same-or-similar — L5 SDE at FAANG vs my
+  current Senior SDE at the unicorn, is that "same or similar"? The
+  job code on my PERM is 15-1132.00 (Software Developers,
+  Applications); FAANG's posted req is 15-1133.00 (Software
+  Developers, Systems). Is that a problem? (b) If FAANG never refiles
+  PERM, can I still file I-485 when my 2022-04 priority date becomes
+  current under my old I-140 — or does the I-140 get withdrawn 180
+  days after I leave? (c) The current employer is hinting at a
+  retention RSU package. How do I weight "stay through PERM + I-485
+  filing window" vs "switch now with portability"?
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/employer-switch, cn-sde-jobhunt/visa]
+expected_entities:
+  - H-1B
+  - H-1B-transfer
+  - PERM
+  - I-140
+  - I-140-approved
+  - I-485
+  - EB-2
+  - priority-date
+  - AC21-portability
+  - FAANG
+  - unicorn
+  - series-C-plus
+  - RSU
+  - refresher-grant
+expected_personas:
+  - mid-perm-considering-switch
+  - h1b-active-i140-approved
+expected_risk_surfaces:
+  - sponsorship-fit
+  - priority-date-retrogression
+  - counterparty
+  - opportunity-cost
+  - legal
+  - info-asymmetry
+expected_decisions: [4, 9, 11]
+expected_framings: [F1, F2, F6]
+expected_blindspot_categories:
+  - same-or-similar-soc-code-mismatch-risk
+  - i140-portability-tied-to-employer-non-revocation-window
+  - h1b-3-year-extension-eligibility-survives-employer-switch
+  - rsu-retention-arithmetic-flattens-priority-date-preservation
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step
+  - faang-immigration-team-refile-promise-as-soft-commitment

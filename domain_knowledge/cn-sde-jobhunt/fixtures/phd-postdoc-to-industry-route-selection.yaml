@@ -1,0 +1,63 @@
+id: phd-postdoc-to-industry-route-selection
+domain: cn-sde-jobhunt
+text: |
+  CS PhD, defended last month, ML systems at a tier-1 university.
+  Currently on F-1 OPT (just activated, EAD valid 2026-11 to
+  2027-11; STEM-OPT extension available). Three paths converging
+  on the same June decision:
+  (1) A cap-exempt postdoc at the same university — Year-1
+      $85k, two-year appointment, my advisor wants to publish
+      our last paper. Cap-exempt H-1B is on the table after the
+      postdoc if I want it; the university has filed cap-exempt
+      H-1B for postdocs before.
+  (2) A FAANG research-engineer offer — TC $420k (base $210 + RSU
+      $700k/4yr + $50k sign-on). They'll file cap-subject H-1B
+      in March 2027, no guarantee on selection. They also offered
+      to support an EB-1B (outstanding researcher) immediately
+      after start.
+  (3) Self-petition EB-1A or NIW now while still on OPT — my
+      advisor + two senior collaborators say my record (8 papers,
+      including 2 in top venues; 3 citations-per-paper average;
+      ML systems benchmarks adopted by industry) is "borderline
+      EB-1A, comfortable NIW." Attorney quotes range $12-25k.
+  I'm 28, single, parents are healthy. The 1p3a 海归 voices say
+  "锁 GC 才是真正的 priority";the Reddit ML researcher voices
+  argue "FAANG research with EB-1B is the optimal stack." Murthy
+  / Reddy-Neumann emphasize NIW's recent post-Dhanasar
+  approval-rate variability. How do I think about ordering these?
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/visa]
+expected_entities:
+  - F-1
+  - OPT
+  - STEM-OPT
+  - H-1B
+  - O-1
+  - EB-1
+  - EB-1A
+  - EB-1B
+  - EB-2-NIW
+  - I-140
+  - priority-date
+  - FAANG
+  - RSU
+  - total-comp
+expected_personas:
+  - cs-phd-post-defense
+  - opt-active-h1b-not-yet-filed
+  - phd-considering-academia
+expected_risk_surfaces:
+  - sponsorship-fit
+  - lottery-failure
+  - opportunity-cost
+  - timing
+  - info-asymmetry
+  - regret
+expected_decisions: [3, 8, 10]
+expected_framings: [F1, F2, F6]
+expected_blindspot_categories:
+  - eb1a-vs-niw-evidentiary-bar-divergence-post-dhanasar
+  - cap-exempt-postdoc-as-h1b-clock-park-not-just-academic-default
+  - faang-eb1b-promise-as-soft-commitment-until-petition-filed
+  - phd-publication-record-flattens-against-impact-narrative
+  - rsu-arithmetic-vs-cap-exempt-status-stability
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step

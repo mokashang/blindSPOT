@@ -1,0 +1,66 @@
+id: senior-ic-startup-vs-faang-with-i140-approved
+domain: cn-sde-jobhunt
+text: |
+  L5 SDE at a FAANG, 5 years in, H-1B Year 6 with one 3-year
+  AC21 extension already approved. I-140 approved 2023, EB-2
+  China priority date 2022-08. RSU cliff cleared 18 months ago,
+  refreshers running ~$220k/year, base $215k; current TC
+  ~$485k. Just got a Series-B offer for staff-engineer / TL on
+  a high-profile AI infra startup. Package: base $200k +
+  options strike at $4.20 / FMV $11.40, 0.18% post-Series-B,
+  no sign-on, 4-year vest 1yr cliff. They have a CFO + outside
+  counsel, but the founding eng (also CN, H-1B) said
+  immigration is "case by case — we'll sponsor H-1B transfer
+  but PERM only after we hire a head of people, which is 2026
+  Q4 earliest." If I take this and stay 4 years, my I-140
+  could be withdrawn (within 180 days of leaving FAANG); my
+  priority date might survive but I'd be relying on the
+  startup to refile PERM and the I-140 carryover rule. Three
+  considerations colliding: (a) career capital — staff-TL at
+  a hot AI infra startup vs more L5 grind at FAANG; (b) GC
+  trajectory — my 2022-08 priority date with the FAANG path
+  vs startup uncertainty; (c) comp math — startup options
+  Black-Scholes value vs my $485k FAANG TC over the next 4
+  years. I'm 33, married (spouse on H-4-EAD same company),
+  one kid in K. How should I lay these out?
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/offer-comp, cn-sde-jobhunt/employer-switch]
+expected_entities:
+  - H-1B
+  - H-1B-transfer
+  - AC21-portability
+  - PERM
+  - I-140
+  - I-140-approved
+  - EB-2
+  - priority-date
+  - FAANG
+  - series-B
+  - RSU
+  - equity-cliff
+  - refresher-grant
+  - total-comp
+  - sponsorship-history-of-employer
+  - H-4
+  - H-4-EAD
+expected_personas:
+  - h1b-active-i140-approved
+  - senior-ic-already-passed-cliff
+  - comparing-fang-vs-startup-with-sponsorship-asymmetry
+expected_risk_surfaces:
+  - sponsorship-fit
+  - sponsorship-asymmetry
+  - priority-date-retrogression
+  - counterparty
+  - opportunity-cost
+  - regret
+  - family-coupling
+expected_decisions: [1, 4, 9, 11]
+expected_framings: [F1, F2, F3]
+expected_blindspot_categories:
+  - i140-revocation-window-vs-priority-date-survival
+  - series-b-perm-refile-promise-as-soft-commitment
+  - options-black-scholes-flattens-status-coupling-risk
+  - reddit-tc-arithmetic-flattens-visa-security-premium
+  - career-capital-staff-tl-vs-faang-l5-grind-asymmetry
+  - family-located-spouse-h4-ead-tracks-principal-employer-choice
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step
