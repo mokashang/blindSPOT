@@ -1,0 +1,44 @@
+id: offer-comparison-sponsorship-asymmetry
+domain: cn-sde-jobhunt
+text: |
+  F-1 OPT, MS in CS graduating May 2026. Two offers in hand, both
+  for new-grad SDE in the Bay. Offer A: a FAANG, base $180k +
+  $200k RSU over 4 years + $30k sign-on, confirmed they sponsor
+  H-1B every March and file PERM in Year 2 — sponsorship history
+  is documented across 1p3a threads. Offer B: a Series-B unicorn,
+  base $210k + early-stage options + $50k sign-on, recruiter says
+  "we sponsor when needed" but won't commit to PERM until "we're
+  later stage" — no documented PERM-for-international history I
+  could find on 1p3a or Glassdoor. Both want a decision in 10
+  days. My priority date for EB-2 China would be 8+ years out
+  either way. How do I think about this when the comp delta is
+  meaningful but the visa-security delta is also meaningful?
+expected_domains: [cn-sde-jobhunt]
+expected_entities:
+  - F-1
+  - OPT
+  - H-1B
+  - PERM
+  - EB-2-China
+  - FAANG
+  - Series-B-unicorn
+  - RSU
+  - sponsorship-history
+expected_personas:
+  - f1-final-year
+  - new-grad-sde
+expected_risk_surfaces:
+  - sponsorship-commitment-vs-promise
+  - 4-year-TC-arithmetic
+  - PERM-timing-by-employer-stage
+  - priority-date-coupling-to-employer-choice
+  - day-1-CPT-fallback-if-h1b-misses
+  - 1p3a-sponsorship-history-as-signal
+expected_decisions: [1, 9, 12]
+expected_framings: [F1, F2, F3, F6]
+expected_blindspot_categories:
+  - reddit-TC-arithmetic-flattens-visa-security-premium
+  - 1p3a-modal-asker-bias-toward-faang
+  - series-b-employer-sponsorship-history-discount
+  - long-term-career-capital-vs-status-stability-tradeoff
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step

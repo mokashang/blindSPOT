@@ -1,0 +1,51 @@
+id: layoff-on-h1b-with-h4-spouse
+domain: cn-sde-jobhunt
+text: |
+  Laid off Tuesday from a Series-B startup. H-1B Year 3 of 6, no
+  I-140 yet (PERM was filed 5 months ago, still pre-audit at DOL).
+  Severance is 4 weeks of base + 2 months of healthcare. The
+  termination letter lists "last day of employment" as today;
+  severance is paid out but I'm not working. H-4 spouse, no EAD
+  (we never qualified because no approved I-140). Spouse is the
+  primary caregiver for our 2-year-old, who is on H-4. We rent;
+  lease ends in 6 months. Three coupled questions:
+  (a) does the severance period extend my 60-day grace clock —
+      do I have 60 days from today or 60 days from the end of the
+      severance window?
+  (b) my spouse and child are on H-4 — when does THEIR status end
+      if I can't find a new H-1B sponsor in 60 days?
+  (c) on 1p3a I see people advising change-of-status to B-2 as a
+      fallback, but I also see Murthy bulletin posts saying that's
+      a high-scrutiny route in 2024-2025 — how do I think about
+      this when the family unit is in scope?
+expected_domains: [cn-sde-jobhunt]
+expected_entities:
+  - H-1B
+  - H-4
+  - 60-day-grace-period
+  - severance
+  - PERM
+  - I-140
+  - B-2-change-of-status
+  - layoff
+  - 8-CFR-214.1(l)(2)
+expected_personas:
+  - recently-terminated-on-h1b
+  - h4-spouse-with-ead
+expected_risk_surfaces:
+  - grace-clock-starts-from-cessation-of-employment-not-severance-end
+  - h4-status-tracks-principal-grace-clock
+  - severance-paid-but-not-working-counts-as-end-of-employment
+  - change-of-status-to-B-2-scrutiny-2024-2025
+  - h-1b-transfer-search-on-60-day-timeline
+  - dependent-child-school-enrollment-state-residency-coupling
+  - 245(c)-bar-on-unauthorized-work-during-grace
+expected_decisions: [5, 7]
+expected_framings: [F1, F5, F6]
+expected_blindspot_categories:
+  - grace-clock-misread-from-severance-period
+  - h4-status-cascading-failure-when-principal-falls-out
+  - b2-change-of-status-route-policy-drift-2024-2025
+  - 1p3a-thread-policy-claims-have-12-18-month-half-life
+  - family-located-decision-sequencing-school-residency-lease
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step

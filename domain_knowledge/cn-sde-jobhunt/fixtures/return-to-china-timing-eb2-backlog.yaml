@@ -1,0 +1,51 @@
+id: return-to-china-timing-eb2-backlog
+domain: cn-sde-jobhunt
+text: |
+  在美 8 年了。本科国内,master 在美国,工作 6 年, current employer
+  third H-1B, I-140 approved 3 years ago (EB-2 China). priority date
+  2021 年初,bulletin 现在还在 2017,按速度大概还要 8-10 年才能 file
+  I-485。Senior SDE at a FAANG-adjacent unicorn, TC 大概 $380k,
+  RSU 还有 2 年没 vest 完。父母在国内 60+,身体开始有状况,独生子女。
+  老婆也是 H-1B 同公司,我们没有小孩。最近字节有个高级别的 offer
+  让我回国(具体 level 估算大概是 staff-equivalent),package 算上
+  期权大约 ¥4M/年。
+  Two coupled questions: (1) 在 EB-2 China 这种 backlog 下,留下来
+  等 GC 的 ROI 是不是已经变成负的了 ——8-10 年里我的 career capital
+  会怎么变?(2) 字节这个 level 的 offer 我能信吗,1p3a 上看到的
+  35-and-over 职场风险在 staff/senior staff 这个 level 适不适用?
+  另外我看到 硅谷101 上有几期 海归 podcast 嘉宾的叙述,他们都是
+  2018-2020 回去的,现在 2026 的市场是不是已经不一样了?
+expected_domains: [cn-sde-jobhunt]
+expected_entities:
+  - EB-2-China
+  - I-140
+  - priority-date
+  - Visa-Bulletin
+  - H-1B-extension
+  - 字节-ByteDance
+  - 海归
+  - 35-and-over-职场风险
+  - parent-eldercare-单身子女
+  - staff-equivalent
+expected_personas:
+  - gc-backlog-considering-return
+  - mid-PERM-employer-switch
+expected_risk_surfaces:
+  - gc-backlog-roi-flip-point
+  - china-tech-hiring-market-half-life
+  - 35-and-over-by-track-disaggregation
+  - parent-eldercare-burden-single-child-generation
+  - career-arc-discontinuity-on-return
+  - re-entry-to-us-optionality-preservation
+  - geopolitical-posture-multi-year-mean-reversion
+  - rsu-cliff-2-years-remaining-cost-of-leaving
+expected_decisions: [6, 9, 11]
+expected_framings: [F2, F4, F5]
+expected_blindspot_categories:
+  - 海归-survivor-selection-bias-toward-leavers
+  - haigui-narrative-time-stamp-drift-2018-2020-vs-2026
+  - 1p3a-modal-asker-bias-stay-in-us-default
+  - 35-and-over-claim-by-track-not-flat
+  - rsu-cliff-cost-arithmetic-flattens-non-comp-axes
+  - re-entry-optionality-preserve-pending-h1b-or-not
+  - parent-eldercare-couples-to-timing-asymmetrically
