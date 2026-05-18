@@ -1,273 +1,218 @@
 # Blindspot Meta-Ontology — Life-Decision Domains
 
+> **Scope-narrow note — 2026-05-18.** On 2026-05-18 the Blindspot
+> project narrowed from a universal 10-domain blind-spot tool to a
+> single in-scope vertical: **Chinese international students in the
+> US, making SDE job-hunt and visa-coupled career decisions**
+> (slug: `cn-sde-jobhunt`). The roadmap is in
+> [`docs/specs/ROADMAP.md`](../docs/specs/ROADMAP.md). The previous
+> 10-domain ontology is preserved in this file's git history; the
+> deprecated content was either *archived* (no longer in scope) or
+> *moved to legacy* (still referenced as upstream-source material for
+> the in-scope vertical). The runtime now loads only
+> `cn-sde-jobhunt`; the rest is documentation.
+
 ## Purpose
 
 This file names the top-level taxonomy of life-decision domains the
-Blindspot project covers. It sits as **Layer 0** above the 4-layer
-knowledge model in [docs/specs/ROADMAP.md §3](../docs/specs/ROADMAP.md):
-each domain named here gets a folder under `domain_knowledge/<slug>/`
-with the four layers (decisions, framings, blindspots, sources) the
-runtime consumes. Authoring this file is the V2 entry-gate condition
-(ROADMAP §4); V2 builds out the 10 domains below under this ontology.
+Blindspot project covers. After 2026-05-18 it names **one** in-scope
+vertical plus pointers to deferred / archived material. Each
+in-scope entry below maps to a folder under `domain_knowledge/<slug>/`
+holding the four knowledge layers (decisions, framings, blindspots,
+sources) the runtime consumes. The authoring guide for those layers
+is at [`_schema.md`](./_schema.md).
 
-## The 10 V2 domains
+## The in-scope vertical: cn-sde-jobhunt
 
-Each entry below gives slug, scope, maturity, high-stakes flag (per
-ROADMAP §5 Mechanism E), and 3–5 sample decisions.
+- **slug**: `cn-sde-jobhunt`
+- **scope**: US-based SDE career decisions made by Chinese
+  international students whose status — F-1, OPT, STEM-OPT, cap-gap,
+  H-1B, H-4, O-1, or AOS-pending — is a binding constraint on the
+  career move under consideration. The vertical lives at the
+  **intersection** of two domains the V1 build invested in
+  (`tech-career` and `immigration`); per-decision content is
+  *only* in scope when both axes are live. Pure-tech-career
+  decisions without visa-status pressure and pure-visa decisions
+  without an SDE / employer choice are out of scope and Triage
+  refuses them (see `cn-sde-jobhunt/domain_pack.md` §Triage).
 
-### 1. tech-career
+  In-scope decision types include:
+  - Offer comparison under H-1B-sponsorship-willingness filter
+    (FAANG vs unicorn vs Series-B startup, GC-timeline implication
+    of employer choice).
+  - OPT / STEM-OPT / cap-gap timing decisions across job offers,
+    school re-enrollment, and gap-year intent.
+  - H-1B lottery strategy: multiple-registration mechanics, alternate
+    paths if not selected (O-1, L-1 transfer, day-1-CPT risk, study
+    back to F-1, day-1-OPT MS-pipeline).
+  - Employer switch mid-PERM / mid-I-140 with AC21 §106(c)
+    same-or-similar portability and §104(c) 3-year extension
+    eligibility implications.
+  - Layoff response under visa-status pressure: 60-day grace,
+    severance-and-grace clock interaction, H-1B transfer timing,
+    H-4/H-4-EAD effect on the spouse-and-children unit, downgrade-
+    to-F-1 fallback, departure timing.
+  - Return-to-China (海归) timing: when ROI of staying flips
+    negative under GC backlog, family pressure, geopolitical
+    posture, China-tech market and 35-and-over职场风险.
+  - Family-located optimization: H-4 / H-4-EAD spouse strategy,
+    kids' schooling and state-residency coupling, parent visiting
+    visas (B-2) and 海外父母医疗 access.
+  - PhD-to-industry / postdoc-to-industry conversion under both
+    EB-1A / NIW self-petition routes and H-1B-with-employer
+    sponsorship — coverage of when each route fits.
+  - Long-term career capital vs short-term visa security tradeoff:
+    a job that maximizes 10-year skill-trajectory may not maximize
+    next-3-year status security, and vice versa.
+  - O-1 vs H-1B lottery: when O-1's higher evidentiary bar trades
+    off against H-1B's lower bar but cap-and-lottery exposure.
+  - Post-cliff (post-RSU-vest) career strategy when GC timeline,
+    employer-switch optimality, and family timing all couple.
 
-- **slug**: `tech-career`
-- **scope**: US knowledge-worker comp, equity, offer negotiation,
-  perf reviews, layoff response, intra-industry job changes. Excludes
-  cross-industry pivots (`career-pivots`) and status-dependent moves
-  (`immigration`).
-- **maturity**: `in-migration` — V1 built this as monolithic
-  `data/source_registry.yaml` + `community_profiles/`; V2 migrates
-  it into this folder.
-- **high_stakes**: `false` — material but recoverable; a bad comp
-  negotiation costs money, not health or legal status.
-- **sample decisions**:
-  - Accept offer A (RSU-heavy) vs offer B (cash-heavy) for a 4-year horizon
-  - Exercise ISOs early (paying AMT) vs wait-and-pay-ordinary at IPO
-  - Counter-offer strategy after a layoff with severance in hand
-  - Stay through cliff vs leave with partial vest
+- **maturity**: `in-construction` — folder is scaffolded but Layers
+  1–3 are placeholder entries pending insider voice work. Runtime
+  enables `cn-sde-jobhunt` for routing once Layer 1 is hand-authored.
 
-### 2. immigration
+- **high_stakes**: `true` — visa status lapses are irreversible
+  (60-day grace, 6-year H-1B cap, multi-year reentry bars after
+  unlawful presence). Mechanism E gating applies: Editor labels
+  visa-decision output "decision-support, not legal advice" and
+  routes to a named immigration-attorney channel for any actionable
+  visa step. Critic's grounding threshold is raised to ≥ 90% on any
+  claim about a visa timeline, statute, regulation, or named program.
 
-- **slug**: `immigration`
-- **scope**: US visa categories, status transitions, employer-sponsored
-  vs self-petitioned paths, green-card timing, dependent visas. US
-  inbound only; outbound emigration deferred to V3+.
-- **maturity**: `planned`
-- **high_stakes**: `true` — missed filing windows or status lapses
-  cause out-of-status, deportation risk, multi-year bans. Mechanism E
-  gating applies (Editor "decision-support, not legal advice";
-  Critic stricter grounding).
-- **sample decisions**:
-  - H-1B to O-1 transition timing while I-140 is pending
-  - Marry-for-status timing when partner's own GC priority date is current
-  - Concurrent I-140/I-485 vs sequential under known retrogression
-  - Stay on H-1B vs switch employer mid-PERM
-  - Apply for advance parole before international travel during AOS
+- **sample decisions** (6, drawn from Layer 1 `decisions.md`):
+  - Offer comparison: FAANG-A sponsors H-1B and starts PERM Year 2
+    vs Series-B-B pays $30k more but won't commit to PERM until
+    Year 4 — net 4-year-comp value under the visa-security adjustment.
+  - First-time OPT employer choice under cap-gap risk: take a sure
+    e-verified F-1-friendly employer that lottery-petitions next
+    March, or hold out for FAANG that lottery-petitions but starts
+    20 weeks later.
+  - Laid off on H-1B Year 3, 4 weeks of severance, PERM filed but
+    pre-audit, H-4 spouse without EAD: how to sequence 60-day grace
+    clock, H-1B transfer search, and family-located decisions.
+  - Return-to-China timing for a senior SDE on approved I-140 with
+    EB-2 China backlog 8 years out: stay through the backlog vs
+    return now while China-tech hiring is open vs hedge with a
+    multi-year reduced-presence arrangement.
+  - PhD-graduating SDE-pivot candidate: EB-1A / NIW self-petition
+    while still on F-1 OPT vs H-1B-lottery with employer sponsorship
+    vs O-1 bridge into industry vs return.
+  - H-4-EAD spouse career strategy when principal's I-140 is approved
+    and EAD is rule-vulnerable: how to time spouse's job change,
+    employer commitment, and citizenship-of-children decisions.
 
-### 3. housing
+## Deferred / legacy domains
 
-- **slug**: `housing`
-- **scope**: Rent vs buy, lease terms, mortgage selection (rate type,
-  term, down payment trade-offs), location choice within a metro
-  (commute, schools, climate risk), primary-residence vs investment-
-  property framing. Excludes commercial real estate.
-- **maturity**: `planned`
-- **high_stakes**: `false` — large dollars but reversible (sell,
-  refinance, sublet). Borderline; flagged false because the user
-  typically also engages an agent and lender.
-- **sample decisions**:
-  - Rent vs buy in HCOL metro with 5-year time horizon
-  - 30-year fixed vs 7/1 ARM given employer-stability and rate outlook
-  - Put 20% down to avoid PMI vs invest the difference in index funds
-  - Commute-distance vs school-district trade-off for a family of four
-  - Sell current home before buying next vs bridge loan vs contingency
+The 2026-05-18 scope narrow split the V2 ontology into two
+non-runtime piles:
 
-### 4. health-insurance
+### `domain_knowledge/_legacy/`
 
-- **slug**: `health-insurance`
-- **scope**: US health coverage decisions — plan selection at open
-  enrollment (HDHP / PPO / HMO), HSA/FSA optimization, COBRA vs
-  marketplace at job change, Medicare timing, dependent coverage.
-  Excludes diagnosis or treatment (see "Out-of-scope").
-- **maturity**: `planned`
-- **high_stakes**: `true` — wrong choice during the 12-month lock-in
-  causes uncapped OOP exposure; Medicare late-enrollment penalties
-  are permanent. Mechanism E gating applies.
-- **sample decisions**:
-  - HDHP + HSA vs PPO for a 32-year-old with no chronic conditions
-  - Cover spouse on your plan vs each on respective employer plan
-  - COBRA for 18 months vs jump to marketplace immediately after layoff
-  - Delay Medicare Part B while on employer plan past 65 vs enroll on time
-  - Switch from Marketplace silver to bronze given subsidy cliff
+Domains the runtime **no longer routes to** but whose hand-authored
+content is **still referenced as upstream source material** by the
+in-scope vertical. The runtime reads these only via
+`cn-sde-jobhunt/sources.yaml` `static_corpus` entries:
 
-### 5. personal-finance
+- `_legacy/tech-career/` — US knowledge-worker comp, equity, offer
+  negotiation, perf, layoff response. `cn-sde-jobhunt` borrows its
+  Layer 2 framings (offer-negotiation framings, comp-arithmetic
+  framings) and Layer 3 blindspots (e.g. RSU-mark-to-market vesting
+  math, IPO-cliff exit timing, perf-review post-layoff signaling)
+  wherever those translate to a CN-student-with-visa-constraint
+  asker. The CN-student-specific overlay is in
+  `cn-sde-jobhunt/framings.md` and `cn-sde-jobhunt/blindspots.md`.
+- `_legacy/immigration/` — US visa categories, status transitions,
+  employer-sponsored vs self-petitioned paths, dependent visas.
+  `cn-sde-jobhunt` borrows its Layer 1–3 visa-mechanic ground truth
+  (AC21 §106(c) portability, CSPA aged-out formula, EB-1A Dhanasar
+  three-prong) without re-authoring the statutory plumbing. The
+  CN-student-specific overlay narrows scope to F-1 → OPT → H-1B →
+  GC and the dependent (H-4 / H-4-EAD) couplings most-cited in
+  one-acre-three-mu threads.
 
-- **slug**: `personal-finance`
-- **scope**: Retirement-account contribution ordering, tax-advantaged
-  account strategy (401k, IRA, HSA, 529), brokerage asset allocation,
-  debt-payoff vs invest prioritization, tax-loss harvesting. Dollar-
-  specific investment guidance is gated.
-- **maturity**: `planned`
-- **high_stakes**: `true` — dollar-specific investment guidance is
-  exactly what Mechanism E was written to gate (Editor "decision-
-  support, not financial advice").
-- **sample decisions**:
-  - Order: 401k match → HSA → Roth IRA → 401k cap → taxable
-  - Mega backdoor Roth vs after-tax brokerage given tax-rate trajectory
-  - Pay down 6.5% student loans vs invest in S&P 500 index
-  - Open 529 in home state vs out-of-state with no tax benefit
-  - Tax-loss harvest across taxable + IRA without triggering wash sale
+Both `_legacy/` folders are referenced from `cn-sde-jobhunt/sources.yaml`
+as `static_corpus` adapter entries at reliability 4 — they meet the
+V2 quality bar but are not CN-specific, so they get a one-notch
+discount from a CN-community-cited source at the same source-tier.
 
-### 6. entrepreneurship
+### `domain_knowledge/_archive/`
 
-- **slug**: `entrepreneurship`
-- **scope**: Founding, co-founder selection, fundraising vs
-  bootstrapping, side-business vs full-time leap, freelance/
-  consulting structure (sole prop / LLC / S-corp). Excludes deep
-  entity-tax optimization (overlaps `personal-finance`).
-- **maturity**: `planned`
-- **high_stakes**: `false` — failure is the modal outcome and is
-  generally survivable; not Mechanism-E-gated despite large dollar
-  swings.
-- **sample decisions**:
-  - 50/50 equity split with co-founder vs vesting-asymmetric split
-  - Bootstrap to $1M ARR vs raise seed to compress time-to-PMF
-  - Quit day job vs nights-and-weekends until $X MRR
-  - LLC pass-through vs S-corp election once net income crosses $80k
-  - SAFE post-money valuation cap vs priced seed given dilution math
+Domains the runtime no longer routes to and which are **not** used
+as upstream sources by `cn-sde-jobhunt`. They are preserved as
+project history per ROADMAP §0:
 
-### 7. education-funding
+- `_archive/housing/` — rent vs buy, mortgage selection, location
+  choice.
+- `_archive/health-insurance/` — open-enrollment plan choice, HSA /
+  FSA, COBRA vs marketplace, Medicare timing.
+- `_archive/personal-finance/` — retirement-account ordering,
+  tax-advantaged account strategy, debt-payoff vs invest.
+- `_archive/entrepreneurship/` — co-founder selection, fundraising
+  vs bootstrapping, side-business / freelance structure.
+- `_archive/education-funding/` — student-loan type and refi
+  timing, grad-school ROI, 529 / Coverdell.
 
-- **slug**: `education-funding`
-- **scope**: Higher-education funding — student-loan type and refi
-  timing, grad-school ROI given career stage, 529 / Coverdell /
-  taxable savings for children's college, repayment-plan choice.
-- **maturity**: `planned`
-- **high_stakes**: `false` — slow-clocked and reversible (refinance,
-  switch repayment plan, defer enrollment).
-- **sample decisions**:
-  - Refi federal loans to private vs preserve IDR / PSLF optionality
-  - MBA at top-15 with $200k debt vs continue current trajectory
-  - Front-load 529 with 5-year-election lump sum vs annual contributions
-  - IDR + tax-bomb savings vs 10-year standard
-  - In-state public vs out-of-state private with merit aid
-
-### 8. family-planning
-
-- **slug**: `family-planning`
-- **scope**: Marriage / partnership financial-legal structuring,
-  kids timing and financial readiness, eldercare for aging parents,
-  divorce financial separation. Religious and cultural framings
-  handled with care (ROADMAP §4 per-domain note).
-- **maturity**: `planned`
-- **high_stakes**: `true` — child welfare, irreversible legal-status
-  changes (marriage, divorce, custody), eldercare medical decisions.
-  Mechanism E gating applies most strictly here.
-- **sample decisions**:
-  - Prenup vs no prenup given asymmetric pre-marital assets
-  - First child at 30 vs 35 given career trajectory and biology
-  - In-home care vs assisted-living for parent with early-stage dementia
-  - Joint vs separate finances after marriage with income gap
-  - Mediated vs litigated divorce given custody complexity
-
-### 9. legal-disputes
-
-- **slug**: `legal-disputes`
-- **scope**: Contract disputes (vendor, employment, lease), small-
-  claims filing, employment-law (wrongful termination, wage,
-  discrimination), pre-litigation negotiation. domain_pack.md Editor
-  labels output "decision-support, not legal advice" (ROADMAP §4).
-- **maturity**: `planned`
-- **high_stakes**: `true` — statutes of limitation create hard
-  deadlines; admissions / recorded statements are not retrievable.
-  Mechanism E gating applies.
-- **sample decisions**:
-  - Sign separation agreement with non-compete vs negotiate carve-outs
-  - File EEOC charge before suing vs proceed directly to state court
-  - Demand letter from a lawyer vs pro-se small-claims filing
-  - Settle vendor dispute at 60% vs litigate for full breach damages
-  - Withdraw resignation after retaliatory environment vs document and exit
-
-### 10. career-pivots
-
-- **slug**: `career-pivots`
-- **scope**: Cross-domain professional moves — engineer-to-PM,
-  IC-to-management, tech-to-finance, industry switches, return-to-
-  school, early-retirement transitions. **Meta-domain** by design
-  (see Cross-domain notes).
-- **maturity**: `planned`
-- **high_stakes**: `false` — large career swings but recoverable on
-  multi-year horizons; typical regret is opportunity-cost, not harm.
-- **sample decisions**:
-  - Pivot from staff engineer to PM at same company vs new company
-  - Leave big-tech IC role for early-stage founding-engineer slot
-  - Grad school full-time vs part-time vs employer tuition reimbursement
-  - FAANG to public-sector / nonprofit given comp delta
-  - Coast-FIRE at 45 with bridge-job vs full-FIRE at 50
-
-## Selection criteria
-
-The 10 domains above were chosen per ROADMAP §4 "Choosing the 10
-domains" priority order:
-
-- **High personal stakes for a typical US-resident knowledge-worker** —
-  V1's user; V3 expands outward.
-- **Blind spots known to be costly** — domains where "I didn't know I
-  needed to ask" is a common regret in published post-mortems.
-- **Reachable source-views** — active English-language communities,
-  RSS-able blogs, or static corpora the source-adapter layer can
-  ingest. Domains where real expertise lives in private channels are
-  deferred (see §10 Honest limits).
-- **Coverage diversity** — no two domains collapse to the same
-  underlying decision class. RSU comp and ISO comp are one domain
-  (`tech-career`); rent-vs-buy and mortgage-type are one domain
-  (`housing`); etc.
-
-## Out-of-scope / deferred
-
-Life areas explicitly NOT named as V2 domains:
-
-- **medical-diagnosis** — handled by Mechanism E gating rather than
-  as its own domain; Blindspot does not propose diagnoses or
-  treatments.
-- **specific-legal-advice** — `legal-disputes` covers framings;
-  specific advice is referred to counsel via Editor gating.
-- **mental-health-treatment** — overlaps medical-diagnosis gating;
-  revisit in V3 if a careful source-view set emerges.
-- **substance-recovery** — too high-stakes for public source-views;
-  bad framing causes severe harm.
-- **child-custody-specifics** — `family-planning` covers framings;
-  jurisdiction-specific custody outcomes are gated.
-- **politics / voting** — out of north-star scope.
-
-`career-pivots` IS a meta-domain — intentional (ROADMAP §4 lines
-201–203). Its presence sharpens the 4-layer model because cross-
-domain edges are the V4 frame-breaking surface.
+These remain readable for reviewers of the project's history but
+the runtime does NOT load them and the refine routine does NOT
+edit them.
 
 ## Cross-domain notes
 
-V4 (frame-breaking) leans on the cross-domain edges these 10 domains
-imply. The most load-bearing edges:
+`cn-sde-jobhunt` is the **intersection** of `tech-career` and
+`immigration`, with **CN-student-specific community knowledge as
+the moat**. The vertical is *not* the union — a question that is
+purely tech-career (no visa pressure) or purely visa (no SDE
+employer choice) is **out of scope** and the Triage Officer refuses
+it. The defensible thesis is that the intersection has
+under-represented community knowledge: 一亩三分地 (1point3acres)
+threads, Zhihu 海归 career-decision narratives, WeChat blogs from
+practicing immigration attorneys reading USCIS Policy Manual updates
+in Chinese for a CN-applicant audience, and 海归 podcasts (硅谷101,
+软实力) where returnees narrate the timing decision in retrospect.
+General-purpose LLMs underrepresent these voices because they are
+behind Chinese-language paywalls, hostile-to-scrape registration
+walls, or WeChat-public-account silos.
 
-- **`career-pivots` ↔ everything** — the meta-domain. Almost any
-  career-pivot situation also intersects `personal-finance`,
-  `housing`, sometimes `immigration` and `family-planning`.
-- **`immigration` ↔ `tech-career`** — visa status couples tightly to
-  employer choice, comp negotiation, layoff response.
-- **`personal-finance` ↔ `tech-career`** — equity comp, RSU vesting,
-  ISO exercise math, concentration-risk live on the boundary.
-- **`family-planning` ↔ all financial domains** — major transitions
-  (marriage, kids, divorce, eldercare) cascade into
-  `personal-finance`, `housing`, `health-insurance`, `education-funding`.
-- **`legal-disputes` ↔ `housing` and `tech-career`** — landlord-tenant
-  and employment-law disputes are where most knowledge-workers first
-  encounter the legal system.
+The legacy folders are referenced (via `cn-sde-jobhunt/sources.yaml`)
+as static-corpus inputs — they ground the visa-mechanic and
+comp-mechanic claims while the CN-student-specific layers
+(community profiles, blindspots oriented around 一亩三分地 framing,
+return-to-China optionality) carry the moat.
 
-These edges are documentation, not runtime data. Triage Officer's
-two-pass design (ROADMAP §4 "Architecture changes") multi-labels a
-situation across these edges; the notes here help human authors of
-per-domain `framings.md` files name the adjacent domains they exclude.
+## Out-of-scope / deferred
+
+The scope narrow folded these categories of work out of the live
+project:
+
+- **All non-CN international-student verticals** (Indian-student
+  SDE, European-student SDE, etc.). Same architecture would apply
+  but the author lacks community knowledge.
+- **Non-SDE CN-international-student verticals** (CN-student
+  finance careers, CN-student academic / postdoc-stays-academic
+  decisions). Different community knowledge; defer.
+- **Mainland-China-to-China returnee decisions** that don't pass
+  through a US-SDE-stay-or-leave moment. Out of scope.
+- **Asylum, family-sponsored, EB-5, citizenship-by-investment,
+  and removal-defense routes.** Out of scope; refer to counsel.
+- The seven `_archive/` domains and any cross-domain
+  frame-breaking work (V4 of the deprecated plan). Killed.
 
 ## Update policy
 
 This file is editable by future refine runs:
 
-- **Editing scope is allowed** — sharpen scope statements, add sample
-  decisions, refine high-stakes rationale, extend cross-domain notes
-  as eval results expose edges.
-- **V3-grown domains get appended** — when V3's Mechanism A promotes
-  a domain to manually-authored quality, append it here with
-  `maturity: planned` and the same field set.
-- **Do NOT remove an existing domain without explicit human review.**
-  Removal breaks per-domain folder layouts (`domain_knowledge/<slug>/`),
-  invalidates fixtures, and confuses `roadmap_progress` logging.
-- **Renames are also human-review** — a slug rename ripples through
-  fixtures paths, sources.yaml entries, and Triage pass-1 labels.
-  Slugs are load-bearing once a domain leaves `maturity: planned`.
+- **Editing scope is allowed** — sharpen the `cn-sde-jobhunt`
+  scope statement, add sample decisions, refine the high-stakes
+  rationale.
+- **Do NOT add a new in-scope vertical without explicit human
+  review.** The scope narrow is deliberate; adding a vertical
+  re-opens the deprecated work.
+- **Do NOT remove the `_legacy/` or `_archive/` pointers.** They
+  are referenced from `cn-sde-jobhunt/sources.yaml` and the
+  ROADMAP §0 history.
+- **Renames are also human-review.** A slug rename to
+  `cn-sde-jobhunt` ripples through `cn-sde-jobhunt/sources.yaml`,
+  `cn-sde-jobhunt/fixtures/*.yaml`, Triage pass-1 labels, and the
+  refine-routine targeting. Slugs are load-bearing.
