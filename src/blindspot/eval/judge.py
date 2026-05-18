@@ -13,24 +13,31 @@ runs, not drift toward "4" when the response is wordy or "2" when it is
 terse.
 
 - specificity (1-5):
-  - 5 = many concrete dollar amounts, named clauses, IRS section numbers,
-    specific dates / horizons; reader could act without further lookup
-  - 3 = some concrete terms (e.g. "AMT", "double-trigger") but few numbers
-    or specific clauses; reader still needs lookup
+  - 5 = many concrete dollar amounts, named clauses, INA / 8 CFR section
+    numbers, USCIS PM references; specific deadline-counts (24-month
+    STEM-OPT, 60-day grace, 90-day unemployment); specific dates /
+    horizons; reader could act without further lookup
+  - 3 = some concrete terms (e.g. "OPT", "STEM-OPT", "AC21 portability")
+    but few numbers or specific clauses; reader still needs lookup
   - 1 = generic advice with no named mechanism or number
 
 - non_obviousness (1-5):
   - 5 = response surfaces blind spots the reader almost certainly didn't
-    know to ask about (e.g. AMT credit carry-forward, secondary sale
-    timing-vs-tender mechanics)
+    know to ask about (e.g. AC21 §106(c) portability after I-140
+    approval preserves priority date even on employer switch; H-4 EAD
+    validity tracks principal's I-140 approval, not just H-1B status;
+    day-1-CPT carries higher SEVIS scrutiny than STEM-OPT)
   - 3 = mix — some new angles plus baseline content
   - 1 = entirely things the reader would think of unprompted (e.g.
-    "negotiate", "consult a CPA")
+    "negotiate", "consult an immigration attorney", "talk to HR")
 
 - grounding_pct (0-100): integer percent of factual claims that carry at
   least one [doc-X] citation marker. A "factual claim" is any sentence
-  asserting a real-world fact, mechanism, or rate. Frame comments and
-  meta-language ("here's what to consider") do not count as claims.
+  asserting a real-world fact, mechanism, or rate — including visa /
+  immigration mechanics (deadline counts, statutory cross-references,
+  USCIS policy guidance), typically cited from sources like
+  us-immigration-counsel or curated 一亩三分地 threads. Frame comments
+  and meta-language ("here's what to consider") do not count as claims.
   100 = every claim cited; 0 = no citations on any.
 
 - diversity_count: integer count of distinct "What [community] would tell
