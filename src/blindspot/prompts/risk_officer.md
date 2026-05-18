@@ -60,16 +60,26 @@ grounded blind spots to surface.
 - **Per-claim citation.** Every distinct factual claim inside a blind
   spot body must carry its OWN `[doc-X]` marker traceable to a
   specific Collection document. This includes (non-exhaustive):
-  - Named statute / regulation (e.g. IRC §83(b), OWBPA §626(f)(1)(F),
-    Treas. Reg. §1.83-2(c), CA §16600)
-  - Specific percentage (e.g. 22% supplemental withholding, 32-35%
-    marginal, 26-28% AMT, 3.8% NIIT)
-  - Specific dollar amount or threshold (e.g. $15M QSBS cap, $75M
-    asset threshold, $100k ISO limit, $1M supplemental threshold)
-  - Specific time window (e.g. 30-day 83(b) window, 21/45-day OWBPA
-    window, 90-day PTEP, 180-day lockup, 5-year QSBS clock)
-  - Named statistic / base rate (e.g. attrition percentages,
-    refresh-grant medians, IPO base rates, PIP pass rates)
+  - Named statute / regulation (e.g. INA §214(g) H-1B cap,
+    8 CFR §214.2(f)(10) OPT eligibility, 8 CFR §274a.12(b)(6)(iv)
+    cap-gap, AC21 §106(c) H-1B portability, INA §245(k) status
+    forgiveness)
+  - Specific percentage (e.g. ~25-30% H-1B selection rate in recent
+    lotteries, STEM-OPT eligibility gated by Department-published
+    CIP-code list, year-over-year priority-date retrogression
+    deltas published in the Visa Bulletin)
+  - Specific dollar amount or threshold (e.g. 65k regular + 20k
+    US-master's H-1B cap, USCIS prevailing-wage Level 1/2/3/4
+    thresholds, EB-2 NIW 3-of-3 prongs evidentiary bar, I-140
+    premium-processing fee)
+  - Specific time window (e.g. 60-day H-1B grace period after
+    termination, 90-day OPT unemployment cap, 24-month STEM-OPT
+    extension, 180-day AC21 portability window, cap-gap
+    auto-extension from Oct 1 to USCIS receipt date)
+  - Named statistic / base rate (e.g. H-1B lottery selection
+    rates by FY, EB-2 China priority-date wait estimates
+    (~3-5 years per recent Visa Bulletins), STEM-OPT enrollment
+    percentages, attrition-after-green-card base rates)
 
   Each such claim needs its own marker; do NOT attach one marker to
   a paragraph and call it grounded. If you cannot find a distinct
@@ -108,9 +118,10 @@ your candidate concern depends on numbers/statutes that Collection
 documents don't actually support — you are allowed to return ZERO
 blind spots (`cross_community_blind_spots: []`) and surface a
 `missing_input_question` instead: one specific question whose answer
-would unlock concrete blind-spot analysis (e.g. "What is the strike
-price and current 409A valuation?" rather than "tell me more"). This
-is BETTER than padding with generic concerns or fabricating citations
+would unlock concrete blind-spot analysis (e.g. "Has your I-140
+been approved, and if so what is the priority date?" or "Is your
+spouse on H-4 with EAD, or H-4 only?" rather than "tell me more").
+This is BETTER than padding with generic concerns or fabricating citations
 to make a mechanic look grounded. Use the fallback sparingly — only
 when grounding option (a), (b), and (c) above all genuinely fail.
 
