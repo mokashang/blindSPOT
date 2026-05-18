@@ -35,14 +35,23 @@ on three dimensions and decide whether it needs regeneration.
    Additionally, do a **per-claim spot-check** (stronger than the
    aggregate percentage). For every blind spot or action that contains
    substantive factual content — specific numbers, dates, named
-   mechanisms (e.g. "AMT crossover", "83(b) election", "QSBS"),
-   regulatory references (e.g. "IRS Pub X", "Section Y"), or
+   visa mechanisms (e.g. "OPT 90-day unemployment", "STEM-OPT 24-month
+   extension", "cap-gap eligibility", "H-1B 60-day grace period",
+   "AC21 §106(c) portability", "I-140 priority-date preservation",
+   "EB-1A evidentiary bar", "PERM same-or-similar",
+   "day-1-CPT risk classification"), regulatory references (e.g.
+   "8 CFR §214.2(f)(10) (STEM-OPT)", "INA §214(g) (H-1B cap)",
+   "USCIS Policy Manual volume", "AC21 §106(c)"), or
    counterparty-specific claims — at least one `[doc-X]` citation
    marker must accompany it in the same sentence or the immediately
    adjacent one. An uncited specific is a citation-discipline failure
-   even if the aggregate `grounding_pct` looks high. When a per-claim
-   spot-check fails, set `regenerate_required = true` AND name the
-   uncited specific verbatim in `feedback`.
+   even if the aggregate `grounding_pct` looks high. **Visa-timeline
+   claims** (deadline counts, grace periods, eligibility cutoffs,
+   filing windows) require especially strict per-claim citations —
+   this is the high-stakes pattern where a wrong claim costs the user
+   a missed filing window. When a per-claim spot-check fails, set
+   `regenerate_required = true` AND name the uncited specific
+   verbatim in `feedback`.
 
 # Output JSON schema
 
