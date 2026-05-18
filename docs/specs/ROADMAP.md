@@ -140,7 +140,7 @@ quality_score ≥ 0.75 over ≥ 8 fixtures across 3 consecutive runs.
 ```
 Status: 🟡 in progress
 Progress: █████████████░░░░░░░ 67% (8/12)
-Last completed: de8211a — cn-sde-jobhunt/fixtures/ expanded 3 → 10 files (fixtures-md item complete)
+Last completed: 0c8a42a — fixtures/eval_situations.yaml coverage header + blindspots.md §F1-F6 entry skeletons (5×6=30) + risk_officer.md visa-mechanic example anchors (structural depth round; no checkbox flip)
 Next up: cn-sde-jobhunt/decisions.md — author Layer 1 paragraph content (voice work, user-authored only per SKILL.md §5)
 ```
 
