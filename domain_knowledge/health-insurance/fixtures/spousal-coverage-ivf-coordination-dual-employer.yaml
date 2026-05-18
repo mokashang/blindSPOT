@@ -1,0 +1,61 @@
+id: spousal-coverage-ivf-coordination-dual-employer
+text: |
+  Married couple, 34 and 33, both software engineers at different
+  large employers in MA. Open enrollment Nov 1 – Nov 15. We're
+  planning IVF in 2027 (first cycle, likely 1–3 cycles needed at
+  $22-30k per cycle including meds). Two employer plans on the
+  table:
+  - My plan (Google-style benefits, $0/biweekly employee-only, $120/
+    biweekly + spouse, $190/biweekly + family): covers IVF at $30k
+    lifetime max plus 1 frozen-embryo transfer per cycle, HDHP/HSA
+    eligible ($4,300 self / $8,550 family HSA cap 2026, plan seeds
+    $1,500 family).
+  - Spouse's plan (consulting firm, $90/biweekly employee-only, $310/
+    biweekly + spouse): "infertility diagnosis covered" but IVF
+    explicitly excluded per SPD; PPO not HDHP. Spouse's employer
+    adds a $75/biweekly spousal surcharge if covered spouse has
+    access to "creditable coverage" elsewhere.
+  MA state-mandate requires fully-insured large-group plans to cover
+  IVF — but both plans appear to be self-funded ERISA plans, which
+  ARE exempt from the state mandate. We confirmed mine covers IVF
+  directly (per SPD §7.4); spouse's SPD §6.2 says "excluded"
+  explicitly. Plan options: (a) both on my family-tier HDHP, max HSA
+  to $8,550 + use $1,500 seed, IVF covered; (b) each on own employer
+  plan separately (spouse on her PPO, me on my HDHP self-only), face
+  spousal surcharge if she adds me later, IVF only via my plan with
+  me as patient — but I'm not the one undergoing retrieval; (c) some
+  hybrid. Which configuration actually maximizes IVF coverage
+  before we start cycles in March?
+expected_domains: [health-insurance, family-planning]
+expected_entities:
+  - IVF
+  - $22-30k-per-IVF-cycle
+  - $30k-IVF-lifetime-max
+  - MA-state-IVF-mandate
+  - self-funded-ERISA-exemption-from-state-mandate
+  - SPD-Summary-Plan-Description
+  - HDHP-HSA
+  - $8,550-family-HSA-cap-2026
+  - $1,500-employer-HSA-seed
+  - $75-biweekly-spousal-surcharge
+  - frozen-embryo-transfer-FET
+  - infertility-diagnosis-vs-treatment-coverage-distinction
+expected_personas: [dual-employer-couple-planning-IVF, comparing-OE-plans]
+expected_risk_surfaces:
+  - self-funded-ERISA-plan-exempt-from-state-IVF-mandate
+  - spousal-surcharge-vs-spousal-carve-out-employer-policy
+  - infertility-diagnosis-covered-vs-IVF-treatment-excluded-distinction
+  - IVF-coverage-only-on-patient-not-partner-on-most-plans
+  - mid-year-IVF-coverage-locked-by-12-month-plan-year
+  - HSA-family-vs-self-only-cap-coordination-across-spouses
+  - high-stakes-consult-licensed-broker-on-SPD-IVF-coverage-language
+expected_decisions: [D2, D6]
+expected_framings: [F1, F7, F11]
+expected_blindspot_categories:
+  - state-IVF-mandates-do-not-apply-to-self-funded-ERISA-plans-MA-Mass-Mandate-exempted
+  - IVF-coverage-typically-only-for-the-patient-undergoing-retrieval-not-the-partner
+  - infertility-diagnosis-vs-IVF-treatment-coverage-distinction-buried-in-SPD-section
+  - spousal-surcharge-only-applies-if-spouse-actually-enrolls-not-if-eligible-but-declines
+  - HSA-family-cap-shared-across-both-spouses-not-doubled-even-with-dual-employer-HSA-accounts
+  - mid-year-plan-switch-blocked-outside-QLE-once-IVF-cycle-starts-no-mid-treatment-pivot
+  - high-stakes-consult-licensed-broker-on-IVF-SPD-language-before-OE-deadline-locks-12-month-choice

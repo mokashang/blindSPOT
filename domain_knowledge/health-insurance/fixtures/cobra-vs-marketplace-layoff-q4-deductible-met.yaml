@@ -1,0 +1,52 @@
+id: cobra-vs-marketplace-layoff-q4-deductible-met
+text: |
+  Laid off November 3rd from a 2,400-person tech employer; severance
+  is 12 weeks pay plus continued employer health-plan contribution
+  through Dec 31, after which COBRA notice arrives. Family of 4 — me,
+  spouse (not currently working), two kids (ages 8 and 11). On the
+  PPO this year, family deductible was $4,000 and we hit $6,750 of
+  the $8,000 family OOP-max in March when our older kid had an
+  appendectomy. COBRA quote on the same plan is $2,340/mo family-
+  tier. 2027 projected household income — me job-hunting on a 4-month
+  runway, spouse staying out of workforce — is around $55k (severance
+  + maybe a Q3 start). Healthcare.gov silver-benchmark for our county
+  pencils at $0/mo after APTC at that income, with a silver-CSR-87
+  variant. Marketplace 60-day SEP starts when employer coverage
+  actually ends (Dec 31), not the layoff date. Older kid has a
+  follow-up specialist visit booked for Jan 12 with the surgeon who
+  did the appendectomy. Do we COBRA through year-end to lock in the
+  almost-met OOP-max, then marketplace Jan 1? Or marketplace
+  immediately and eat the $0-deductible reset? Or skip coverage for
+  60 days and retroactively elect COBRA if something happens?
+expected_domains: [health-insurance, tech-career]
+expected_entities:
+  - COBRA
+  - $2,340/mo-family
+  - ACA-marketplace
+  - SEP-60-day-clock
+  - silver-CSR-87
+  - APTC
+  - $6,750-of-$8,000-family-OOP-met
+  - $55k-projected-household-income
+  - severance-12-weeks
+  - retroactive-COBRA-election-105-day-window
+  - Form-8962
+  - tech-career-layoff
+expected_personas: [post-layoff-with-deductible-met, transitioning-employer-to-marketplace]
+expected_risk_surfaces:
+  - retroactive-COBRA-election-window-as-real-option
+  - silver-CSR-87-loading-at-150-200pct-FPL
+  - mid-treatment-deductible-and-prior-auth-reset
+  - APTC-year-end-true-up-on-Form-8962-with-severance-included
+  - SEP-clock-loss-of-coverage-date-vs-QLE-event-date
+  - specialist-network-continuity-mid-treatment
+  - high-stakes-60-day-SEP-foreclosure-until-next-OE
+expected_decisions: [D3, D5]
+expected_framings: [F2, F4, F5, F7]
+expected_blindspot_categories:
+  - retroactive-COBRA-election-105-day-window-is-genuine-option-for-healthy-households
+  - severance-counts-in-MAGI-for-APTC-pushes-true-up-recapture-on-Form-8962
+  - silver-CSR-87-strictly-dominates-gold-at-150-200pct-FPL-counterintuitive-to-richer-is-better
+  - SEP-clock-runs-from-loss-of-coverage-not-QLE-notification-document-required
+  - specialist-mid-treatment-prior-auth-reset-on-network-switch-not-just-deductible
+  - high-stakes-consult-marketplace-navigator-on-APTC-projected-income-and-CSR-band

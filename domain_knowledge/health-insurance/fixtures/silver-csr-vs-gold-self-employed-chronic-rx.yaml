@@ -1,0 +1,61 @@
+id: silver-csr-vs-gold-self-employed-chronic-rx
+text: |
+  Self-employed graphic designer, projected 2027 MAGI ~$38k for
+  household of 2 (me + spouse, no kids; spouse is a part-time
+  bookstore employee, no benefits). California, Covered California
+  marketplace. Spouse takes adalimumab (Humira biosimilar Cyltezo)
+  for rheumatoid arthritis — current pharmacy cost ~$2,400/month
+  retail; with employer plan two years ago, copay was $40 after
+  manufacturer copay-card. Two plans I'm weighing for OE Nov 1 – Jan
+  15:
+  - Silver-CSR-87 (Anthem EPO, $200/mo after APTC, $1,200 deductible
+    with CSR loading, $3,500 individual / $7,000 family OOP-max with
+    CSR loading, Cyltezo on Tier-4 specialty at 30% coinsurance after
+    deductible).
+  - Gold PPO (Blue Shield, $360/mo after APTC, $0 deductible, $25
+    PCP / $50 specialist copay, $4,500 individual / $9,000 family
+    OOP-max, Cyltezo on Tier-4 specialty at $250/month flat copay
+    after deductible-free start).
+  At our income we're at 188% FPL so we hit the deeper CSR-87 tier.
+  Manufacturer copay-card for Cyltezo says "not valid where prohibited
+  including for plans with government cost-sharing assistance such as
+  CSR" — which I read as silver-CSR disqualifies the copay-card but
+  gold doesn't. Friend in r/personalfinance says "always silver-CSR
+  when you qualify" but that copay-card carve-out flips the math.
+  And: 2027 ARPA-IRA enhanced subsidies — extended or expired?
+expected_domains: [health-insurance, personal-finance]
+expected_entities:
+  - Covered-California
+  - Silver-CSR-87
+  - Gold-PPO
+  - $200/mo-silver-after-APTC
+  - $360/mo-gold-after-APTC
+  - 188-pct-FPL
+  - Cyltezo
+  - adalimumab-biosimilar
+  - manufacturer-copay-card
+  - Tier-4-specialty-drug
+  - $2,400-monthly-retail-price
+  - ARPA-IRA-enhanced-subsidies-expiration
+  - Form-8962
+  - APTC-true-up
+  - rheumatoid-arthritis
+expected_personas: [self-employed-marketplace-CSR-band, household-with-chronic-specialty-rx]
+expected_risk_surfaces:
+  - silver-CSR-loading-at-low-income-as-structural-anomaly
+  - copay-card-government-cost-sharing-prohibition-rule
+  - APTC-projected-income-vs-year-end-true-up-on-Form-8962
+  - specialty-drug-formulary-tier-and-prior-auth-burden
+  - ARPA-IRA-subsidy-expiration-cliff-restoration
+  - narrow-network-EPO-vs-PPO-on-marketplace
+  - high-stakes-12-month-plan-year-lock-in-with-chronic-medication
+expected_decisions: [D5, D6]
+expected_framings: [F1, F4, F5, F9, F10, F12]
+expected_blindspot_categories:
+  - silver-CSR-disqualifies-manufacturer-copay-card-on-many-specialty-drugs-by-contract-terms
+  - silver-CSR-87-strictly-dominates-gold-at-150-200-pct-FPL-unless-specialty-drug-copay-card-flips-math
+  - APTC-true-up-shocks-self-employed-with-variable-income-trigger-recapture-on-Form-8962
+  - specialty-drug-Tier-4-coinsurance-vs-flat-copay-structurally-different-not-comparable-by-headline-OOP-max
+  - ARPA-IRA-enhanced-subsidy-cliff-restoration-on-expiration-changes-marketplace-eligibility-mid-stream
+  - narrow-network-EPO-balance-billing-risk-for-OON-anesthesia-and-pathology-not-eliminated-by-No-Surprises-Act
+  - high-stakes-consult-marketplace-navigator-on-CSR-band-and-specialty-drug-formulary-side-by-side
