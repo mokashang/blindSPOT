@@ -1,0 +1,923 @@
+# Blindspot V2 per-domain source registry for entrepreneurship.
+#
+# Layer 4 of the 4-layer knowledge model (per docs/specs/ROADMAP.md §3).
+# This file holds the source-view inventory scoped to the
+# `entrepreneurship` domain. Mirrors the schema of
+# domain_knowledge/tech-career/sources.yaml (PR #37),
+# domain_knowledge/immigration/sources.yaml (PR #49),
+# domain_knowledge/housing/sources.yaml (PR #66),
+# domain_knowledge/health-insurance/sources.yaml (PR #76), and
+# domain_knowledge/personal-finance/sources.yaml (PR #80).
+#
+# `entrepreneurship` is **high_stakes: false** per
+# domain_knowledge/_meta_ontology.md §6 — failure is the modal outcome
+# (75-90% of startups fail per CB Insights / Statistic Brain
+# distributions) and is generally survivable for a knowledge-worker
+# founder who retained a credible day-job-return path. Most domain
+# errors compress to "lost 12-36 months of opportunity cost plus
+# moderate-to-large dollar loss", which is recoverable on a typical
+# 30-year career horizon. Therefore Mechanism E at runtime is
+# **SELECTIVE, not blanket** (mirroring housing/sources.yaml PR #66):
+# Recovery moves on the Layer-3 blindspots are routed to professional
+# counsel only where six-figure tail risk is present —
+#   - startup attorney with founder-side experience (Cooley /
+#     Gunderson / WSGR / Orrick / Fenwick high end; Clerky / Stripe
+#     Atlas / Atomic / Mintz accessible end) for D1 co-founder equity
+#     + vesting structure, D5 SAFE-vs-priced-seed mechanics, D11 co-
+#     founder departure / cap-table buyback, any IP-assignment
+#     carve-out from prior W-2 employer;
+#   - S-corp / multi-entity / startup-experienced CPA (NOT generic
+#     1040-prep CPA) for D4 LLC-vs-S-corp election at the $80-100k
+#     SE-tax crossover, D8 retirement-vehicle selection (solo-401(k)
+#     vs SEP-IRA vs SIMPLE), D7 first-employee-vs-contractor payroll-
+#     tax mechanics, multi-state nexus boundary;
+#   - employment-law attorney for D7 first W-2 employee hire
+#     (especially in CA / MA / NJ / IL where ABC-test
+#     misclassification penalties are severe — backpay, payroll-tax
+#     liability, statutory penalties, CA PAGA exposure), D11 co-
+#     founder departure with non-compete / non-solicit / IP-
+#     assignment disputes;
+#   - insurance broker (E&O / D&O / cyber) for customer
+#     indemnification, priced-equity rounds with outside directors,
+#     regulated-data handling (PHI / PII / PCI);
+#   - State Bar / FINRA BrokerCheck / state-bar-grievance lookup as
+#     $0-friction procedural floor on any individual attorney / CPA /
+#     broker recommended.
+# Other source-views (indie-hackers-and-bootstrap, saas-and-growth-
+# economics, hn-startup-and-launch, etc.) carry the standard "not a
+# substitute for case-specific licensed counsel" framing without
+# uniform routing; the Editor surfaces the framings the founder
+# community would name and treats the user as a decision-capable
+# adult navigating an inherently uncertain domain.
+#
+# Each entry is a "source-view": a configured, filtered, annotated
+# lens into one source.
+# Schema:
+#   id              unique slug
+#   adapter         rss | reddit_search | hn_search | static_corpus
+#   fetch_config    adapter-specific
+#   domains         hierarchical tag paths (multi-label)
+#   community_tag   single community label (drives diversity constraint)
+#   reliability     1-5, initial value; auto-adjusted via rating feedback
+#                   (per ROADMAP §5 Mechanism C "cite-and-promote": new
+#                   sources start at 1 and earn higher reliability via
+#                   runtime usage / rating feedback)
+#   freshness_required  true → cache TTL 7 days; false → 30 days
+#   notes           multi-paragraph; what this view is good for, bad
+#                   for, caveats
+#   domain          (V2) the per-domain folder this source-view lives in
+#
+# Community-tag coverage maps the framings.md §"Voice anchors" classes
+# (entrepreneurship/framings.md lines 93-162):
+#   indie-hackers-and-bootstrap        → Indie Hackers, Patio11 /
+#                                        Patrick McKenzie blog (Bingo
+#                                        Card / Stripe Atlas / Kalzumeus),
+#                                        bootstrapped-SaaS / MicroConf
+#                                        culture, MRR-transparency norm,
+#                                        anti-VC-default, "stay small
+#                                        and profitable" ethos
+#   yc-and-vc-backed-playbooks         → Paul Graham essays
+#                                        (paulgraham.com — *Do Things
+#                                        That Don't Scale* / *Default
+#                                        Alive or Default Dead* /
+#                                        *Founder Mode*), Sam Altman
+#                                        (blog.samaltman.com), YC
+#                                        Startup School / YC Library
+#                                        (Jessica Livingston / Michael
+#                                        Seibel / Dalton Caldwell /
+#                                        Aaron Epstein), Garry Tan /
+#                                        Initialized, First Round Review,
+#                                        Founder Collective (anti-
+#                                        venture-trap counter-voice)
+#   saas-and-growth-economics          → SaaStr (Jason Lemkin daily
+#                                        blog + podcast + Annual),
+#                                        Tomasz Tunguz / Redpoint
+#                                        (tomtunguz.com), Lenny's
+#                                        Newsletter (lennysnewsletter
+#                                        .com), a16z growth essays —
+#                                        ARR / NRR / CAC-payback / LTV-
+#                                        to-CAC / Magic Number /
+#                                        Rule-of-40 dogma, $1-10M-ARR-
+#                                        is-the-hard-part framing
+#   r-entrepreneur-and-small-business  → r/Entrepreneur (mixed-quality
+#                                        signal — strong on side-
+#                                        project economics, weaker on
+#                                        venture-scale strategy), r/
+#                                        SmallBusiness (brick-and-
+#                                        mortar / services / retail
+#                                        regulatory-compliance focus,
+#                                        payroll and worker-
+#                                        classification ground truth
+#                                        from in-the-trenches
+#                                        operators), r/startups, r/
+#                                        sweatystartup (operational /
+#                                        non-tech-services framing)
+#   legal-and-cap-table-mechanics      → Clerky resource library
+#                                        (Delaware C-corp formation
+#                                        templates, 83(b) certified-mail
+#                                        mechanics, SAFE templates +
+#                                        counter-signature flow, option-
+#                                        grant docs + 409A
+#                                        coordination), Stripe Atlas
+#                                        guides (Delaware C-corp for
+#                                        non-US-resident founders,
+#                                        Mercury Bank, founder
+#                                        agreement boilerplate), Cooley
+#                                        GO + Orrick OpenLP (founder-
+#                                        side attorney content — anti-
+#                                        source posture only for
+#                                        boilerplate, NOT for case-
+#                                        specific D1 / D5 / D11
+#                                        adjudication, which requires
+#                                        retained attorney)
+#   tax-and-entity-structure-cpa       → IRS Pub 535 (business
+#                                        expenses), Pub 583 (starting
+#                                        a business), Pub 587 (home-
+#                                        office deduction), Pub 463
+#                                        (travel / entertainment), Pub
+#                                        15 (employer-tax-guide), Pub
+#                                        560 (retirement plans for
+#                                        small business), The Finance
+#                                        Buff (Harry Sit — solo-401(k)
+#                                        plan-document analysis for
+#                                        Mega-Backdoor-Roth eligibility,
+#                                        SEP-IRA-vs-solo-401(k) pro-
+#                                        rata-trap mechanics, S-corp
+#                                        W-2-vs-distribution arithmetic),
+#                                        Nolo entity-structure guides,
+#                                        Schedule C / Schedule SE
+#                                        official guidance
+#   hn-startup-and-launch              → Hacker News
+#                                        (news.ycombinator.com) Show HN +
+#                                        Ask HN: Founders / Ask HN:
+#                                        Show + launch threads — the
+#                                        canonical real-time channel
+#                                        for technical-founder voice on
+#                                        pricing, MVP launch tactics,
+#                                        Show HN feedback patterns
+#
+# URL caveat: where a feed URL could not be live-verified at authoring
+# time, the entry carries a `notes:` line flagging
+# "TODO-verify-URL — verify before enabling". The registry loader is
+# tolerant of non-resolving feeds (fetch failures are caught per-source
+# in the Collection layer and the turn proceeds); a placeholder entry
+# is inert until verified, not breaking. Reddit-adapter entries soft-
+# fail without REDDIT_CLIENT_ID/SECRET (the Reddit adapter wraps PRAW
+# construction in try/except at the Collection layer — see CLAUDE.md
+# "Quirks").
+
+# ─── community: indie-hackers-and-bootstrap ───────────────────────────
+
+- id: indie-hackers-and-microconf
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/indie-hackers-podcast-and-microconf-archive.md
+  domains: [entrepreneurship/bootstrap, entrepreneurship/saas-mrr, entrepreneurship/pricing, entrepreneurship/default-alive, entrepreneurship/solopreneur]
+  community_tag: indie-hackers-and-bootstrap
+  reliability: 1
+  freshness_required: false
+  domain: entrepreneurship
+  notes: |
+    Indie Hackers (indiehackers.com) community + podcast (Courtland
+    Allen + Channing Allen archive) + MicroConf (Rob Walling
+    + the Stacking the Bricks / TinySeed / Calm Company Fund
+    adjacent community) + canonical Stacking the Bricks lectures
+    (Amy Hoy + Alex Hillman). Matches the "Indie Hackers voice"
+    + "MicroConf voice" anchors in framings.md §"Voice anchors":
+    bootstrapped-SaaS case studies, MRR-transparency culture, anti-
+    VC default, "stay small and profitable" ethos, ramen-
+    profitability as goal-state rather than way-station.
+    Standard non-substitute-for-case-specific-counsel framing
+    applies; entrepreneurship's selective-Mechanism-E posture
+    means this source-view is reference / community signal only.
+    Best for: F2 bootstrap / default-alive framing core mental
+    model (the iconic Indie Hackers interview format where
+    founders disclose MRR / churn / pricing-experiments anchors
+    F2 mechanics), D2 bootstrap-vs-raise decision walkthroughs at
+    specific MRR / cash-on-hand combinations, D5 pricing-and-
+    packaging arithmetic from the side-project / micro-SaaS
+    cohort (where pricing experiments are public), F8 day-job-
+    fallback framing translated to the side-project ramp, calm-
+    company / lifestyle-business framings that VC-track playbooks
+    silently penalize.
+    Weak: venture-scale strategy (the framing tilts strongly anti-
+    raise — defer to yc-and-vc-backed-playbooks for D2 in venture-
+    track decisions), enterprise sales mechanics (defer to saas-
+    and-growth-economics for $1M+ ACV motion), legal / cap-table
+    nuance beyond initial Stripe-Atlas-style formation (defer to
+    legal-and-cap-table-mechanics + retained startup attorney for
+    D1 / D5 / D11), tax-mechanic specificity (defer to tax-and-
+    entity-structure-cpa + retained S-corp-experienced CPA for
+    D4 / D8). Manual ingest — paste high-signal Indie Hackers
+    interviews + MicroConf talks + Stacking the Bricks lectures
+    into the static markdown file. Update annually around
+    MicroConf US (typically April) when the year's case-study
+    archive refreshes.
+
+- id: patio11-kalzumeus-blog
+  adapter: rss
+  fetch_config:
+    feed: https://www.kalzumeus.com/feed/
+    keyword_filter: [pricing, MRR, SaaS, bootstrap, contract, employment, Stripe, software business, B2B, retention, churn, salary, negotiation, consulting]
+  domains: [entrepreneurship/pricing, entrepreneurship/bootstrap, entrepreneurship/saas-mrr, entrepreneurship/consulting-rates, entrepreneurship/contract-mechanics, entrepreneurship/salary-negotiation]
+  community_tag: indie-hackers-and-bootstrap
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    Patrick McKenzie's *Kalzumeus* blog (kalzumeus.com) — the
+    canonical practitioner voice on first-principles thinking for
+    software-business economics. Matches the "Patio11 / Patrick
+    McKenzie voice" anchor in framings.md §"Voice anchors": Bingo
+    Card Creator post-mortem, Stripe Atlas founder docs (Patrick
+    was Atlas program lead at Stripe for years), anti-platitude
+    "calling a wave of fans does not produce $4MRR" framing,
+    pricing-as-load-bearing-decision discipline, salary-
+    negotiation-for-founders, Japan-Form-Tax-Treaty + cross-
+    border edge cases. Kalzumeus is also the canonical reference
+    for the "raise your prices" reflex against the under-pricing
+    failure mode common to first-time-bootstrappers.
+    Best for: D5 pricing-and-packaging decision-frameworks (the
+    "raise your prices" canonical essay; B2B-versus-B2C pricing
+    asymmetry; per-seat vs per-transaction vs per-API-call vs
+    flat-tier trade-offs), D6 consulting-vs-product mechanics
+    (the consulting-as-funding-mechanism playbook), salary-
+    negotiation translated into founder-comp (the "Salary
+    Negotiation: Make More Money, Be More Valued" essay anchors
+    founder-self-comp arithmetic), contract-mechanics for
+    consulting / advisor / employment situations (a recurring
+    blindspots.md F7 / F11 trap on first-W-2-employee
+    classification), cross-border tax-treaty mechanics for non-
+    US-domiciled founders.
+    Weak: venture-scale specifics (Patrick is post-Stripe-Atlas
+    and writes more about consumer-side software economics than
+    Series-A-and-beyond mechanics; defer to yc-and-vc-backed-
+    playbooks for D2 in venture context), legal-adjudication
+    detail (defer to retained startup attorney + employment-law
+    attorney for D1 / D7 / D11), state-specific tax detail
+    (defer to S-corp-experienced CPA). TODO-verify-URL — verify
+    before enabling.
+
+- id: tinyseed-and-calm-company-fund
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/tinyseed-rob-walling-calm-company-archive.md
+  domains: [entrepreneurship/bootstrap, entrepreneurship/saas-mrr, entrepreneurship/funding-alternatives, entrepreneurship/default-alive, entrepreneurship/founder-economics]
+  community_tag: indie-hackers-and-bootstrap
+  reliability: 1
+  freshness_required: false
+  domain: entrepreneurship
+  notes: |
+    TinySeed (Rob Walling + Einar Vollset accelerator targeted at
+    bootstrapped SaaS, deliberately structured as a non-venture
+    funding alternative with revenue-share / cap-on-returns
+    economics) + Calm Company Fund (Tyler Tringas, formerly
+    Earnest Capital — revenue-based-financing for bootstrappers)
+    + Rob Walling's *Startups for the Rest of Us* podcast archive
+    + Rob's *The SaaS Playbook* and *Start Small, Stay Small*
+    canonical references. Matches the bootstrapped-SaaS funding-
+    alternative voice anchor in framings.md §"Voice anchors" and
+    cross-links the F2 framing's funding alternatives that
+    venture-only playbooks omit. Standard non-substitute-for-
+    case-specific-counsel framing applies; per-case revenue-based-
+    financing term-sheet review requires a retained startup
+    attorney.
+    Best for: F2 bootstrap / default-alive framing's funding
+    alternatives (revenue-based financing vs SAFE vs priced seed
+    economics — the "venture as debt" framing surfaced through
+    actual term-sheet comparisons), D2 bootstrap-vs-raise
+    decision at the post-traction-pre-Series-A inflection where
+    the bootstrap path can absorb a non-dilutive cash injection
+    without the VC-track lock-in, D6 consulting-vs-product
+    transition timing (Rob's canonical "consulting to product"
+    playbook), founder-economics arithmetic (the SaaS Playbook
+    chapters on owner-comp + reinvestment trade-offs).
+    Weak: venture-scale strategy (TinySeed deliberately excludes
+    venture-track companies; defer to yc-and-vc-backed-playbooks
+    for venture-track D2), enterprise / sales-led-growth motion
+    (defer to saas-and-growth-economics for $1M+ ACV), legal /
+    cap-table adjudication (defer to retained startup attorney
+    for D5 / D11). Manual ingest — paste TinySeed application
+    materials + Calm Company Fund essays + Rob Walling podcast
+    canonical episodes + The SaaS Playbook excerpts into the
+    static markdown file. Update annually around the TinySeed
+    cohort announcement cycle.
+
+# ─── community: yc-and-vc-backed-playbooks ────────────────────────────
+
+- id: paul-graham-essays
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/paul-graham-essays-canonical-archive.md
+  domains: [entrepreneurship/raise-and-scale, entrepreneurship/default-alive, entrepreneurship/founder-mode, entrepreneurship/do-things-that-dont-scale, entrepreneurship/pmf]
+  community_tag: yc-and-vc-backed-playbooks
+  reliability: 1
+  freshness_required: false
+  domain: entrepreneurship
+  notes: |
+    Paul Graham's essay archive at paulgraham.com — the
+    foundational text corpus for the YC / venture-backed-startup
+    framing. Matches the "Hacker News startup voices" + "YC
+    playbooks voice" anchors in framings.md §"Voice anchors".
+    Canonical essays: *Do Things That Don't Scale* (D1 / F1
+    anchoring on hand-recruited-early-users), *Default Alive or
+    Default Dead* (F2 vs F1 conceptual bridge; the canonical
+    test for whether the company has discovered a working
+    business or is operating on venture-fuel-runway alone),
+    *Founder Mode* (F11 anchor; the 2024 essay that sparked the
+    founder-mode-vs-manager-mode debate), *Startup = Growth*
+    (F1 venture-fit framing — only ~1-in-10 companies are
+    venture-scale), *Maker's Schedule, Manager's Schedule*
+    (F11 / F12 cross-framing tension), *How to Start a Startup*
+    + *How to Be a Good Cofounder* (D1 mechanics).
+    Best for: D2 bootstrap-vs-raise decision when the situation
+    is venture-track-compatible (the Default-Alive test is the
+    canonical decision-framework; the framing is YC-internalized
+    by founders applying to YC or considering venture); F1
+    raise-and-scale framing's foundational mental model; F11
+    founder-mode anchor; D1 co-founder structuring (How to Be a
+    Good Cofounder essay); D7 first-employee decisions where
+    the founder-recruitment-as-hiring-asymmetry framing applies
+    (the founder still does the recruiting, not a hired
+    recruiter).
+    Weak: bootstrap-track specifics (PG essays explicitly bias
+    toward venture-track outcomes — defer to indie-hackers-and-
+    bootstrap for D2 in bootstrap-default cases), tactical SaaS
+    metrics (defer to saas-and-growth-economics for ARR / NRR /
+    CAC mechanics), tax / legal adjudication (defer to legal-
+    and-cap-table-mechanics + tax-and-entity-structure-cpa +
+    retained counsel). Manual ingest — paste full essay text of
+    the ~30 most-cited essays (the "Essays" index at
+    paulgraham.com/articles.html) into the static markdown file.
+    Update when PG publishes a new essay (cadence is irregular,
+    typically 2-6 per year).
+
+- id: yc-startup-school-and-library
+  adapter: rss
+  fetch_config:
+    feed: https://www.ycombinator.com/blog/rss/
+    keyword_filter: [Y Combinator, YC, startup school, library, batch, demo day, founder, advice, fundraising, hiring, PMF, traction, growth, retention, MVP, talk to users, ramen profitable]
+  domains: [entrepreneurship/raise-and-scale, entrepreneurship/yc-playbook, entrepreneurship/pmf, entrepreneurship/founder-advice, entrepreneurship/series-a-signal, entrepreneurship/fundraising]
+  community_tag: yc-and-vc-backed-playbooks
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    Y Combinator official blog + Startup School curriculum + YC
+    Library (ycombinator.com/library) — the canonical channel for
+    the YC playbooks voice anchor in framings.md §"Voice anchors":
+    Jessica Livingston / Michael Seibel / Dalton Caldwell /
+    Aaron Epstein / Geoff Ralston content on Series-A signal
+    threshold, ramen-profitability metric, focus-and-talk-to-
+    users discipline, "default alive" question, the 1-in-10
+    venture-portfolio math. Includes How to Start A Startup
+    CS183B Stanford lecture series (free, ~20 hours) which is
+    the historical curriculum that became Startup School.
+    Best for: D2 bootstrap-vs-raise decision at the venture-track
+    threshold (ramen-profitability + Series-A signal anchoring),
+    F1 raise-and-scale framing's YC-canonical mechanics (10-20%
+    option pool reserved for hiring, 5M post / 12M post / 40M
+    post round-by-round dilution math), D5 SAFE-vs-priced-seed
+    mechanics (post-money YC SAFE is the YC-standard instrument
+    with documented mechanics), F1.4 venture-market cyclicality
+    (the YC Demo Day cadence and batch dynamics implicitly
+    encode cycle awareness), founder-mode / management-mode
+    framings as practiced inside YC batches.
+    Weak: bootstrap-track specifics (YC content is explicitly
+    venture-track-default; defer to indie-hackers-and-bootstrap
+    for D2 bootstrap default), legal / cap-table adjudication
+    beyond standard YC SAFE templates (defer to retained startup
+    attorney for non-standard situations and D11 co-founder
+    departure), state-specific employment-law mechanics (defer
+    to employment-law attorney for D7). TODO-verify-URL —
+    verify before enabling.
+
+- id: first-round-review-and-founder-collective
+  adapter: rss
+  fetch_config:
+    feed: https://review.firstround.com/feed.xml
+    keyword_filter: [founder, CEO, hiring, scaling, management, sales, marketing, product, IC, VP, executive, board, fundraising, PMF, growth, retention]
+  domains: [entrepreneurship/scaling, entrepreneurship/hiring-playbook, entrepreneurship/management, entrepreneurship/founder-mode, entrepreneurship/series-a-signal]
+  community_tag: yc-and-vc-backed-playbooks
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    First Round Review (firstround.com/review) — operator-
+    interview format from First Round portfolio executives and
+    selected outside operators. Plus the Founder Collective
+    voice (David Frankel + Eric Paley + Micah Rosenbloom — anti-
+    venture-trap commentary, "venture as debt" framing, capital-
+    efficiency as competitive moat) cross-listed conceptually
+    here because both sit at the "post-PMF venture-backed
+    scaling" practitioner-content layer. Matches the "First
+    Round Review voice" + "Founder Collective voice" anchors in
+    framings.md §"Voice anchors": hiring-as-bottleneck framing,
+    IC-to-VPE / IC-to-CRO transition playbooks, board-meeting
+    mechanics, capital-efficiency-as-moat reframe of the venture
+    default. Standard non-substitute-for-case-specific-counsel
+    framing applies; per-case hiring / equity / termination
+    decisions require retained employment-law counsel.
+    Best for: F11 / F12 founder-mode-vs-manager-mode transition
+    (the canonical First Round content on IC-to-VPE-to-CRO
+    transitions anchors F12 manager-mode framing), D7 first-
+    employee-vs-contractor-vs-offshore decision at the post-
+    seed scaling moment (the operator-interview format surfaces
+    real hiring-sequence mechanics), D2 bootstrap-vs-raise from
+    the Founder Collective anti-venture-trap counterpoint (the
+    "venture as debt" essay is the canonical reframe), the
+    capital-efficiency-as-competitive-moat thesis that opposes
+    the venture-default "raise as much as you can" reflex.
+    Weak: pre-PMF / day-zero mechanics (defer to YC content and
+    Paul Graham essays for D1 / D2 pre-seed framing), bootstrap-
+    only / non-venture-backed-from-day-zero framings (defer to
+    indie-hackers-and-bootstrap), legal-and-cap-table
+    adjudication (defer to retained startup attorney for D5 /
+    D11). TODO-verify-URL — verify before enabling.
+
+# ─── community: saas-and-growth-economics ─────────────────────────────
+
+- id: saastr-jason-lemkin
+  adapter: rss
+  fetch_config:
+    feed: https://www.saastr.com/feed/
+    keyword_filter: [ARR, NRR, MRR, churn, retention, CAC, LTV, payback, Magic Number, Rule of 40, sales, AE, SDR, BDR, CSM, pipeline, quota, enterprise, SMB, ACV, expansion, net revenue retention]
+  domains: [entrepreneurship/saas-metrics, entrepreneurship/sales-led-growth, entrepreneurship/scaling, entrepreneurship/series-a-signal, entrepreneurship/arr-ramp, entrepreneurship/hiring-playbook]
+  community_tag: saas-and-growth-economics
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    SaaStr (Jason Lemkin daily blog + podcast + SaaStr Annual
+    conference archive). Matches the "SaaStr / Jason Lemkin
+    voice" anchor in framings.md §"Voice anchors": SaaS metrics
+    dogma (ARR / NRR / CAC payback / LTV-to-CAC / Magic Number),
+    $1-10M-ARR-is-the-hard-part framing, sales-led-growth-vs-
+    product-led-growth, BDR / SDR / AE / CSM hiring sequence,
+    Rule-of-40 as cross-stage health check. Jason's posture is
+    the canonical practitioner voice on enterprise / sales-led
+    motion (formerly EchoSign / Adobe Sign, board-seat archive
+    spans 2010s-2020s SaaS scaling). Standard non-substitute-
+    for-case-specific-counsel framing applies.
+    Best for: F10 sales-led-growth / enterprise framing core
+    mental model (the canonical BDR-SDR-AE-CSM hiring-sequence
+    anchoring), D7 first-employee-vs-contractor decision in the
+    sales-org context (first AE timing, sales-engineering
+    timing, the "founder-led sales to first-AE" transition is
+    a recurring blindspots.md F10 trap), ARR-ramp anchoring
+    (triple-triple-double-double-double benchmark; $1M to $10M
+    ARR median time of ~3 years), D5 pricing-and-packaging in
+    the enterprise context (per-seat vs platform-fee vs
+    consumption-based pricing), F1 raise-and-scale framing's
+    SaaS-specific Series-A / B / C signal thresholds.
+    Weak: bootstrap / lifestyle-business specifics (SaaStr is
+    explicitly venture-scale-default — defer to indie-hackers-
+    and-bootstrap for F2), PLG-only motion (Jason concedes PLG
+    primarily in the SMB / individual-power-user segment; defer
+    to lenny-and-pmm-growth for PLG-anchored framing of D5 /
+    D10), tax / legal adjudication (defer to retained counsel
+    for D4 / D5 / D7 / D11). TODO-verify-URL — verify before
+    enabling.
+
+- id: tomasz-tunguz-redpoint
+  adapter: rss
+  fetch_config:
+    feed: https://tomtunguz.com/index.xml
+    keyword_filter: [SaaS, burn multiple, ARR, NRR, CAC, payback, sales efficiency, Magic Number, Rule of 40, AI startup, pricing, board, OKR, benchmark, sales cycle, enterprise]
+  domains: [entrepreneurship/saas-metrics, entrepreneurship/burn-multiple, entrepreneurship/series-a-signal, entrepreneurship/board-mechanics, entrepreneurship/ai-startup-pricing]
+  community_tag: saas-and-growth-economics
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    Tomasz Tunguz at Theory Ventures (tomtunguz.com — formerly
+    Redpoint, founded Theory in 2022). Matches the "Tomasz
+    Tunguz / Redpoint blog voice" anchor in framings.md §"Voice
+    anchors": data-driven SaaS benchmarking, Series-A burn-
+    multiple benchmarks, sales-efficiency metrics, AI-startup
+    pricing-model analysis, board-meeting deck templates.
+    Tomasz's posture is the data-driven counterpart to SaaStr's
+    operator-narrative posture; the two sources are
+    complementary on the same F10 framing surface. Standard
+    non-substitute-for-case-specific-counsel framing applies.
+    Best for: F10 sales-led-growth framing's benchmark
+    grounding (the burn-multiple benchmark series anchors
+    Series-A-readiness arithmetic distinct from the SaaStr
+    operator-voice on the same question), F1.4 venture-market
+    cyclicality (Tomasz's cross-cycle data series spans
+    2010-2024 cycle pricing-and-burn-multiple shifts), AI-
+    startup pricing model analysis (the canonical practitioner
+    series on consumption-vs-seat-based-vs-token-priced AI
+    products), D5 SAFE-vs-priced-seed valuation calibration
+    against multi-year benchmark series, board-meeting deck-
+    template mechanics for first-time founders running their
+    first board meeting (a recurring blindspots.md F1 trap).
+    Weak: bootstrap-track framings (Tomasz is venture-scale-
+    default — defer to indie-hackers-and-bootstrap for F2),
+    legal adjudication (defer to retained startup attorney),
+    operator-narrative-detail on hiring sequencing (defer to
+    SaaStr or First Round Review for the operator-voice).
+    TODO-verify-URL — verify before enabling.
+
+- id: lenny-newsletter-and-product-growth
+  adapter: rss
+  fetch_config:
+    feed: https://www.lennysnewsletter.com/feed
+    keyword_filter: [product, PM, growth, retention, activation, PLG, hiring, OKR, North Star, B2B, B2C, marketplace, network effects, pricing, packaging, MVP, user research]
+  domains: [entrepreneurship/product-led-growth, entrepreneurship/growth-loops, entrepreneurship/pm-hiring, entrepreneurship/pricing, entrepreneurship/user-research, entrepreneurship/north-star-metric]
+  community_tag: saas-and-growth-economics
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    Lenny Rachitsky's *Lenny's Newsletter* (lennysnewsletter.com
+    + podcast). Matches the "Lenny Newsletter voice" anchor in
+    framings.md §"Voice anchors": product / PM growth-loops,
+    B2B-vs-B2C product-metrics, hiring playbooks, OKR / North-
+    Star-metric templates, user-research patterns. Lenny's
+    posture bridges the PM-craft community (formerly Airbnb
+    growth PM, ex-Lyft) with founder-facing growth content.
+    Cross-listed conceptually with the a16z growth-essays voice
+    (also named in framings.md). Standard non-substitute-for-
+    case-specific-counsel framing applies.
+    Best for: F9 product-led-growth framing core mental model
+    (the canonical PM-craft content on growth loops, activation
+    metrics, retention curves, North-Star metric selection),
+    D5 pricing-and-packaging in the PLG context (per-seat vs
+    freemium vs consumption pricing, the freemium-tier-
+    conversion-rate benchmarks), D7 first-PM-hire timing and
+    profile (a recurring decision in the seed-to-Series-A
+    transition), user-research patterns that anchor
+    blindspots.md F9 / D5 / D10 mechanics, OKR / North-Star
+    setup mechanics for first-time founders.
+    Weak: enterprise / sales-led specifics (defer to SaaStr +
+    Tomasz Tunguz for F10 sales-led-growth), bootstrap-only
+    framings (Lenny's content is generally venture-track-
+    default; defer to indie-hackers-and-bootstrap for F2),
+    legal / cap-table mechanics (defer to retained startup
+    attorney). TODO-verify-URL — verify before enabling.
+
+# ─── community: r-entrepreneur-and-small-business ─────────────────────
+
+- id: reddit-entrepreneur-and-startups
+  adapter: reddit_search
+  fetch_config:
+    subreddit: Entrepreneur+startups+EntrepreneurRideAlong
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 50
+  domains: [entrepreneurship/bootstrap, entrepreneurship/side-project, entrepreneurship/saas-mrr, entrepreneurship/pricing, entrepreneurship/founder-leap, entrepreneurship/customer-acquisition]
+  community_tag: r-entrepreneur-and-small-business
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    r/Entrepreneur + r/startups + r/EntrepreneurRideAlong
+    aggregated. Matches the "r/Entrepreneur voice" anchor in
+    framings.md §"Voice anchors". Mixed-quality signal — strong
+    on small-business mechanics and side-project economics,
+    weaker on venture-scale strategy. Higher upvote threshold
+    (50) to surface threads with convergence signal; single-
+    anecdote launch-failure posts are not useful evidence
+    without thread volume. Reddit's PRAW supports multi-
+    subreddit search via `+` separator; the adapter's
+    `subreddit` field is passed through directly.
+    Best for: F8 day-job-fallback / opportunity-cost framing
+    (the canonical Reddit discussion ground for "when do I
+    leap" decisions at specific MRR / runway / dependant
+    combinations), D2 bootstrap-vs-raise decision in the side-
+    project ramp context, D5 pricing experiments where the
+    founder posts the experiment and gets community feedback,
+    customer-acquisition tactic discussion across SaaS / e-
+    commerce / services contexts, founder-leap timing patterns
+    (the "I quit my $200k job to bootstrap, here's month 1-12"
+    post-mortem genre).
+    Weak: venture-scale strategy (defer to yc-and-vc-backed-
+    playbooks for D2 in venture context), tax / legal
+    adjudication (defer to retained counsel for D4 / D5 / D7 /
+    D11), SaaS-metric-discipline specifics (defer to saas-and-
+    growth-economics). Soft-fails without REDDIT_CLIENT_ID/
+    SECRET (the Reddit adapter wraps PRAW construction in
+    try/except at the Collection layer — see CLAUDE.md
+    "Quirks").
+
+- id: reddit-smallbusiness-and-sweatystartup
+  adapter: reddit_search
+  fetch_config:
+    subreddit: smallbusiness+sweatystartup+Accounting
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 30
+  domains: [entrepreneurship/services-business, entrepreneurship/payroll, entrepreneurship/worker-classification, entrepreneurship/sales-tax, entrepreneurship/s-corp-election, entrepreneurship/llc-formation]
+  community_tag: r-entrepreneur-and-small-business
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    r/smallbusiness + r/sweatystartup + r/Accounting aggregated.
+    Matches the "r/SmallBusiness voice" + the operational /
+    non-tech-services framing voice anchors in framings.md
+    §"Voice anchors". Brick-and-mortar plus services plus
+    retail context, regulatory-compliance focus, payroll and
+    worker-classification ground truth from in-the-trenches
+    operators. r/sweatystartup (Nick Huber's adjacent community)
+    is the canonical channel for service-business framings
+    (cleaning / landscaping / self-storage / HVAC) that the
+    tech-founder voices systematically under-engage. r/
+    Accounting surfaces CPA practitioner Q&A on S-corp election
+    mechanics, payroll-tax issues, sales-tax nexus surprises.
+    Per-case decisions on entity structure / payroll / worker
+    classification require retained S-corp-experienced CPA +
+    employment-law attorney; sources here are reference /
+    community signal only.
+    Best for: D4 LLC-vs-S-corp election decision walkthroughs
+    at specific revenue / payroll / state combinations (a
+    recurring decision the r/Accounting + r/smallbusiness
+    sub-communities have processed thousands of variants of),
+    D7 first-employee-vs-contractor decision in services-
+    business contexts (a recurring blindspots.md F7 trap on
+    ABC-test misclassification — operators surface real
+    state-by-state enforcement variance), D11 founder-departure
+    mechanics in non-tech contexts (sale to operator, lifestyle-
+    business exit), sales-tax nexus and economic-nexus
+    surprises post-Wayfair 2018 (Bottom-up state-by-state
+    enforcement reality).
+    Weak: venture-scale / SaaS-metric specifics (the sub-
+    Reddits tilt strongly non-tech / non-VC; defer to saas-and-
+    growth-economics + yc-and-vc-backed-playbooks for tech-
+    venture-track), advanced cap-table / SAFE mechanics (defer
+    to legal-and-cap-table-mechanics + retained startup
+    attorney). Soft-fails without REDDIT_CLIENT_ID/SECRET.
+
+# ─── community: legal-and-cap-table-mechanics ─────────────────────────
+
+- id: clerky-resource-library
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/clerky-founder-handbook-and-83b-mechanics.md
+  domains: [entrepreneurship/incorporation, entrepreneurship/delaware-c-corp, entrepreneurship/83b-election, entrepreneurship/safe-templates, entrepreneurship/option-grants, entrepreneurship/vesting]
+  community_tag: legal-and-cap-table-mechanics
+  reliability: 1
+  freshness_required: false
+  domain: entrepreneurship
+  notes: |
+    Clerky resource library (clerky.com/handbook + Clerky-
+    published founder-handbook content + 83(b) filing
+    instructions and certified-mail mechanics + SAFE templates
+    and counter-signature flow + option-grant docs and 409A
+    coordination references). Matches the "Clerky voice" anchor
+    in framings.md §"Voice anchors": founder-stage incorporation
+    docs, Delaware C-corp formation templates, the 83(b)
+    certified-mail mechanics that are a recurring blindspots.md
+    F3 / F5 trap (filing window is 30 days from grant — miss it
+    and the QSBS clock + the income-vs-capital-gains character
+    are permanently affected). Mechanism E selective referral:
+    per-case D1 co-founder equity structuring + vesting,
+    D5 SAFE-vs-priced-seed conversion, D11 founder-departure /
+    cap-table buyback decisions REQUIRE retained startup
+    attorney with founder-side experience (Cooley / Gunderson /
+    WSGR / Orrick / Fenwick high end; Clerky-coordinated
+    attorneys + Atomic + Mintz accessible end). Clerky-the-
+    platform is excellent at standard formation; non-standard
+    situations and adjudication are firmly attorney territory.
+    Best for: F3 founder-fairness-and-vesting framing core
+    mechanics (4-year vesting with 1-year cliff is the YC-
+    canonical default; the 83(b) certified-mail-filing
+    procedural mechanics that founders systematically mis-
+    handle), D1 co-founder equity initial structuring (split
+    distributions, founder-share-class mechanics), Delaware
+    C-corp formation procedural walkthrough for YC-track
+    companies (Clerky's specific specialty), D5 SAFE template
+    mechanics (post-money YC SAFE is the standard; YC SAFE +
+    valuation-cap arithmetic; the SAFE-stacking-delays-QSBS-
+    clock trap is a recurring blindspots.md F5 entry), option-
+    grant + 409A coordination procedural mechanics.
+    Weak: case-specific adjudication on non-standard situations
+    (defer to retained startup attorney), state-specific tax
+    detail (defer to S-corp-experienced CPA for D4), employment-
+    law adjudication on first-W-2-employee disputes (defer to
+    employment-law attorney for D7 + D11). Manual ingest —
+    paste Clerky's published founder-handbook content + 83(b)
+    filing instructions + SAFE templates documentation +
+    option-grant procedural docs into the static markdown
+    file. Update when Clerky publishes major handbook
+    revisions or when YC publishes a new standard SAFE
+    template (cadence ~biannual).
+
+- id: cooley-go-and-orrick-openlp
+  adapter: rss
+  fetch_config:
+    feed: https://www.cooleygo.com/feed/
+    keyword_filter: [founder, vesting, 83b, SAFE, priced round, Series A, Series B, option pool, 409A, QSBS, Section 1202, IP assignment, employment, non-compete, board, cap table]
+  domains: [entrepreneurship/safe-templates, entrepreneurship/priced-round-mechanics, entrepreneurship/qsbs-section-1202, entrepreneurship/ip-assignment, entrepreneurship/protective-provisions, entrepreneurship/founder-departure]
+  community_tag: legal-and-cap-table-mechanics
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    Cooley GO (cooleygo.com — Cooley LLP's founder-facing
+    content arm) + Orrick OpenLP + Foundry Group founder
+    content + WSGR / Gunderson selected publications. Matches
+    the founder-side-attorney content layer cross-listed with
+    the Clerky voice in framings.md §"Voice anchors". Mechanism
+    E selective referral: this source-view is for orientation
+    and pattern-recognition only — per-case D1 / D5 / D11 /
+    QSBS adjudication REQUIRES retained startup attorney from
+    one of these firms (Cooley / Gunderson / WSGR / Orrick /
+    Fenwick at the high end; Atomic / Mintz / Clerky-coordinated
+    attorneys at the accessible end). The published content is
+    deliberately non-adjudicative; the firms' business model
+    monetizes the retainer relationship for the case-specific
+    questions, and the Critic should weight statements from
+    these sources as orientation, not advice.
+    Best for: F3 founder-fairness-and-vesting framing's
+    advanced mechanics (post-incorporation co-founder addition
+    mechanics — a recurring blindspots.md F3.3 trap; double-
+    trigger-acceleration framing F3.5), F5 QSBS-and-tax-tail-
+    event framing's procedural floor (Section 1202 5-year-hold
+    + originally-issued-stock + redemption-test mechanics
+    F5.1; LLC-to-C-corp §351 conversion mechanics F5.3; SAFE-
+    stacking delays QSBS clock F5.5), F1.3 cumulative-
+    protective-provision lock-in across rounds, IP-assignment
+    carve-out from prior W-2 employer mechanics (a recurring
+    blindspots.md trap routed via cross-domain edge to tech-
+    career), D11 founder-departure / cap-table buyback procedural
+    mechanics, FTC 2024 non-compete rule status (F7.3) tracked
+    by Cooley and Orrick employment-side publications.
+    Weak: non-venture-track bootstrap formation (Cooley / Orrick
+    portfolio is venture-track-default; defer to Clerky for
+    accessible-end formation), state-specific employment-law
+    adjudication beyond CA / NY / DE (defer to local
+    employment-law attorney), tax-mechanic Pub-citation
+    specificity (defer to tax-and-entity-structure-cpa for the
+    IRS Pub authority + retained CPA). TODO-verify-URL —
+    verify before enabling.
+
+# ─── community: tax-and-entity-structure-cpa ──────────────────────────
+
+- id: irs-pubs-business-and-self-employed
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/irs-pubs-business-535-583-587-463-15-560.md
+  domains: [entrepreneurship/business-expenses, entrepreneurship/starting-a-business, entrepreneurship/home-office, entrepreneurship/travel-entertainment, entrepreneurship/employer-tax, entrepreneurship/retirement-plans]
+  community_tag: tax-and-entity-structure-cpa
+  reliability: 1
+  freshness_required: false
+  domain: entrepreneurship
+  notes: |
+    IRS Publications canonical entrepreneurship / self-employed
+    set: Pub 535 (Business Expenses — ordinary-and-necessary
+    standard, deductibility limits, capitalization-vs-expense),
+    Pub 583 (Starting a Business and Keeping Records — recordkeeping
+    requirements that determine deductibility audit-defense),
+    Pub 587 (Business Use of Your Home — home-office deduction
+    mechanics, regular-and-exclusive-use standard, the actual-
+    expenses vs simplified-option arithmetic), Pub 463 (Travel,
+    Gift, and Car Expenses — including the 50% meal-deduction
+    standard, the per-diem-tables alternative, the substantiation
+    requirements that determine audit defense), Pub 15
+    (Employer's Tax Guide — Circular E, payroll-tax mechanics,
+    federal-income-tax-withholding, FICA / FUTA mechanics, the
+    foundation for D7 first-W-2-employee decisions), Pub 560
+    (Retirement Plans for Small Business — SEP-IRA / SIMPLE /
+    solo-401(k) / defined-benefit-plan mechanics, the foundation
+    for D8 retirement-vehicle selection), plus Schedule C and
+    Schedule SE official instructions, plus relevant Rev. Procs.
+    (annual SEP / SIMPLE / solo-401(k) contribution limits) and
+    Notices (e.g. Notice 2008-1 on S-corp shareholder health-
+    insurance treatment). Authoritative statutory + regulatory
+    ground-truth. Critic should weight IRS Pub citations heavily
+    on tax-mechanic claims that conflict with practitioner-blog
+    interpretations. Mechanism E selective referral: per-case
+    D4 LLC-vs-S-corp election, D8 retirement-vehicle selection,
+    D7 first-employee mechanics REQUIRE retained S-corp-
+    experienced CPA with current facts.
+    Best for: F4 SE-tax-and-entity-arbitrage framing's
+    procedural floor (the $80-100k SE-tax crossover arithmetic
+    + reasonable-salary defensibility F4.3 + SSTB phaseout
+    interaction F4.1 require Pub 535 + Pub 15 + Schedule C / SE
+    grounding), F6 liability-shield framing's statutory baseline
+    (Pub 15 / Pub 583 cover the basic employment-tax obligations
+    that pierce the LLC veil under IRC §6672 trust-fund-tax
+    rules — a recurring blindspots.md F6.3 trap), D8 retirement-
+    vehicle selection (solo-401(k) plan-document analysis +
+    SEP-IRA-vs-solo-401(k) pro-rata-trap mechanics — cross-link
+    to personal-finance/sources.yaml `the-finance-buff-tax-
+    mechanics` for The Finance Buff treatment), home-office +
+    travel substantiation mechanics for audit defense.
+    Weak: real-world adjudicator variance + state-specific tax
+    interpretation (IRS publishes; states diverge sharply on
+    S-corp recognition + SE-tax-equivalents like CA $800 LLC fee
+    + NY filing-fee LLC-publication requirements), tax-court
+    precedent + private-letter-ruling interpretation (defer to
+    retained S-corp-experienced CPA or tax-attorney territory),
+    venture-scale cap-table tax-mechanic detail like §351
+    conversion (defer to startup-experienced CPA + retained
+    counsel). Manual ingest — download current-year IRS Pub 535
+    / 583 / 587 / 463 / 15 / 560 + Schedule C / SE instructions
+    + relevant Rev. Procs. into the static markdown file.
+    Update annually around January when IRS issues current-year
+    Pub revisions.
+
+- id: finance-buff-and-nolo-small-business
+  adapter: rss
+  fetch_config:
+    feed: https://thefinancebuff.com/feed
+    keyword_filter: [solo 401k, SEP-IRA, SIMPLE, S-corp, LLC, self-employed, Schedule C, Schedule SE, QBI, Section 199A, reasonable salary, accountable plan, home office, business expense, payroll, 1099, W-2]
+  domains: [entrepreneurship/s-corp-election, entrepreneurship/solo-401k, entrepreneurship/sep-ira, entrepreneurship/qbi-section-199a, entrepreneurship/se-tax, entrepreneurship/llc-vs-s-corp]
+  community_tag: tax-and-entity-structure-cpa
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    Harry Sit's *The Finance Buff* (thefinancebuff.com) — the
+    canonical practitioner outlet for the specific S-corp / solo-
+    401(k) / SEP-IRA / Mega-Backdoor-Roth mechanics that the
+    Bogleheads + FIRE + fee-only-CFP communities all defer to.
+    Matches the "Finance Buff voice" anchor in framings.md
+    §"Voice anchors" (this voice is shared with personal-finance
+    /framings.md and carries the same procedural-floor authority
+    on tax-mechanic disputes). Cross-linked with personal-
+    finance/sources.yaml `the-finance-buff-tax-mechanics` —
+    same feed, different community_tag here because the
+    entrepreneurship-domain focus is on D4 LLC-vs-S-corp + D8
+    retirement-vehicle, while the personal-finance focus is on
+    backdoor-Roth / Mega-Backdoor / HSA mechanics. Cross-listed
+    conceptually with Nolo (nolo.com small-business + tax
+    guides — published lawyer-edited entity-structure references
+    that bridge the IRS-Pub authority to operator workflow).
+    Mechanism E selective referral: per-case D4 + D8 decisions
+    REQUIRE retained S-corp-experienced CPA with current facts;
+    sources here are reference / community signal only.
+    Best for: F4 SE-tax-and-entity-arbitrage framing's
+    practitioner specifics (the $80-100k crossover arithmetic
+    walked through Form-by-Form; the reasonable-salary
+    defensibility F4.3 trap with RCReports-is-insufficient-alone
+    framing; S-corp election destroys retirement-contribution
+    capacity by 30-40% F4.2 trap; pro-rata-IRA-trap on backdoor-
+    Roth from SEP balance), D4 LLC-vs-S-corp election Form-by-
+    Form mechanics (Form 1120-S vs Schedule C; Form 941 / 940
+    quarterly + annual payroll filings), D8 solo-401(k) plan-
+    document analysis for Mega-Backdoor-Roth eligibility (a
+    recurring trap where the canned solo-401(k) providers
+    (Fidelity / Schwab / Vanguard) do NOT permit after-tax
+    contributions or in-service rollovers needed for Mega-
+    Backdoor — requires custom plan-document from MySolo401k or
+    Ascensus). Nolo's lawyer-edited entity-structure guides for
+    LLC / C-corp / S-corp comparison.
+    Weak: state-specific tax detail (Sit lives in MN; defer to
+    state-CPA networks + retained S-corp-experienced CPA for
+    CA / NY / NJ specifics), case-specific QBI / §199A analysis
+    above bright-line cases (defer to retained CPA), venture-
+    scale cap-table tax-mechanic detail like §351 conversion
+    (defer to startup-experienced CPA + tax attorney). TODO-
+    verify-URL — verify before enabling.
+
+# ─── community: hn-startup-and-launch ─────────────────────────────────
+
+- id: hn-show-and-launch-threads
+  adapter: hn_search
+  fetch_config:
+    query_template: "Show HN {entities}"
+    tags: story
+    sort: relevance
+    min_points: 50
+  domains: [entrepreneurship/launch, entrepreneurship/show-hn, entrepreneurship/early-feedback, entrepreneurship/pricing, entrepreneurship/founder-pitch, entrepreneurship/mvp]
+  community_tag: hn-startup-and-launch
+  reliability: 1
+  freshness_required: true
+  domain: entrepreneurship
+  notes: |
+    Hacker News (news.ycombinator.com) Show HN + launch
+    announcement threads via the official Algolia HN Search API
+    (hn.algolia.com). Matches the "Hacker News startup voices"
+    anchor in framings.md §"Voice anchors" — the canonical real-
+    time channel for technical-founder voice on pricing, MVP
+    launch tactics, Show HN feedback patterns, "show me your
+    landing page" critique culture. Higher point threshold (50)
+    to surface threads with thread-convergence signal — single-
+    launch posts that didn't gather traction are not useful
+    evidence. The Algolia HN Search API is rate-limited but
+    publicly accessible (no auth required); the hn_search adapter
+    handles pagination and retry mechanics.
+    Best for: F9 product-led-growth framing's launch-tactic
+    reality (the canonical Show HN feedback pattern surfaces
+    common landing-page / positioning / pricing mistakes that
+    pre-launch founders systematically make), D5 pricing-and-
+    packaging from the launch-week feedback perspective (the
+    HN audience-skew is technical-buyer + freemium-default, so
+    HN-feedback-on-pricing is a useful early-signal for B2D /
+    developer-tools companies but mis-calibrates for SMB / mid-
+    market / enterprise contexts), F11 founder-mode framing's
+    early-adopter relationship building (the canonical Do-
+    Things-That-Don't-Scale-on-HN posts surface founder-direct-
+    engagement patterns), launch-week distribution mechanics
+    (Show HN vs Product Hunt vs Reddit timing).
+    Weak: non-technical-buyer feedback (HN audience is heavily
+    skewed technical / engineer / developer; defer to r/
+    Entrepreneur + niche subreddits for non-developer ICP
+    contexts), enterprise / sales-led specifics (defer to
+    SaaStr + Tomasz Tunguz), legal / cap-table / tax adjudication
+    (defer to retained counsel + IRS Pubs).
