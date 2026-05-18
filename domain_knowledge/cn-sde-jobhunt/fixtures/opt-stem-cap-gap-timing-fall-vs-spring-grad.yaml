@@ -1,0 +1,44 @@
+id: opt-stem-cap-gap-timing-fall-vs-spring-grad
+domain: cn-sde-jobhunt
+text: |
+  F-1, MS CS final year. 我现在面临一个 graduation-date 的选择:可以
+  December 2026 毕业(走 fall-grad 路线),也可以再修一个 spring 学期
+  到 May 2027 毕业。我手上有一个 mid-size 公司的 SDE return offer
+  (summer intern conversion),start date 弹性,他们说 fall start 或
+  next-summer start 都可以。我的 advisor 觉得 fall-grad 更省 tuition,
+  但 1p3a 上有几个帖子说 spring-grad 才是 "best practice" 因为可以
+  最大化 OPT clock 进入下一年 March 的 H-1B lottery —— 如果我 Dec
+  2026 毕业、Jan 2027 上 OPT,我那次 March 2027 的 lottery 就只剩
+  2 个月的 OPT 用来等 cap-gap;而 May 2027 毕业的话,我 March 2028
+  lottery 时刚好处在 OPT 第一年中段。cap-gap 真的 cover 到 Oct 1
+  start 吗?如果我 fall-grad 然后 March 2027 没中 lottery,STEM-OPT
+  extension 是从 OPT start date 起算还是从毕业起算?我应该怎么把
+  tuition 成本和 lottery-chance 这两个维度放到一起想?
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/visa]
+expected_entities:
+  - F-1
+  - OPT
+  - STEM-OPT
+  - cap-gap
+  - H-1B
+  - lottery-selection
+  - lottery-failure
+  - OPT-active
+  - STEM-extension-window
+expected_personas:
+  - f1-final-year-cs-master
+  - opt-active-h1b-not-yet-filed
+expected_risk_surfaces:
+  - cap-gap-timing
+  - lottery-failure
+  - opportunity-cost
+  - timing
+  - info-asymmetry
+expected_decisions: [2, 3]
+expected_framings: [F1, F6]
+expected_blindspot_categories:
+  - opt-clock-positioning-relative-to-march-lottery-window
+  - cap-gap-eligibility-tied-to-h1b-petition-receipt-date
+  - tuition-cost-arithmetic-flattens-lottery-chance-asymmetry
+  - 1p3a-best-practice-claims-have-policy-half-life
+  - stem-opt-clock-starts-from-opt-grant-not-graduation
