@@ -1,0 +1,72 @@
+id: priority-order-faang-rsu-heavy-30yo-no-debt
+text: |
+  30yo single SWE at a FAANG, $240k base + ~$180k RSU (vesting
+  quarterly on a 4-year graded schedule, ~$45k vest each quarter at
+  current stock price) in CA. Sign-on bonus already paid out. No
+  debt. Marginal federal 32% + CA 9.3% + Additional-Medicare 0.9%
+  + NIIT 3.8% on investment income. Employer offers 401(k) with 6%
+  match (immediate vest), Roth-401(k) option, after-tax 401(k)
+  bucket with quarterly in-plan-Roth-conversion (Mega-Backdoor Roth
+  enabled — confirmed in SPD), and HDHP-with-HSA on the medical
+  side (Anthem $2,800 individual deductible, $5,600 OOP-max). Have
+  ~$80k available cash flow per year beyond rent and living
+  expenses, plus another ~$60k of RSU per year I could redirect if
+  I sell-on-vest immediately rather than hold. Existing accounts:
+  $40k traditional 401(k) (employer roll-in from prior intern role),
+  $0 IRA, $8k Roth IRA from college contributions, $25k taxable
+  brokerage in VTI, $5k HSA from prior employer (cash). Read the
+  Bogleheads investment-priority-order wiki and Mr-Money-Mustache's
+  "Shockingly Simple Math" essay; r/personalfinance flowchart says
+  401(k) match → high-interest debt → HSA → Roth IRA → 401(k) cap
+  → Mega-Backdoor → 529 → taxable. But: (1) I'm above the
+  Roth-IRA direct-contribution phase-out ($146-161k single MAGI
+  2025) so direct Roth is closed and backdoor Roth is the only
+  path; the existing traditional 401(k) is in a 401(k), not an
+  IRA, so pro-rata shouldn't apply IF I avoid rolling it into an
+  IRA — verify? (2) my expected median tenure at FAANG is ~2 years
+  per Levels.fyi data; the 6% match has 0-year cliff per my SPD
+  but the after-tax 401(k) match-true-up only happens on annual
+  basis — if I leave mid-year does the year-end true-up still
+  pay out? (3) HSA — I'm single and healthy but the chronic-condition-
+  on-HDHP framing tells me to do PPO instead; should I switch?
+  How does the priority order actually apply to my facts — and
+  what about the $180k RSU concentration that the
+  flowchart ignores entirely?
+expected_domains: [personal-finance, tech-career]
+expected_entities:
+  - 401(k)-match
+  - Mega-Backdoor-Roth
+  - after-tax-401(k)
+  - in-plan-Roth-conversion
+  - §415(c)-total-cap-$70,000
+  - HSA
+  - $4,300-HSA-self-only-cap-2025
+  - HDHP
+  - backdoor-Roth
+  - pro-rata-rule
+  - Form-8606
+  - RSU-concentration-risk
+  - sell-on-vest-tax-neutral
+  - Roth-IRA-direct-contribution-phase-out-$146-161k
+  - 32-pct-federal-marginal
+  - 9.3-pct-CA-marginal
+  - 7.65-pct-FICA-arbitrage-HSA
+expected_personas: [early-career-tech-RSU-heavy, single-high-income-priority-order-novice]
+expected_risk_surfaces:
+  - RSU-concentration-as-stealth-allocation-overwhelms-target
+  - match-vesting-cliff-conditional-expected-value-on-tenure
+  - HSA-FICA-arbitrage-on-payroll-vs-after-tax-deduction
+  - pro-rata-trap-only-if-IRA-rollover-from-401(k)-not-pre-existing-401(k)
+  - Mega-Backdoor-Roth-plan-document-feature-not-default
+  - HDHP-vs-PPO-medical-side-trade-off-for-chronic-condition
+  - sell-on-vest-tax-neutral-RSU-mechanic-vs-hold-as-implicit-buy-employer
+expected_decisions: [D1, D2, D4]
+expected_framings: [F1, F2, F3, F11, F14]
+expected_blindspot_categories:
+  - RSU-concentration-overrides-priority-order-sell-on-vest-as-first-move-not-step-3
+  - HSA-FICA-arbitrage-only-via-payroll-deduction-not-after-tax-Form-8889
+  - match-true-up-vesting-cliff-discount-on-expected-value-when-tenure-under-2yr
+  - pro-rata-trap-applies-to-IRA-aggregation-not-pre-existing-401(k)-balance
+  - Mega-Backdoor-Roth-requires-plan-document-after-tax-AND-in-plan-conversion-both
+  - asymmetric-cap-utility-Roth-greater-than-traditional-for-cap-constrained-saver
+  - high-stakes-consult-fee-only-fiduciary-CFP-NAPFA-XY-Planning-Garrett-on-priority-sequencing-and-RSU-concentration

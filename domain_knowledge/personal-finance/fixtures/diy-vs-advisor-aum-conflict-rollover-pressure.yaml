@@ -1,0 +1,122 @@
+id: diy-vs-advisor-aum-conflict-rollover-pressure
+text: |
+  52yo and spouse 54, both senior engineers in MN (5.85% top
+  state-tax marginal, MFJ 24% federal). Combined household
+  $2.1M: $1.4M traditional 401(k) (mine, currently at MegaCorp
+  where I've been 18 years), $380k Roth IRA (mine, backdoor
+  converted since 2015), $120k Roth IRA (spouse), $180k taxable
+  brokerage, $35k HSA. Spouse has $0 retirement at her current
+  small employer (no 401(k)) — historical 403(b) from a former
+  nonprofit job has $90k in it, untouched. I'm taking an
+  early-retirement-package offer this year (June 2026 exit, age
+  53 — so pre-59.5; Rule of 55 applies to my MegaCorp 401(k)
+  for penalty-free withdrawal from age 55 onward, if I leave AT
+  OR AFTER age 55 — but I'm 52 leaving at 53, so the Rule of 55
+  doesn't apply unless I work until 55+ at MegaCorp, which the
+  package doesn't allow). Question: in the last month I've had
+  three separate "free retirement consultations" — (a)
+  MegaCorp's preferred provider Empower Retirement (formerly
+  Personal Capital, now AUM-fee at 0.89% / yr on first $1M);
+  (b) a "fee-only fiduciary" from a local firm a colleague
+  recommended — turns out on closer inspection their structure
+  is "fee-based" not fee-only (AUM 1.0%/yr PLUS commissions on
+  insurance/annuity products); (c) Fidelity (where I already
+  have my Roth IRA) offering a "complimentary retirement plan
+  review" with their wealth-management-arm. All three are
+  pushing me to: (1) ROLL OVER the $1.4M traditional 401(k) and
+  the $90k 403(b) into IRAs at their custody — citing
+  "lower-cost investment options" and "more flexibility." (2)
+  CONVERT a substantial portion of the rolled-over traditional
+  IRA to Roth via aggressive 5-year-Roth-conversion-ladder over
+  the early-retirement years 2026-2030 (I'll have low W-2
+  income — the package severance through end of 2026 then $0
+  through 2030 unless I do contracting). (3) PURCHASE an
+  annuity (the fee-based one specifically: "guaranteed lifetime
+  income, $200k single-premium-immediate-annuity for $1k/mo for
+  life"). Concerns: (a) rolling 401(k) to IRA weakens federal-
+  bankruptcy creditor-protection from unlimited (ERISA) to
+  $1.5M-indexed (IRA); I'm not currently in litigation but
+  professional-liability exposure is non-zero. MN state shield
+  for IRA is modest — checked at $80k-indexed-after-deduction.
+  (b) the AUM-fee structure: 0.89-1.0% on $2.1M is $19-21k/yr,
+  $625-700k cumulative drag over 30-year retirement at 4%
+  compounding — that's a third of my $2.1M starting point.
+  (c) the annuity pitch — single-premium-immediate-annuities
+  have ~7-10% commission baked into the structure (regulators
+  call them "income annuities" but the agent's compensation is
+  load-bearing); the "guaranteed income" frames real but the
+  break-even-age vs simple invest-in-bonds is typically 84-86,
+  beyond which the annuity wins; below which the asker is
+  worse off vs Treasury-ladder. (d) DIY alternative: keep the
+  $1.4M in the MegaCorp 401(k) plan (allowed by SPD up to age
+  72; verify) where it stays ERISA-protected; the plan offers
+  Vanguard institutional-class index funds at 0.04% ER (vs
+  retail 0.10%); my Roth IRA already at Fidelity, taxable also
+  Fidelity — I can self-manage the Roth-conversion-ladder using
+  Open-Social-Security software (Mike Piper) for the SS-claim
+  side and Boglehead-wiki + r/financialindependence flowchart
+  for the conversion-ladder side; total cost ~$0/yr for DIY,
+  vs $19-21k/yr AUM. (e) FINRA-BrokerCheck on the three
+  advisors — Empower has 3 disclosure events (one customer
+  complaint settled, two regulatory inquiries); the "fee-based"
+  has 1 disclosure (registered-rep customer-complaint pending);
+  Fidelity Wealth Management has none personally listed for the
+  named advisor. SEC IAPD Form ADV Part 2A for Empower
+  discloses the 0.89% as "advisory fee" but does NOT disclose
+  the rollover-from-401(k)-recommendation as the AUM-trigger
+  in plain language — buried in §10 conflicts-of-interest
+  appendix. What's the right play? Is DIY-via-Bogleheads + hourly-
+  fee Garrett-Planning-Network consult ($300/hr × ~10 hrs/yr =
+  $3k/yr) the right move? Or am I being too suspicious of all
+  three professional pitches?
+expected_domains: [personal-finance]
+expected_entities:
+  - fee-only-vs-fee-based-vs-commission
+  - AUM-fee-structure
+  - 0.89-pct-AUM-fee
+  - 1.0-pct-AUM-fee-plus-commission
+  - rollover-recommendation-bias
+  - rollover-401(k)-to-IRA-weakens-creditor-protection
+  - ERISA-401(k)-unlimited-federal-bankruptcy-shield
+  - $1.5M-indexed-IRA-cap-11-USC-§522(n)
+  - single-premium-immediate-annuity
+  - SPIA-commission-7-to-10-pct
+  - guaranteed-lifetime-income
+  - Form-ADV-Part-2A
+  - SEC-IAPD
+  - FINRA-BrokerCheck
+  - disclosure-events
+  - Rule-of-55-early-distribution
+  - SEPP-72(t)-substantially-equal-periodic-payments
+  - fiduciary-vs-suitability-standard
+  - SEC-Reg-BI
+  - DOL-fiduciary-rule-2024
+  - NAPFA-XY-Planning-Garrett-fee-only-registry
+  - Empower-Retirement
+  - Open-Social-Security-Mike-Piper
+  - Bogleheads-flowchart-DIY
+expected_personas: [advisor-pitch-recipient-evaluating-conflicts, DIY-vs-AUM-fee-evaluator]
+expected_risk_surfaces:
+  - rollover-recommendation-bias-AUM-fee-incentive-401(k)-to-IRA
+  - fee-based-vs-fee-only-deliberate-confusion-hybrid-commission-plus-AUM
+  - SPIA-7-to-10-pct-commission-buried-in-product-structure
+  - rollover-weakens-ERISA-pre-emption-bankruptcy-shield
+  - AUM-fee-30-year-cumulative-drag-third-of-starting-portfolio
+  - FINRA-BrokerCheck-disclosure-events-zero-friction-vetting
+  - Rule-of-55-doesnt-apply-leaving-pre-55
+  - DIY-via-Bogleheads-flowchart-as-legitimate-alternative-for-high-literacy-asker
+  - hourly-fee-Garrett-Planning-as-bounded-scope-fee-only
+expected_decisions: [D1, D2, D7, D8]
+expected_framings: [F1, F2, F8, F10, F11]
+expected_blindspot_categories:
+  - rollover-recommendation-bias-AUM-fee-structure-all-three-advisors-share-this-incentive
+  - fee-based-is-NOT-fee-only-deliberately-confusing-hybrid-language-load-bearing-distinction
+  - SPIA-commission-7-to-10-pct-baked-in-not-disclosed-as-fee-pricing-on-the-product
+  - rollover-401(k)-to-IRA-weakens-creditor-shield-from-unlimited-ERISA-to-$1.5M-IRA-cap
+  - AUM-fee-0.89-pct-on-$2.1M-is-$19k/yr-compounding-to-$625k-drag-over-30-year-retirement
+  - FINRA-BrokerCheck-and-SEC-IAPD-Form-ADV-Part-2A-zero-friction-pre-engagement-checks
+  - Rule-of-55-applies-only-if-leaving-AT-or-AFTER-55-not-pre-55-package-exit
+  - DIY-via-Bogleheads-flowchart-plus-Open-Social-Security-software-legitimate-for-this-literacy-profile
+  - Garrett-Planning-Network-hourly-fee-as-bounded-scope-fee-only-eliminates-rollover-bias
+  - 401(k)-stay-in-plan-keeps-ERISA-shield-and-institutional-class-fund-prices
+  - high-stakes-consult-fee-only-fiduciary-CFP-Garrett-Planning-hourly-AND-SEC-IAPD-FINRA-BrokerCheck-verification-before-engaging-any-advisor

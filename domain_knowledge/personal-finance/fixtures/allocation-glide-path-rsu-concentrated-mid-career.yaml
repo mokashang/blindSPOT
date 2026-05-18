@@ -1,0 +1,86 @@
+id: allocation-glide-path-rsu-concentrated-mid-career
+text: |
+  45yo Director-of-Engineering at a public tech company (mid-cap,
+  ~$8B market cap, founded 2014, IPO 2021). Comp: $280k base +
+  ~$420k RSU vesting on a 1-year cliff then quarterly graded, plus
+  the company's CY2025 refresh grant ~$650k vesting over 4 years.
+  Spouse is 43, part-time consultant earning ~$80k, doesn't
+  participate in retirement plan beyond a SEP-IRA. Two kids (12,
+  9). Live in Seattle, WA (no state income tax). Existing
+  household allocation across all accounts: $740k in employer's
+  stock (vested RSU + ESPP-discount-stock from 2022/2023 vintage,
+  cost basis ~$310k), $620k in 401(k)/Roth-401(k) in
+  Vanguard-Target-Retirement-2050-Fund (which is 92% equities,
+  Vanguard glide path), $145k Roth IRA in VTI, $25k spouse SEP-IRA
+  in 60/40-balanced, $180k taxable brokerage in VTI/VXUS/BND.
+  Total household net worth ~$1.7M excluding home equity. Target
+  allocation per our agreed Investment-Policy-Statement: 70%
+  stocks / 25% bonds / 5% REIT. But: the $740k single-employer
+  position swamps this — it's 44% of liquid net worth in ONE
+  STOCK, which puts our effective equity exposure at ~92% with
+  enormous idiosyncratic concentration. The "diversify" reflex
+  feels right but the unrealized LTCG is ~$430k and selling
+  triggers $86k federal LTCG-15% (technically 18.8% with NIIT) +
+  $0 WA state — call it ~$80k of immediate friction to liquidate
+  the concentration. Question: (1) sell the entire $740k position
+  immediately, eat the $80k tax, and redistribute to target
+  allocation? (2) sell 30%/year over 3 years to spread the tax
+  drag and target-allocation drift over a rebalance window? (3)
+  use a 10b5-1 plan or covered-call collar to manage timing
+  given my access to material non-public information (I'm a VP-
+  level reviewing FY27 plan now)? (4) do nothing and ride it
+  because the company has executed well? (5) — and a wrinkle —
+  the next refresh grant of $650k that just landed is fully sell-
+  on-vest-tax-neutral, so direct that vest-to-cash going forward
+  and let the existing position run? Wade Pfau and Kitces would
+  recommend the rising-equity-glide for retirement-prep at 45,
+  but with concentration this size the glide-path discussion is
+  moot until the concentration is broken. And what about the
+  Vanguard-Target-Retirement-2050 in my 401(k) — should it move
+  to a 3-fund-portfolio given the post-2022 changing-correlation-
+  between-stocks-and-bonds environment, and is target-date-fund
+  tax-inefficient in the after-tax 401(k) → in-plan-conversion-
+  to-Roth-401(k) pipeline?
+expected_domains: [personal-finance, tech-career]
+expected_entities:
+  - RSU-concentration-risk
+  - $740k-single-employer-stock
+  - $430k-unrealized-LTCG
+  - 15-pct-federal-LTCG
+  - NIIT-3.8-pct-additional
+  - 10b5-1-trading-plan
+  - blackout-window
+  - material-non-public-information
+  - covered-call-collar
+  - sell-on-vest-tax-neutral
+  - Vanguard-Target-Retirement-2050
+  - 3-fund-portfolio
+  - 70-25-5-target-allocation
+  - rising-equity-glide
+  - bond-tent
+  - Wade-Pfau
+  - Michael-Kitces
+  - Modern-Portfolio-Theory
+  - SEP-IRA-spouse
+  - Form-8606-pro-rata-trap-spouse-SEP-IRA
+expected_personas: [mid-career-tech-concentrated, household-with-RSU-stealth-allocation-mismatch]
+expected_risk_surfaces:
+  - RSU-concentration-as-stealth-allocation-overrides-target
+  - sell-on-vest-tax-neutral-RSU-vs-hold-as-implicit-buy
+  - 10b5-1-plan-required-for-VP-access-to-MNPI-not-optional
+  - target-date-fund-tax-inefficient-in-taxable-but-OK-in-pre-tax-shell
+  - bond-equity-correlation-regime-shift-2022-onward
+  - spouse-SEP-IRA-balance-triggers-pro-rata-on-spouse-backdoor-Roth
+  - rising-equity-glide-vs-conventional-glide-path-academic-vs-institutional
+  - covered-call-collar-as-tax-deferral-trap-not-tax-elimination
+expected_decisions: [D4, D3, D1, D6]
+expected_framings: [F5, F11, F14, F7]
+expected_blindspot_categories:
+  - RSU-concentration-overrides-target-allocation-sell-first-then-glide-path
+  - 10b5-1-plan-pre-commitment-required-for-VP-MNPI-not-discretionary-sell-on-blackout
+  - sell-on-vest-going-forward-is-tax-neutral-existing-concentration-is-separate-decision
+  - target-date-fund-in-401(k)-fine-but-tax-inefficient-in-taxable-due-to-auto-rebalance-realizations
+  - spouse-SEP-IRA-balance-poisons-spouse-backdoor-Roth-via-pro-rata-rule
+  - bond-stock-correlation-positive-shock-2022-worst-60/40-year-since-1937-regime-aware
+  - rising-equity-glide-academic-support-but-institutional-and-psychological-friction
+  - high-stakes-consult-fee-only-fiduciary-CFP-NAPFA-on-glide-path-AND-SEC-IAPD-and-FINRA-BrokerCheck-on-advisor-before-engagement

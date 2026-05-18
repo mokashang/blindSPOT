@@ -1,0 +1,126 @@
+id: estate-beneficiary-blended-family-sunset-slat
+text: |
+  58yo professional (radiologist) in TX, recently remarried 4
+  years ago after 2018 divorce. Combined household net worth
+  $14.8M: $5.4M traditional 401(k)/IRA (mostly rolled over from
+  former hospital employer 401(k) into Fidelity rollover-IRA in
+  2022), $1.8M Roth IRA, $4.6M taxable brokerage at Fidelity
+  (mostly low-cost index funds, some highly-appreciated SPY
+  held 18 years with $1.2M unrealized LTCG), $1.4M home equity
+  (Houston suburban, paid off), $980k in retirement-age non-
+  professional liability umbrella + medical-malpractice tail
+  coverage layered structure, $360k HSA, $260k 529 plans (two
+  kids from first marriage, now in college). Three kids from
+  first marriage (ages 19, 21, 24), no kids with current
+  spouse. Current spouse (54) has two kids from her prior
+  marriage (16, 19) — explicitly NOT my legal stepchildren, no
+  formal adoption. Question set: (1) beneficiary form audit —
+  I never updated 401(k)/IRA beneficiary forms after the 2018
+  divorce; my Fidelity rollover-IRA still lists my ex-spouse as
+  100% primary beneficiary (verified yesterday in the portal,
+  horrified). My current spouse is named only on the home
+  deed and life insurance — nothing else. If I die today, the
+  $5.4M traditional IRA would go to my ex-spouse per the
+  beneficiary form regardless of what my will says (Egelhoff
+  for ERISA, similar treatment for IRA — most custodians
+  follow); my kids and current spouse get nothing from the
+  retirement bucket. Update forms IMMEDIATELY — but to whom?
+  Direct-to-kids per-stirpes, or trust-as-beneficiary for the
+  19-year-old who has expressed concerns about ADHD and
+  impulsive spending? (2) Current spouse-coverage question —
+  she's 4 years younger and likely to outlive me by 10+ years
+  on actuarial data; if I name her primary on the IRA, the
+  10-year-rule for non-spouse-beneficiary becomes the spousal-
+  rollover-into-own-IRA option for her instead (much better);
+  she can convert to Roth, can stretch over her own RMD age
+  schedule, etc. But she also has her own two kids from her
+  prior marriage who she'd want to inherit her remaining
+  balance. The blended-family-beneficiary-cascade is a known
+  drafting nightmare. (3) the 2025-doubled-estate-tax-exemption
+  sunset — $13.99M individual / $27.98M MFJ in 2025; my $14.8M
+  estate would be exposed to estate tax above the $7M-indexed
+  exemption that returns in 2026 absent congressional
+  extension. SLAT (Spousal Lifetime Access Trust) — gift assets
+  to a trust for current-spouse's benefit, locking in current
+  exemption, anti-clawback Reg §20.2010-1(c) confirms it's not
+  recaptured if I die post-sunset. But SLAT requires
+  IRREVOCABLE gift; what happens if current marriage doesn't
+  last? "Reciprocal SLAT" doctrine (Estate of Grace, 395 US 316
+  (1969)) says if BOTH spouses set up SLATs for each other the
+  IRS can collapse them; need careful asymmetry. (4) state-of-
+  TX — unlimited IRA / 401(k) creditor-protection statute
+  (Tex. Prop. Code §42.0021); homestead-exemption-unlimited;
+  TBE (tenancy-by-the-entirety) and community-property
+  variations — am I better protected here than I'd be in CA?
+  YES — but the relevant question is medical-malpractice
+  professional-liability exposure, where TX caps non-economic
+  damages at $250k under HB 4 (2003). Still, the rollover-from-
+  401(k)-to-IRA in 2022 may have weakened my federal-bankruptcy
+  shield (capped at $1.5M indexed for IRA vs unlimited for
+  ERISA-401(k)) and the state-shield doesn't fully substitute
+  for ERISA pre-emption. (5) the $4.6M taxable with $1.2M
+  unrealized LTCG — basis-step-up-at-death applies; running
+  down traditional-IRA via Roth-conversions in any low-income
+  year before age-73-RMD-start makes traditional-IRA balance
+  smaller for heirs (Roth has no income inclusion on
+  distribution; traditional fully taxable as ordinary). (6)
+  Egelhoff implications for the ex-spouse beneficiary
+  designation — if I die today before updating, the ex-spouse
+  inherits the IRA REGARDLESS of any state divorce-revocation-
+  statute or my will; she would be 51 and could either take
+  the inherited-IRA-non-spouse-10-year-rule path or potentially
+  challenge the divorce-decree on community-property division
+  in TX (Texas is a community-property state, but the post-
+  divorce-decree governs).
+expected_domains: [personal-finance, family-planning]
+expected_entities:
+  - beneficiary-form-supersedes-will
+  - Egelhoff-v-Egelhoff
+  - Patterson-v-Shumate
+  - SLAT-Spousal-Lifetime-Access-Trust
+  - reciprocal-SLAT-doctrine
+  - Estate-of-Grace-1969
+  - GRAT-Grantor-Retained-Annuity-Trust
+  - ILIT-Irrevocable-Life-Insurance-Trust
+  - Dynasty-trust
+  - 2025-doubled-estate-tax-exemption-sunset
+  - $13.99M-2025-individual-exemption
+  - $7M-2026-revertted-exemption
+  - anti-clawback-Reg-§20.2010-1(c)
+  - basis-step-up-at-death
+  - IRC-§1014
+  - SECURE-1.0-10-year-rule-non-spouse
+  - spousal-rollover-of-inherited-IRA
+  - blended-family-beneficiary-cascade
+  - per-stirpes-vs-per-capita-beneficiary
+  - trust-as-IRA-beneficiary-see-through
+  - QDRO-divorce-revocation
+  - ERISA-pre-emption-of-state-revocation-statute
+  - 401(k)-vs-IRA-creditor-protection-shift
+  - $1.5M-indexed-federal-bankruptcy-IRA-cap
+  - 11-USC-§522(n)
+  - Texas-Property-Code-§42.0021-unlimited-IRA
+  - TX-HB4-medical-malpractice-cap-$250k-2003
+  - Roth-conversion-pre-RMD-to-reduce-heir-tax-drag
+expected_personas: [HNW-pre-sunset-blended-family, post-divorce-stale-beneficiary-form-emergency]
+expected_risk_surfaces:
+  - stale-ex-spouse-on-IRA-beneficiary-form-Egelhoff-controls-update-immediately
+  - SLAT-locks-current-exemption-but-requires-irrevocable-gift-spousal-trust-coordination
+  - reciprocal-SLAT-IRS-collapse-doctrine-Estate-of-Grace
+  - blended-family-beneficiary-cascade-trust-as-beneficiary-vs-direct
+  - state-creditor-shield-TX-unlimited-vs-federal-IRA-cap-rollover-weakened-2022
+  - 2026-sunset-political-uncertainty-Congress-could-extend
+  - Roth-conversion-reduces-traditional-IRA-balance-for-heirs-inherited-as-ordinary-income
+  - QDRO-vs-beneficiary-form-distinct-state-revocation-statute-ERISA-pre-empted
+expected_decisions: [D10, D8, D3, D7]
+expected_framings: [F3, F8, F9, F12, F14]
+expected_blindspot_categories:
+  - beneficiary-form-supersedes-will-Egelhoff-stale-ex-spouse-on-IRA-update-immediately-no-state-statute-overrides
+  - SLAT-locks-2025-exemption-anti-clawback-Reg-§20.2010-1(c)-but-requires-irrevocable-gift-and-marital-stability
+  - reciprocal-SLAT-Estate-of-Grace-IRS-collapse-need-asymmetric-trust-structure
+  - blended-family-cascade-direct-beneficiary-vs-trust-vs-QTIP-marital-trust-decision
+  - rollover-401(k)-to-IRA-weakens-creditor-protection-federal-$1.5M-cap-indexed
+  - Texas-Property-Code-§42.0021-unlimited-IRA-state-shield-but-not-federal-pre-emption-substitute
+  - basis-step-up-favors-holding-appreciated-taxable-and-running-down-traditional-IRA-during-life
+  - 2025-exemption-sunset-political-uncertainty-but-anti-clawback-makes-pre-sunset-gift-permanent
+  - high-stakes-consult-state-bar-estate-attorney-on-SLAT-drafting-AND-ERISA-attorney-on-creditor-shield-AND-retirement-experienced-CPA-on-Roth-conversion-sizing

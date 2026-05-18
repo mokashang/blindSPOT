@@ -1,0 +1,93 @@
+id: roth-conversion-ladder-fire-bridge-aca-irmaa
+text: |
+  58yo and spouse 56, retired Jan 2026 (planned end-of-year-2025
+  layoff with 18 months severance through June 2027 — confirmed
+  payable as continued-W-2 not lump-sum). Combined household net
+  worth $4.6M: $2.9M in traditional 401(k)s (mine $2.1M, spouse
+  $0.8M), $620k Roth IRA combined (mostly conversions over the
+  last 5 years), $580k taxable brokerage, $110k HSA (mine,
+  10 years of HDHP contributions, fully invested), $390k home
+  equity (paid off house in suburban Phoenix, AZ — moved from
+  CA 2 years ago specifically for the 9.3% state-tax-savings on
+  the planned Roth-conversion-ladder). Plan: pure-FIRE
+  early-retirement, draw from taxable through 2027 while
+  severance runs, then execute Roth-conversion-ladder from
+  2027-2031 to bridge to Medicare-at-65 in 2033 (me) / 2035
+  (spouse). 2026 income: $156k severance (mine) + $0 spouse
+  + ~$3k taxable interest. 2027 projected: $78k severance
+  through June + $0 spouse + ~$5k interest = ~$83k. ACA
+  marketplace coverage starting 2028 (severance ends mid-2027,
+  COBRA through end of 2027). At 138% FPL the ACA subsidy is
+  large; the subsidy phase-out / cliff if 400% FPL reinstates
+  post-ARPA-sunset becomes load-bearing. Decision: how to size
+  the Roth conversions across 2027-2031, accounting for: (a)
+  filling the 12% bracket vs 22% bracket vs 24% bracket — the
+  2026 reversion of TCJA brackets makes the 12% bracket become
+  15% and the 22% become 25%, so the cliff math is different
+  by year; (b) ACA-subsidy MAGI thresholds — pushing income
+  above 400% FPL (if reinstated) destroys the APTC, the
+  effective marginal rate on the conversion-induced-subsidy-
+  loss is huge; (c) IRMAA-2-year-lookback — converting in 2028
+  affects 2030 Medicare Part B+D premiums starting at age 65;
+  the IRMAA tier cliffs at $103k / $129k / $161k / $193k /
+  $500k+ single MAGI ($206k+ MFJ) step up sharply, $1k-4k per
+  tier per spouse; (d) the 5-year-clock per conversion — each
+  conversion's 5-year aging clock for penalty-free principal
+  withdrawal — I'll be 63 / 64 / 65 / 66 / 67 in the
+  conversion years, all past 59.5, so the 10% penalty doesn't
+  apply but the 5-year-clock-for-earnings-withdrawal-tax-free
+  still does, and many people conflate the two clocks; (e) the
+  Social-Security claim age question — spouse delayed to 70
+  for higher survivor benefit, I'm claiming at FRA (67), the
+  conversion-period overlaps with my pre-claim years; (f)
+  what about the $110k HSA — pay current medical OOP and
+  shoebox receipts, or use HSA for current medical (we have
+  ~$8k/yr medical including dental/vision) to manage MAGI? And
+  the most uncomfortable wrinkle: TCJA-2017 eliminated
+  recharacterization — these conversions are irrevocable from
+  the moment executed; no way to undo if 2028's stock-market
+  declines wipe out the appreciation we were planning to lock
+  into Roth.
+expected_domains: [personal-finance, health-insurance]
+expected_entities:
+  - Roth-conversion-ladder
+  - 5-year-clock-per-conversion
+  - 5-year-clock-on-Roth-IRA-itself
+  - ACA-marketplace
+  - APTC
+  - 400-pct-FPL-subsidy-cliff
+  - ARPA-IRA-enhanced-subsidies-sunset-2025
+  - IRMAA-2-year-lookback
+  - $103k-$129k-$161k-$193k-$500k-IRMAA-tier-cliffs
+  - Medicare-Part-B-Part-D-premium-surcharge
+  - TCJA-2017-bracket-sunset
+  - 12-pct-to-15-pct-reversion
+  - 22-pct-to-25-pct-reversion
+  - bracket-filling-arithmetic
+  - recharacterization-eliminated-TCJA-2017
+  - Social-Security-claim-age-67-FRA
+  - delayed-retirement-credit-age-70
+  - spousal-survivor-benefit-coordination
+  - HSA-as-Medicare-premium-payer
+  - severance-as-MAGI-income
+expected_personas: [early-FIRE-pre-medicare-bridge, sabbatical-window-Roth-conversion-aggressive]
+expected_risk_surfaces:
+  - bracket-filling-cliff-12-to-22-pct-on-2025-then-15-to-25-pct-on-2026
+  - ACA-subsidy-cliff-400-pct-FPL-conversion-induced-subsidy-loss-implicit-tax
+  - IRMAA-2-year-lookback-conversion-affects-Part-B-D-premium-2-years-later
+  - recharacterization-eliminated-conversions-irrevocable-no-undo-on-2028-drawdown
+  - 5-year-clock-per-conversion-distinct-from-5-year-clock-on-Roth-IRA-itself
+  - SS-claim-age-delayed-to-70-for-higher-survivor-benefit-vs-FRA
+  - HSA-during-life-medical-spend-vs-shoebox-receipts-MAGI-management
+expected_decisions: [D7, D2, D8]
+expected_framings: [F2, F4, F7, F12, F13]
+expected_blindspot_categories:
+  - ACA-subsidy-cliff-400-pct-FPL-as-implicit-tax-on-conversion-larger-than-bracket-arithmetic
+  - IRMAA-2-year-lookback-conversion-in-2028-affects-2030-Medicare-Part-B-D-premium
+  - recharacterization-eliminated-since-TCJA-2017-conversions-irrevocable-not-undoable-by-Oct-15
+  - 5-year-clock-per-conversion-and-5-year-clock-on-Roth-IRA-itself-two-distinct-clocks-take-longer
+  - severance-counts-as-MAGI-not-just-W-2-wage-affects-conversion-headroom-2027
+  - TCJA-bracket-reversion-2026-changes-conversion-bracket-fill-target-year-over-year
+  - Social-Security-claim-age-70-spousal-survivor-benefit-coordination-dominates-self-only-breakeven
+  - HSA-medical-spend-as-MAGI-management-vs-shoebox-strategy
+  - high-stakes-consult-fee-only-fiduciary-CFP-NAPFA-AND-retirement-experienced-CPA-on-conversion-sizing-relative-to-IRMAA-ACA-cliffs

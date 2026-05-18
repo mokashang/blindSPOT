@@ -1,0 +1,98 @@
+id: retirement-withdrawal-sequence-rmd-qcd-bequest
+text: |
+  73yo retiree (turned 73 in February 2026 — triggering first RMD
+  year under SECURE 2.0), surviving widow (spouse died unexpectedly
+  in late 2024, MFJ filing status final-year 2024, reverted to
+  single-filer in 2025). Net worth $3.8M: $2.4M traditional IRA
+  (inherited spousal-rollover in 2024 — combined into my own IRA
+  per spousal-rollover rule), $480k Roth IRA, $620k taxable
+  brokerage (highly appreciated VTI held for 22 years, cost basis
+  ~$140k, FMV ~$620k = $480k unrealized LTCG), $310k HSA (built
+  up over 18 years, fully invested in S&P 500), $0 mortgage,
+  ~$1M home equity in suburban NC. Income: Social Security
+  $42k/yr (both my own benefit and the higher-earner-survivor
+  benefit from late spouse — the survivor benefit is the larger,
+  $32k of the $42k). State of NC taxes only some of SS, none
+  of qualified-Roth-distributions, full ordinary-rate on
+  traditional-IRA-distributions. 2026 RMD on the $2.4M traditional
+  IRA, using the IRS Uniform Lifetime Table at age 73 (divisor
+  26.5) = ~$91k mandatory distribution. Intent: leave the bulk
+  of the estate to two adult children (40 and 43) and three
+  grandchildren (10-17). Already tithing $36k/yr to my church
+  (longstanding). Single-filer brackets now mean my 2026 federal
+  marginal is ~22% on top of SS+RMD; total taxable income
+  ~$135k after standard deduction; will hit IRMAA tier 1 ($103k
+  single threshold). Question: (1) QCD (Qualified Charitable
+  Distribution) — I'm 73, eligible to QCD up to $108k from IRA
+  to church directly. If I QCD the $36k tithe, it satisfies $36k
+  of the RMD with NO income inclusion, vs taking the RMD as
+  income and itemizing (single-filer standard deduction is $15.7k
+  in 2026, so my $36k itemized-charity-only barely exceeds the
+  standard, and the marginal-deduction value is small). QCD looks
+  dominant — verify? (2) of the remaining $55k RMD that isn't
+  QCD'd, where do I draw FROM in the IRA to minimize tax (it's
+  all pre-tax, so it doesn't matter inside the IRA — it just
+  matters that I take it out)? (3) the $620k appreciated taxable
+  — basis-step-up-at-death gives my heirs $0-cap-gain at my
+  death; conventional withdrawal sequence (taxable first) is
+  inverted by intent-to-bequeath — should I HOLD the taxable
+  and run down traditional-IRA via Roth-conversions in any
+  remaining low-bracket headroom before age-75-when-second-RMD-
+  age-kicks-in (SECURE 2.0)? (4) the $310k HSA — non-spouse-
+  heirs (my kids) inheriting HSA will see the entire balance
+  hit ordinary-income in the year of death — I should
+  spend-this-down on Medicare premiums and qualified medical
+  during life to deplete the HSA before death, vs leave it for
+  step-up (HSA has NO basis-step-up). (5) my beneficiary forms
+  — last audited 2018 when spouse was alive, listed spouse as
+  primary on all accounts; spouse died 2024, I haven't updated
+  yet — the kids should be primary now, but per-stirpes vs per-
+  capita, and contingents? (6) given the 2025-sunset doubled-
+  estate-tax-exemption ($13.99M in 2025 dropped to $7M in 2026,
+  absent congressional extension), my $3.8M estate is well below
+  the new $7M exemption so no federal estate tax, but does that
+  change the basis-step-up vs convert calculus?
+expected_domains: [personal-finance, family-planning]
+expected_entities:
+  - RMD-age-73
+  - SECURE-2.0-age-75-rises-2033
+  - IRS-Uniform-Lifetime-Table-divisor-26.5
+  - QCD-Qualified-Charitable-Distribution
+  - $108k-QCD-annual-limit-2025
+  - basis-step-up-at-death
+  - IRC-§1014
+  - surviving-spouse-filing-status-trap
+  - single-filer-bracket-compression-year-2
+  - spousal-rollover-of-inherited-IRA
+  - 10-year-rule-non-spouse-non-EDB
+  - SECURE-1.0-10-year-rule
+  - per-stirpes-vs-per-capita-beneficiary
+  - HSA-non-spouse-beneficiary-tax-trap
+  - 2025-doubled-estate-tax-exemption-sunset
+  - $7M-2026-estate-exemption-revertted
+  - $13.99M-2025-individual-exemption
+  - IRMAA-tier-1-$103k-single-MAGI
+  - Roth-conversion-into-low-bracket-headroom
+  - itemized-vs-standard-deduction-$15.7k-2026
+expected_personas: [retiree-RMD-with-bequest-intent, surviving-widow-single-filer-RMD]
+expected_risk_surfaces:
+  - QCD-up-to-$108k-satisfies-RMD-without-income-inclusion-dominant-vs-itemize
+  - intent-to-bequeath-inverts-conventional-taxable-first-withdrawal-sequence
+  - HSA-non-spouse-heir-fully-taxable-in-year-of-inheritance-no-step-up
+  - beneficiary-form-audit-after-spouse-death-Egelhoff-precedent
+  - 10-year-rule-for-non-spouse-heir-inheriting-IRA-post-RBD-includes-annual-RMD
+  - surviving-spouse-filing-status-single-bracket-compression-year-after
+  - basis-step-up-IRA-asymmetry-traditional-IRA-no-step-up-taxable-yes
+  - Roth-conversion-into-bracket-headroom-before-age-75-second-RMD-trigger
+expected_decisions: [D8, D7, D10]
+expected_framings: [F3, F7, F9, F12]
+expected_blindspot_categories:
+  - QCD-satisfies-RMD-without-income-inclusion-dominates-itemize-for-standard-deduction-takers
+  - intent-to-bequeath-inverts-taxable-first-withdrawal-sequence-hold-appreciated-taxable-run-down-IRA
+  - HSA-inherited-by-non-spouse-fully-taxable-year-of-death-spend-during-life
+  - beneficiary-form-supersedes-will-Egelhoff-update-after-spouse-death-immediately
+  - SECURE-1.0-10-year-rule-with-annual-RMD-when-decedent-died-post-RBD-not-just-empty-by-year-10
+  - surviving-spouse-single-filer-bracket-compression-year-2-and-onward
+  - 2025-doubled-estate-tax-exemption-sunset-affects-pre-2026-gifting-not-just-post-2026-estates
+  - Roth-conversion-in-bracket-headroom-before-age-75-second-RMD-age-SECURE-2.0
+  - high-stakes-consult-fee-only-fiduciary-CFP-AND-state-bar-estate-attorney-AND-fee-only-Social-Security-planner-Mike-Piper-on-survivor-coordination

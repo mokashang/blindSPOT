@@ -1,0 +1,83 @@
+id: debt-payoff-vs-invest-pslf-public-defender-save-plan
+text: |
+  34yo public defender at a county PD's office in IL, employment
+  PSLF-qualifying (full-time at a 501(c)(3)-equivalent government
+  agency, employment-certification-form ECF on file with MOHELA
+  servicer). $82k W-2 with state pension contributions
+  (mandatory 7% pre-tax). Married, spouse is a teacher (also
+  PSLF-track at a public school district), $58k W-2. MFJ
+  federal 22% marginal + IL 4.95% flat state = 26.95% combined.
+  One kid (4). Student loan situation: I'm at $164k federal
+  direct loans (mix of unsubsidized Stafford + Grad PLUS) at
+  weighted-average 6.4% APR. Spouse at $52k federal direct at
+  4.8% APR. We're both on SAVE plan (Income-Driven Repayment,
+  successor to REPAYE). Monthly payment under SAVE based on
+  joint-AGI minus 225% FPL: ~$340/mo me + $90/mo spouse. PSLF
+  forgiveness at 10-year qualifying-employment-mark — I'm at
+  year 4 of 10 (72 qualifying payments needed, 48 made and
+  certified); spouse is at year 7 of 10. I have $24k credit
+  card debt at 22.99% APR (we made a stupid mistake during a
+  family medical event last year, hasn't been paid down).
+  $18k auto loan at 7.5% APR (2 years remaining). $11k
+  emergency fund. $35k traditional 401(k) (state pension is
+  separate). $12k Roth IRA. $0 taxable. Available cash flow
+  ~$1,800/mo after living expenses, student loan minimums,
+  daycare. Question: a coworker who just refinanced to a 4.5%
+  private rate from SoFi says he's saving $400/mo. The math
+  looks compelling — $164k × (6.4% - 4.5%) = $3,100/yr savings.
+  But: (1) private refi destroys PSLF eligibility forever
+  (federal loans only); (2) on SAVE the effective-payment-rate
+  relative to balance is *decoupled from APR* — my $340/mo on
+  a $164k balance is paying ~0.21% of balance monthly, and
+  whatever balance remains at year 10 is forgiven; the APR
+  is decorative; (3) credit card 22.99% absolutely dominates
+  everything else — should be paid off first, before any
+  investing. But our 401(k) match — neither employer offers
+  one (state pension and teacher pension are the substitute);
+  there's no match to capture; (4) the auto loan 7.5% beats
+  the SAVE-track student loan effective rate but loses to the
+  expected-7-pct-real-equity return; pay it or invest? And
+  what about funding 529s for the kid — we haven't started?
+  How does the decision-pipeline order on our facts? And the
+  political-risk angle — SAVE is in court (legal challenges
+  filed 2024); if SAVE is enjoined or replaced, what's the
+  fallback?
+expected_domains: [personal-finance, education-funding]
+expected_entities:
+  - PSLF-Public-Service-Loan-Forgiveness
+  - SAVE-plan
+  - Income-Driven-Repayment-IDR
+  - federal-direct-loan
+  - Grad-PLUS-loan
+  - ECF-employment-certification-form
+  - MOHELA-servicer
+  - private-refinance-to-SoFi-destroys-PSLF
+  - $24k-credit-card-debt-22.99-pct-APR
+  - $18k-auto-loan-7.5-pct-APR
+  - $164k-student-loan-6.4-pct-weighted
+  - 4.5-pct-private-refi-rate-trap
+  - 22-pct-federal-MFJ-marginal
+  - 4.95-pct-IL-state-flat
+  - employer-match-substitute-state-pension
+  - emergency-fund
+  - SAVE-plan-litigation-status
+expected_personas: [PSLF-track-public-service, dual-income-PSLF-couple-with-card-debt]
+expected_risk_surfaces:
+  - PSLF-aggressive-refinance-destroys-forgiveness-eligibility-permanently
+  - SAVE-effective-rate-decoupled-from-APR-balance-forgiven-at-year-10
+  - credit-card-22.99-pct-APR-dominates-all-other-payoff-priorities
+  - no-employer-match-to-capture-state-pension-substitute
+  - SAVE-plan-litigation-political-risk-fallback-needed
+  - emergency-fund-vs-debt-paydown-priority-cash-flow-fragility
+  - 529-funding-vs-retirement-airline-oxygen-mask-priority
+expected_decisions: [D5, D1]
+expected_framings: [F1, F6, F11]
+expected_blindspot_categories:
+  - PSLF-on-SAVE-the-effective-payment-rate-is-decoupled-from-APR-refinance-destroys-forgiveness
+  - credit-card-22.99-pct-APR-dominates-every-other-payoff-and-investment-priority
+  - no-employer-match-to-capture-state-pension-substitute-skips-step-1-of-priority-order
+  - SAVE-litigation-fallback-plan-needed-political-risk-as-financial-risk
+  - snowball-vs-avalanche-with-credit-card-balance-and-many-debts-behavioral-sustainability-dominates
+  - retirement-first-college-second-airline-oxygen-mask-framing-on-529-vs-Roth
+  - emergency-fund-priority-before-aggressive-debt-paydown-cash-flow-fragility
+  - high-stakes-consult-fee-only-fiduciary-CFP-NAPFA-XY-Planning-Garrett-AND-ERISA-attorney-creditor-protection-of-retirement-accounts

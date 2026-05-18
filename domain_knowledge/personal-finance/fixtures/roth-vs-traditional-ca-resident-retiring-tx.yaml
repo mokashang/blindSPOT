@@ -1,0 +1,78 @@
+id: roth-vs-traditional-ca-resident-retiring-tx
+text: |
+  42yo product manager in San Jose, CA, $310k base + ~$120k RSU at
+  a mid-cap public tech. Married filing jointly, spouse 41 earning
+  $95k W-2 at a non-profit (no 401(k) match, has a 403(b) at 2%
+  cap). Current combined gross ~$525k; current combined federal
+  marginal 32% + CA 9.3% = 41.3% combined; FICA on me 1.45% +
+  0.9% Additional-Medicare on the $200k+ portion; NIIT 3.8% on
+  investment income above $250k MFJ. Two kids (ages 7 and 10),
+  both in private school for now ($60k/yr). Plan to retire in
+  Austin, TX (no state income tax) at age 60 — confirmed
+  preliminarily with both sets of parents already relocated to
+  Texas and a paid-off Austin home we already own as rental
+  property. Existing retirement: $620k traditional 401(k), $80k
+  Roth-401(k) (started 2 years ago), $35k Roth IRA, $0 traditional
+  IRA, $1.1M taxable brokerage in low-cost index funds (mostly
+  VTI/VXUS/BND), $0 529s (yes — we haven't started). Question:
+  the Bogleheads "use traditional in high state then move to
+  no-tax state in retirement" wiki says traditional dominates Roth
+  for our facts because we'd save 9.3% CA tax now and pay $0
+  state tax in TX retirement; arithmetic looks like a free 9.3%.
+  But: (1) TCJA 2017 federal brackets sunset Dec 31 2025 — the
+  12%→15%, 22%→25%, 24%→28% reversion means our 32% bracket
+  becomes 35% in 2026, and the projected-retirement-rate I'm
+  comparing against may also be higher than I'm modeling
+  (current law); (2) RMD math at age 73 on a projected $4-5M
+  traditional 401(k) generates $150-200k/yr forced distributions
+  — that pushes us into 24% or higher even in TX retirement and
+  may also trigger Medicare IRMAA cliffs (we're 18+ years out
+  but the trajectory is sticky); (3) Social Security taxability
+  thresholds ($32k/$44k MFJ) have NOT been indexed since 1983
+  and are essentially eroded; traditional distributions count
+  toward provisional income, Roth doesn't. We've been doing 100%
+  traditional 401(k) on my contributions; should we flip to Roth?
+  Mix? What about my Roth-401(k) — keep adding? And what does
+  the SECURE 2.0 §603 mandatory-Roth-catch-up at age 50 do to
+  the calculus when I cross that threshold (currently 42, but
+  earnings are above the $145k indexed threshold so catch-up
+  must be Roth by age 50)?
+expected_domains: [personal-finance]
+expected_entities:
+  - traditional-401(k)
+  - Roth-401(k)
+  - state-tax-arbitrage-CA-to-TX
+  - 32-pct-federal-current-marginal
+  - 9.3-pct-CA-state-marginal
+  - TCJA-2017-bracket-sunset-2026
+  - 12-pct-to-15-pct-reversion
+  - 22-pct-to-25-pct-reversion
+  - 24-pct-to-28-pct-reversion
+  - RMD-age-73-SECURE-2.0
+  - IRMAA-Medicare-Part-B-Part-D-tier
+  - Social-Security-taxability-staircase
+  - $32k-$44k-MFJ-provisional-income-thresholds
+  - NIIT-3.8-pct
+  - SECURE-2.0-§603-mandatory-Roth-catch-up
+  - $145k-indexed-Roth-catch-up-threshold
+  - asymmetric-cap-utility-Roth-vs-traditional
+expected_personas: [high-earner-state-tax-relocation, dual-income-couple-retirement-state-shift]
+expected_risk_surfaces:
+  - TCJA-2026-bracket-sunset-changes-projected-rate-vs-current-rate-arbitrage
+  - RMD-induced-bracket-creep-on-large-pre-tax-balance
+  - Social-Security-taxability-thresholds-non-inflation-indexed-eroded-since-1983
+  - state-tax-arbitrage-presumes-relocation-actually-happens-policy-risk
+  - SECURE-2.0-§603-Roth-catch-up-mandatory-on-high-earner
+  - IRMAA-2-year-lookback-Medicare-premium-tier-management
+  - tax-diversification-as-optionality-vs-pure-optimization
+expected_decisions: [D2, D1, D7]
+expected_framings: [F2, F7, F12]
+expected_blindspot_categories:
+  - TCJA-bracket-sunset-2026-flips-current-vs-projected-arithmetic-Roth-tilt
+  - RMD-bracket-creep-on-large-pre-tax-pile-counter-argues-the-state-tax-savings
+  - Social-Security-taxability-thresholds-frozen-1983-Roth-preserves-0-pct-band
+  - state-tax-relocation-presumes-the-move-actually-happens-not-guaranteed
+  - asymmetric-cap-utility-Roth-23500-greater-after-tax-room-than-traditional
+  - SECURE-2.0-§603-automatic-Roth-catch-up-above-145k-removes-choice-at-50
+  - tax-diversification-as-future-IRMAA-and-ACA-flexibility-not-only-pure-optimization
+  - high-stakes-consult-fee-only-fiduciary-CFP-with-retirement-experienced-CPA-on-Roth-vs-traditional-staging

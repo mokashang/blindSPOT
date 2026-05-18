@@ -1,0 +1,77 @@
+id: asset-location-bonds-stocks-hsa-multi-account
+text: |
+  46yo dual-income couple, $290k W-2 + $215k W-2 in MA (5% flat
+  state tax, MFJ federal 24% marginal). Three kids, two in
+  college (junior, sophomore), one in high school. We've been
+  contributing diligently for 20 years and our buckets now look
+  like: $480k traditional 401(k) (mine) + $215k traditional 401(k)
+  (spouse's), $95k Roth-401(k) (mine, started 5 years ago), $48k
+  Roth-IRA (mine, backdoor-converted since 2018) + $42k Roth IRA
+  (spouse's, also backdoor), $62k HSA (mine, family-coverage HDHP
+  on my plan — invested 80% in cash earning 4% money-market and
+  20% in S&P 500 because spouse keeps treating it as the medical
+  emergency fund), $310k taxable joint brokerage (mostly VTI +
+  $60k of VXUS held for 4 years currently up ~$15k, $30k of BND
+  bond index, $15k of VNQ REIT). Target allocation we agreed on:
+  70% stocks (50% US / 20% international) / 25% bonds / 5%
+  alternatives-REITs. Reading Michael Kitces's asset-location
+  series and the Bogleheads wiki, the canonical guidance is
+  bonds in tax-deferred, stocks in taxable for LTCG-and-step-up,
+  Roth holds the highest-expected-return assets, HSA as
+  stealth-IRA-in-stocks-not-cash. But our actual placement is
+  ad-hoc — bonds and REITs are scattered across taxable AND
+  pre-tax 401(k); the $62k HSA in 80% cash is bothering me; the
+  $60k VXUS in taxable might be there for the foreign-tax-credit
+  reason or might be there by accident — I don't remember.
+  Questions: (1) move the bonds out of taxable into the 401(k)
+  and replace with stocks? Realized $5k LTCG on the bond sale
+  is offset against the $30k unrealized loss on the international
+  fund from 2022 (still down 5%), or do we tax-loss harvest
+  those losses separately? (2) the $62k HSA — move from cash to
+  100% stocks (Fidelity FZROX equivalent) and shoebox medical
+  receipts going forward, or keep some buffer? My spouse will
+  not budge below $20k cash unless I show that we'd never need
+  to access HSA for current medical for the next 10 years —
+  feasible given dental, vision, kids' braces ahead? (3) the
+  $60k VXUS in taxable — is the foreign-tax-credit recovery on
+  Form 1116 actually worth the higher tax-drag from non-qualified-
+  dividend treatment, or is this an old myth and bonds-in-tax-
+  deferred wins anyway? Spouse and I disagree on all three.
+expected_domains: [personal-finance, health-insurance]
+expected_entities:
+  - asset-location
+  - bonds-in-tax-deferred
+  - stocks-in-taxable
+  - HSA-as-stealth-IRA
+  - foreign-tax-credit-Form-1116
+  - VXUS-international-fund
+  - non-qualified-dividend-treatment
+  - REIT-VNQ-non-qualified-dividends
+  - tax-loss-harvesting
+  - $3000-ordinary-income-offset-and-unlimited-carryforward
+  - basis-step-up-at-death
+  - IRC-§1014
+  - $62k-HSA-80-pct-cash
+  - HSA-investment-threshold-Fidelity
+  - 24-pct-federal-MFJ-marginal
+  - 5-pct-MA-state-flat
+expected_personas: [mid-career-asset-location-novice, dual-income-couple-multi-account-coordination]
+expected_risk_surfaces:
+  - HSA-cash-buffer-as-medical-emergency-fund-vs-stealth-IRA-compounding-loss
+  - bonds-in-taxable-tax-drag-asymmetric-to-bonds-in-401k
+  - foreign-tax-credit-Form-1116-recoverable-only-in-taxable-lost-in-IRA
+  - REIT-non-qualified-dividend-ordinary-rate-in-taxable
+  - cross-account-rebalance-triggers-realized-gain-and-step-up-loss
+  - HSA-as-Medicare-premium-payer-retirement-vehicle-not-emergency-fund
+  - target-date-fund-tax-inefficient-in-taxable-auto-rebalance-realizations
+expected_decisions: [D3, D4, D6]
+expected_framings: [F3, F5, F9]
+expected_blindspot_categories:
+  - HSA-cash-buffer-forfeits-triple-tax-advantage-compounding-decades-of-foregone-growth
+  - bonds-in-tax-deferred-Bogleheads-rule-default-but-inverts-at-very-low-projected-retirement-rate
+  - foreign-tax-credit-Form-1116-real-but-modest-bonds-in-tax-deferred-typically-wins-arithmetic
+  - REITs-and-non-qualified-dividends-belong-in-tax-advantaged-not-taxable
+  - rebalance-cross-account-into-pre-tax-from-taxable-avoids-realization-event
+  - HSA-as-Medicare-Part-B-D-Medigap-premium-payer-tax-free-in-retirement
+  - basis-step-up-favors-holding-appreciated-taxable-into-bequest-not-running-down-first
+  - high-stakes-consult-fee-only-fiduciary-CFP-and-retirement-experienced-CPA-on-asset-location-mapping
