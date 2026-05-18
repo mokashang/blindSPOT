@@ -1,0 +1,866 @@
+# Blindspot V2 per-domain source registry for personal-finance.
+#
+# Layer 4 of the 4-layer knowledge model (per docs/specs/ROADMAP.md §3).
+# This file holds the source-view inventory scoped to the
+# `personal-finance` domain. Mirrors the schema of
+# domain_knowledge/tech-career/sources.yaml (PR #37),
+# domain_knowledge/immigration/sources.yaml (PR #49),
+# domain_knowledge/housing/sources.yaml (PR #66), and
+# domain_knowledge/health-insurance/sources.yaml (PR #76).
+#
+# `personal-finance` is **high_stakes: true** per
+# domain_knowledge/_meta_ontology.md §5, AND is the canonical
+# Mechanism E gating case named in ROADMAP §5. Wrong withdrawal-
+# sequencing decisions cause irreversible tax leakage; Roth-
+# conversion mis-sizing pushes MAGI past IRMAA / ACA-APTC / NIIT
+# cliffs; SS-claim age is locked once benefits flow; RMD failures
+# carry 25% excise tax (SECURE 2.0 §302, reduced from 50%, still
+# punitive); inherited-IRA 10-year-window mis-sequencing under
+# SECURE 1.0 final regulations Feb 2024 produces six-figure tax
+# differences; QSBS §1202 missteps lose 100% gain exclusion.
+# Mechanism E (ROADMAP §5) applies at runtime: Editor labels
+# output "decision-support, not financial / tax / legal advice";
+# Critic applies stricter grounding on citation-bearing claims
+# (IRC section, IRS Pub number, Treas. Reg., SEC release, ERISA
+# section, state-bar / NAIC reference). These sources feed that
+# pipeline as reference / community signal — they are not
+# adjudicative answers. Per-case withdrawal-sequencing / Roth-
+# conversion / SS-claiming / RMD-orchestration / estate-tax /
+# 401k-rollover decisions still come from the named professional
+# with current facts: fee-only fiduciary CFP (NAPFA / XY-Planning /
+# Garrett — brokerage allocation, retirement income, behavioral
+# coaching), retirement-experienced CPA (tax-loss harvesting,
+# backdoor / mega-backdoor Roth filing, NIIT, state-residency
+# moves, multi-state nexus), fee-only Social-Security claiming
+# specialist (Mike Piper Open-Social-Security / Larry Kotlikoff
+# Maximize-My-Social-Security — D7 / D8 claim-age strategy),
+# SHIBA / SHIP counselor (Medicare timing, Medigap-GI window),
+# state-bar estate attorney (TOD / POD vs trust, estate-tax-
+# exemption sunset Dec 2025), ERISA attorney (high-balance 401k
+# rollover scrutiny, plan-document interpretation), SEC IAPD /
+# FINRA BrokerCheck (verify any individual recommended).
+#
+# Each entry is a "source-view": a configured, filtered, annotated
+# lens into one source.
+# Schema:
+#   id              unique slug
+#   adapter         rss | reddit_search | hn_search | static_corpus
+#   fetch_config    adapter-specific
+#   domains         hierarchical tag paths (multi-label)
+#   community_tag   single community label (drives diversity constraint)
+#   reliability     1-5, initial value; auto-adjusted via rating feedback
+#                   (per ROADMAP §5 Mechanism C "cite-and-promote": new
+#                   sources start at 1 and earn higher reliability via
+#                   runtime usage / rating feedback)
+#   freshness_required  true → cache TTL 7 days; false → 30 days
+#   notes           multi-paragraph; what this view is good for, bad
+#                   for, caveats
+#   domain          (V2) the per-domain folder this source-view lives in
+#
+# Community-tag coverage maps the framings.md §"Voice anchors" classes
+# (personal-finance/framings.md lines 69–125 and the Layer-4 forward-
+# pointer at lines 1589–1634):
+#   fee-only-fiduciary-cfp            → NAPFA / XY-Planning-Network /
+#                                        Garrett-Planning-Network /
+#                                        AdvisoryHQ-vetted fee-only-CFP
+#                                        practitioner voice — Mechanism C
+#                                        anchor for brokerage allocation
+#                                        + retirement-income planning;
+#                                        fee-only-not-fee-based-not-AUM-
+#                                        only signal
+#   bogleheads-and-passive-index      → Bogleheads.org wiki + forum,
+#                                        r/Bogleheads, Vanguard investor
+#                                        community voice — three-fund
+#                                        portfolio / passive-index / tax-
+#                                        efficient placement / stay-the-
+#                                        course-through-drawdown framing
+#   fire-and-mr-money-mustache        → Mr Money Mustache, Choose-FI
+#                                        podcast, r/financialindependence,
+#                                        *Early Retirement Now* (Big-ERN
+#                                        cFireSim safe-withdrawal-rate
+#                                        series) voice — savings-rate-
+#                                        determines-time-to-FI framing,
+#                                        Roth-conversion-ladder bridge
+#                                        mechanic
+#   retirement-economics-academics    → Wade Pfau on RetirementResearcher,
+#                                        Michael Kitces on kitces.com
+#                                        Nerd's Eye View, Allan Roth,
+#                                        Bill Bernstein, Jonathan
+#                                        Clements (HumbleDollar) voice —
+#                                        safe-withdrawal / bond-tent /
+#                                        rising-equity-glide-path / Roth-
+#                                        conversion-laddering academic
+#                                        framing
+#   tax-and-cpa-practitioner          → IRS Pubs 590-A / 590-B / 523 /
+#                                        969 / 974, The Finance Buff
+#                                        (backdoor / Mega-Backdoor /
+#                                        HSA-FICA arbitrage), retirement-
+#                                        experienced-CPA blogs, IRMAA /
+#                                        FATCA practitioner forums voice
+#   financial-economics-journalism    → David Wessel at Brookings, Jason
+#                                        Zweig at WSJ, Tara Siegel
+#                                        Bernard / Anne Tergesen at WSJ /
+#                                        NYT, NPR *Planet Money* voice —
+#                                        narrative grounding of policy-
+#                                        risk and Roth-conversion
+#                                        mechanics
+#   erisa-and-fiduciary-rule-law      → ERISA-side attorney blogs
+#                                        (Cohen & Buckmann, Stoltmann
+#                                        Law, Faegre Drinker on
+#                                        Fiduciary), SEC IAPD
+#                                        adviserinfo.sec.gov, FINRA
+#                                        BrokerCheck voice — DOL
+#                                        Fiduciary-Rule / SEC Reg-BI /
+#                                        rollover-recommendation
+#                                        scrutiny framing, 401k force-
+#                                        out / IRA-rollover mechanics
+#   social-security-claiming-and-rmd  → Mike Piper Oblivious Investor +
+#                                        Open Social Security (mike-
+#                                        piper.com) + *Social Security
+#                                        Made Simple*, Larry Kotlikoff
+#                                        Maximize-My-Social-Security,
+#                                        SSA online-statement walk-
+#                                        throughs voice — D7 / D8 SS-
+#                                        claim age + survivor-benefit
+#                                        sequencing + RMD-orchestration
+#                                        framing
+#
+# URL caveat: where a feed URL could not be live-verified at authoring
+# time, the entry carries a `notes:` line flagging
+# "TODO-verify-URL — verify before enabling". The registry loader is
+# tolerant of non-resolving feeds (fetch failures are caught per-source
+# in the Collection layer and the turn proceeds); a placeholder entry
+# is inert until verified, not breaking. Reddit-adapter entries soft-
+# fail without REDDIT_CLIENT_ID/SECRET (the Reddit adapter wraps PRAW
+# construction in try/except at the Collection layer — see CLAUDE.md
+# "Quirks").
+
+# ─── community: fee-only-fiduciary-cfp ────────────────────────────────
+
+- id: napfa-and-fee-only-cfp-network
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/napfa-xy-planning-garrett-fee-only-network.md
+  domains: [personal-finance/professional-referral, personal-finance/brokerage-allocation, personal-finance/retirement-income, personal-finance/fiduciary-standard]
+  community_tag: fee-only-fiduciary-cfp
+  reliability: 1
+  freshness_required: false
+  domain: personal-finance
+  notes: |
+    NAPFA (National Association of Personal Financial Advisors) +
+    XY-Planning-Network + Garrett-Planning-Network + AdvisoryHQ
+    fee-only-vetted directory + selected fee-only CFP practitioner
+    blogs (Roger Whitney *Retirement Answer Man*, Allan Roth at
+    *Wealth Logic*, Christine Benz at Morningstar). Matches the
+    "fee-only-fiduciary-CFP voice" anchor in framings.md §"Voice
+    anchors": fee-only-not-fee-based-not-AUM-only signal,
+    NAPFA-registered + XY-Planning-Network + Garrett-Planning fee-
+    only-not-fee-based registry, hourly-or-flat-fee fee-only
+    structure (Garrett) vs AUM-fee fee-only structure (NAPFA-
+    typical) distinction — the second-order within-fee-only
+    variation flagged in framings.md F10 §"Blind spots".
+    Per-case withdrawal-sequencing / Roth-conversion / SS-claiming
+    / RMD-orchestration decisions require a fee-only fiduciary
+    with current facts — sources here are reference / community
+    signal only.
+    Best for: directory access (state-by-state NAPFA / XY-PN /
+    Garrett member look-up), fee-structure literacy (AUM-fee vs
+    hourly vs flat-fee within fee-only — a recurring
+    blindspots.md F10 trap), credential verification (CFP Board
+    + NAPFA dual-registration confirms fiduciary scope on the
+    full relationship, not just the IRA rollover), distinction
+    from fee-based / dually-registered / hybrid-term "fiduciary"
+    advisors who flip into broker-dealer commission compensation
+    after the initial planning phase.
+    Weak: individual practitioner recommendation (directories
+    are pre-filtered for fee-only-but-not-for-fit), specific
+    tax-mechanic claims (defer to CPA + IRS Pub authority),
+    estate-attorney coordination (state-bar territory). Manual
+    ingest — paste NAPFA / XY-PN / Garrett member-search URLs +
+    fee-only-vs-fee-based distinction primer + AdvisoryHQ
+    research methodology into the static markdown file. Update
+    annually around CFP Board examination cycle (March / July /
+    November).
+
+- id: kitces-nerds-eye-view-practice-management
+  adapter: rss
+  fetch_config:
+    feed: https://www.kitces.com/feed/
+    keyword_filter: [Roth conversion, backdoor, Mega-Backdoor, RMD, QCD, IRMAA, NIIT, SECURE, SECURE 2.0, fiduciary, advisor, AUM, fee-only, fee-based, withdrawal, safe withdrawal, bond tent, glide path, asset location, tax-loss harvesting, wash sale, 10b5-1, QSBS, estate, IRC §, 26 CFR]
+  domains: [personal-finance/professional-referral, personal-finance/roth-conversion, personal-finance/withdrawal-sequencing, personal-finance/fiduciary-standard, personal-finance/rmd, personal-finance/irmaa, personal-finance/asset-location]
+  community_tag: fee-only-fiduciary-cfp
+  reliability: 1
+  freshness_required: true
+  domain: personal-finance
+  notes: |
+    Michael Kitces *Nerd's Eye View* at kitces.com. Single most-
+    cited fee-only-CFP practice-management + technical-tax-and-
+    retirement-planning outlet; Kitces is the practitioner-class
+    bridge between the academic retirement-economics literature
+    (Pfau, Bengen, Bernstein) and day-to-day fee-only-CFP
+    workflows. Cross-listed with the retirement-economics-
+    academics tag conceptually but tagged here under fee-only-
+    fiduciary-cfp because Kitces's primary audience is practicing
+    fee-only CFPs and the framing is practice-application not
+    pure-academic.
+    Best for: Roth-conversion-laddering decision-frameworks (the
+    canonical practitioner reference; D7 mechanics + IRMAA / ACA-
+    APTC / NIIT cliff arithmetic), DOL Fiduciary-Rule + SEC Reg-
+    BI regulatory history (anchors F10 framing's distinction
+    between "fee-only" structural posture and rollover-
+    recommendation-scrutiny exposure), AUM-fee-vs-flat-fee
+    economic-model analysis (blindspots.md F10 within-fee-only
+    variation), SECURE 2.0 phased provisions §126 (529-to-Roth)
+    + §107 (RMD age 73 / 75) + §302 (RMD excise tax 50% → 25%)
+    + §603 (Roth-only catch-up >$145k W-2 wages).
+    Weak: dollar-specific individual portfolio recommendation
+    (this is technical analysis, not advice), state-specific
+    estate-tax detail (defer to state-bar estate attorneys),
+    Medicare detail (defer to SHIBA / SHIP for D4 / D8 mechanics
+    in health-insurance/sources.yaml). TODO-verify-URL — verify
+    before enabling.
+
+# ─── community: bogleheads-and-passive-index ──────────────────────────
+
+- id: bogleheads-wiki-and-forum
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/bogleheads-wiki-and-forum-canonical-threads.md
+  domains: [personal-finance/priority-order, personal-finance/three-fund, personal-finance/asset-location, personal-finance/tax-loss-harvesting, personal-finance/backdoor-roth, personal-finance/mega-backdoor]
+  community_tag: bogleheads-and-passive-index
+  reliability: 1
+  freshness_required: false
+  domain: personal-finance
+  notes: |
+    Bogleheads.org wiki canonical pages + high-signal forum
+    threads from "Personal Finance (Not Investing)" + "Personal
+    Investments" sub-forums. The wiki pages — Investment Priority
+    Order, Tax-Efficient Fund Placement, Backdoor Roth, Mega-
+    Backdoor Roth, Three-Fund Portfolio, Asset Allocation, ETF
+    vs Mutual Fund, Tax Loss Harvesting + Wash Sale — are
+    canonical references for the Bogleheads framing. Matches the
+    "Bogleheads voice" anchor in framings.md §"Voice anchors":
+    bogleheads.org wiki and forum, three-fund portfolio, tax-
+    efficient placement, glide-path-to-target-date, stay-the-
+    course-through-drawdown discipline.
+    Best for: the Bogleheads-canonical Investment Priority Order
+    sequence (HSA → 401k-to-match → IRA → 401k-beyond-match →
+    taxable; anchors F1 framing), tax-efficient-fund-placement
+    mechanics (bonds in tax-deferred, REITs in tax-deferred,
+    international in taxable for FTC, total-market-stock in
+    Roth-or-taxable; anchors F3 framing's asset-location
+    blindspot), backdoor Roth + Mega-Backdoor Roth procedural
+    walkthroughs (D2 + D2.5 mechanics including Form 8606
+    pro-rata rule + Step Transaction Doctrine, both flagged in
+    blindspots.md F1 / F11), tax-loss harvesting + wash-sale
+    avoidance + ETF-pair substitution (D6 mechanics).
+    Weak: dollar-specific individual recommendation (community
+    norm is "we don't give advice — read the wiki"), policy-risk
+    framing (community under-engages with TCJA-sunset / ARPA-
+    sunset / estate-exemption-sunset — blindspots.md F2 trap),
+    behavioral / cashflow-stress reality for households outside
+    the assumed savings-cushion baseline (blindspots.md F11
+    trap), equity-comp coordination (Bogleheads canonical voice
+    is W-2-salary-only; defer to tech-career sources for RSU /
+    ISO / NSO mechanics). Static ingest — periodically scrape /
+    paste high-signal wiki pages + canonical forum threads into
+    the static markdown file. Update annually when wiki pages
+    revise (e.g. SECURE 2.0 implementation update cadence).
+
+- id: reddit-bogleheads-personalfinance-financialindependence
+  adapter: reddit_search
+  fetch_config:
+    subreddit: Bogleheads+personalfinance+financialindependence+investing
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 50
+  domains: [personal-finance/priority-order, personal-finance/backdoor-roth, personal-finance/roth-vs-traditional, personal-finance/asset-allocation, personal-finance/debt-payoff-vs-invest, personal-finance/withdrawal-sequencing]
+  community_tag: bogleheads-and-passive-index
+  reliability: 1
+  freshness_required: true
+  domain: personal-finance
+  notes: |
+    r/Bogleheads + r/personalfinance + r/financialindependence +
+    r/investing aggregated. r/personalfinance wiki + flowchart is
+    the canonical "what-to-do-next-with-each-marginal-dollar"
+    decision tree that maps directly to D1 priority order;
+    r/Bogleheads is the more-disciplined index-only sub; r/
+    financialindependence wiki + flowchart cross-links the FIRE
+    community here for shared priority-order baseline (the FIRE
+    community shares Bogleheads' core posture but diverges on
+    savings-rate target and post-retirement withdrawal rate, per
+    framings.md F13 vs F7 cross-framing tension). Matches the
+    "Chronic-DIY-Reddit voice" anchor in framings.md §"Voice
+    anchors". Higher upvote threshold (50) to surface threads
+    with convergence signal; single-anecdote rollover-mistake
+    posts are not useful evidence without thread volume.
+    Reddit's PRAW supports multi-subreddit search via `+`
+    separator; the adapter's `subreddit` field is passed through
+    directly.
+    Best for: D1 priority-order practical decision walkthroughs
+    at specific income / employer-match / debt-rate combinations,
+    Roth-vs-traditional case studies (D3 marginal-rate
+    arithmetic), debt-payoff-vs-invest threshold case studies
+    (D5 mechanics), backdoor Roth + Mega-Backdoor Roth
+    procedural Q&A (D2 + D2.5 forms / pro-rata / Form 8606
+    troubleshooting), asset-allocation life-cycle adjustment
+    case studies.
+    Weak: estate / RMD / withdrawal-sequencing nuance (these
+    sub-Reddits tilt early-accumulator; defer to retirement-
+    economics-academics + tax-and-cpa-practitioner sources for
+    D7 / D8 / D9), state-bar estate detail, ERISA-side
+    rollover-recommendation scrutiny (defer to erisa-and-
+    fiduciary-rule-law sources). Soft-fails without
+    REDDIT_CLIENT_ID/SECRET (the Reddit adapter wraps PRAW
+    construction in try/except at the Collection layer — see
+    CLAUDE.md "Quirks").
+
+# ─── community: fire-and-mr-money-mustache ────────────────────────────
+
+- id: mr-money-mustache-blog
+  adapter: rss
+  fetch_config:
+    feed: https://www.mrmoneymustache.com/feed/
+    keyword_filter: [savings rate, FIRE, financial independence, retire early, 4% rule, safe withdrawal, frugality, expense, Roth conversion ladder, early retirement, Coast FIRE, Lean FIRE, Fat FIRE, Barista FIRE]
+  domains: [personal-finance/fire, personal-finance/savings-rate, personal-finance/safe-withdrawal-rate, personal-finance/roth-conversion-ladder, personal-finance/early-retirement-bridge]
+  community_tag: fire-and-mr-money-mustache
+  reliability: 1
+  freshness_required: true
+  domain: personal-finance
+  notes: |
+    Pete Adeney's *Mr Money Mustache* blog — the founding outlet
+    of the FIRE (Financial Independence / Retire Early) movement
+    and still the most-cited canonical voice. Matches the "Mr-
+    Money-Mustache / FIRE-community voice" anchor in framings.md
+    §"Voice anchors": savings-rate-determines-time-to-FI (the
+    iconic "Shockingly Simple Math Behind Early Retirement" post
+    sets the 4% withdrawal rate + savings-rate / FI-years lookup
+    table that anchors F13 framing), frugality-as-asymmetric-
+    leverage, Roth-conversion ladder as canonical early-
+    retirement-bridge mechanic.
+    Best for: F13 FIRE-framing core mental model (savings-rate
+    determines time-to-FI; the F13 mental-model summary cites
+    this blog explicitly), F8 frugality-as-leverage applied to
+    accumulation-phase decisions (D1 priority order at extreme
+    savings rates), Coast FIRE / Lean FIRE / Regular FIRE / Fat
+    FIRE / Barista FIRE flavor distinctions (anchors F13
+    sub-flavor literacy), early-retirement-bridge mechanics
+    (pre-59½ access via Roth-conversion-ladder + Rule 72(t) SEPP
+    + taxable-account drawdown ordering).
+    Weak: high-income-tax-mechanic nuance (the framing's W-2 /
+    expense-side focus under-engages the equity-comp + ISO /
+    NSO / RSU + AMT layer; defer to tech-career sources +
+    The Finance Buff), behavioral-debt-payoff framing (F8 vs
+    F13 tension — Adeney's optimization framing can mis-fit
+    askers without the credit-card-debt-as-emergency posture),
+    health-insurance-pre-65 (F13 binding constraint, defer to
+    health-insurance/sources.yaml — Big-ERN's Early Retirement
+    Now series engages this more), policy-volatility framing
+    (FIRE community has been slow to absorb ACA / TCJA / IRMAA
+    cliff arithmetic — blindspots.md F2 / F13 traps). TODO-
+    verify-URL — verify before enabling.
+
+- id: choose-fi-and-early-retirement-now
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/choose-fi-podcast-and-early-retirement-now-essays.md
+  domains: [personal-finance/fire, personal-finance/safe-withdrawal-rate, personal-finance/sequence-of-returns, personal-finance/glide-path, personal-finance/roth-conversion-ladder, personal-finance/health-insurance-pre-65]
+  community_tag: fire-and-mr-money-mustache
+  reliability: 1
+  freshness_required: false
+  domain: personal-finance
+  notes: |
+    *Choose-FI* podcast (Brad Barrett + Jonathan Mendonsa) +
+    *Early Retirement Now* essays (Big-ERN — Karsten Jeske's
+    safe-withdrawal-rate series, currently >60 parts, the most-
+    technically-rigorous FIRE-community treatment of post-
+    retirement withdrawal-rate dynamics). Choose-FI episodes
+    archive provides the practitioner-class FIRE voice (case
+    studies, Travel-rewards / tax-loss-harvesting / 529-funding
+    walk-throughs); *Early Retirement Now* provides the
+    quantitative bridge between the FIRE-community 4%-rule
+    assumption and the retirement-economics-academic literature
+    (Pfau, Bengen, Kitces). Cross-listed with retirement-
+    economics-academics conceptually; tagged here because the
+    framing is FIRE-community-anchored.
+    Best for: F13 FIRE-flavor sub-cases (Lean / Regular / Fat /
+    Coast / Barista — Choose-FI case studies are the canonical
+    archive), the *Early Retirement Now* SWR-series treatment
+    of sequence-of-returns risk + bond-tent / rising-equity-
+    glide-path + CAPE-based-dynamic-withdrawal (anchors F13's
+    50-year-retirement-horizon adjustment downward from 4% to
+    3-3.5%; framings.md F13 §"Blind spots" cites this body of
+    work), Roth-conversion-ladder bridge mechanics at FIRE
+    income levels (the 5-year-clock-per-converted-tranche
+    arithmetic — D7 + D9 mechanics).
+    Weak: high-W-2-income + equity-comp mechanics (FIRE
+    community tilts away from these — defer to tech-career
+    sources), ACA / health-insurance-pre-65 nuance (engages
+    more than MMM but still incomplete — defer to health-
+    insurance/sources.yaml for D-level decisions), state-bar
+    estate detail, RMD orchestration past 73 / 75 (FIRE
+    community tilts pre-RMD-age; defer to retirement-economics-
+    academics + tax-and-cpa-practitioner for D8 / D9 / D10).
+    Manual ingest — paste highest-signal Choose-FI episodes +
+    Big-ERN SWR-series parts into the static markdown file.
+    Update when Big-ERN publishes new SWR-series parts (cadence
+    ~quarterly).
+
+# ─── community: retirement-economics-academics ────────────────────────
+
+- id: retirement-researcher-and-kitces-academic
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/retirement-researcher-and-academic-papers.md
+  domains: [personal-finance/safe-withdrawal-rate, personal-finance/bond-tent, personal-finance/glide-path, personal-finance/withdrawal-sequencing, personal-finance/sequence-of-returns, personal-finance/longevity-risk]
+  community_tag: retirement-economics-academics
+  reliability: 1
+  freshness_required: false
+  domain: personal-finance
+  notes: |
+    Wade Pfau's RetirementResearcher.com (Pfau is the academic
+    most cited in the FIRE / fee-only-CFP overlap on safe-
+    withdrawal-rate + bond-tent + rising-equity-glide-path +
+    HECM-reverse-mortgage), plus Michael Kitces's deeper-
+    technical "Nerd's Eye View" pieces, plus *Journal of
+    Financial Planning* canonical safe-withdrawal-rate
+    literature (Bengen 1994 4%, Trinity-Study 1998 update,
+    Pfau-Kitces 2013-present extensions), plus Allan Roth at
+    *Wealth Logic* (low-cost-DIY-for-fee-only-CFPs framing),
+    plus Bill Bernstein *Four Pillars of Investing* + *The
+    Investor's Manifesto*, plus Jonathan Clements at
+    HumbleDollar (post-NYT-Wealth-Matters editorial home).
+    Matches the "retirement-economics-academic voice" anchor in
+    framings.md §"Voice anchors": Pfau on safe-withdrawal-rate /
+    bond-tent / HECM-reverse-mortgage; Kitces on Roth-
+    conversion-laddering / withdrawal-sequencing-arithmetic.
+    Per-case withdrawal-sequencing / Roth-conversion / SS-
+    claiming / RMD-orchestration decisions require a fee-only
+    fiduciary with current facts — sources here are reference /
+    community signal only.
+    Best for: F7 lifecycle / retirement-decumulation framing's
+    safe-withdrawal-rate theoretical foundation (Bengen 1994,
+    Trinity-Study 1998, Pfau's 50-year-horizon adjustment to
+    3-3.5%, sequence-of-returns risk + bond-tent mitigation),
+    F12 estate / intergenerational framing (basis-step-up,
+    estate-tax-exemption-sunset Dec 2025, generation-skipping
+    transfer tax), withdrawal-sequencing arithmetic (D9
+    taxable-then-tax-deferred-then-Roth vs Kitces's dynamic
+    sequencing).
+    Weak: behavioral / cashflow-stress reality for non-academic
+    real-world households (defer to financial-economics-
+    journalism + r/personalfinance), state-specific estate detail
+    (state-bar territory), Medicare timing (SHIBA / SHIP), QSBS
+    §1202 / 10b5-1 / equity-comp mechanics (tech-career
+    territory). Manual ingest — paste canonical Pfau /
+    Bengen / Trinity-Study / Kitces academic papers + Bernstein
+    + Clements editorial chapters into the static markdown
+    file. Update when major Pfau-Kitces *JFP* articles publish
+    (cadence ~quarterly).
+
+- id: humble-dollar-and-allan-roth
+  adapter: rss
+  fetch_config:
+    feed: https://humbledollar.com/feed/
+    keyword_filter: [retirement, withdrawal, Roth conversion, IRMAA, RMD, asset allocation, glide path, sequence of returns, longevity, annuity, SPIA, QLAC, SS, Social Security, estate, basis, step-up, sunset, TCJA, IRC §]
+  domains: [personal-finance/retirement-income, personal-finance/withdrawal-sequencing, personal-finance/longevity-risk, personal-finance/asset-allocation, personal-finance/estate-planning, personal-finance/annuity]
+  community_tag: retirement-economics-academics
+  reliability: 1
+  freshness_required: true
+  domain: personal-finance
+  notes: |
+    *HumbleDollar* — Jonathan Clements's editorial home post-WSJ
+    (Clements wrote the *Wall Street Journal* "Getting Going"
+    column for 18 years before retiring to run *HumbleDollar*).
+    Rotating bench of fee-only / academic-aligned contributors
+    including Allan Roth (*Wealth Logic* author), Adam Grossman
+    (Mayport Wealth Management), William Bernstein contributions.
+    The editorial posture is academically rigorous + behaviorally
+    realistic — the bridge between the dry safe-withdrawal-rate
+    literature above and the financial-economics-journalism
+    voice. Cross-listed conceptually with both retirement-
+    economics-academics and financial-economics-journalism;
+    tagged here because Clements + Roth + Bernstein primary
+    output orientation is retirement-income academic rigor.
+    Best for: F7 lifecycle / retirement-decumulation framing's
+    real-world translation (Clements writes for accumulator
+    transitioning to retirement-decumulation), longevity-risk
+    + SPIA / QLAC mechanics, basis-step-up / estate-exemption-
+    sunset narrative grounding (F12 framing), asset-allocation
+    behavioral-discipline (Bernstein's "stay-the-course-when-
+    everything-is-on-fire" voice), Allan Roth's low-cost-DIY-
+    for-fee-only-CFPs framing (the bridge from academic
+    literature to practitioner workflow without AUM-fee
+    capture).
+    Weak: tactical tax-form mechanics (defer to The Finance
+    Buff + IRS Pub authority), state-specific estate detail,
+    equity-comp mechanics, ERISA-side rollover-scrutiny detail.
+    TODO-verify-URL — verify before enabling.
+
+# ─── community: tax-and-cpa-practitioner ──────────────────────────────
+
+- id: the-finance-buff-tax-mechanics
+  adapter: rss
+  fetch_config:
+    feed: https://thefinancebuff.com/feed
+    keyword_filter: [backdoor Roth, Mega-Backdoor Roth, HSA, pro-rata, Form 8606, Form 8889, Form 8962, ACA, APTC, IRMAA, FICA, tax loss, wash sale, treasury, I-bond, EE-bond, savings bond, FBAR, FATCA, NIIT, AMT]
+  domains: [personal-finance/backdoor-roth, personal-finance/mega-backdoor, personal-finance/hsa, personal-finance/aca-aptc, personal-finance/irmaa, personal-finance/tax-loss-harvesting, personal-finance/niit]
+  community_tag: tax-and-cpa-practitioner
+  reliability: 1
+  freshness_required: true
+  domain: personal-finance
+  notes: |
+    Harry Sit's *The Finance Buff* (thefinancebuff.com) — the
+    canonical practitioner outlet for the specific tax-form
+    mechanics that the Bogleheads + FIRE + fee-only-CFP
+    communities all defer to. Matches the "Finance Buff voice"
+    anchor in framings.md §"Voice anchors": backdoor-Roth +
+    Mega-Backdoor-Roth + HSA-FICA-arbitrage + I-bond + Treasury-
+    Direct + ACA-APTC mechanics walked through Form-by-Form.
+    Per-case decisions require a retirement-experienced CPA
+    with current facts — sources here are reference /
+    community signal only.
+    Best for: Form 8606 pro-rata rule for backdoor Roth (the
+    most-frequently-mishandled form in personal-finance per
+    Bogleheads + r/tax thread volume), Form 8889 HSA mechanics
+    + last-month-rule recapture + Medicare-enrollment cutoff,
+    Form 8962 ACA APTC reconciliation, Mega-Backdoor Roth in-
+    plan-Roth-rollover + after-tax-to-Roth-IRA timing (a
+    recurring blindspots.md F1 trap on plan-document
+    eligibility — not all 401k plans permit in-service
+    after-tax withdrawal), I-Bond + EE-Bond TreasuryDirect
+    mechanics (1099-INT timing, education-exclusion under IRC
+    §135), HSA-FICA-arbitrage via payroll deduction at FICA-
+    paying employer.
+    Weak: state-specific tax detail (Sit lives in MN; defer to
+    state-CPA networks), AMT / ISO / RSU mechanics (defer to
+    tech-career sources), estate-planning detail, ERISA-side
+    rollover-scrutiny. TODO-verify-URL — verify before
+    enabling.
+
+- id: irs-pubs-and-rev-procs
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/irs-pubs-retirement-and-tax.md
+  domains: [personal-finance/ira, personal-finance/roth, personal-finance/hsa, personal-finance/rmd, personal-finance/withdrawal-sequencing, personal-finance/estate-planning, personal-finance/aca-aptc]
+  community_tag: tax-and-cpa-practitioner
+  reliability: 1
+  freshness_required: false
+  domain: personal-finance
+  notes: |
+    IRS Publications canonical retirement / personal-finance
+    set: Pub 590-A (Contributions to Individual Retirement
+    Arrangements), Pub 590-B (Distributions from Individual
+    Retirement Arrangements — the IRA-RMD authority including
+    SECURE 1.0 inherited-IRA 10-year-window final regulations
+    Feb 2024 + SECURE 2.0 §107 age 73 / 75 phase + §302 25%
+    excise tax), Pub 523 (Selling Your Home — §121 capital-
+    gain exclusion mechanics + recapture), Pub 525 (Taxable
+    and Nontaxable Income — including equity-comp +
+    discharge-of-debt-income), Pub 550 (Investment Income and
+    Expenses — wash-sale + capital-gain-loss netting), Pub
+    969 (HSA and Other Tax-Favored Health Plans), Pub 974
+    (Premium Tax Credit — ACA APTC reconciliation), plus
+    relevant Rev. Procs. (annual IRA / HSA / 401k contribution
+    limits), Rev. Rulings (e.g. Step Transaction Doctrine
+    application to backdoor Roth), and Notices (e.g. Notice
+    2014-54 on after-tax 401k rollover that anchors Mega-
+    Backdoor mechanics). Authoritative statutory + regulatory
+    ground-truth. Critic should weight IRS Pub citations
+    heavily on tax-mechanic claims that conflict with
+    practitioner-blog interpretations.
+    Best for: F11 IRS-publication-authority framing's
+    ground-truth backstop (any tax-mechanic claim from
+    practitioner blogs must reconcile against IRS Pub
+    authority; the Finance Buff explicitly cites this in its
+    pieces), inherited-IRA 10-year-window mechanics (D9 +
+    blindspots.md F7 trap), HSA-eligibility + last-month-rule
+    recapture (D1 priority-order interaction; also see
+    health-insurance/sources.yaml `irs-pub-969-and-hsa-
+    rulings` for the cross-domain twin), Form 8606 pro-rata
+    + step-transaction risk for same-year traditional-then-
+    Roth conversion.
+    Weak: real-world adjudicator variance + state-specific
+    tax interpretation (IRS publishes; states diverge), tax-
+    court precedent + private-letter-ruling interpretation
+    (defer to retirement-experienced CPA or tax-attorney
+    territory). Manual ingest — download current-year IRS
+    Pub 590-A / 590-B / 523 / 525 / 550 / 969 / 974 +
+    relevant Rev. Procs. into the static markdown file.
+    Update annually around Jan when IRS issues current-year
+    Pub revisions.
+
+- id: bogleheads-tax-and-aicpa-pfp
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/bogleheads-tax-forum-and-aicpa-pfp.md
+  domains: [personal-finance/tax-loss-harvesting, personal-finance/niit, personal-finance/multi-state, personal-finance/state-residency, personal-finance/qbi, personal-finance/fbar-fatca]
+  community_tag: tax-and-cpa-practitioner
+  reliability: 1
+  freshness_required: false
+  domain: personal-finance
+  notes: |
+    Bogleheads.org "Personal Finance (Not Investing)" + "Personal
+    Investments" sub-forums *tax-specific thread* archive +
+    AICPA Personal Financial Planning Section publications +
+    selected retirement-experienced-CPA practitioner blogs
+    (Jeffrey Levine at *Buckingham*, Ed Slott's IRA Advisor
+    Group, Natalie Choate's life-and-death-planning IRA
+    materials). The retirement-experienced-CPA voice anchor in
+    framings.md §"Voice anchors" sits here. Per-case decisions
+    require a CPA with current facts and the specific multi-
+    state / FATCA / NIIT / state-residency situation — sources
+    here are reference / community signal only.
+    Best for: D6 tax-loss harvesting wash-sale-avoidance ETF-
+    pair substitution case studies, NIIT 3.8% threshold +
+    safe-harbor mechanics (IRC §1411), multi-state nexus
+    (working-from-State-A-for-State-B-employer recent post-
+    2020 case-law), state-residency moves (the
+    statutory-residency-vs-domiciliary-residency distinction +
+    183-day rule + factor-test variation by state), FBAR /
+    FATCA Form 8938 + 8621 + 8865 + 5471 for cross-border
+    households (cross-domain edge with `immigration`), QBI
+    deduction at fee-only-CFP / self-employed level (cross-
+    domain edge with `entrepreneurship`).
+    Weak: AMT / ISO / RSU equity-comp mechanics (defer to
+    tech-career sources for AMT-bargain-element + 83(b)
+    election + 10b5-1 timing), state-specific tax detail
+    that goes beyond the Bogleheads thread + AICPA-published
+    PFP publications (defer to state-bar / state-CPA-society
+    networks). Manual ingest — paste Bogleheads tax-
+    sub-forum canonical threads + AICPA PFP Section
+    summaries + Ed Slott IRA-Advisor newsletter highlights +
+    Jeffrey Levine "Five Things" Kitces appearances into the
+    static markdown file. Update around April 15 (filing-
+    season-aftermath thread cluster on Bogleheads).
+
+# ─── community: financial-economics-journalism ────────────────────────
+
+- id: humble-dollar-clements
+  adapter: rss
+  fetch_config:
+    feed: https://humbledollar.com/feed/
+    keyword_filter: [retirement, withdrawal, Roth, IRMAA, RMD, asset allocation, glide path, Social Security, estate, sunset, TCJA, mortgage, refi]
+  domains: [personal-finance/retirement-income, personal-finance/withdrawal-sequencing, personal-finance/behavioral-finance, personal-finance/policy-volatility]
+  community_tag: financial-economics-journalism
+  reliability: 1
+  freshness_required: true
+  domain: personal-finance
+  notes: |
+    Cross-listed: same feed as `humble-dollar-and-allan-roth`
+    above (retirement-economics-academics community_tag). This
+    entry tags HumbleDollar under financial-economics-
+    journalism because Clements's two-decade WSJ "Getting Going"
+    column-writing voice is the canonical
+    financial-economics-journalism voice in framings.md
+    §"Voice anchors" alongside David Wessel + Anne Tergesen +
+    Jason Zweig; the diversity-cap mechanism at runtime
+    benefits from the explicit cross-listing so a query that
+    matches both academic-rigor + journalistic-narrative voices
+    surfaces HumbleDollar twice but is then deduplicated by the
+    `tag_match` diversity-cap. Same URL caveat applies (TODO-
+    verify-URL).
+    Best for: narrative-grounding of retirement-income decisions
+    + policy-risk awareness (F2 marginal-rate-vs-policy-
+    volatility framing — Clements regularly writes on TCJA-
+    sunset / estate-exemption-sunset / SECURE 2.0
+    implementation timing), behavioral / cashflow-stress
+    realism, retirement-transition decisions where the asker
+    needs help converting accumulator-mindset to decumulator-
+    mindset (D1 priority order morphing into D8 / D9 / D10).
+    Weak: tactical tax-form detail, state-specific estate
+    detail, equity-comp / RSU / ISO mechanics. (Cross-listed
+    twin entry above is the primary; this entry exists for
+    diversity-cap routing.)
+
+- id: nyt-wealth-matters-and-wsj-zweig
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/nyt-wealth-matters-wsj-zweig-tergesen.md
+  domains: [personal-finance/policy-volatility, personal-finance/roth-conversion, personal-finance/behavioral-finance, personal-finance/estate-planning, personal-finance/advisor-fraud]
+  community_tag: financial-economics-journalism
+  reliability: 1
+  freshness_required: false
+  domain: personal-finance
+  notes: |
+    NYT *Wealth Matters* column (Paul Sullivan archive; Tara
+    Siegel Bernard on Your Money), WSJ Jason Zweig *Intelligent
+    Investor* column + Anne Tergesen retirement-and-Roth-
+    conversion coverage, NPR *Planet Money* relevant retirement
+    / personal-finance episodes, plus David Wessel at Brookings
+    *Hutchins Center on Fiscal & Monetary Policy* macro pieces.
+    Matches the "financial-economics-journalism voice" anchor in
+    framings.md §"Voice anchors": David Wessel at Brookings;
+    Jeff Sommer at NYT; Anne Tergesen at WSJ on Roth-conversion
+    mechanics; NPR *Planet Money*. Anchors F14 framing on
+    narrative-grounding-of-policy-risk + advisor-fraud-and-
+    misconduct case archives.
+    Best for: F14 policy-risk + advisor-fraud framing (Zweig is
+    the canonical archive on advisor-misconduct, Madoff-style
+    fraud patterns, SEC enforcement reality; Tergesen is the
+    canonical journalist tracking Roth-conversion-mechanics
+    policy implementation), narrative-grounding of large policy
+    shifts (TCJA-sunset Dec 2025, SECURE 2.0 phased
+    implementation timing, ARPA / IRA ACA-APTC sunset), behav-
+    ioral-finance translations of academic literature for non-
+    specialist audiences.
+    Weak: tactical filing advice (journalism, not advice),
+    statutory mechanics (defer to IRS Pubs + Treas. Regs),
+    advisor-specific recommendation (these are columns, not
+    referrals). Manual ingest — paste highest-signal columns
+    + David Wessel macro pieces into the static markdown file.
+    Update when major personal-finance policy event publishes
+    (TCJA sunset / SECURE 2.0 milestone / FAFSA Simplification
+    update).
+
+# ─── community: erisa-and-fiduciary-rule-law ──────────────────────────
+
+- id: erisa-attorneys-and-iapd-brokercheck
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/erisa-attorneys-iapd-brokercheck.md
+  domains: [personal-finance/fiduciary-standard, personal-finance/401k-rollover, personal-finance/advisor-verification, personal-finance/erisa, personal-finance/dol-fiduciary-rule, personal-finance/sec-reg-bi]
+  community_tag: erisa-and-fiduciary-rule-law
+  reliability: 1
+  freshness_required: false
+  domain: personal-finance
+  notes: |
+    ERISA-side / fiduciary-law practitioner blogs (Cohen &
+    Buckmann; Stoltmann Law on rollover-recommendation
+    scrutiny; Faegre Drinker's *Best Interest* blog on DOL
+    Fiduciary-Rule + SEC Reg-BI; Drinker Biddle's ERISA-
+    practitioner publications; Wagner Law Group; FRA Plan
+    Tools) + SEC IAPD (adviserinfo.sec.gov) Form ADV
+    verification methodology + FINRA BrokerCheck verification
+    methodology. Matches the "ERISA-practitioner voice"
+    anchor + "SEC IAPD / FINRA BrokerCheck verification"
+    professional-counsel channel in framings.md §"Voice
+    anchors". Per-case 401k rollover / high-balance-account
+    plan-document-interpretation decisions require a retained
+    ERISA attorney with current facts — sources here are
+    reference / community signal only.
+    Best for: F10 professional-referral framing's distinction
+    between AUM-fee-fee-only and hourly-or-flat-fee-fee-only
+    (Stoltmann + Cohen & Buckmann routinely write about
+    rollover-recommendation scrutiny on AUM-fee-fee-only
+    advisors who recommend 401k → IRA rollovers that benefit
+    the advisor's AUM more than the client; a recurring
+    blindspots.md F10 trap), DOL Fiduciary-Rule history (2010
+    rule, 2016 Obama rule, 2018 5th-Circuit vacatur, 2020 Reg-
+    BI implementation, 2024 Retirement Security Rule), 401k
+    force-out mechanics (under $7000 balance + plan-document
+    rules; SECURE 2.0 §304 raised force-out cap to $7000),
+    Form ADV Part 2 Brochure + Part 3 CRS reading procedure
+    (verify advisor before retainer), BrokerCheck disclosure-
+    record reading procedure (verify advisor was-or-was-not
+    sanctioned by FINRA — a recurring F14 advisor-fraud
+    blindspot).
+    Weak: clinical retirement-income academic research (defer
+    to retirement-economics-academics), real-world household
+    behavioral coaching (fee-only-fiduciary-cfp territory),
+    Medicare / SS / RMD orchestration (defer to social-
+    security-claiming-and-rmd + tax-and-cpa-practitioner).
+    Manual ingest — paste Cohen & Buckmann + Stoltmann +
+    Faegre-Drinker + Drinker-Biddle blog highlights + SEC
+    IAPD / FINRA BrokerCheck verification walk-throughs into
+    the static markdown file. Update when major DOL / SEC
+    rule changes publish (DOL Retirement Security Rule
+    litigation timeline + SEC Reg-BI enforcement publications
+    are the most-active cadence).
+
+# ─── community: social-security-claiming-and-rmd ──────────────────────
+
+- id: open-social-security-mike-piper
+  adapter: rss
+  fetch_config:
+    feed: https://obliviousinvestor.com/feed/
+    keyword_filter: [Social Security, SS, FRA, full retirement age, claim, claiming, survivor, spousal, delayed retirement credit, DRC, PIA, primary insurance amount, WEP, GPO, RMD, QCD, IRMAA, withdrawal sequencing, Roth conversion]
+  domains: [personal-finance/social-security, personal-finance/ss-claim-age, personal-finance/survivor-benefit, personal-finance/spousal-benefit, personal-finance/rmd, personal-finance/qcd, personal-finance/withdrawal-sequencing]
+  community_tag: social-security-claiming-and-rmd
+  reliability: 1
+  freshness_required: true
+  domain: personal-finance
+  notes: |
+    Mike Piper's *Oblivious Investor* (obliviousinvestor.com) +
+    Open Social Security (opensocialsecurity.com, the canonical
+    free open-source SS-claim-strategy optimizer Mike maintains)
+    + *Social Security Made Simple* (Mike's canonical reference
+    book). Matches the "fee-only Social-Security claiming-
+    specialist voice" anchor in framings.md §"Voice anchors":
+    Mike Piper's Open-Social-Security; *Social Security Made
+    Simple*; Larry Kotlikoff's Maximize-My-Social-Security;
+    federally-funded SHIBA / SHIP per-state via shiphelp.org.
+    Per-case SS-claim-age / survivor-benefit-sequencing
+    decisions require a fee-only Social-Security claiming-
+    specialist with current SSA earnings-history data —
+    sources here are reference / community signal only.
+    Best for: D7 / D8 SS-claim-age strategy (Open-Social-
+    Security's optimizer is the canonical free reference; Mike
+    is also one of the few outlets that explains
+    withdrawal-sequencing-and-SS-claim-age + RMD
+    orchestration as one unified problem, anchoring the F7
+    lifecycle / retirement-decumulation framing's deep-
+    quantitative version), survivor-benefit sequencing (higher
+    earner's claim-age determines surviving-spouse benefit),
+    spousal-benefit mechanics under restricted-application
+    (mostly grandfathered out post-Bipartisan-Budget-Act
+    2015), WEP / GPO mechanics for non-covered public-
+    pension households (a recurring blindspots.md F7 trap;
+    Social Security Fairness Act 2024 repeal mechanics + WEP-
+    GPO phase-out timing pending Treasury regulations),
+    QCD (Qualified Charitable Distribution from IRA to charity
+    direct to satisfy RMD without including in MAGI — a
+    recurring D9 / D10 trick missed by accumulator-only
+    advisors).
+    Weak: state-specific public-pension WEP / GPO detail
+    (defer to state-public-employee-pension publications),
+    Medicare detail (defer to SHIBA / SHIP), high-net-worth
+    estate-planning detail (state-bar estate-attorney
+    territory). TODO-verify-URL — verify before enabling.
+
+- id: kotlikoff-and-ssa-statement-walkthroughs
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/kotlikoff-maximize-my-ss-and-ssa-walkthroughs.md
+  domains: [personal-finance/social-security, personal-finance/ss-claim-age, personal-finance/survivor-benefit, personal-finance/rmd, personal-finance/longevity-risk, personal-finance/withdrawal-sequencing]
+  community_tag: social-security-claiming-and-rmd
+  reliability: 1
+  freshness_required: false
+  domain: personal-finance
+  notes: |
+    Larry Kotlikoff's Maximize-My-Social-Security (paid
+    optimizer + writings, Boston University economics
+    department) + KotlikoffOnFinance editorial output +
+    federally-funded SHIBA / SHIP per-state via shiphelp.org
+    consumer materials + SSA online-statement
+    (ssa.gov/myaccount) walk-throughs + relevant SSA POMS
+    (Program Operations Manual System) sections governing
+    claim-and-appeal procedures. Cross-listed conceptually
+    with retirement-economics-academics (Kotlikoff is a
+    BU economics professor and academic) but tagged here
+    because the framing is SS-claim-age + RMD orchestration-
+    specific.
+    Best for: D7 / D8 SS-claim-age strategy with Kotlikoff's
+    *life-cycle finance* academic framing as theoretical
+    backdrop (Kotlikoff's *consumption smoothing* approach
+    contrasts with Mike Piper's *expected-PV-maximization*
+    approach — both valid, different framings; this is one of
+    the within-retirement-economics-academic tensions
+    flagged in framings.md F7 vs F13), SSA online-statement
+    reading methodology (PIA primary-insurance-amount
+    calculation from earnings record + AIME average-indexed-
+    monthly-earnings methodology), federally-funded SHIBA /
+    SHIP per-state counselor referral procedure (state-by-
+    state via shiphelp.org), POMS section citation for
+    appealing an SSA earnings-record error or claim denial.
+    Weak: high-frequency current-events SS-policy commentary
+    (defer to journalism + Mike Piper for the rapid-cadence
+    updates), state-bar estate detail, Medicare detail
+    (SHIBA / SHIP territory for Medicare specifically).
+    Manual ingest — paste Kotlikoff *Get What's Yours*
+    chapters + SHIP National Technical Assistance Center
+    SS-claim-strategy training modules + SSA POMS canonical
+    section references into the static markdown file. Update
+    around annual SS COLA announcement (October) when claim-
+    age + PIA arithmetic re-anchors.
