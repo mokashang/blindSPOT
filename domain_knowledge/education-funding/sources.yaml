@@ -1,0 +1,1208 @@
+# Blindspot V2 per-domain source registry for education-funding.
+#
+# Layer 4 of the 4-layer knowledge model (per docs/specs/ROADMAP.md §3).
+# This file holds the source-view inventory scoped to the
+# `education-funding` domain. Mirrors the schema of
+# domain_knowledge/tech-career/sources.yaml (PR #37),
+# domain_knowledge/immigration/sources.yaml (PR #49),
+# domain_knowledge/housing/sources.yaml (PR #66),
+# domain_knowledge/health-insurance/sources.yaml (PR #76),
+# domain_knowledge/personal-finance/sources.yaml (PR #80), and
+# domain_knowledge/entrepreneurship/sources.yaml (PR #85).
+#
+# `education-funding` is **high_stakes: false** per
+# domain_knowledge/_meta_ontology.md §7 — most outcomes are reversible
+# at modest cost on multi-year horizons (refinance back to a better
+# rate, switch repayment plan, defer enrollment, transfer 529
+# beneficiary, file appeals, redo FAFSA). Therefore Mechanism E at
+# runtime is **SELECTIVE, not blanket** (mirroring housing/sources.yaml
+# PR #66 and entrepreneurship/sources.yaml PR #85 posture): Recovery
+# moves on the Layer-3 blindspots are routed to professional counsel
+# only where six-figure tail risk or genuinely irreversible decisions
+# are present —
+#   - **Federal-loans + PSLF + consumer-protection** scope (the
+#     `consumer-protection-and-student-loan-advocacy` tag below):
+#     selective referral on D1 federal-to-private refinance (a one-way
+#     door that permanently extinguishes IDR / PSLF / death-and-
+#     disability discharge / political-cancellation optionality —
+#     attorney-grade decision when option-exercise probability is
+#     plausibly load-bearing), D10 PSLF qualifying-employment
+#     disputes (post-denial appeals, PSLF Buyback program filings,
+#     1099-vs-W-2 reclassification petitions to the FSA Ombudsman
+#     Group), D4 IDR + tax-bomb sinking-fund design for $150k+
+#     balances. Routed to: student-loan attorney (NACA / NACBA
+#     network), Student Loan Borrower Assistance Project (SLBA at
+#     NCLC), Federal Student Aid Ombudsman Group (the $0-cost
+#     escalation channel that should be tried before retained paid
+#     counsel on servicer-dispute decisions per education-funding/
+#     framings.md §"Voice anchors"), CFPB student-loan complaint
+#     database submission, NCLC publications for the legal-strategy
+#     baseline, retirement-experienced CPA for tax-bomb arithmetic
+#     and insolvency-exclusion (Form 982) coordination.
+#   - **Tax-and-CPA scope** (the `tax-and-cpa-college-funding` tag):
+#     selective referral on D3 large §529(c)(2)(B) 5-year-forward
+#     lump-sums where Form 709 filing or state-deduction-recapture
+#     mechanics matter, D6 SECURE 2.0 §126 529-to-Roth rollover
+#     (the 15-year-account-age and 5-year-contribution lookback
+#     mechanics that fee-only CFPs systematically mis-apply), D9
+#     §127 employer-tuition-assistance retention-clawback
+#     coordination with Roth-conversion timing. Routed to:
+#     retirement-experienced CPA (NOT generic 1040-prep CPA —
+#     must have §25A / §127 / §529 / SECURE 2.0 §126 / Form 709 /
+#     Form 982 history), fee-only fiduciary CFP (NAPFA member,
+#     hourly or flat-fee — NOT AUM-only), NACAC-member college
+#     counselor for D5 financial-aid appeal letter and merit-aid
+#     negotiation.
+#   - **State Bar / SEC-FINRA BrokerCheck / NACAC-directory**
+#     verification on any individual professional recommended is
+#     the $0-friction procedural floor — surfaced on every
+#     individual-professional referral per framings.md §"Voice
+#     anchors" closing paragraph.
+# Other source-views (roi-by-major-labor-market-data, fire-aware-
+# college-funding, nacac-counselor-and-css-profile, 529-plan-
+# mechanics, mba-and-cs-graduate-roi, napfa-fee-only-cfp, heloc-
+# cross-edge-housing) carry the standard "not a substitute for
+# case-specific licensed counsel" framing without uniform routing;
+# the Editor surfaces the framings the named community would
+# emphasize and treats the user as a decision-capable adult
+# navigating a domain whose modal outcomes (refinance back, switch
+# IDR plan, transfer 529 beneficiary, defer enrollment, redo FAFSA)
+# are recoverable on a 2-5 year horizon.
+#
+# Each entry is a "source-view": a configured, filtered, annotated
+# lens into one source.
+# Schema:
+#   id              unique slug
+#   adapter         rss | reddit_search | hn_search | static_corpus
+#   fetch_config    adapter-specific
+#   domains         hierarchical tag paths (multi-label)
+#   community_tag   single community label (drives diversity constraint)
+#   reliability     1-5, initial value; auto-adjusted via rating feedback
+#                   (per ROADMAP §5 Mechanism C "cite-and-promote": new
+#                   sources start at 1 and earn higher reliability via
+#                   runtime usage / rating feedback)
+#   freshness_required  true → cache TTL 7 days; false → 30 days
+#   notes           multi-paragraph; what this view is good for, bad
+#                   for, caveats
+#   domain          (V2) the per-domain folder this source-view lives in
+#
+# Community-tag coverage maps the framings.md §"Voice anchors for
+# Layer 3 (blindspots) and Layer 4 (sources.yaml)" classes (education-
+# funding/framings.md lines 1535-1670). The 13 voice anchors are
+# consolidated into 9 distinct `community_tag` values below; the
+# consolidation pattern groups voices whose blindspots are correlated
+# and whose source URLs cluster naturally:
+#   consumer-protection-and-student-loan-advocacy
+#                                     → PSLF-preservation voices (r/
+#                                       PSLF, SLBA, FSA Ombudsman,
+#                                       Heather Jarvis) + r/Student
+#                                       Loans + bankruptcy-discharge
+#                                       (NACBA, NCLC, post-Brunner /
+#                                       post-Frost / 2022 DOJ-USDOE
+#                                       Adversary-Proceeding Guidance)
+#                                       + consumer-protection (CFPB,
+#                                       NCLC, state AGs). Mechanism-E
+#                                       selectively routed.
+#   roi-by-major-labor-market-data    → Georgetown CEW, Burning Glass /
+#                                       Lightcast, Payscale, BLS OES,
+#                                       College Scorecard
+#   fire-aware-college-funding        → r/financialindependence
+#                                       college-funding threads, MMM
+#                                       "MMM University" essays,
+#                                       ChooseFI, The College Investor
+#                                       (FIRE-adjacent), Bogleheads
+#                                       retirement-priority threads
+#   nacac-counselor-and-css-profile   → NACAC members + Ethics
+#                                       Statement, IECA / HECA
+#                                       independent-counselor
+#                                       associations, r/financialaid,
+#                                       r/ApplyingToCollege, Princeton
+#                                       Net Price Calculator, Form-CSS
+#                                       specialists (NCAN)
+#   529-plan-mechanics                → Mark Kantrowitz (Saving For
+#                                       College founder, currently
+#                                       Saving For College columnist),
+#                                       SavingForCollege.com analyses,
+#                                       Bogleheads 529 wiki + forum,
+#                                       Mike Piper (Oblivious Investor)
+#                                       on 529 + SECURE 2.0 §126
+#                                       529-to-Roth, The College
+#                                       Investor 529 coverage
+#   mba-and-cs-graduate-roi           → Poets&Quants, GMAT Club, Wall
+#                                       Street Oasis, r/MBA, Stacy
+#                                       Blackman / mbaMission /
+#                                       Personal MBA Coach + r/cs
+#                                       careerquestions, r/csMajors,
+#                                       Levels.fyi, Blind
+#   tax-and-cpa-college-funding       → IRS Pubs 970 (Tax Benefits for
+#                                       Education), Pub 590-A (IRA
+#                                       contribution rules — relevant
+#                                       to SECURE 2.0 §126), Form 1098-T
+#                                       / Form 8863 instructions, Form
+#                                       709 instructions, Form 982,
+#                                       The Finance Buff cross-listed
+#                                       to education-funding §127 +
+#                                       §25A + §529 + SECURE 2.0 §126
+#                                       coverage, Mike Piper / Open
+#                                       Social Security adjacent
+#                                       analysis. Mechanism-E
+#                                       selectively routed.
+#   napfa-fee-only-cfp                → NAPFA member directory,
+#                                       Garrett Planning Network,
+#                                       fee-only-CFP publications,
+#                                       XY Planning Network (Gen X /
+#                                       Gen Y focused fee-only
+#                                       advisors), Michael Kitces
+#                                       Nerd's Eye View blog
+#   heloc-cross-edge-housing          → HELOC-vs-Parent-PLUS
+#                                       comparison voices, mortgage-
+#                                       broker + fee-only-CFP cross-
+#                                       analysis (cross-edge with
+#                                       housing/sources.yaml PR #66
+#                                       mortgage-and-personal-finance
+#                                       tag)
+#
+# URL caveat: where a feed URL could not be live-verified at authoring
+# time, the entry carries a `notes:` line flagging
+# "URL placeholder — verify before enabling". The registry loader is
+# tolerant of non-resolving feeds (fetch failures are caught per-source
+# in the Collection layer and the turn proceeds); a placeholder entry
+# is inert until verified, not breaking. Reddit-adapter entries soft-
+# fail without REDDIT_CLIENT_ID/SECRET (the Reddit adapter wraps PRAW
+# construction in try/except at the Collection layer — see CLAUDE.md
+# "Quirks").
+
+# ─── community: consumer-protection-and-student-loan-advocacy ─────────
+
+- id: reddit-pslf-and-studentloans
+  adapter: reddit_search
+  fetch_config:
+    subreddit: PSLF+StudentLoans+StudentLoansHelp
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 30
+  domains: [education-funding/pslf, education-funding/federal-loans, education-funding/idr, education-funding/servicer-disputes, education-funding/refi-decisions, education-funding/account-adjustment]
+  community_tag: consumer-protection-and-student-loan-advocacy
+  reliability: 1
+  freshness_required: true
+  domain: education-funding
+  notes: |
+    r/PSLF + r/StudentLoans + r/StudentLoansHelp aggregated. Matches
+    the "PSLF-preservation voices" + "r/StudentLoans / r/Student
+    LoansHelp / r/PSLF voices" anchors in framings.md §"Voice
+    anchors" (lines 1543-1552, 1599-1607). Transactional-and-peer-
+    driven cohort dominated by MOHELA / Nelnet / EdFinancial /
+    Aidvantage servicer-distrust ethos. Higher upvote threshold
+    (30) to surface threads with thread-convergence signal —
+    single-anecdote forbearance-steering posts are not useful
+    evidence without thread volume. The community's own blind
+    spots (per framings.md): over-applies "never refi federal" to
+    borrowers with genuinely-low option-exercise probability;
+    over-credits post-2022 account-adjustment as universal relief
+    when many borrowers still face servicer-dispute residue; skews
+    toward forbearance-steering-trauma cases; over-estimates
+    servicer-error frequency for borrowers with clean account
+    histories. Mechanism E selective referral: per-case D1
+    federal-to-private refi (one-way door extinguishing IDR /
+    PSLF / death-and-disability / political-cancellation
+    optionality), D10 PSLF qualifying-employment disputes after
+    a denied appeal, D4 IDR + tax-bomb $150k+-balance sinking-
+    fund design REQUIRE escalation: FSA Ombudsman Group at $0
+    cost first, then student-loan attorney (NACA / NACBA
+    network) + retirement-experienced CPA.
+    Best for: F1 federal-optionality framing's lived-experience
+    ground truth (the canonical "I refinanced federal-to-private
+    and then needed disability discharge / PSLF" post-mortem
+    genre), D1 refi-vs-federal-optionality decision context
+    (option-exercise probability calibration from peer data),
+    F8 tax-bomb-arithmetic-and-arpa-cliff framing (the canonical
+    Reddit threads on IDR balance forgiveness tax treatment at
+    the 20/25-year horizon with ARPA-cliff scheduled for end of
+    2025), F12 political-risk-cuts-both-ways framing (the
+    real-time SAVE-injunction / IDR-pause / Borrower-Defense
+    coverage), D10 PSLF qualifying-employment dispute patterns
+    (1099-vs-W-2 reclassification, S-corp-at-501(c)(3) trap,
+    501(c)(4) exclusion), account-adjustment processing
+    timeline + appeal mechanics.
+    Weak: tax-mechanic specificity beyond ARPA-cliff awareness
+    (defer to tax-and-cpa-college-funding for §108 insolvency-
+    exclusion + Form 982 mechanics), state-conformity
+    specificity on tax-bomb treatment (defer to retirement-
+    experienced CPA), legal-adjudication of bankruptcy
+    Adversary-Proceeding strategy (defer to NACBA-member
+    attorney). Soft-fails without REDDIT_CLIENT_ID/SECRET (the
+    Reddit adapter wraps PRAW construction in try/except at the
+    Collection layer — see CLAUDE.md "Quirks").
+
+- id: cfpb-student-loan-complaints-and-actions
+  adapter: rss
+  fetch_config:
+    feed: https://www.consumerfinance.gov/about-us/newsroom/feed/
+    keyword_filter: [student loan, servicer, PSLF, IDR, SAVE, MOHELA, Nelnet, EdFinancial, Aidvantage, forbearance, default, collection, Borrower Defense, school closure, predatory, for-profit]
+  domains: [education-funding/consumer-protection, education-funding/servicer-disputes, education-funding/pslf, education-funding/idr, education-funding/borrower-defense, education-funding/predatory-lending]
+  community_tag: consumer-protection-and-student-loan-advocacy
+  reliability: 1
+  freshness_required: true
+  domain: education-funding
+  notes: |
+    Consumer Financial Protection Bureau (consumerfinance.gov)
+    newsroom + student-loan complaint database. Matches the
+    "Consumer-protection voices" anchor in framings.md §"Voice
+    anchors" (lines 1625-1636). The CFPB Annual Report of the
+    Student Loan Ombudsman is the canonical federal-agency
+    documentation of servicer-error patterns + Borrower Defense
+    + school-closure-discharge mechanics, and the complaint
+    database (publicly searchable) is the canonical evidence
+    base for F9 (consumer-protection) framing on servicer-dispute
+    surface area. Mechanism E selective referral: per-case
+    individual complaint filing on a servicer dispute (D10) is a
+    $0-cost procedural floor that should be filed BEFORE
+    retaining an attorney; complex post-denial PSLF cases and
+    bankruptcy Adversary Proceedings still REQUIRE retained
+    student-loan attorney (NACA / NACBA network).
+    Best for: F9 consumer-protection framing's authoritative
+    grounding (federal-agency posture on servicer-error
+    patterns), F12 political-risk framing's regulatory-history
+    grounding (CFPB enforcement actions against MOHELA / Nelnet /
+    EdFinancial / Navient / for-profit-school chains anchor the
+    "regulators can and do enforce" half of the political-risk
+    framing), D10 PSLF qualifying-employment dispute filing
+    mechanics (the CFPB student-loan complaint form is the
+    procedural floor before FSA Ombudsman / attorney
+    escalation), school-closure-discharge + Borrower Defense
+    documentation, the canonical anti-source perspective on
+    private-lender / servicer behavior.
+    Weak: case-specific adjudication (the CFPB processes
+    complaints but does not provide individual legal advice —
+    defer to retained student-loan attorney for adversarial
+    posture), tax-mechanic specificity (defer to tax-and-cpa-
+    college-funding for §108 / Form 982), bankruptcy
+    Adversary-Proceeding strategy (defer to NACBA-member
+    attorney), political-cancellation timing (defer to fire-
+    aware-college-funding + reddit-pslf-and-studentloans for
+    real-time political-risk read). URL placeholder — verify
+    before enabling.
+
+- id: slba-nclc-and-heather-jarvis-archive
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/slba-nclc-heather-jarvis-student-loan-archive.md
+  domains: [education-funding/consumer-protection, education-funding/bankruptcy-discharge, education-funding/pslf, education-funding/idr, education-funding/borrower-defense, education-funding/servicer-disputes]
+  community_tag: consumer-protection-and-student-loan-advocacy
+  reliability: 1
+  freshness_required: false
+  domain: education-funding
+  notes: |
+    Student Loan Borrower Assistance Project (SLBA, a project of
+    National Consumer Law Center / NCLC) + NCLC publications +
+    Heather Jarvis Student Loan Expert archive + NACBA (National
+    Association of Consumer Bankruptcy Attorneys) student-loan-
+    discharge publications + post-*Brunner* / post-*Frost* / 2022
+    DOJ-USDOE Adversary-Proceeding Guidance coverage. Matches the
+    "PSLF-preservation voices" + "Consumer-protection voices" +
+    "Bankruptcy-discharge voices" anchors in framings.md §"Voice
+    anchors" (lines 1543-1552, 1625-1636, 1660-1669). Heather
+    Jarvis is the canonical PSLF-mechanics-and-IDR-coordination
+    practitioner voice (Heather is also a sometimes-NACBA
+    presenter on student-loan bankruptcy). NCLC's *Student Loan
+    Law* treatise is the authoritative legal reference for the
+    field. NACBA + post-2022 DOJ-USDOE-attestation guidance is
+    the canonical reference for F13 bankruptcy-discharge framing
+    (the 2022 guidance dramatically lowered the procedural bar
+    for federal-student-loan discharge by Adversary Proceeding,
+    but discharge still requires a separate lawsuit-within-the-
+    bankruptcy, not automatic discharge with the main filing).
+    Mechanism E selective referral: per-case D1 / D10 PSLF
+    appeals and bankruptcy Adversary Proceeding strategy REQUIRE
+    retained student-loan attorney (NACA / NACBA network) —
+    sources here are reference / pattern-recognition only.
+    Best for: F1 federal-optionality framing's full mechanics
+    (IDR plan-selection arithmetic + PSLF qualifying-employment +
+    PSLF Buyback program + Public Service Loan Forgiveness Help
+    Tool mechanics), F8 tax-bomb-arithmetic framing's procedural
+    floor (ARPA-cliff scheduled for end of 2025; §108 insolvency-
+    exclusion + Form 982 mechanics; state-conformity variance),
+    F13 bankruptcy-discharge-and-default-recovery framing core
+    mechanics (the 2022 DOJ-USDOE Adversary-Proceeding Guidance
+    + post-*Frost* district-court trend + 11 USC §523(a)(8)
+    undue-hardship standard variance by Circuit), F14 1099-vs-W-2
+    PSLF-qualifying-employment asymmetry (the canonical reference
+    on why 1099 work doesn't count and S-corp-formation kills
+    PSLF), D10 PSLF post-denial appeal + FSA Ombudsman escalation
+    mechanics + PSLF Buyback program filings.
+    Weak: real-time political-risk read (the SLBA / NCLC
+    archive reflects multi-year legal-strategy posture but is
+    less responsive to month-by-month regulatory shifts — defer
+    to reddit-pslf-and-studentloans + cfpb-student-loan-
+    complaints-and-actions for real-time), tax-mechanic
+    practitioner detail (defer to tax-and-cpa-college-funding +
+    retirement-experienced CPA), case-specific litigation
+    strategy (defer to retained NACBA-member attorney). Manual
+    ingest — paste NCLC *Student Loan Law* treatise excerpts +
+    SLBA publications + Heather Jarvis canonical FAQ + NACBA
+    publication highlights + 2022 DOJ-USDOE Adversary-Proceeding
+    Guidance + selected post-*Frost* district-court opinions
+    into the static markdown file. Update annually around
+    NACBA-annual-conference proceedings release.
+
+# ─── community: roi-by-major-labor-market-data ────────────────────────
+
+- id: georgetown-cew-roi-reports
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/georgetown-cew-college-roi-and-major-economic-value-archive.md
+  domains: [education-funding/roi-by-major, education-funding/college-scorecard, education-funding/major-earnings, education-funding/labor-market-data, education-funding/professional-school]
+  community_tag: roi-by-major-labor-market-data
+  reliability: 1
+  freshness_required: false
+  domain: education-funding
+  notes: |
+    Georgetown Center on Education and the Workforce (CEW —
+    cew.georgetown.edu, Anthony Carnevale founder, current
+    director). Matches the "ROI-by-major / labor-market voices"
+    anchor in framings.md §"Voice anchors" (lines 1553-1560).
+    The CEW canonical reports — *The Economic Value of College
+    Majors* (most recent: 2021 + supplementary updates), *The
+    Overlooked Value of Certificates and Associate's Degrees*,
+    *Workplace Basics: The Skills Employees Need and Employers
+    Want*, *The College Payoff*, *Major Matters Most* — are the
+    authoritative reference for F3 ROI-by-major framing's median
+    lifetime-earnings benchmark grounding. The community's own
+    blind spot (per framings.md): routes everything through
+    earnings-medians, under-prices the option value of non-
+    vocational degrees and the path-from-low-immediate-earnings-
+    to-professional-school pivots; over-confident on median
+    outcomes that hide bimodal distributions (e.g. art-history
+    bachelors + JD has dramatically different outcome than art-
+    history terminal-bachelors). Standard non-substitute-for-
+    case-specific-counsel framing applies.
+    Best for: F3 ROI-by-major framing's authoritative
+    grounding (median + 25th-percentile + 75th-percentile
+    lifetime-earnings by major + 1st-school-choice-quartile by
+    enrollment selectivity), D2 enrollment-vs-defer decision
+    (the canonical CEW data on which majors have positive
+    expected-value at which net-cost), D5 financial-aid-appeal
+    arithmetic (CEW data on expected lifetime-earnings + College
+    Scorecard data on actual-earnings-3-and-10-years-post-
+    enrollment-by-major-and-school is the Triage-officer's
+    grounding for credible appeal letters), F11 §127-retention-
+    clawback framing's ROI baseline (the CEW data on
+    engineering-MBA-incremental-earnings vs MS-CS-incremental-
+    earnings is the comparison surface), professional-school-
+    pivot expected-value (the Georgetown CEW *Law School Sticker
+    Shock* + medicine-residency-cycle reports anchor the
+    professional-school-pivot expected-value calibration).
+    Weak: case-specific outcome prediction (CEW reports
+    medians + percentiles; individual outcomes are dominated by
+    school-selectivity + major + region + persistence factors
+    that the aggregate misses — defer to nacac-counselor-and-
+    css-profile + individual NPC for the school-specific cohort
+    data), real-time labor-market shifts (CEW reports lag the
+    underlying BLS / Census data by 12-24 months — defer to
+    bls-oes-and-lightcast-labor-data for current-quarter labor-
+    market read), MBA / MS-CS specific pivot calibration (defer
+    to mba-and-cs-graduate-roi for the practitioner-cohort
+    voice). Manual ingest — paste full text of the ~10 most-
+    cited Georgetown CEW reports into the static markdown file.
+    Update when CEW publishes a new report (cadence: ~3-5 per
+    year, with major *Economic Value of College Majors*
+    refreshes every ~3 years).
+
+- id: bls-oes-and-lightcast-labor-data
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/bls-oes-college-scorecard-lightcast-payscale-labor-market-archive.md
+  domains: [education-funding/labor-market-data, education-funding/major-earnings, education-funding/college-scorecard, education-funding/oes-benchmarks, education-funding/payscale-benchmarks]
+  community_tag: roi-by-major-labor-market-data
+  reliability: 1
+  freshness_required: false
+  domain: education-funding
+  notes: |
+    BLS Occupational Employment and Wages (OES — bls.gov/oes,
+    quarterly update cycle) + College Scorecard
+    (collegescorecard.ed.gov, US Department of Education's
+    school-and-major-level outcomes data with 1-year + 3-year +
+    5-year + 10-year-post-enrollment earnings + completion rates +
+    debt-at-graduation + repayment-rate-of-recent-cohorts) +
+    Lightcast (formerly Burning Glass — labor-market-analytics
+    job-posting data) + Payscale (self-reported salary database).
+    Matches the "ROI-by-major / labor-market voices" anchor in
+    framings.md §"Voice anchors" (lines 1553-1560). The four
+    sources together cover: BLS OES = authoritative federal-
+    statistical baseline by occupation × geography; College
+    Scorecard = authoritative federal-statistical baseline by
+    school × major × cohort-years-post-enrollment (this is the
+    canonical reference for D2 enrollment-vs-defer decision
+    arithmetic AND the post-Gainful-Employment-Rule-2024
+    regulatory benchmark for under-performing programs);
+    Lightcast = real-time job-posting data covering skills-and-
+    credentials demand-side (more responsive than BLS OES to
+    quarterly shifts in tech / healthcare / industrial demand);
+    Payscale = self-reported employee-side salary data with
+    selection-bias caveats (skews toward employees who actively
+    research compensation, so over-represents the higher-end of
+    each segment).
+    Best for: F3 ROI-by-major framing's authoritative current-
+    quarter labor-market read (BLS OES for occupation-level
+    median + percentile salaries + employment counts by metro;
+    College Scorecard for school-and-major-level outcomes by
+    cohort), D2 enrollment-vs-defer decision arithmetic (the
+    canonical College Scorecard + BLS OES grounding for whether
+    expected lifetime earnings + financial-aid-net-cost combination
+    yields positive expected value), F11 §127 employer-tuition-
+    assistance ROI baseline (Lightcast skills-demand data
+    surfaces which MS-CS / MBA concentrations have current
+    demand growth in the user's target metro), the canonical
+    federal-statistical floor against which all ROI-by-major
+    claims should be checked.
+    Weak: median + percentile statistics hide bimodal
+    distributions (the canonical CEW *Major Matters Most* finding
+    is that within-major variance often exceeds between-major
+    variance for many majors — defer to Georgetown CEW for the
+    bimodal-distribution explicit treatment), Payscale selection-
+    bias (Payscale's self-reported data over-represents the
+    higher-end of each segment — apply skepticism to the
+    Payscale-vs-BLS-OES delta), real-time labor-market shifts
+    finer than quarterly (defer to mba-and-cs-graduate-roi +
+    fire-aware-college-funding for monthly compensation-thread
+    signal), school-specific aid + outcome detail (defer to
+    nacac-counselor-and-css-profile). Manual ingest — paste BLS
+    OES Q3/Q4 release-note summaries + College Scorecard data-
+    dictionary + Lightcast methodology + Payscale methodology +
+    selected data extracts into the static markdown file.
+    Update quarterly around BLS OES release (May / November)
+    and annually around College Scorecard release (typically
+    September / October).
+
+# ─── community: fire-aware-college-funding ────────────────────────────
+
+- id: reddit-financialindependence-college-threads
+  adapter: reddit_search
+  fetch_config:
+    subreddit: financialindependence+Fire+ChubbyFIRE+coastFIRE
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 50
+  domains: [education-funding/fire-aware-college-funding, education-funding/retirement-priority, education-funding/529, education-funding/idr, education-funding/debt-payoff-vs-invest]
+  community_tag: fire-aware-college-funding
+  reliability: 1
+  freshness_required: true
+  domain: education-funding
+  notes: |
+    r/financialindependence + r/Fire + r/ChubbyFIRE + r/coastFIRE
+    aggregated, college-funding-related threads. Matches the
+    "FIRE-aware-college-funding voices" anchor in framings.md
+    §"Voice anchors" (lines 1562-1569). Higher upvote threshold
+    (50) to surface threads with thread-convergence signal —
+    single anecdote college-funding-and-FIRE posts are not useful
+    evidence without thread volume. The community's own blind
+    spot (per framings.md): applies prescriptive ethos uniformly
+    to households for whom the social-context doesn't support it
+    (e.g. the "secure your own oxygen mask first" / "kids should
+    take loans" framing applies cleanly to households whose
+    children will themselves pursue FIRE-track careers, but
+    mis-applies to first-generation-college households where
+    college-funding-as-family-status-signal carries real social
+    weight); under-prices the consumption-value of college-
+    funding-as-family-status-signal; over-credits the option-
+    value of retirement-priority for households with low-
+    optionality jobs.
+    Best for: F10 FIRE-retirement-priority framing's lived-
+    experience ground truth (the canonical "we maxed our 401(k)s
+    AND funded a 529 with $X / month — here's the math" post-
+    mortem genre), F1 federal-optionality framing's FIRE-cohort
+    perspective (the "loans are subsidized leverage" half of the
+    federal-optionality framing that the PSLF-preservation
+    community systematically downplays), D2 enrollment-vs-defer
+    decision in the FIRE-track-household context, debt-payoff-
+    vs-invest prioritization (cross-edge to personal-finance —
+    the canonical r/financialindependence position is "invest
+    when the rate is sub-6%, payoff when above"), the calibration
+    of retirement-vs-college-funding as the "secure your own
+    oxygen mask first" frame.
+    Weak: tax-mechanic specificity (defer to tax-and-cpa-college-
+    funding for §108 / §127 / SECURE 2.0 §126 mechanics),
+    state-conformity specificity on 529 deductions (defer to
+    529-plan-mechanics for state-by-state mechanics), school-
+    specific aid + outcome detail (defer to nacac-counselor-
+    and-css-profile), MS-CS or MBA pivot calibration (defer to
+    mba-and-cs-graduate-roi). Soft-fails without REDDIT_CLIENT_
+    ID/SECRET.
+
+- id: mmm-choosefi-and-college-investor
+  adapter: rss
+  fetch_config:
+    feed: https://www.mrmoneymustache.com/feed/
+    keyword_filter: [college, university, student loan, 529, FAFSA, MMM University, financial aid, scholarship, ROI, major, tuition, education, school, professional school]
+  domains: [education-funding/fire-aware-college-funding, education-funding/retirement-priority, education-funding/529, education-funding/community-college, education-funding/college-funding-philosophy]
+  community_tag: fire-aware-college-funding
+  reliability: 1
+  freshness_required: true
+  domain: education-funding
+  notes: |
+    Mr. Money Mustache (mrmoneymustache.com) — Pete Adeney's
+    canonical FIRE blog + MMM University essay series (the
+    canonical FIRE-cohort treatment of college-funding-as-
+    optional-luxury for households on the FIRE track), cross-
+    listed conceptually with ChooseFI (choosefi.com — Brad
+    Barrett + Jonathan Mendonsa podcast + community) and The
+    College Investor (thecollegeinvestor.com — Robert Farrington's
+    FIRE-adjacent student-loan-and-529-coverage blog, with deep
+    library on PSLF / IDR mechanics + 529 state-by-state +
+    SECURE 2.0 §126 + scholarship strategy). Matches the "FIRE-
+    aware-college-funding voices" anchor in framings.md §"Voice
+    anchors" (lines 1562-1569). MMM's posture frames college-
+    funding as a discretionary household-consumption decision
+    (similar weight class to a wedding or a new car) rather
+    than a default-mandatory expense — the canonical
+    counterweight to college-funding-as-default-parental-
+    obligation cultural framing. The College Investor sits
+    closer to mainstream personal-finance posture and is the
+    most accessible PSLF-and-529-mechanics introduction.
+    Standard non-substitute-for-case-specific-counsel framing
+    applies.
+    Best for: F10 FIRE-retirement-priority framing core mental
+    model (the canonical MMM University series anchors the
+    "secure your own oxygen mask first" + "community college
+    + state flagship + work-study + commute" frame as
+    discretionary-consumption-decision rather than default-
+    parental-obligation), F1 federal-optionality framing's
+    FIRE-cohort interpretation (loans-as-subsidized-leverage
+    half of the framing), F2 529-state-deduction framing's
+    FIRE-cohort interpretation (the canonical College Investor
+    state-by-state 529 deduction analysis is the most
+    accessible reference), D2 enrollment-vs-defer decision +
+    community-college-as-strong-default framing (the canonical
+    MMM University essay), D6 SECURE 2.0 §126 529-to-Roth
+    rollover mechanics (The College Investor's coverage is the
+    most accessible introduction), scholarship-and-grant
+    strategy.
+    Weak: tax-mechanic specificity beyond accessible
+    introduction (defer to tax-and-cpa-college-funding for
+    Form 709 / §108 / Form 982 details), state-conformity
+    specificity on 529 mechanics (defer to 529-plan-mechanics
+    for Kantrowitz + Bogleheads state-by-state mechanics), MS-CS
+    / MBA pivot calibration (defer to mba-and-cs-graduate-roi),
+    school-specific aid + outcome detail (defer to nacac-
+    counselor-and-css-profile). URL placeholder — verify before
+    enabling.
+
+# ─── community: nacac-counselor-and-css-profile ───────────────────────
+
+- id: nacac-iega-and-ethics-statement
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/nacac-ieca-heca-college-counselor-ethics-and-appeal-archive.md
+  domains: [education-funding/college-counselor, education-funding/financial-aid-appeals, education-funding/merit-aid-negotiation, education-funding/professional-judgment, education-funding/yield-protection]
+  community_tag: nacac-counselor-and-css-profile
+  reliability: 1
+  freshness_required: false
+  domain: education-funding
+  notes: |
+    National Association for College Admission Counseling (NACAC,
+    nacacnet.org — published Ethics Statement + member directory)
+    + Independent Educational Consultants Association (IECA,
+    iecaonline.com) + Higher Education Consultants Association
+    (HECA, hecaonline.org) + NACAC's *State of College Admission*
+    annual report + the AP-style college-counseling industry
+    publications. Matches the "NACAC-counselor voices" anchor in
+    framings.md §"Voice anchors" (lines 1571-1578). The NACAC
+    Ethics Statement is the canonical reference for what
+    counselors are and are not allowed to do (e.g. the post-2019
+    *NACAC Statement of Principles of Good Practice* revisions
+    that removed prohibitions on poaching admitted students from
+    other schools — a regulatory change that materially shifted
+    the financial-aid-appeal calculus). The community's own blind
+    spot (per framings.md): over-confident on appeal-success
+    rates for mid-tier schools with constrained institutional-aid
+    budgets; under-weights yield-protection by mid-tier schools
+    against likely-cross-admit applicants (the "Tufts syndrome"
+    pattern where mid-selective schools waitlist or under-admit
+    over-qualified applicants to protect yield). Mechanism E
+    selective referral: per-case D5 financial-aid appeal letter
+    and merit-aid negotiation is the modal case where retained
+    NACAC-member counselor (or high-school counselor for
+    dependent students) outperforms the family acting alone.
+    Best for: F7 NACAC-counselor-aid-negotiation framing core
+    mechanics (canonical appeal-letter structure with concrete-
+    change-in-circumstances framing + cross-admit-leverage +
+    professional-judgment-petition mechanics), D5 financial-aid
+    appeal decisions (appeal-letter structure, response-rate
+    benchmarks by school selectivity tier, the merit-aid-
+    negotiation vs need-based-appeal distinction that is a
+    recurring blindspots.md F7 trap), F5 FAFSA-base-year-and-
+    asset-positioning framing's school-counselor perspective on
+    professional-judgment appeals (the Higher Education Act
+    professional-judgment provision lets individual financial-
+    aid officers override formula-driven aid in
+    extenuating-circumstances cases), yield-protection awareness
+    on mid-selective schools, NACAC Ethics Statement compliance
+    on what counselors can and can not do.
+    Weak: real-time tuition + aid + admission cycle data (NACAC
+    *State of College Admission* lags by 12-18 months — defer
+    to reddit-financialaid-and-applyingtocollege for current-
+    cycle ground truth), CSS Profile mechanics specifically
+    (defer to css-profile-and-net-price-calculators), tax-
+    mechanic specificity (defer to tax-and-cpa-college-
+    funding), professional-school-specific aid mechanics (the
+    NACAC ecosystem covers undergrad primarily — defer to
+    mba-and-cs-graduate-roi for graduate-level aid). Manual
+    ingest — paste NACAC Ethics Statement + Statement of
+    Principles of Good Practice + *State of College Admission*
+    annual report executive summaries + IECA / HECA member-
+    publication highlights into the static markdown file.
+    Update annually around NACAC-annual-conference proceedings
+    release.
+
+- id: reddit-financialaid-and-applyingtocollege
+  adapter: reddit_search
+  fetch_config:
+    subreddit: financialaid+ApplyingToCollege+college+CollegeAdmissions
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 40
+  domains: [education-funding/css-profile, education-funding/fafsa, education-funding/financial-aid-appeals, education-funding/merit-aid-negotiation, education-funding/net-price-calculator, education-funding/college-cycle]
+  community_tag: nacac-counselor-and-css-profile
+  reliability: 1
+  freshness_required: true
+  domain: education-funding
+  notes: |
+    r/financialaid + r/ApplyingToCollege + r/college + r/College
+    Admissions aggregated. Matches the "CSS-Profile-aware voices"
+    anchor in framings.md §"Voice anchors" (lines 1590-1598).
+    Higher upvote threshold (40) to surface threads with
+    thread-convergence signal. The community's own blind spot
+    (per framings.md): treats CSS Profile schools as if they
+    followed FAFSA rules; under-weights the home-equity-and-
+    business-asset-reporting differential. r/ApplyingToCollege
+    + r/CollegeAdmissions skew toward the highly-selective-
+    school-admission process; r/financialaid + r/college skew
+    more toward aid mechanics across the selectivity spectrum.
+    Best for: F5 FAFSA-base-year-and-asset-positioning framing's
+    real-time ground truth (the canonical Reddit threads on
+    current-cycle FAFSA Simplification implementation, post-
+    2024 FAFSA-rollout-delay impact, base-year + prior-prior
+    timing arithmetic), F7 NACAC-counselor-aid-negotiation
+    framing's appeal-and-merit-negotiation real-time data
+    (current-cycle merit-aid-negotiation success patterns by
+    school + cross-admit-leverage tactics), D5 financial-aid
+    appeal decision context (the canonical "I asked for a
+    reconsideration and got $X more — here's what I sent" post
+    genre), D8 CSS-Profile divorced-parent or business-asset
+    reporting mechanics (the canonical reference for how
+    individual CSS-Profile schools differ from FAFSA — Princeton
+    + Stanford + MIT + Harvard + Yale + Duke + Notre Dame all
+    have NPC-publishable methodology that the Reddit cohort has
+    reverse-engineered), college-cycle real-time signal.
+    Weak: NACAC ethics + professional-judgment-appeal-mechanics
+    specificity (defer to nacac-iega-and-ethics-statement),
+    tax-mechanic specificity (defer to tax-and-cpa-college-
+    funding), state-conformity specificity on 529 deductions
+    (defer to 529-plan-mechanics), professional-school aid
+    mechanics (defer to mba-and-cs-graduate-roi). Soft-fails
+    without REDDIT_CLIENT_ID/SECRET.
+
+# ─── community: 529-plan-mechanics ────────────────────────────────────
+
+- id: savingforcollege-and-kantrowitz
+  adapter: rss
+  fetch_config:
+    feed: https://www.savingforcollege.com/feed/
+    keyword_filter: [529, state deduction, beneficiary, rollover, SECURE 2.0, Roth conversion, scholarship, FAFSA, CSS Profile, tax credit, AOTC, LLC, 1098-T, Form 8863]
+  domains: [education-funding/529, education-funding/state-deduction, education-funding/secure-2-0, education-funding/aotc-llc, education-funding/savingforcollege, education-funding/kantrowitz]
+  community_tag: 529-plan-mechanics
+  reliability: 1
+  freshness_required: true
+  domain: education-funding
+  notes: |
+    SavingForCollege.com — the canonical web resource for 529 +
+    Coverdell ESA + financial-aid mechanics, founded by Joseph
+    Hurley CPA in 2000, now home base for Mark Kantrowitz's
+    practitioner column. Matches the "529 voices" anchor in
+    framings.md §"Voice anchors" (lines 1580-1589). Kantrowitz
+    is the canonical practitioner voice on 529 + FAFSA mechanics
+    (formerly Edvisors / Cappex / FastWeb; widely cited in NYT /
+    WSJ / WaPo coverage of education-funding policy). The
+    community's own blind spot (per framings.md): oversells the
+    SECURE 2.0 §126 rollover's near-term value (the 15-year-
+    account-age + 5-year-contribution lookback mechanics +
+    annual-Roth-IRA-contribution-limit + total-$35k-lifetime cap
+    significantly constrain practical use); under-weights the
+    leftover-529 problem for over-funded households; treats
+    state-deduction-arbitrage as universally valuable when many
+    states have no deduction or only deduct for in-state plans.
+    Standard non-substitute-for-case-specific-counsel framing
+    applies; per-case Form 709 filing + state-deduction-
+    recapture mechanics in D3 large 5-year-forward lump-sums
+    REQUIRE retirement-experienced CPA.
+    Best for: F2 529-state-deduction-and-tax-deferral framing
+    core mechanics (state-by-state deduction table, the
+    canonical reference for which states allow out-of-state-
+    plan deductions vs in-state-only vs no-deduction, the
+    Form 709 filing mechanics for §529(c)(2)(B) 5-year-forward
+    election), F6 529-to-Roth-flexibility-hedge framing
+    (SECURE 2.0 §126 mechanics — the 15-year-account-age + 5-
+    year-contribution-lookback + annual-Roth-IRA-contribution-
+    limit + $35k-lifetime-cap constraints), D3 large 5-year-
+    forward lump-sum gift mechanics, D6 SECURE 2.0 §126
+    529-to-Roth rollover decision, AOTC + LLC tax-credit
+    coordination with 529 withdrawal (the canonical reference
+    for which expenses are 529-eligible-and-AOTC-eligible vs
+    529-eligible-but-AOTC-ineligible, a recurring blindspots.md
+    F2 / F11 trap).
+    Weak: case-specific Form 709 filing strategy (defer to
+    tax-and-cpa-college-funding + retirement-experienced CPA),
+    state-conformity-of-IRC-§108-insolvency-exclusion (defer to
+    tax-and-cpa-college-funding), bankruptcy-discharge mechanics
+    (defer to consumer-protection-and-student-loan-advocacy +
+    NACBA-member attorney), real-time political-cancellation
+    timing (defer to consumer-protection-and-student-loan-
+    advocacy + fire-aware-college-funding). URL placeholder —
+    verify before enabling.
+
+- id: bogleheads-529-and-oblivious-investor
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/bogleheads-529-wiki-and-mike-piper-oblivious-investor-archive.md
+  domains: [education-funding/529, education-funding/asset-allocation, education-funding/secure-2-0, education-funding/state-deduction, education-funding/oblivious-investor]
+  community_tag: 529-plan-mechanics
+  reliability: 1
+  freshness_required: false
+  domain: education-funding
+  notes: |
+    Bogleheads 529 wiki + Bogleheads forum 529-tagged threads
+    + Mike Piper's *Oblivious Investor* blog (obliviousinvestor
+    .com — author of *Independently Wealthy*, *Social Security
+    Made Simple*, *Investing Made Simple*, *Microeconomics Made
+    Simple*; CPA + Bogleheads-canonical author on tax-mechanic
+    specifics). Matches the "529 voices" anchor in framings.md
+    §"Voice anchors" (lines 1580-1589) and the "Bogleheads 529"
+    sub-anchor. Mike Piper's content is the canonical
+    practitioner-CPA explainer for the Bogleheads-style index-
+    investing cohort on tax-coordinated investing + 529
+    mechanics. The Bogleheads 529 wiki is the most thorough
+    state-by-state mechanics reference (deduction, recapture,
+    age-based glide-path, expense-ratio benchmarks across plans).
+    Standard non-substitute-for-case-specific-counsel framing
+    applies; case-specific Form 709 filing strategy requires
+    retirement-experienced CPA.
+    Best for: F2 529-state-deduction-and-tax-deferral framing's
+    Bogleheads-style index-investing perspective (the canonical
+    reference for which 529 plans have the lowest expense
+    ratios + most index-fund options, regardless of state of
+    residence), F6 529-to-Roth-flexibility-hedge framing (Mike
+    Piper's SECURE 2.0 §126 coverage is among the most precise
+    on the 15-year-account-age + 5-year-contribution lookback
+    interaction with Roth-IRA-contribution-limit mechanics),
+    age-based-glide-path vs static-allocation 529 investment
+    strategy, the canonical Bogleheads-style "low-expense-ratio
+    index funds" position translated into 529 mechanics, AOTC
+    + LLC + 529-withdrawal coordination from the tax-coordinated
+    Bogleheads perspective, the leftover-529 problem treatment
+    (the canonical Bogleheads thread on what to do with a 529
+    after the beneficiary graduates with surplus funds).
+    Weak: real-time political-cancellation timing (defer to
+    consumer-protection-and-student-loan-advocacy + fire-aware-
+    college-funding), school-specific aid + outcome detail
+    (defer to nacac-counselor-and-css-profile), Form 709 case-
+    specific filing strategy (defer to tax-and-cpa-college-
+    funding + retirement-experienced CPA). Manual ingest —
+    paste Bogleheads 529 wiki + canonical Bogleheads forum
+    529-tagged threads + Mike Piper's full 529 + SECURE 2.0
+    §126 + AOTC essays into the static markdown file. Update
+    annually around IRS Pub 970 revision (typically January)
+    and Bogleheads-conference 529-track presentation cycle.
+
+# ─── community: mba-and-cs-graduate-roi ───────────────────────────────
+
+- id: poets-and-quants-and-gmat-club
+  adapter: rss
+  fetch_config:
+    feed: https://poetsandquants.com/feed/
+    keyword_filter: [MBA, M7, T15, MBA ROI, MBA salary, MBA debt, McKinsey, BCG, Bain, MBB, Goldman, Morgan Stanley, JPMorgan, GMAT, GRE, admissions, financial aid, scholarship]
+  domains: [education-funding/mba-roi, education-funding/professional-school, education-funding/mba-admissions, education-funding/mba-financial-aid, education-funding/mba-pivot]
+  community_tag: mba-and-cs-graduate-roi
+  reliability: 1
+  freshness_required: true
+  domain: education-funding
+  notes: |
+    Poets&Quants (poetsandquants.com — John Byrne's MBA-industry
+    publication, the canonical MBA-admissions + MBA-career-
+    outcome trade press) + GMAT Club forums (gmatclub.com —
+    canonical MBA-applicant + admit community, with admit-data
+    threads + scholarship-negotiation threads) + Stacy
+    Blackman / mbaMission / Personal MBA Coach admissions-
+    consultant content. Matches the "MBA-admissions voices"
+    anchor in framings.md §"Voice anchors" (lines 1609-1615).
+    The community's own blind spot (per framings.md): over-
+    credits M7 (HBS / Stanford / Wharton / Booth / Kellogg /
+    MIT Sloan / Columbia) + T15 ranking value as causal rather
+    than partly-selection-effect; under-prices engineer-pivot-
+    to-PM internal-mobility as a substitute for MBA; conflates
+    median MBA comp ($150-180k starting at M7) with what most
+    graduates actually realize (the right-tail consulting + IB
+    + tech-PM outcomes dominate the median, but median outcomes
+    at non-M7 / non-T15 schools have significantly weaker
+    earnings-distribution shapes). Standard non-substitute-for-
+    case-specific-counsel framing applies; D5 MBA-scholarship-
+    negotiation modal case benefits from retained MBA-
+    admissions-consultant or fee-only-CFP.
+    Best for: F3 ROI-by-major framing's MBA-specific subset
+    (the canonical Poets&Quants employment-report-of-the-class
+    aggregations + the GMAT Club admit-data + scholarship-
+    negotiation threads), D2 MBA-enrollment-vs-defer decision
+    (the canonical "I got into [school] with $X scholarship
+    and a $Y signing bonus — should I go" thread genre), D5
+    MBA-scholarship-negotiation mechanics (cross-admit-leverage
+    + post-admit-deposit negotiation + waitlist-conversion
+    leverage), F11 §127-retention-clawback framing's MBA-
+    specific subset (employer-funded part-time-MBA + retention
+    clawback mechanics are most documented in the Poets&Quants
+    + GMAT Club coverage), professional-school-pivot expected-
+    value calibration with practitioner-cohort voice.
+    Weak: MS-CS-specific calibration (defer to reddit-cs
+    careerquestions-and-levels-fyi), real-time MBA-industry
+    labor-market shifts finer than quarterly (the MBA hiring
+    cycle has well-defined quarters — defer to the same
+    publication's most-recent quarterly summary), tax-mechanic
+    specificity (defer to tax-and-cpa-college-funding), case-
+    specific legal-fee + retention-clawback negotiation (defer
+    to retained employment-law attorney). URL placeholder —
+    verify before enabling.
+
+- id: reddit-cscareerquestions-and-levels-fyi
+  adapter: reddit_search
+  fetch_config:
+    subreddit: cscareerquestions+csMajors+ExperiencedDevs
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 50
+  domains: [education-funding/ms-cs-roi, education-funding/professional-school, education-funding/cs-graduate-pivot, education-funding/h-1b-cap-exempt, education-funding/levels-fyi, education-funding/section-127-tuition]
+  community_tag: mba-and-cs-graduate-roi
+  reliability: 1
+  freshness_required: true
+  domain: education-funding
+  notes: |
+    r/cscareerquestions + r/csMajors + r/ExperiencedDevs
+    aggregated, with Levels.fyi + Blind compensation-data
+    cross-reference. Matches the "r/cscareerquestions / r/cs
+    Majors / Levels.fyi / Blind voices" anchor in framings.md
+    §"Voice anchors" (lines 1617-1623). Software-engineering-
+    comp-aware cohort that treats MBA tuition + 2-year
+    opportunity cost in tech compensation as the dominant cost
+    line (a $300k MBA tuition + $400-600k forgone tech comp
+    = $700-900k all-in cost that the MBA-cohort treatments
+    systematically under-price). Higher upvote threshold (50)
+    to surface threads with thread-convergence signal. The
+    community's own blind spot (per framings.md): under-weights
+    the credentialing-value-for-non-tech pivots (MBA-to-VC,
+    MBA-to-consulting); over-weights the engineer-staying-
+    engineer case; treats Levels.fyi median TC as a stable
+    benchmark when it skews FAANG / tier-1-startup heavily and
+    under-represents non-tier-1 / non-FAANG software roles.
+    Standard non-substitute-for-case-specific-counsel framing
+    applies.
+    Best for: F3 ROI-by-major framing's MS-CS subset (the
+    canonical engineer-considering-MS-CS thread genre, with
+    explicit total-comp opportunity-cost math), F11 §127-
+    employer-tuition-assistance retention-clawback framing's
+    engineer perspective (the canonical r/cscareerquestions
+    thread on Amazon / Microsoft / Google / Meta tuition-
+    assistance program mechanics + retention-clawback risk),
+    D2 MS-CS-enrollment-vs-defer decision in engineering
+    context, MS-CS-as-H-1B-cap-exempt-route mechanics (the
+    canonical reference for the H-1B-cap-exempt employer
+    universe — universities + non-profit research orgs — that
+    make the MS-CS-at-cap-exempt-employer pathway distinctive),
+    professional-school-pivot expected-value calibration with
+    engineering-cohort voice (a counterweight to the MBA-
+    cohort + Georgetown-CEW-median voice).
+    Weak: MBA-specific calibration (defer to poets-and-quants-
+    and-gmat-club), real-time labor-market shifts finer than
+    quarterly (the r/cscareerquestions hiring threads track
+    quarterly shifts well; defer to bls-oes-and-lightcast-
+    labor-data for federal-statistical baseline), Levels.fyi
+    sample-bias (over-represents FAANG + tier-1-startup tech
+    comp), case-specific §127 retention-clawback contract
+    review (defer to retained employment-law attorney). Soft-
+    fails without REDDIT_CLIENT_ID/SECRET.
+
+# ─── community: tax-and-cpa-college-funding ───────────────────────────
+
+- id: irs-pub-970-and-education-tax-forms
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/irs-pub-970-form-1098t-8863-709-982-590a-education-tax-archive.md
+  domains: [education-funding/aotc-llc, education-funding/section-127, education-funding/section-25a, education-funding/section-529, education-funding/secure-2-0, education-funding/section-108, education-funding/form-709, education-funding/form-982]
+  community_tag: tax-and-cpa-college-funding
+  reliability: 1
+  freshness_required: false
+  domain: education-funding
+  notes: |
+    IRS Publications canonical education-funding set: Pub 970
+    (Tax Benefits for Education — the master reference covering
+    AOTC §25A + LLC + Tuition-and-Fees Deduction history +
+    §529 + §530 Coverdell ESA + §127 employer-tuition-assistance
+    + §108(f) student-loan-cancellation income-treatment +
+    §221 student-loan-interest deduction + §530 / §529
+    coordination with §25A non-double-counting), Pub 590-A (IRA
+    contribution rules including SECURE 2.0 §126 529-to-Roth
+    mechanics), Form 1098-T instructions (the school-reported
+    tuition statement that drives the §25A AOTC + LLC
+    arithmetic), Form 8863 instructions (the AOTC / LLC claim
+    form with the four-part eligibility test + the half-time-
+    enrollment + first-four-years + degree-program +
+    no-felony-drug-conviction tests for AOTC), Form 709
+    instructions (the gift-tax-return that drives §529(c)(2)(B)
+    5-year-forward election mechanics + the $18-19k annual
+    exclusion arithmetic), Form 982 instructions (the
+    discharge-of-indebtedness income reduction-of-tax-
+    attributes form for §108 insolvency exclusion + Title 11
+    discharge exclusion). Authoritative statutory + regulatory
+    ground-truth. Critic should weight IRS Pub citations heavily
+    on tax-mechanic claims that conflict with practitioner-blog
+    interpretations. Mechanism E selective referral: per-case
+    D3 large §529(c)(2)(B) 5-year-forward lump-sums, D4 IDR +
+    tax-bomb $150k+-balance sinking-fund design, D6 SECURE 2.0
+    §126 529-to-Roth rollover, D9 §127 retention-clawback
+    coordination REQUIRE retirement-experienced CPA with
+    current facts (must have §25A / §127 / §529 / SECURE 2.0
+    §126 / Form 709 / Form 982 history per framings.md §"Voice
+    anchors" closing paragraph).
+    Best for: F2 529-state-deduction framing's federal-tax-
+    baseline (Pub 970 + Form 1098-T + Form 8863 mechanics
+    drive the AOTC + LLC + 529 + §127 coordination — the AOTC-
+    529-double-counting prohibition is a recurring blindspots.md
+    F2 trap), F6 529-to-Roth-flexibility-hedge framing's
+    federal-tax-baseline (Pub 590-A + SECURE 2.0 §126
+    mechanics), F8 tax-bomb-arithmetic-and-arpa-cliff framing's
+    procedural floor (§108(f) student-loan-cancellation income-
+    treatment + ARPA-2021 §9675 sunset at end-of-2025 +
+    §108(a)(1)(B) insolvency exclusion + Form 982 mechanics),
+    F11 §127-retention-clawback framing's federal-tax-baseline
+    (the §127 $5,250 annual exclusion for employer-paid
+    education + the §127(b)(5) related-party-rules + the §127
+    coordination with §25A AOTC non-double-counting + the
+    pre-2026 §127(d) student-loan-repayment-exclusion sunset),
+    D3 large §529(c)(2)(B) 5-year-forward gift mechanics
+    (Form 709 filing requirement + state-conformity variance),
+    D6 SECURE 2.0 §126 529-to-Roth rollover decision (the
+    federal-tax-baseline for the 15-year-account-age + 5-year-
+    contribution lookback + $35k-lifetime-cap mechanics).
+    Weak: real-world adjudicator variance + state-specific tax
+    interpretation (IRS publishes; states diverge sharply on
+    §529 deduction conformity + ARPA-cliff conformity — many
+    states retain the pre-ARPA tax-bomb treatment even after
+    ARPA sunsets), tax-court precedent + private-letter-ruling
+    interpretation (defer to retained retirement-experienced
+    CPA or tax-attorney territory), state-specific §529-
+    recapture mechanics (defer to 529-plan-mechanics for
+    state-by-state mechanics + retained CPA for case-specific
+    filing strategy). Manual ingest — download current-year
+    IRS Pub 970 + Pub 590-A + Form 1098-T / Form 8863 / Form
+    709 / Form 982 instructions + selected Rev. Procs. (annual
+    AOTC / LLC / §127 / SECURE 2.0 §126 update notices) into
+    the static markdown file. Update annually around January
+    when IRS issues current-year Pub revisions and SECURE 2.0
+    §126 implementation guidance refreshes.
+
+- id: finance-buff-education-funding-cross-listing
+  adapter: rss
+  fetch_config:
+    feed: https://thefinancebuff.com/feed
+    keyword_filter: [529, SECURE 2.0, AOTC, LLC, Lifetime Learning Credit, tuition, scholarship, student loan, PSLF, IDR, tax bomb, Form 709, Form 982, gift tax, Section 127, employer education assistance, Coverdell]
+  domains: [education-funding/section-529, education-funding/secure-2-0, education-funding/aotc-llc, education-funding/section-127, education-funding/form-709, education-funding/tax-bomb-arithmetic]
+  community_tag: tax-and-cpa-college-funding
+  reliability: 1
+  freshness_required: true
+  domain: education-funding
+  notes: |
+    Harry Sit's *The Finance Buff* (thefinancebuff.com) cross-
+    listed for education-funding-domain coverage — same feed as
+    personal-finance/sources.yaml `the-finance-buff-tax-
+    mechanics` and entrepreneurship/sources.yaml `finance-buff-
+    and-nolo-small-business`, different community_tag here
+    because the education-funding-domain focus is on §529 +
+    SECURE 2.0 §126 + §127 + §25A AOTC + LLC + §108 insolvency-
+    exclusion mechanics. The Finance Buff is the canonical
+    practitioner outlet for the specific tax-mechanic detail
+    that the Bogleheads + FIRE + fee-only-CFP communities all
+    defer to (matches the "Retirement-experienced-CPA voices"
+    anchor in framings.md §"Voice anchors" lines 1644-1652 and
+    the cross-listed "529 voices" + "Tax-and-CPA" practitioner
+    cohort). Mechanism E selective referral: per-case D3 + D6
+    + D9 decisions REQUIRE retained retirement-experienced CPA
+    with current facts; this source-view is reference / pattern-
+    recognition only.
+    Best for: F2 529-state-deduction framing's practitioner
+    specifics (the canonical Finance Buff state-by-state
+    529-deduction-recapture + out-of-state-rollover-recapture
+    treatment, written by a practitioner with current-tax-year
+    facts), F6 529-to-Roth-flexibility-hedge framing's
+    SECURE 2.0 §126 practitioner walkthrough (the canonical
+    Finance Buff post on the 15-year-account-age + 5-year-
+    contribution lookback + $35k-lifetime-cap mechanics + the
+    interaction with annual-Roth-IRA-contribution limits +
+    earned-income requirement), F8 tax-bomb-arithmetic-and-
+    arpa-cliff framing's practitioner walkthrough (§108
+    insolvency-exclusion + Form 982 mechanics with worked
+    examples), F11 §127-retention-clawback framing's
+    practitioner walkthrough (employer-tuition-assistance + the
+    $5,250 annual exclusion + the pre-2026 §127(d) student-
+    loan-repayment-exclusion sunset coordination), D3 + D6 +
+    D9 decision context.
+    Weak: state-specific tax detail (Harry Sit lives in MN;
+    defer to retained retirement-experienced CPA for CA / NY /
+    NJ / IL state-specific mechanics), case-specific Form 709
+    filing strategy (defer to retained CPA), bankruptcy
+    Adversary-Proceeding mechanics + 11 USC §523(a)(8)
+    undue-hardship strategy (defer to consumer-protection-and-
+    student-loan-advocacy + NACBA-member attorney). URL
+    placeholder — verify before enabling.
+
+# ─── community: napfa-fee-only-cfp ────────────────────────────────────
+
+- id: napfa-garrett-and-xy-planning-network
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/napfa-garrett-xy-planning-fee-only-cfp-college-funding-archive.md
+  domains: [education-funding/fee-only-cfp, education-funding/financial-planning, education-funding/college-funding-strategy, education-funding/fiduciary, education-funding/napfa]
+  community_tag: napfa-fee-only-cfp
+  reliability: 1
+  freshness_required: false
+  domain: education-funding
+  notes: |
+    NAPFA (napfa.org — National Association of Personal Financial
+    Advisors, the canonical fee-only-fiduciary CFP industry
+    association) member directory + canonical publications +
+    Garrett Planning Network (garrettplanningnetwork.com —
+    Sheryl Garrett's hourly fee-only CFP network) + XY Planning
+    Network (xyplanningnetwork.com — Michael Kitces + Alan Moore's
+    Gen-X-and-Gen-Y-focused fee-only flat-fee CFP network) +
+    Michael Kitces' Nerd's Eye View blog (kitces.com — the
+    canonical CFP-industry practitioner blog with deep coverage
+    on 529 mechanics + SECURE 2.0 §126 + §127 + retirement-
+    coordination-with-college-funding). Matches the "NAPFA fee-
+    only-CFP voices" anchor in framings.md §"Voice anchors"
+    (lines 1637-1643). Fee-only is the canonical fiduciary-
+    standard CFP-cohort (distinct from AUM-only / commission-
+    based / fee-based hybrid models that introduce systematic
+    conflicts of interest in the college-funding-vs-retirement
+    decision). The community's own blind spot (per framings.md):
+    routes everything through the financial-plan lens at the
+    cost of non-financial values; under-prices the family-
+    status-signal of college-funding. Mechanism E selective
+    referral: per-case D2 + D4 + D7 decisions with $150k+
+    balances modal-case benefit from retained NAPFA-member /
+    Garrett / XY Planning Network fee-only fiduciary CFP — the
+    State Bar / SEC-FINRA BrokerCheck + the NAPFA-member-only
+    directory + the Garrett / XY Planning Network membership
+    requirement is the $0-friction procedural floor on any
+    individual CFP recommended (per framings.md §"Voice
+    anchors" closing paragraph).
+    Best for: F10 FIRE-retirement-priority framing's fee-only
+    fiduciary CFP perspective (the canonical "secure your own
+    oxygen mask first" arithmetic from a fee-only fiduciary
+    posture — Michael Kitces' canonical Nerd's Eye View posts
+    on retirement-vs-college-funding sequencing are reference-
+    grade), F6 529-to-Roth-flexibility-hedge framing's fee-
+    only CFP walkthrough (Kitces' SECURE 2.0 §126 analysis is
+    the most thorough practitioner reference), D2 enrollment-
+    vs-defer decision integrated with retirement-planning
+    context, D4 IDR + tax-bomb sinking-fund design with
+    retirement-coordination (the fee-only fiduciary CFP is the
+    natural retainer for cross-disciplinary college-funding-
+    plus-retirement integration), professional-judgment
+    appeal-letter substantiation (when the appeal involves a
+    financial-circumstance change the fee-only fiduciary CFP
+    can substantiate).
+    Weak: case-specific Form 709 filing strategy (defer to
+    tax-and-cpa-college-funding + retained retirement-
+    experienced CPA), legal-adjudication of bankruptcy
+    Adversary-Proceeding strategy (defer to consumer-
+    protection-and-student-loan-advocacy + NACBA-member
+    attorney), school-specific aid + outcome detail (defer to
+    nacac-counselor-and-css-profile), MS-CS / MBA pivot
+    calibration (defer to mba-and-cs-graduate-roi). Manual
+    ingest — paste NAPFA Code of Ethics + Garrett Planning
+    Network practitioner publications + XY Planning Network
+    publications + Michael Kitces Nerd's Eye View canonical
+    college-funding + SECURE 2.0 §126 + §127 essays into the
+    static markdown file. Update annually around FPA Annual
+    Conference + Kitces' major SECURE-Act / education-funding
+    legislative-change coverage.
+
+# ─── community: heloc-cross-edge-housing ──────────────────────────────
+
+- id: heloc-vs-parent-plus-cross-edge-housing
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/heloc-vs-parent-plus-cross-edge-housing-college-funding-archive.md
+  domains: [education-funding/heloc, education-funding/parent-plus, education-funding/cash-out-refi, education-funding/cross-edge-housing, education-funding/home-equity, education-funding/css-profile-home-equity]
+  community_tag: heloc-cross-edge-housing
+  reliability: 1
+  freshness_required: false
+  domain: education-funding
+  notes: |
+    HELOC-vs-Parent-PLUS-vs-cash-out-refinance comparison voices
+    cross-edge with housing-domain knowledge. Matches the
+    "HELOC-as-college-funding voices" anchor in framings.md
+    §"Voice anchors" (lines 1653-1658). Cross-listed conceptually
+    with housing/sources.yaml PR #66 `mortgage-and-personal-
+    finance` community tag (Bogleheads + MMM + Ramit Sethi
+    calculator-pilled voice + fee-only-CFP / CPA voice on
+    HELOC / cash-out-refi mechanics) and personal-finance/
+    sources.yaml `bogleheads-and-passive-index` for the
+    canonical "leverage as concentration risk on housing"
+    framing. The HELOC-as-college-funding decision sits at the
+    cross-edge of education-funding (Parent PLUS at ~9%
+    variable + origination-fee + federal-protection package vs
+    HELOC at ~prime+1-2% variable + no-origination-fee + no-
+    federal-protection package — the rate-spread is real but
+    the federal-protection-and-home-equity-at-risk asymmetry
+    is the load-bearing decision factor) and housing (using
+    home equity for college funding concentrates leverage on
+    the primary residence — a recurring blindspots.md trap
+    where the HELOC-funded-college-investor faces simultaneous
+    housing-and-college-funding risk if the labor-market or
+    home-price shock arrives during the in-school period). The
+    community's own blind spot (per framings.md): understates
+    the home-equity-at-risk dimension when the HELOC is being
+    used for college funding rather than home-improvement.
+    Mechanism E selective referral: per-case D7 Parent PLUS vs
+    federal direct vs private cosigner vs HELOC vs cash-out-
+    refi modal case benefits from fee-only-CFP + consumer-
+    protection-anti-predatory perspective + student-loan-
+    attorney for severe cases.
+    Best for: F4 rate-spread-arithmetic-and-refi-quote-
+    impermanence framing's HELOC-cross-edge surface (the
+    canonical reference for HELOC variable-rate-with-no-rate-
+    cap mechanics + the lower-rate-but-no-federal-protection
+    trade-off), D7 Parent-PLUS-vs-federal-direct-vs-private-
+    cosigner-vs-HELOC-vs-cash-out-refi decision context, F5
+    FAFSA-base-year-and-asset-positioning framing's CSS-Profile
+    home-equity treatment (FAFSA does not require home-equity
+    reporting on the primary residence; CSS Profile does
+    require home-equity reporting at most CSS schools — a
+    recurring blindspots.md F5 trap that interacts directly
+    with the HELOC decision), cross-edge to housing-domain
+    knowledge on cash-out-refi vs HELOC vs HELOAN mechanics.
+    Weak: school-specific aid + outcome detail (defer to
+    nacac-counselor-and-css-profile + reddit-financialaid-and-
+    applyingtocollege), state-specific HELOC mechanics (defer
+    to housing/sources.yaml PR #66 `mortgage-and-personal-
+    finance` for state-by-state HELOC mechanics), case-specific
+    Parent-PLUS-vs-private-loan structuring (defer to
+    consumer-protection-and-student-loan-advocacy + retained
+    student-loan attorney). Manual ingest — paste canonical
+    HELOC-vs-Parent-PLUS comparison analyses from fee-only-
+    CFP + Bogleheads + Kitces + MMM + The College Investor +
+    selected mortgage-broker walk-throughs into the static
+    markdown file. Update annually around prime-rate-cycle
+    shifts and Parent-PLUS-rate-cycle (rate is reset each
+    federal-fiscal-year by Education Department-published
+    statutory formula).
