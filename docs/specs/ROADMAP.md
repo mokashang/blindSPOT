@@ -155,9 +155,9 @@ hardening, not new features; it makes V2's scale-up safe to begin.
 
 ```
 Status: 🟡 in progress
-Progress: ██████░░░░░░░░░░░░░░ 29% (2/7)
-Last completed: 3bb4fea — eval-baseline-stability gains its SECOND full-15/15 clean measurement: PR #57 ran eval to completion under PR #46's judge-unparseable robustness, producing eval/results/20260517T203938Z.json with aggregate quality_score=0.8207, 15/15 OK fixtures, 0 timed_out, 0 judge_unparseable, ~50 min wall-clock. **Delta vs PR #43's 0.8164 anchor: +0.0043 — well within ±0.03 stability band.** Two consecutive clean measurements landed; one more closes the 3-consecutive criterion. This run's result file contains `per_domain` aggregation from PR #34's V2 fixture loader — confirming eval ran against the V2 migrated layout, which simultaneously closes the V2 tech-career sub-item 8 (`eval still passes on migrated layout`) AND tech-career parent (8/8). **TECH-CAREER IS THE FIRST FULLY-BUILT V2 DOMAIN.**
-Next up: Auto-review + merge **PR #59** (eval measurement #4 at 0.7964, captured 2026-05-17 by a refine subagent and recovered into a pushed PR by run-20260518-0200 after 3 sessions of git-contention blocking). The three-consecutive ±0.03 criterion is **empirically met**: pairwise deltas {0.7964↔0.8164=0.0200, 0.7964↔0.8207=0.0243, 0.8164↔0.8207=0.0043} all ≤ 0.0243 < 0.03. Median = 0.8164 = V1.x→V2 entry baseline. Merge of PR #59 closes BOTH v1.x/eval-baseline-stability AND v1.x/eval-pipeline-robustness (4th consecutive no-Python-exception eval run in hand: PR #24 + PR #43 + PR #57 + PR #59). V1.x progress 2/7 → 4/7 (57%) in one merge. Currently blocked on `claude -p` reviewer auth (401); next session with restored auth picks up. Immigration: fixtures/* done at PR #58; only eval-pass remains.
+Progress: ███████████░░░░░░░░░ 57% (4/7)
+Last completed: 111365d — **eval-baseline-stability AND eval-pipeline-robustness BOTH FLIPPED `[x]` in a single merge** via PR #59 (measurement #4 at aggregate quality_score 0.7964, full 15/15, partial=false, 0 timed_out, 1 judge_unparseable handled gracefully by PR #46). Three-measurement cluster now in hand: 0.7964 / 0.8164 / 0.8207 — all pairwise deltas ≤ 0.0243 < 0.03 stability band. **Median = 0.8164 = V1.x→V2 entry baseline.** eval-pipeline-robustness closes simultaneously: PR #59 is the 4th consecutive no-Python-exception eval run on main (PR #24 + PR #43 + PR #57 + PR #59), exceeding the "three consecutive" sub-criterion; the other two sub-criteria (judge max-tokens handling, per-fixture survival) were operationally verified earlier via PR #46 + PR #50 + PR #56. V1.x progress 2/7 → 4/7 in one merge — first time the eval-pipeline foundation is empirically certified.
+Next up: **AnthropicAPIClient usable end-to-end** — set `llm_backend: anthropic_api` in `config.yaml`, run a full `blindspot ask`, and verify behavior matches the subscription backend on the eval fixtures (per-situation `quality_score` delta < 0.05). Touches Agents/Config layer. Remaining V1.x items after this: Streaming editor output (Agents); Real-usage signal (org-level, gated on user activity).
 ```
 
 ### Per-task checklist
@@ -166,7 +166,7 @@ Next up: Auto-review + merge **PR #59** (eval measurement #4 at 0.7964, captured
   merged refine PRs across ≥ 3 of the 4 detail layers (Sources & knowledge
   / Agents / Config & scoring / Eval). The signal is that refine is
   producing diverse real progress, not stuck in one corner. **Done at b3a8d70 — 7 merged PRs (#1–#7) across all 4 layers.**
-- [ ] **Eval pipeline robustness** — `./bin/blindspot eval` (a) reliably
+- [x] **Eval pipeline robustness** — `./bin/blindspot eval` (a) reliably
   runs to completion in < 30 min wall-clock for the current 15-fixture
   tech-career set (or shows partial-progress in a result file even if
   cut short), (b) handles judge LLM output that exceeds max-tokens by
@@ -174,11 +174,11 @@ Next up: Auto-review + merge **PR #59** (eval measurement #4 at 0.7964, captured
   rather than crashing the whole run, (c) survives per-fixture failures
   (timeouts, JSON parse errors, Reddit credential absence) without
   aborting the run. Three consecutive runs from `main` all produce a
-  result file with no Python exception in stdout.
-- [ ] **Eval baseline stability** — three consecutive `./bin/blindspot eval`
+  result file with no Python exception in stdout. **Done at 111365d — sub-criterion (a) is operationally met via the OR-branch: PR #50 ships partial-result-write code (per-fixture snapshot + SIGINT/SIGTERM handlers + atomic .tmp/os.replace); PR #56 empirically validates it (eval cut short at fixture 7/15 produces eval/results/20260517T200720Z.json with completed_count=7, partial:true). Sub-criterion (b) via PR #46 (judge unparseable JSON recorded as quality_score=null + reason, run continues). Sub-criterion (c) via PR #15 timeout-360 + PR #46 + Collection-layer try/except. The "three consecutive runs from main produce a result file with no Python exception in stdout" requirement is empirically exceeded: PR #24 + PR #43 + PR #57 + PR #59 = 4 consecutive clean eval runs.**
+- [x] **Eval baseline stability** — three consecutive `./bin/blindspot eval`
   runs on `main` (with **Eval pipeline robustness** above [x]) produce
   aggregate `quality_score` within ±0.03 of each other. The baseline is
-  the median of those three; this becomes the V2 entry comparison.
+  the median of those three; this becomes the V2 entry comparison. **Done at 111365d — three measurements in hand: PR #43 = 0.8164 (eval/results/20260517T130928Z.json), PR #57 = 0.8207 (eval/results/20260517T203938Z.json), PR #59 = 0.7964 (eval/results/20260517T201346Z.json). All pairwise deltas (0.0200, 0.0243, 0.0043) ≤ 0.0243 < 0.03 threshold. Median = 0.8164. **V1.x → V2 entry baseline = 0.8164.****
 - [ ] **AnthropicAPIClient usable end-to-end** — set `llm_backend:
   anthropic_api` in `config.yaml`, run a full `blindspot ask`, and
   verify behavior matches the subscription backend on the eval
@@ -241,8 +241,8 @@ automate parts of it.
 ```
 Status: ⬜ not started
 Progress: ██░░░░░░░░░░░░░░░░░░ 10% (1/10 domains complete)
-Last completed: 3bb4fea — V2 §4 **tech-career FULLY BUILT (8/8 sub-items [x])**: PR #57's measurement #3 eval (aggregate 0.8207 vs prior baseline 0.8164 from PR #43) closed sub-item 8 `eval still passes on migrated layout`. Tech-career becomes the **first complete V2 domain template**; subsequent domains (immigration is next at 6/8) inherit this template's structure. Earlier rounds: V2 §4 immigration per-domain checklist sub-item 5 of 8 (communities/*) at f95a4f7 (PR #54); immigration `domain_pack.md` at d56eba3 (PR #53); `sources.yaml` at 638cec4 (PR #49); `blindspots.md` at 535d746 (PR #48); `framings.md` at 3a3798c (PR #44); `decisions.md` at 6161d6f (PR #42). immigration parent stays [ ] (6 of 8 sub-items [x]; only `fixtures/*` and `eval pass` remain).
-Next up: V1.x exit criteria still gate V2 promotion to 🟡 (V1.x is 2/7; eval-baseline-stability needs one more clean measurement). Meanwhile V2 work continues on immigration's 2 remaining sub-items: (1) `fixtures/*` (≥ 8 immigration-specific fixture YAML files under `domain_knowledge/immigration/fixtures/` mirroring `domain_knowledge/tech-career/fixtures/` shape — e.g. h1b-renewal-during-pip, pre-stamping-travel-decision, EB-2-vs-EB-3-downgrade-trade-off, ac21-portability-mid-perm, marry-for-status-citizen-partner-timing, opt-cap-gap-bridge, eb-1a-niw-self-petition-decision, j-1-waiver-decision). (2) `eval pass on fixtures with quality_score within 0.05 of V1 baseline` — runs eval on the per-domain immigration fixtures once they're authored; this is the last sub-item gating immigration's first [x] as a fully-built V2 domain.
+Last completed: 1c3503c — V2 §4 **housing kicked off** with `domain_knowledge/housing/decisions.md` (PR #60, Layer 1 of the 4-layer knowledge model for V2 §4 domain 3 of 10; 10 distinct decisions; ~2250 words; 336 lines; mirrors tech-career [PR #30] and immigration [PR #42] precedents structurally). Housing's per-domain checklist now expanded to 8 sub-items (decisions/framings/blindspots/sources/communities/fixtures/domain_pack/eval-pass) with sub-item 1 of 8 [x]; housing parent stays [ ] (1 of 8). Earlier in this run: V1.x §1.x eval-baseline-stability + eval-pipeline-robustness BOTH `[x]` via PR #59 — V1.x progress 2/7 → 4/7 in a single merge. V2 progress unchanged at 1/10 (tech-career remains the only fully-built V2 domain). Earlier rounds: tech-career FULLY BUILT at 3bb4fea (PR #57); immigration at 7/8 (only `eval pass` remains) at 38f3733 (PR #58); immigration `communities/*` at f95a4f7 (PR #54); immigration `domain_pack.md` at d56eba3 (PR #53); immigration `sources.yaml` at 638cec4 (PR #49); immigration `blindspots.md` at 535d746 (PR #48); immigration `framings.md` at 3a3798c (PR #44); immigration `decisions.md` at 6161d6f (PR #42).
+Next up: V1.x exit criteria still gate V2 promotion to 🟡 (V1.x is now 4/7 — AnthropicAPIClient + Streaming editor + Real-usage signal remain). V2 work in flight on three fronts: (1) **immigration `eval pass`** — last sub-item for immigration parent [x] (runs eval on the per-domain immigration fixtures from PR #58); (2) **housing remaining sub-items** — framings.md (≥3 framings per major housing decision) → blindspots.md (≥5 per framing) → sources.yaml (≥8 source-views, ≥4 community_tags covering rent-vs-buy/mortgage/lease/insurance/HOA expertise) → communities/* → fixtures/* → domain_pack.md → eval-pass, mirroring the immigration build-out sequence; (3) opportunistically start a fourth domain (health-insurance / personal-finance / etc.) when sources/agents subagent slots have capacity.
 ```
 
 ### Entry gate
@@ -311,7 +311,15 @@ Each of the 10 domains independently requires this checklist.
   - [x] fixtures/* (≥ 8 fixture situations) **— done at 38f3733 (PR #58, V2 §4 immigration sub-item 6 of 8; 10 per-fixture YAML files under `domain_knowledge/immigration/fixtures/` exceeding the ≥8 minimum: ac21-portability-mid-perm, ap-trip-during-aos, b2-visitor-status-pivot-cos-vs-cp, eb2-vs-eb3-downgrade-tradeoff, h1b-renewal-during-pip, j1-waiver-vs-h1b-conversion, layoff-during-h1b-grace, marry-for-status-timing, o1-vs-eb1a-self-petition, stem-opt-vs-capgap-employer-choice; covers all 10 decisions D1–D10 and all 14 framings F1–F14 across 12 distinct personas from domain_pack.md controlled list; each fixture carries a high-stakes consult-licensed-immigration-attorney category per Mechanism E; mirrors tech-career fixtures schema (id, text, expected_domains, expected_entities, expected_personas, expected_risk_surfaces) plus immigration-specific additive annotations (expected_decisions, expected_framings, expected_blindspot_categories) the eval loader passes through opaquely; also narrows tests/unit/test_load_all_fixtures.py::test_real_v1_fixtures_match_legacy to the tech-career subset to preserve the V1-bit-for-bit invariant correctly with a second domain present; pytest tests/unit/test_load_all_fixtures.py = 10/10 pass)**
   - [x] domain_pack.md **— done at d56eba3 (PR #53, 2377-word Triage Pass-2 / Editor / Critic prompt overrides for the immigration domain mirroring tech-career/domain_pack.md but inverting to high-stakes Mechanism E posture: mandatory decision-support/not-legal-advice label, hard pass/fail per-claim grounding on INA/CFR/FAM/Policy-Manual citations, +1 non_obviousness floor on multi-route situations; references decisions.md (D1–D10) / framings.md (F1–F14) / blindspots.md / sources.yaml by ID rather than duplicating content; activates PR #33's Pass-2 enrichment for immigration)**
   - [ ] eval pass on fixtures with `quality_score` within 0.05 of V1 baseline
-- [ ] **housing** (same template as immigration)
+- [ ] **housing**
+  - [x] decisions.md (≥ 8 distinct decisions, e.g. rent-vs-buy, mortgage-fixed-vs-arm, lease-renewal-vs-move, condo-vs-sfh, HOA-acceptance, location-vs-commute trade-off, etc.) **— done at 1c3503c (PR #60, Layer 1 of the 4-layer knowledge model for V2 §4 domain 3 of 10; 10 distinct decisions; ~2250 words; 336 lines; mirrors tech-career/decisions.md [PR #30] and immigration/decisions.md [PR #42] structural pattern with Scope / Framing-axes-covered / Sample-situations per entry; cross-domain edges flagged inline; pure-additive knowledge content, no runtime gating, eval skipped per brief)**
+  - [ ] framings.md (≥ 3 framings per major decision)
+  - [ ] blindspots.md (≥ 5 typical blind spots per framing)
+  - [ ] sources.yaml (≥ 8 source-views, ≥ 4 distinct community_tags)
+  - [ ] communities/* (one profile per community_tag in sources.yaml)
+  - [ ] fixtures/* (≥ 8 fixture situations)
+  - [ ] domain_pack.md
+  - [ ] eval pass on fixtures with `quality_score` within 0.05 of V1 baseline
 - [ ] **health-insurance** (same template)
 - [ ] **personal-finance / investing** (same template)
 - [ ] **entrepreneurship** (same template)
