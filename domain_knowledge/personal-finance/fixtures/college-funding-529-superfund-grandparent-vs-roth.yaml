@@ -1,0 +1,101 @@
+id: college-funding-529-superfund-grandparent-vs-roth
+text: |
+  35yo and spouse 33, both engineers, $215k + $180k W-2 in MA
+  (5% flat state — MA offers $1k single / $2k MFJ 529 deduction
+  per year, modest). Two kids (4 and 2). MFJ federal 24%
+  marginal. Existing accounts: $310k 401(k)s combined, $48k
+  Roth-IRA (mine, backdoor-converted), $35k Roth-IRA (spouse,
+  also backdoor), $40k taxable, $0 529 accounts (haven't
+  started). Both sets of grandparents are alive and want to
+  contribute toward college funding. Maternal grandparents
+  particularly motivated: they have $4.2M net worth in their
+  early 70s and have expressed wanting to "do something
+  meaningful" before the 2026 estate-tax-exemption sunset; their
+  CPA mentioned 5-year-election-superfunding for grandkid 529s
+  as one mechanism. Paternal grandparents are more modest, ~$1.6M
+  net worth, want to contribute $20k now per kid. We're trying
+  to figure out: (1) whose 529 (parent-owned vs grandparent-
+  owned) is optimal? Under the pre-2024 FAFSA rules,
+  grandparent-owned 529 distributions counted as student-income
+  (50% EFC-rate-equivalent) which crushed need-based-aid
+  eligibility — but the FAFSA Simplification Act (effective
+  2024-25 academic year onward) eliminated this; grandparent-
+  owned 529 distributions no longer count against FAFSA in any
+  year. Our CPA hasn't internalized this yet and is still
+  recommending parent-owned for both sets of grandparent
+  contributions — verify? (2) 5-year-election-superfunding for
+  the maternal grandparents — $19k/yr gift-exclusion × 5 =
+  $95k single grandparent per kid, $190k MFJ per kid. Two kids
+  × $190k = $380k per couple as a one-time front-load, no
+  gift-tax filing required, no estate-inclusion if both
+  grandparents survive 5 years. Given the 2025-doubled-estate-
+  exemption sunset to ~$7M in 2026, and their $4.2M estate
+  already approaching the new lower exemption, the 5-year-
+  election is doubly compelling. Is there a downside? (3) for
+  our own contributions — Bogleheads says retirement-first
+  (airline-oxygen-mask) and 529 is step 7 of 9 in the priority
+  order, well after retirement caps. We're maxing 401(k)s and
+  backdoor-Roths already; the next dollar is debating 529 vs
+  Mega-Backdoor-Roth (my plan supports it, $35k/yr after-tax
+  contribution capacity I'm not currently using) vs taxable.
+  529 has the in-state $2k MFJ deduction (small); Mega-Backdoor-
+  Roth has the SECURE-2.0-529-to-Roth-rollover-option ($35k
+  lifetime per beneficiary after 15-year-old-529) which closes
+  the gap on "trapped 529" worry. (4) what about Roth-IRA-as-
+  college-substitute — pre-SECURE-2.0 it was strictly more
+  flexible than 529, but with the 529-to-Roth-rollover the
+  arguments are closer; the cap-utility question (Roth-IRA cap
+  is $7k/yr each, much smaller than 529 cap of $19k annual or
+  $95k 5-year-elected) makes 529 the heavier-lift-bucket if
+  we're funding $400k+/kid college projections. (5) any
+  in-state-vs-OOS / merit-aid considerations — kids are 4 and
+  2, way too early to know, but we suspect at-least-public-
+  flagship-quality outcomes; the framing for funding amount
+  is sensitive to this — full-pay-private $400k vs in-state-
+  public-merit $80k same 529 saved gives very different
+  right-sized targets.
+expected_domains: [personal-finance, education-funding, family-planning]
+expected_entities:
+  - 529-plan
+  - grandparent-owned-529-FAFSA-treatment
+  - FAFSA-Simplification-Act-2024-25
+  - 5-year-election-superfunding
+  - $19k-annual-gift-exclusion-2025
+  - $95k-single-superfund-5-year-election
+  - $190k-MFJ-superfund-per-beneficiary
+  - 2026-estate-tax-exemption-sunset
+  - $7M-2026-revertted-exemption
+  - $13.99M-2025-individual-exemption
+  - 529-to-Roth-IRA-rollover-SECURE-2.0
+  - $35k-lifetime-per-beneficiary-cap
+  - 15-year-old-529-requirement
+  - $7k-Roth-IRA-annual-cap-2025
+  - Mega-Backdoor-Roth
+  - $35k/yr-after-tax-contribution-capacity
+  - Coverdell-ESA
+  - UGMA-UTMA-kiddie-tax
+  - airline-oxygen-mask-retirement-first
+  - state-529-deduction-MA-modest
+  - in-state-vs-OOS-merit-aid
+expected_personas: [parent-and-grandparent-funding, dual-income-couple-multi-generational-coordination]
+expected_risk_surfaces:
+  - grandparent-owned-529-FAFSA-treatment-changed-2024-25-not-yet-internalized-by-many-CPAs
+  - 5-year-election-superfunding-as-estate-tax-move-pre-2026-sunset
+  - 529-to-Roth-rollover-SECURE-2.0-closes-trapped-529-anxiety
+  - retirement-first-college-second-airline-oxygen-mask-priority
+  - Mega-Backdoor-Roth-vs-529-incremental-dollar-comparison
+  - $7M-2026-estate-exemption-grandparents-approaching-limit
+  - in-state-vs-OOS-funding-target-sensitivity
+  - kiddie-tax-on-UTMA-vs-529-treatment
+expected_decisions: [D9, D1, D10]
+expected_framings: [F1, F9, F12]
+expected_blindspot_categories:
+  - grandparent-owned-529-FAFSA-treatment-FAFSA-Simplification-Act-eliminates-prior-distribution-as-student-income-trap
+  - 5-year-election-superfunding-$95k-single-$190k-MFJ-as-pre-2026-estate-exemption-sunset-move
+  - 529-to-Roth-rollover-SECURE-2.0-mechanics-closes-trapped-529-worry-still-cleaner-to-right-size
+  - retirement-first-college-second-airline-oxygen-mask-priority-ordering
+  - Mega-Backdoor-Roth-vs-529-the-after-tax-401(k)-with-in-plan-conversion-typically-wins-on-flexibility
+  - 2025-doubled-estate-exemption-anti-clawback-Reg-§20.2010-1(c)-pre-sunset-gifts-are-permanent-not-reversed
+  - in-state-vs-OOS-merit-aid-funding-target-sensitivity-full-pay-private-vs-in-state-public-different-right-size
+  - direct-tuition-payment-to-institution-gift-tax-exclusion-as-alternative-to-529
+  - high-stakes-consult-fee-only-fiduciary-CFP-coordinating-529-and-retirement-AND-state-bar-estate-attorney-for-grandparent-side

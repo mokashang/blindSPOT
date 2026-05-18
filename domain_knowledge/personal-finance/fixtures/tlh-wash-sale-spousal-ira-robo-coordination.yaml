@@ -1,0 +1,83 @@
+id: tlh-wash-sale-spousal-ira-robo-coordination
+text: |
+  41yo software engineer in NJ, $215k W-2 + ~$95k RSU. Married,
+  spouse 39 is a freelance UX designer (1099 schedule-C income
+  ~$110k net). Federal 32% marginal + NJ 8.97% state + FICA-on-
+  spouse-self-employment 15.3% (with employer-side deductible) +
+  NIIT 3.8%. One kid (6). Taxable brokerage at Wealthfront, $480k
+  in their automatic-TLH algorithm running daily harvesting since
+  2019; the platform reports YTD harvested-losses ~$8.4k carried
+  forward on Form 8949 + $11.2k accumulated from prior years.
+  Spouse just rolled over an old 401(k) ($88k) from a former
+  employer into a new Vanguard rollover-IRA in November, and
+  picked Vanguard Total Stock Market (VTSAX) as the placement
+  fund — same underlying index as VTI which Wealthfront uses in
+  my taxable. Discovered this when I noticed Wealthfront's TLH
+  algorithm sold VTI to harvest a $2,400 loss on Dec 6, then
+  bought ITOT as the replacement-pair. Two days later
+  Wealthfront's algorithm also rotated back into VTI for the
+  rebalance. Spouse's Vanguard rollover-IRA had its first auto-
+  dividend-reinvestment into VTSAX on Dec 8 (the dividend record
+  date was Nov 30). Question: (1) is this a wash-sale across the
+  spouse's IRA? Rev Rul 2008-5 says yes — household-aggregation
+  applies; VTSAX and VTI are substantially identical (same
+  underlying portfolio) per the IRS-litigation-tested standard;
+  the wash-sale-disallowed loss flows into the spouse's IRA's
+  basis where it is functionally lost (IRA has no basis tracking
+  for individual lots). Did Wealthfront know about my spouse's
+  IRA? No, they don't have visibility into it. (2) Now what — is
+  the $2,400 loss disallowed permanently? Can I unwind by selling
+  the VTSAX in the spouse's IRA and replacing with something
+  not-substantially-identical? Within 30 days does this just
+  trigger another wash-sale? (3) Going forward — Wealthfront's
+  TLH algo can't be configured to avoid VTI/VTSAX/VFIAX
+  substantially-identical group across the household; do we
+  switch the spouse's IRA to a different fund (FXAIX is
+  substantially identical to all of these per the Pub 550
+  reading), or do we disable Wealthfront's TLH entirely
+  (foregoing the 0.2-0.6% annual after-tax-alpha)? (4) Also —
+  we have $80k accumulated TLH carryforward — does the QSBS
+  Section 1202 sale that may be coming on a side-startup my
+  spouse had a small stake in (currently uncertain, pending
+  diligence on potential acquirer) change the calculus? Can the
+  TLH offset the QSBS gain before or after the §1202 exclusion?
+expected_domains: [personal-finance]
+expected_entities:
+  - tax-loss-harvesting
+  - wash-sale-rule-30-day-before-and-after
+  - substantially-identical-test
+  - Rev-Rul-2008-5
+  - household-aggregation-spousal-IRA
+  - Wealthfront-automatic-TLH
+  - VTI-VTSAX-VFIAX-substantially-identical-group
+  - ITOT-replacement-pair
+  - Form-8949-wash-sale-code-W
+  - IRS-Pub-550
+  - QSBS-Section-1202
+  - $10M-or-10x-basis-exclusion
+  - $80k-TLH-carryforward
+  - $3000-ordinary-income-offset
+  - 32-pct-federal-marginal
+  - 8.97-pct-NJ-state
+  - rollover-IRA
+  - dividend-reinvestment
+expected_personas: [DIY-investor-spousal-coordination, robo-advisor-user-with-spousal-aggregation-trap]
+expected_risk_surfaces:
+  - household-aggregation-wash-sale-into-spouse-IRA-Rev-Rul-2008-5
+  - VTI-VTSAX-VFIAX-substantially-identical-per-IRS-Pub-550
+  - robo-advisor-lacks-visibility-into-held-away-accounts
+  - wash-sale-into-IRA-loss-permanently-lost-no-IRA-basis-tracking
+  - dividend-reinvestment-as-wash-sale-trigger
+  - QSBS-1202-exclusion-interaction-with-TLH-carryforward
+  - automatic-TLH-rotation-creating-self-wash-sales
+expected_decisions: [D6, D3]
+expected_framings: [F4, F5, F11]
+expected_blindspot_categories:
+  - wash-sale-30-day-before-and-after-extends-to-spouse-IRA-per-Rev-Rul-2008-5
+  - VTI-VTSAX-VFIAX-substantially-identical-same-underlying-portfolio-not-just-same-index
+  - robo-advisor-automatic-TLH-blind-to-held-away-account-triggers-disallowance
+  - wash-sale-into-IRA-loss-flows-into-basis-functionally-lost-IRA-has-no-basis-tracking
+  - dividend-reinvestment-counts-as-acquisition-for-wash-sale-purposes
+  - QSBS-1202-exclusion-applies-before-TLH-offset-cannot-stack-on-excluded-portion
+  - household-coordination-before-enabling-automatic-TLH-on-one-spouse-taxable
+  - high-stakes-consult-retirement-experienced-CPA-on-Form-8949-and-IRS-Pub-550-substantially-identical-determination
