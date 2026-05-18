@@ -1,0 +1,65 @@
+id: sole-prop-vs-llc-side-hustle-nights
+text: |
+  Currently W-2 software engineer at a mid-cap public company
+  in Austin TX, $185k base + ~$30k bonus, planning to stay at
+  the day job indefinitely. Have a side project that's been
+  earning consulting and small-product income: 4 small SaaS
+  customers at $80-200/mo each, plus occasional freelance
+  developer-hire projects (4 projects in the last 12 months at
+  $5k-$15k each). Total side-project revenue projection 2026:
+  ~$22k. Currently no entity — running everything through my
+  personal name, depositing checks to personal checking, all
+  income reported on Schedule C of my joint return. Three
+  questions on the entity-formation timing. (1) Do I need an
+  LLC at $22k revenue? TX is friendly — no state income tax,
+  no franchise tax until $1.23M revenue (2024 threshold), but
+  the annual public-information report is required. Most
+  small-business forums say "$50k revenue is the LLC trigger"
+  but that's a heuristic without a mechanism. The slip-and-
+  fall / product-liability risks don't apply to remote
+  software work. (2) The freelance projects each have a
+  $1M+ E&O / professional-liability clause I sign. If a
+  client sues me for breach, the LLC shield matters — but
+  most of my contracts are personally indemnified anyway, so
+  is the shield real? My day-job PIIA does NOT prohibit
+  outside work but does claim IP on "work product related to
+  the employer's business" — am I creating exposure by doing
+  software for non-competing clients? (3) DBA vs LLC vs no
+  entity: I could file a DBA at the Travis County clerk for
+  $25 and open a business bank account under "Foo Software"
+  without forming an LLC. That gives me brand identity + clean
+  bookkeeping without the LLC formation cost ($300) and
+  ongoing annual filing burden. Or is the right answer to wait
+  until either revenue hits $80-100k OR a customer signs a
+  contract with material indemnity exposure?
+expected_domains: [entrepreneurship, tech-career, legal-disputes]
+expected_entities:
+  - $22k-side-project-revenue-2026
+  - TX-no-state-income-tax
+  - TX-franchise-tax-$1.23M-threshold-2024
+  - Travis-County-DBA-$25-filing
+  - Schedule-C-personal-return
+  - PIIA-related-to-employers-business
+  - $1M-E&O-professional-liability
+  - personal-indemnity-clause-vs-LLC-shield
+  - $50k-revenue-LLC-trigger-heuristic
+  - "anticipated-business-side-work-exposure"
+  - business-bank-account-EIN-Form-SS-4
+expected_personas: [ex-faang-nights-weekends]
+expected_risk_surfaces:
+  - LLC-formation-cost-benefit-fails-on-solo-software-consulting-shield
+  - DBA-as-lighter-alternative-no-shield-but-clean-bookkeeping
+  - employer-PIIA-related-to-business-side-work-exposure
+  - personal-indemnification-pierces-LLC-shield-on-contract-breach
+  - revenue-trigger-vs-liability-trigger-vs-defensive-trigger-mechanism
+  - EIN-Form-SS-4-as-baseline-hygiene-regardless-of-entity-choice
+expected_decisions: [D6]
+expected_framings: [F6, F8]
+expected_blindspot_categories:
+  - LLC-formation-cost-benefit-fails-on-solo-software-consulting-shield-mostly-handled-by-E&O-clause
+  - personal-indemnification-clause-pierces-LLC-shield-shield-not-absolute
+  - employer-PIIA-anticipated-business-side-work-exposure-from-day-job
+  - DBA-no-liability-shield-zero-cost-clean-bookkeeping-appropriate-for-sub-30k-revenue
+  - bank-account-and-EIN-as-baseline-hygiene-prevents-commingling-veil-piercing
+  - revenue-as-wrong-trigger-when-no-liability-exposure-exists-mechanism
+  - not-a-substitute-for-case-specific-licensed-counsel-on-personally-indemnified-contracts

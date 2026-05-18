@@ -1,0 +1,67 @@
+id: safe-stack-priced-seed-qsbs
+text: |
+  Two-cofounder Delaware C-corp, dev-tools / observability,
+  YC W25 batch graduating in 2 weeks, planning Series Seed in
+  60-90 days. Cap-table situation: we've stacked 5 SAFEs over
+  the last 11 months pre-YC and during YC. (1) $125k YC
+  standard MFN on $1M floor / $20M post-money cap, (2) $250k
+  uncapped MFN from a tier-1 angel, (3) $500k at $12M post-
+  money cap with MFN, (4) $300k at $15M post-money cap, no
+  MFN, (5) $1.0M at $18M post-money cap, no MFN, with pro-
+  rata side letter for $250k+ check. Total SAFEs $2.175M. We
+  expect to raise $4M priced Series Seed at $20M post-money
+  with a tier-1 fund leading (real verbal interest from 3
+  funds). Three things keeping me up at night. (a) MFN
+  stacking math: SAFE #1 and SAFE #2 both have MFN; when SAFE
+  #3 came in at $12M cap that was better than SAFE #1's $20M
+  cap, did SAFE #1 auto-upgrade to $12M? Did SAFE #2 (which
+  is uncapped) auto-upgrade to $12M cap? Our YC partner says
+  yes; one of our angels (a former founder) says no because
+  YC's standard MFN has a specific carve-out. (b) Post-money
+  vs pre-money: all 5 are post-money YC-form SAFEs (post-2018
+  Y-form) — at conversion at $20M priced round, do these
+  convert at the $20M priced cap (favorable to us) or at
+  their respective lower caps (favorable to SAFE holders)?
+  The binding-cap math I've done shows ~28% combined SAFE
+  dilution at conversion, our priced-round investor expects
+  20%. (c) QSBS clock: the §1202 5-year-hold gain exclusion
+  is the single largest tax consideration at our eventual
+  exit. The SAFE-stacking has now sat for 11 months — none
+  of that counts toward the QSBS 5-year clock because SAFEs
+  aren't stock. If we convert at priced round on July 1, the
+  clock starts July 1, 2026 — so QSBS-eligible exit isn't
+  before July 1, 2031. Is there any way to accelerate the
+  clock? Direct conversion via 11 individual stock-purchase
+  agreements pre-priced-round?
+expected_domains: [entrepreneurship, personal-finance]
+expected_entities:
+  - Delaware-C-corp
+  - YC-W25-batch
+  - 5-stacked-SAFEs-$2.175M-total
+  - YC-standard-MFN-$1M-floor-$20M-post-cap
+  - $4M-priced-Series-Seed-at-$20M-post
+  - post-money-Y-form-SAFE-post-2018
+  - IRC-§1202-QSBS-5-year-hold
+  - $10M-or-10x-basis-QSBS-cap
+  - MFN-most-favored-nation-auto-upgrade
+  - pro-rata-side-letter-$250k-threshold
+  - 28%-combined-SAFE-dilution-at-conversion
+  - binding-cap-vs-non-binding-cap-arithmetic
+expected_personas: [yc-applicant-cap-table]
+expected_risk_surfaces:
+  - SAFE-MFN-stacking-auto-upgrade-multiplies-dilution
+  - post-money-cap-converts-at-cap-not-priced-round-binding-cap-scenario
+  - QSBS-§1202-5-year-clock-starts-at-c-corp-stock-issuance-not-SAFE
+  - QSBS-state-conformity-divergence-CA-NY-NJ-don't-conform
+  - QSBS-redemption-test-silently-disqualifies-via-prior-buyback
+  - pro-rata-side-letter-compounds-across-rounds-constrains-future-cap-table
+expected_decisions: [D5]
+expected_framings: [F1, F5]
+expected_blindspot_categories:
+  - SAFE-MFN-clause-auto-upgrades-stacking-causes-silent-multiplied-dilution-at-conversion
+  - post-money-cap-binding-converts-SAFEs-at-cap-not-priced-round-6x-equity-per-dollar
+  - QSBS-clock-doesnt-start-on-SAFE-only-on-priced-equity-c-corp-conversion-§1202
+  - QSBS-state-conformity-CA-NY-NJ-don't-conform-tax-free-tail-disappears-at-state-level
+  - QSBS-§1202-redemption-test-prior-share-buyback-silently-disqualifies-all-shareholders
+  - founder-cap-table-projections-routinely-mis-model-binding-cap-arithmetic
+  - high-stakes-consult-startup-attorney-founder-side-experienced-cooley-gunderson-wsgr-orrick-fenwick-on-conversion-mechanics
