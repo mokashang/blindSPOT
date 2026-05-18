@@ -1,115 +1,203 @@
-- id: series-b-iso-cliff
-  text: |
-    I got a Series B offer with 0.1% in ISOs over 4 years with a 1-year cliff.
-    Comp is below market but the team is exceptional. Take it?
-  expected_domains: [tech-career/equity, tech-career/comp]
-  expected_entities: [ISO, series-B, vesting-cliff]
+# Blindspot V2 eval fixtures — vertical: cn-sde-jobhunt.
+# Each situation text is written to read like a real CN SDE student
+# user would phrase it: shorthand, lived context, code-switching.
+# Mix of English-only and Chinese-mixed-English to exercise the
+# bilingual Editor stance.
 
-- id: late-stage-rsu-vs-base
+- id: faang-vs-series-c-sponsorship-asymmetry
   text: |
-    Public co offered me $250k base + $400k RSUs vesting over 4 years.
-    Current employer counter-offered $310k base + smaller RSU grant.
-    Which is better?
-  expected_domains: [tech-career/comp, tech-career/negotiation]
-  expected_entities: [RSU]
+    I have two offers. Meta L4 in MPK at $200k base + ~$170k/yr RSU.
+    A Series C startup in NYC offered me a much better team and
+    actual ownership on a real product, ~$190k base + 0.15% equity.
+    Meta sponsors everything obviously, the startup has filed exactly
+    one H-1B in their 5yr history. I'm on F-1, OPT starts in 6 months.
+    Which is the smarter call long-term?
+  expected_domains: [cn-sde-jobhunt/offer-comp, cn-sde-jobhunt/visa]
+  expected_entities: [FAANG, series-C-plus, RSU, H-1B, OPT, F-1,
+                      sponsorship-history-of-employer]
+  expected_personas: [f1-final-year-cs-master,
+                      comparing-fang-vs-startup-with-sponsorship-asymmetry]
+  expected_risk_surfaces: [sponsorship-fit, sponsorship-asymmetry,
+                           visa-status-pressure, opportunity-cost]
 
-- id: pre-cliff-quit-dilemma
+- id: opt-expiring-h1b-decision
   text: |
-    I'm 10 months in at a Series A startup. I want to leave for a competing
-    Series B offer. Should I wait two months for the cliff?
-  expected_entities: [vesting-cliff, series-A, series-B]
-  expected_personas: [pre-vest-cliff, considering-quit]
+    My OPT runs out in 11 months. Employer says they'll file H-1B this
+    March. STEM-OPT extension is technically available since I have a
+    CS MS but my employer is dragging on the E-Verify enrollment. If
+    I don't get selected in the lottery what are my actual options
+    before the OPT clock runs out?
+  expected_domains: [cn-sde-jobhunt/visa]
+  expected_entities: [OPT, STEM-OPT, H-1B, lottery-selection, EAD]
+  expected_personas: [opt-active-h1b-pending]
+  expected_risk_surfaces: [cap-gap-timing, lottery-failure,
+                           visa-status-pressure, timing]
 
-- id: amt-exercise-decision
+- id: h1b-lottery-not-selected-backup
   text: |
-    My ISOs are deeply in the money. FMV is 10x my strike. Company says no
-    IPO planned for at least 2 years. Should I exercise now?
-  expected_entities: [ISO, AMT, strike-price]
-  expected_risk_surfaces: [tax, timing]
+    Lottery 没中. I'm 8 months into my OPT now, STEM extension already
+    approved so I have time, but my current employer doesn't want
+    to refile next year — they had three rejections this cycle and
+    they're done. Should I switch to day-1-CPT at one of those new
+    "master's programs", go back to F-1 for a second degree, or
+    just take a transfer to my company's Vancouver office and wait
+    out an L-1 path?
+  expected_domains: [cn-sde-jobhunt/visa, cn-sde-jobhunt/employer-switch]
+  expected_entities: [H-1B, lottery-failure, OPT, STEM-OPT, F-1,
+                      day-1-CPT, L-1]
+  expected_personas: [h1b-on-lottery-fail]
+  expected_risk_surfaces: [visa-status-pressure, legal, regret,
+                           opportunity-cost, info-asymmetry]
 
-- id: acquihire-double-trigger
+- id: switch-mid-perm-ac21
   text: |
-    Our startup got acquired. The buyer wants me to re-vest over 4 years
-    with double-trigger acceleration. Is this normal?
-  expected_entities: [acquisition, double-trigger]
-  expected_risk_surfaces: [counterparty]
+    My PERM was filed 8 months ago, I'm waiting for approval. A
+    competitor just made me a really compelling offer — same role
+    level, ~30% comp bump. My current employer's immigration attorney
+    keeps telling me AC21 portability will save me but my PERM hasn't
+    been approved yet. If I jump now do I lose everything?
+  expected_domains: [cn-sde-jobhunt/employer-switch, cn-sde-jobhunt/visa]
+  expected_entities: [PERM, AC21-portability, I-140, priority-date]
+  expected_personas: [mid-perm-considering-switch]
+  expected_risk_surfaces: [timing, regret, sponsorship-fit,
+                           info-asymmetry]
 
-- id: first-job-equity-confusion
+- id: laid-off-h1b-60-day-grace
   text: |
-    Just got my first offer out of school. $180k base + 0.05% equity at a
-    seed-stage startup. I don't understand the equity part.
-  expected_personas: [first-time-offer, early-employee]
-  expected_entities: [seed-stage]
+    Got laid off yesterday from a Series D fintech, severance package
+    is 12 weeks. I'm on H-1B with about 14 months left on this petition.
+    The 60-day grace clock starts when? When my last working day is or
+    when the severance runs out? Need to know whether I should panic-
+    apply or take a beat to find a non-trash transfer.
+  expected_domains: [cn-sde-jobhunt/visa, cn-sde-jobhunt/employer-switch]
+  expected_entities: [H-1B, H-1B-transfer, laid-off, 60-day-grace-period]
+  expected_personas: [laid-off-on-h1b]
+  expected_risk_surfaces: [60-day-grace-period, visa-status-pressure,
+                           timing, power-dynamics]
 
-- id: comparing-offers-3-companies
+- id: return-to-china-i140-approved
   text: |
-    I have offers from a FAANG, a Series C company, and a Series A startup.
-    Compensation packages are very different in structure. Help me think.
-  expected_personas: [comparing-offers]
-  expected_domains: [tech-career/comp]
+    I-140 approved 2 years ago, EB-2 priority date is Dec 2022.
+    Looking at the visa bulletin we're looking at 6+ more years
+    before I-485 is even possible. I'm 31, my wife wants to be
+    closer to her parents in Hangzhou. 字节 in Shanghai offered
+    me a P7 role at ~150万 total. Is the GC backlog really
+    worth waiting out vs locking in CN tenure now? How
+    irreversible is this decision actually?
+  expected_domains: [cn-sde-jobhunt/return-to-china]
+  expected_entities: [I-140, EB-2, priority-date, GC-backlog,
+                      CN-tech-employer, P7]
+  expected_personas: [i140-approved-considering-return,
+                      gc-backlog-considering-return]
+  expected_risk_surfaces: [return-to-china-irreversibility,
+                           opportunity-cost, regret, family-coupling,
+                           priority-date-retrogression]
 
-- id: refresher-grant-negotiation
+- id: h4-ead-spouse-school-district
   text: |
-    I'm 2.5 years in. My initial grant is mostly vested. How do I bring up
-    a refresher grant without sounding ungrateful?
-  expected_entities: [refresher]
-  expected_personas: [senior-employee]
+    Got an L4 SDE offer in Bellevue, $200k base + $250k/4yr RSU.
+    Wife is on H-4 EAD currently working remote at her LA company,
+    she can keep working from anywhere. Kids are 5 and 8, both
+    born here so US citizens. We're choosing between Bellevue
+    school district and a smaller place in Issaquah. But the
+    bigger question: should we even commit to Seattle given
+    her H-4 EAD depends on me staying H-1B and getting GC?
+  expected_domains: [cn-sde-jobhunt/offer-comp]
+  expected_entities: [H-1B, H-4, H-4-EAD, RSU]
+  expected_personas: [h4-spouse-on-ead, dual-citizenship-family]
+  expected_risk_surfaces: [family-coupling, visa-status-pressure,
+                           opportunity-cost, regret]
 
-- id: ipo-secondary-decision
+- id: phd-to-industry-opt-clock
   text: |
-    Company is filing for IPO in 3 months. I can do a secondary at the
-    last private valuation. Worth taking some liquidity?
-  expected_entities: [IPO, secondary-sale]
-  expected_risk_surfaces: [liquidity, timing]
+    Defending my CS PhD in May, advisor wants me to stay for a
+    postdoc but Google offered me L4 research engineer. PhDs get
+    OPT same as MS right? If I go to Google I get my own H-1B
+    cap-subject lottery next March. If I postdoc I stay on F-1
+    technically but I'm not getting younger. What's the actual
+    timing math here?
+  expected_domains: [cn-sde-jobhunt/visa, cn-sde-jobhunt/offer-comp]
+  expected_entities: [F-1, OPT, H-1B, FAANG, lottery-selection]
+  expected_personas: [cs-phd-post-defense, opt-active-h1b-not-yet-filed]
+  expected_risk_surfaces: [timing, opportunity-cost, lottery-failure,
+                           cap-gap-timing]
 
-- id: founder-equity-cofounder
+- id: career-capital-vs-visa-security
   text: |
-    My co-founder wants 50/50 equity but I had the idea, am doing most of
-    the early work, and brought in our first investor. How should I think?
-  expected_personas: [founder]
-  expected_domains: [tech-career/founder]
+    Two offers on the table. Big Tech (Amazon L5, Seattle) — I'd be
+    doing AdTech maintenance work that I find genuinely boring. The
+    name and the sponsorship history are bulletproof. Or a Series A
+    AI startup ($170k base + 1% equity) doing actual interesting
+    inference infra work — but they've never sponsored an H-1B and
+    the founder hand-waved it as "we'll figure it out". I keep
+    hearing "career capital matters most in the long run" — does
+    that argument hold when I have to choose between role quality
+    and visa-security?
+  expected_domains: [cn-sde-jobhunt/offer-comp, cn-sde-jobhunt/visa]
+  expected_entities: [FAANG, series-A, H-1B,
+                      sponsorship-history-of-employer]
+  expected_personas: [comparing-fang-vs-startup-with-sponsorship-asymmetry]
+  expected_risk_surfaces: [sponsorship-fit, sponsorship-asymmetry,
+                           opportunity-cost, regret,
+                           visa-status-pressure]
 
-- id: 83b-deadline-missed
+- id: o1-vs-h1b-lottery
   text: |
-    I joined a startup 5 weeks ago. They mentioned an 83(b) election. The
-    deadline is 30 days from grant. Did I miss it? What now?
-  expected_entities: [83b-election]
-  expected_risk_surfaces: [tax, regret]
+    My H-1B got rejected for the second time. I have 4 publications
+    in NeurIPS/ICLR (one first-author), some open-source contributions
+    with non-trivial GitHub stars, and an immigration attorney is
+    pitching me O-1A for $8k retainer + $3k filing. Realistic? Or
+    should I just keep playing the H-1B lottery for one more year
+    while my STEM-OPT lasts?
+  expected_domains: [cn-sde-jobhunt/visa]
+  expected_entities: [H-1B, O-1, STEM-OPT, lottery-failure]
+  expected_personas: [h1b-on-lottery-fail]
+  expected_risk_surfaces: [lottery-failure, opportunity-cost,
+                           info-asymmetry, regret]
 
-- id: golden-handcuffs-eval
+- id: senior-ic-return-timing
   text: |
-    I've vested half my grant at FAANG. I'm being recruited by a competitor
-    with a better tech stack. The unvested portion is worth ~$400k. Stay or go?
-  expected_entities: [golden-handcuffs]
-  expected_risk_surfaces: [opportunity-cost, regret]
+    I'm an L6 at a FAANG, 7 years in the US, GC approved 1.5 years
+    ago. Originally planned to wait out the 5-year-citizenship clock.
+    But a CN unicorn just made me a P9 CTO-track offer (~RMB 400万
+    base + meaningful equity). I'm 35, my parents are aging, my US
+    network is real but my CN network has atrophied. Past the
+    equity cliff so unvested portion is "only" ~$300k. Is now
+    actually the right window, or am I rationalizing wanting to
+    go home?
+  expected_domains: [cn-sde-jobhunt/return-to-china]
+  expected_entities: [FAANG, CN-tech-employer, P8, equity-cliff]
+  expected_personas: [senior-ic-already-passed-cliff,
+                      i140-approved-considering-return]
+  expected_risk_surfaces: [return-to-china-irreversibility, timing,
+                           opportunity-cost, regret, family-coupling]
 
-- id: layoff-severance-negotiation
+- id: cn-language-newgrad-offer-comp
   text: |
-    I was laid off yesterday from a Series D startup after 3 years. They offered
-    8 weeks severance with a release that includes a 12-month non-compete and
-    waiver of unvested RSUs worth ~$180k. I have 7 days to sign. Can I push back?
-  expected_domains: [tech-career/negotiation, tech-career/comp]
-  expected_entities: [severance, non-compete, release, unvested-RSU]
-  expected_personas: [recently-laid-off]
-  expected_risk_surfaces: [non-compete-enforceability, release-waiver, signing-deadline]
+    我是 CS 硕士最后一学期,在两个 offer 之间纠结。Microsoft Redmond
+    L60 base $135k + $50k sign-on + $80k/4yr RSU,稳定 sponsor H-1B。
+    另外一个是 Snap LA 也是 new grad SDE,$160k base + $40k sign-on
+    + $200k/4yr RSU,他们今年 sponsor 了几个但听说 layoff 过一轮。
+    我没有美国身份 backup,父母希望我稳定一些。这种情况下 visa
+    securty 应该 weight 多少?
+  expected_domains: [cn-sde-jobhunt/offer-comp, cn-sde-jobhunt/visa]
+  expected_entities: [H-1B, RSU, sign-on, sponsorship-history-of-employer,
+                      FAANG]
+  expected_personas: [f1-final-year-cs-master,
+                      comparing-fang-vs-startup-with-sponsorship-asymmetry]
+  expected_risk_surfaces: [sponsorship-fit, sponsorship-asymmetry,
+                           visa-status-pressure, family-coupling,
+                           opportunity-cost]
 
-- id: pip-accept-vs-exit
+- id: day1-cpt-legitimacy-question
   text: |
-    My manager put me on a 60-day PIP yesterday. My RSU cliff is in 4 months
-    (~$220k vesting). HR hinted I could "negotiate a transition" instead. Should
-    I accept the PIP and fight, or take a managed exit now?
-  expected_domains: [tech-career/negotiation]
-  expected_entities: [PIP, RSU-cliff, managed-exit]
-  expected_personas: [on-PIP]
-  expected_risk_surfaces: [vesting-forfeiture, future-reference, signal-to-future-employer]
-
-- id: pre-ipo-tender-offer
-  text: |
-    My pre-IPO company (last valued at $4B, ~80% of my net worth in vested shares)
-    is running a tender offer letting employees sell up to 25% of vested equity
-    to a secondary investor at a 10% discount to the last round. IPO is "1-2 years
-    out" per the CEO. Sell the full 25% or hold?
-  expected_domains: [tech-career/equity]
-  expected_entities: [tender-offer, pre-IPO-secondary, vested-shares, secondary-discount]
-  expected_personas: [late-stage-pre-IPO]
-  expected_risk_surfaces: [concentration-risk, tender-offer-tax, signal-to-future-acquirer]
+    My H-1B 没中两次了,STEM-OPT 还有 9 个月。朋友推荐了一个所谓 day-1-CPT
+    的 master's program,在 NJ,据说一年学费 ~$15k,可以保持身份还
+    能 full-time work。一亩三分地上看到的描述都说没问题,但 reddit r/h1b
+    上有人说 USCIS 最近开始 deny 这种 history。这个到底有多大风险?
+    会不会以后 H-1B 拿到了也被翻出来 RFE?
+  expected_domains: [cn-sde-jobhunt/visa]
+  expected_entities: [H-1B, STEM-OPT, day-1-CPT, F-1, F-1-CPT, RFE]
+  expected_personas: [h1b-on-lottery-fail]
+  expected_risk_surfaces: [legal, regret, info-asymmetry,
+                           visa-status-pressure, lottery-failure]

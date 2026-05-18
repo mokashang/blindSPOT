@@ -1,8 +1,82 @@
 # Blindspot V1 — Design Document
 
 **Date:** 2026-05-13
-**Status:** Approved — implementation pending
+**Status:** Scope-narrowed on 2026-05-18 — see addendum below.
 **Repo:** https://github.com/mokashang/blindSPOT
+
+> ## 📌 2026-05-18 scope-narrow addendum (read first)
+>
+> The V1 design below describes a *generic, domain-agnostic*
+> blind-spot pipeline that was intended as the foundation for a
+> universal cross-domain tool (V1 → V5 in the original roadmap).
+> **As of 2026-05-18 that long-range plan is deprecated.**
+>
+> The project has been narrowed to a single vertical —
+> **Chinese international students in the US making SDE job-hunt
+> and visa-coupled career decisions** — and is being completed as
+> a frozen portfolio artifact, not a product. The current trajectory
+> lives in [`ROADMAP.md`](./ROADMAP.md): V2-narrow (build the
+> vertical to depth), V3-ui (minimal web UI), V4-freeze (archive).
+>
+> **Which parts of this design doc are still load-bearing?**
+>
+> - §3 Architecture overview (6-agent pipeline) — ✅ **still load-bearing**.
+>   The Triage / Collection / Community Analysts / Risk Officer /
+>   Critic / Editor topology is unchanged. The pipeline runs the
+>   same way; the narrowing only changes what Triage will accept.
+> - §4 LLM backend — ✅ **still load-bearing**. Two clients, picked
+>   by `config.yaml`.
+> - §5 Source layer — ✅ **architecture still load-bearing** (source-views,
+>   adapters, diversity constraint). The specific seed registry of
+>   "13 source-views across 8 community tags" is **replaced** by the
+>   new registry at `data/source_registry.yaml` (now scoped to the
+>   4 communities of the `cn-sde-jobhunt` vertical: 一亩三分地,
+>   Reddit US tech career, US immigration counsel, China-returnee
+>   voices). Old registry preserved under `data/_archive/`.
+> - §6 Tag taxonomy — ✅ **architecture still load-bearing** (four
+>   facets, embedding-based normalization). The seed vocabulary at
+>   `data/tag_taxonomy_seed.yaml` is **replaced** with vertical-specific
+>   terms (H1B, OPT, STEM-OPT, AC21, EB-2-NIW, etc.). Old seed
+>   preserved under `data/_archive/`.
+> - §7 Quality pipeline — ✅ **still load-bearing**. Inline citation
+>   markers, Critic checks, banlist, eval suite unchanged.
+> - §8 DB schema — ✅ **still load-bearing**, with one caveat:
+>   `source_view_id` slugs now reference the new registry, not the
+>   original 13-source seed.
+> - §9 CLI commands — ✅ **still load-bearing**.
+> - §10 File / module structure — ✅ **mostly load-bearing**. Two
+>   diffs: (a) `community_profiles/` was migrated under
+>   `domain_knowledge/<domain>/communities/` during the original V2
+>   build, and the new vertical follows that pattern; (b)
+>   `archive/`, `domain_knowledge/_archive/`, `data/_archive/`, and
+>   `fixtures/_archive/` are added for deprecated content.
+> - §11 Pipeline walkthrough — ✅ **still load-bearing**. The
+>   example situation is a comp/equity offer (V1-era); for current
+>   examples see `fixtures/eval_situations.yaml`.
+> - §12 Refinement Routine — ⚠️ **architecture still load-bearing**,
+>   but the skill itself has been rewritten for the narrow scope.
+>   Read `.claude/skills/refine-blindspot/SKILL.md` for the
+>   current behavior. The auto-review-by-separate-Claude design and
+>   the per-commit code-review hook design are both unchanged. What
+>   changed: the skill no longer reasons about multiple verticals,
+>   no longer does framework-level reflection, and is scoped to the
+>   V2-narrow / V3-ui / V4-freeze checklist in `ROADMAP.md`.
+> - §13 Risks & open questions — ⚠️ partially superseded. "One-domain
+>   brittleness" was originally listed as a mitigation against
+>   bad first-user experience; in the narrow scope it becomes the
+>   *intentional shape*. Triage refuses out-of-vertical questions
+>   explicitly. The other risks (Reddit API stability, latency,
+>   auto-reviewer miscalibration) still apply.
+> - §14 Implementation order — ❌ **historical only**. V1.0 shipped;
+>   V1.x closed at the pivot; the new implementation order lives
+>   in `ROADMAP.md`.
+>
+> If you are reading this doc to understand the runtime architecture,
+> §§3–9 + §11 are the right references and remain accurate. If you
+> are reading it to understand *what the project is and where it
+> is going*, read `ROADMAP.md` first; the §1–2 framing below is
+> preserved as the V1 origin story but does not describe the current
+> project shape.
 
 ## 1. Problem
 

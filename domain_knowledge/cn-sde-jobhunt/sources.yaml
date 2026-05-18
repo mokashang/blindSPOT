@@ -1,0 +1,362 @@
+# cn-sde-jobhunt — Source-views (Layer 4)
+#
+# Per-domain source registry. The runtime concatenates this list with
+# data/source_registry.yaml at boot; this file is the in-scope domain's
+# authoritative source list. Schema mirrors data/_archive/source_registry-v1.yaml:
+#   id              kebab-case slug, globally unique
+#   adapter         rss | reddit_search | hn_search | static_corpus
+#   fetch_config    adapter-specific
+#   community_tag   matches a file under cn-sde-jobhunt/communities/
+#   tags            decisions / framings / personas this view covers
+#   reliability     1-5; 4 means meets quality bar but not CN-specific
+#   keyword_filter  on-topic gating terms
+#   freshness_required  true → 7-day TTL; false → 30-day
+#   notes           one-line moat statement
+#
+# Diversity constraint: ≥ 4 distinct community_tags. ≥ 8 entries total.
+
+# ─── community: oneponethreeacres (一亩三分地) ────────────────────────────────
+
+- id: 1p3a-offers-and-sponsorship
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/1p3a-offers-curated.md
+    keyword_filter: [sponsor, sponsorship, H1B, OPT, STEM, offer, comparison, 留学, 找工, 跳槽]
+  community_tag: oneponethreeacres
+  tags:
+    - D1
+    - D2
+    - D9
+    - D12
+    - F1
+    - persona/f1-final-year
+    - persona/new-grad-sde
+    - persona/post-opt-h1b-lottery
+  reliability: 5
+  freshness_required: false
+  notes: |
+    Hand-curated extraction of 一亩三分地 "Offers" / "Job-hunting" board
+    threads where the sponsorship-willingness question is the load-bearing
+    variable. 1p3a is hostile to scrapers — content is included only by
+    manual curation per ROADMAP §9. Best for: how CN-student askers
+    themselves frame the F-1 → H-1B pipeline; sponsor-willing employer
+    lists (the 大厂 lists, the visa-friendly mid-tier lists); the
+    "怎么挑offer" rubric the community actually uses.
+
+- id: 1p3a-h1b-lottery-and-cap-gap
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/1p3a-lottery-curated.md
+    keyword_filter: [lottery, cap-gap, 抽签, day-1-CPT, MS, masters, OPT]
+  community_tag: oneponethreeacres
+  tags:
+    - D2
+    - D3
+    - F1
+    - persona/post-opt-h1b-lottery
+    - persona/mid-PERM-employer-switch
+  reliability: 5
+  freshness_required: false
+  notes: |
+    Curated H-1B-lottery and cap-gap threads. The 1p3a lottery-strategy
+    discussion (multi-employer registration, day-1-CPT MS pipeline,
+    F-1 re-enrollment fallback) is materially more detailed than
+    English-language attorney blogs because the community runs the
+    lottery every March and aggregates anecdata at scale.
+
+- id: 1p3a-layoff-on-h1b-threads
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/1p3a-layoff-curated.md
+    keyword_filter: [layoff, 裁员, severance, 60 day, grace, transfer, 离职]
+  community_tag: oneponethreeacres
+  tags:
+    - D5
+    - D7
+    - F1
+    - F5
+    - persona/recently-terminated-on-h1b
+    - persona/h4-spouse-with-ead
+  reliability: 5
+  freshness_required: true
+  notes: |
+    Layoff-while-on-H-1B threads, severance-and-grace-clock-interaction,
+    family-located decision sequencing (H-4 spouse without EAD, kids'
+    schooling, parent-visa visits during the recovery window). The
+    2022-2024 tech-layoff wave produced a deep corpus on 1p3a; this
+    is the moat against the English-only attorney narrative.
+
+# ─── community: reddit-us-tech-collective ─────────────────────────────────
+
+- id: reddit-cscareerquestions-international
+  adapter: reddit_search
+  fetch_config:
+    subreddit: cscareerquestions
+    query_template: "international student {entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 50
+  community_tag: reddit-us-tech-collective
+  tags:
+    - D1
+    - D2
+    - D3
+    - D12
+    - F2
+    - F3
+    - persona/f1-final-year
+    - persona/new-grad-sde
+  reliability: 3
+  freshness_required: true
+  notes: |
+    English-language baseline. Catches the non-CN-international-student
+    perspective that 1p3a doesn't see — Indian-applicant comparisons
+    (useful as a contrast), domestic perspective on the sponsorship
+    discount, US-domestic-engineer view of "why does it matter so
+    much to them." Cross-checks 1p3a's risk weights against the
+    broader pool.
+
+- id: reddit-leetcode-interview-prep
+  adapter: reddit_search
+  fetch_config:
+    subreddit: leetcode
+    query_template: "{entities} interview offer"
+    sort: top
+    time_window: year
+    min_upvotes: 30
+  community_tag: reddit-us-tech-collective
+  tags:
+    - D1
+    - D12
+    - F3
+    - persona/new-grad-sde
+  reliability: 3
+  freshness_required: true
+  notes: |
+    Interview-prep market intel — what offer levels the cohort is
+    landing right now, comp deltas between FAANG and second-tier,
+    international-friendly employer mentions in passing.
+
+- id: reddit-csmajors-newgrad
+  adapter: reddit_search
+  fetch_config:
+    subreddit: csMajors
+    query_template: "{entities} international visa OPT"
+    sort: top
+    time_window: year
+    min_upvotes: 30
+  community_tag: reddit-us-tech-collective
+  tags:
+    - D1
+    - D2
+    - D12
+    - F1
+    - F3
+    - persona/f1-final-year
+    - persona/new-grad-sde
+  reliability: 3
+  freshness_required: true
+  notes: |
+    New-grad subreddit, heavier on the F-1-final-year persona than
+    cscareerquestions. Surfaces sponsorship-list churn and recent-
+    cohort offer outcomes.
+
+# ─── community: us-immigration-counsel ────────────────────────────────────
+
+- id: murthy-newsletter-h1b-perm
+  adapter: rss
+  fetch_config:
+    feed: https://www.murthy.com/feed/
+    keyword_filter: [H-1B, PERM, AC21, I-140, EB-2, EB-3, priority date, Visa Bulletin]
+  community_tag: us-immigration-counsel
+  tags:
+    - D4
+    - D5
+    - D8
+    - D10
+    - F6
+    - persona/mid-PERM-employer-switch
+    - persona/recently-terminated-on-h1b
+  reliability: 5
+  freshness_required: true
+  notes: |
+    Murthy Law Firm bulletin. Authoritative on AC21 §106(c) "same or
+    similar" portability mechanics, H-1B extension under §104(c),
+    Visa Bulletin DFF/FAD reading. The CN-applicant moat is in the
+    community profiles' framing of these mechanics; Murthy is the
+    statutory-grounding source.
+
+- id: boundless-immigration-blog
+  adapter: rss
+  fetch_config:
+    feed: https://www.boundless.com/blog/feed/
+    keyword_filter: [H-1B, H-4, EAD, marriage, AOS, I-485, green card, lottery]
+  community_tag: us-immigration-counsel
+  tags:
+    - D5
+    - D7
+    - D10
+    - F5
+    - F6
+    - persona/h4-spouse-with-ead
+  reliability: 4
+  freshness_required: true
+  notes: |
+    Boundless Immigration. Consumer-explainer voice on marriage-based
+    filings, H-4 / H-4-EAD, and the AOS pipeline. Read in concert with
+    Murthy for the contrast: Boundless is checklist-and-process;
+    Murthy is statute-and-policy-manual.
+
+- id: reddit-h1b-and-immigration-cases
+  adapter: reddit_search
+  fetch_config:
+    subreddit: h1b
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 20
+  community_tag: us-immigration-counsel
+  tags:
+    - D2
+    - D3
+    - D5
+    - D10
+    - F1
+    - F6
+    - persona/post-opt-h1b-lottery
+    - persona/recently-terminated-on-h1b
+  reliability: 3
+  freshness_required: true
+  notes: |
+    r/h1b case-narration threads. Lower-reliability counterweight to
+    the attorney-blog house style: catches denials, RFEs, and
+    edge-case adjudication anecdata. Useful for blindspot mining;
+    not citable for legal-mechanic claims.
+
+# ─── community: china-returnee-voices ─────────────────────────────────────
+
+- id: zhihu-haigui-career-threads
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/zhihu-haigui-curated.md
+    keyword_filter: [海归, return, China, 回国, 一线大厂, 北京, 上海, 字节, 阿里, 腾讯]
+  community_tag: china-returnee-voices
+  tags:
+    - D6
+    - F4
+    - persona/gc-backlog-considering-return
+  reliability: 4
+  freshness_required: false
+  notes: |
+    Curated Zhihu 海归-career threads — returnees narrating the timing
+    decision in retrospect. Zhihu is paywalled / login-gated;
+    static-corpus inclusion is manual per ROADMAP §9. Best for:
+    when ROI of staying flipped negative; 35-and-over 职场风险
+    in China-tech; family-pressure and 双方父母医疗 framing.
+
+- id: silicon-valley-101-podcast-notes
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/sv101-curated.md
+    keyword_filter: [海归, 硅谷, 回国, podcast, 中美, 选择]
+  community_tag: china-returnee-voices
+  tags:
+    - D6
+    - D9
+    - F4
+    - persona/gc-backlog-considering-return
+  reliability: 4
+  freshness_required: false
+  notes: |
+    Hand-transcribed notes from 硅谷101 / 软实力 podcast episodes
+    featuring returnee narratives. Captures the long-form personal
+    narrative (career arc, family arc, geopolitical-posture arc)
+    that thread-based forums fragment.
+
+# ─── community: legacy-tech-career (cross-domain upstream) ────────────────
+
+- id: legacy-tech-career-blindspots-corpus
+  adapter: static_corpus
+  fetch_config:
+    path: domain_knowledge/_legacy/tech-career/blindspots.md
+    keyword_filter: [RSU, ISO, equity, offer, negotiation, comp, layoff, perf, IPO]
+  community_tag: us-immigration-counsel
+  tags:
+    - D1
+    - D11
+    - D12
+    - F2
+    - F3
+  reliability: 4
+  freshness_required: false
+  notes: |
+    Legacy tech-career blindspot corpus, used as static_corpus for
+    comp-arithmetic and offer-mechanic ground truth. Reliability 4
+    (V2 quality bar but not CN-specific); community_tag is
+    us-immigration-counsel for routing purposes because tech-career
+    no longer has a runtime community. CN-overlay is in
+    framings.md / blindspots.md.
+
+- id: legacy-tech-career-framings-corpus
+  adapter: static_corpus
+  fetch_config:
+    path: domain_knowledge/_legacy/tech-career/framings.md
+    keyword_filter: [framing, equity, comp, perf, offer, negotiation]
+  community_tag: us-immigration-counsel
+  tags:
+    - D1
+    - D9
+    - D11
+    - F2
+    - F3
+  reliability: 4
+  freshness_required: false
+  notes: |
+    Legacy tech-career framings — Bay-Area-engineer-mentor and
+    Levels.fyi-comp-arithmetic framings translate cleanly into
+    cn-sde-jobhunt's F2 / F3. Reliability 4 because they predate
+    the visa-coupling overlay.
+
+# ─── community: legacy-immigration (cross-domain upstream) ────────────────
+
+- id: legacy-immigration-blindspots-corpus
+  adapter: static_corpus
+  fetch_config:
+    path: domain_knowledge/_legacy/immigration/blindspots.md
+    keyword_filter: [H-1B, OPT, STEM, AC21, I-140, PERM, EB, priority date, CSPA, AOS]
+  community_tag: us-immigration-counsel
+  tags:
+    - D2
+    - D3
+    - D4
+    - D5
+    - D8
+    - D10
+    - F6
+  reliability: 4
+  freshness_required: false
+  notes: |
+    Legacy immigration blindspot corpus — statute / regulation
+    / policy-manual grounding for visa-mechanic claims. The
+    CN-student-specific overlay narrows scope to the F-1 → OPT →
+    H-1B → GC pipeline and the H-4 / H-4-EAD couplings that
+    1p3a threads most cite.
+
+- id: legacy-immigration-framings-corpus
+  adapter: static_corpus
+  fetch_config:
+    path: domain_knowledge/_legacy/immigration/framings.md
+    keyword_filter: [framing, AC21, EB-1A, NIW, Dhanasar, priority date, AOS, CSPA]
+  community_tag: us-immigration-counsel
+  tags:
+    - D3
+    - D4
+    - D8
+    - D10
+    - F6
+  reliability: 4
+  freshness_required: false
+  notes: |
+    Legacy immigration framings — F6 (Legal-mechanic-rigor) borrows
+    its evidentiary-bar arguments (Dhanasar, Kazarian, AC21 §106(c)
+    same-or-similar) from this corpus.

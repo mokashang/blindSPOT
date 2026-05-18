@@ -1,82 +1,139 @@
-# Blindspot V1 tag taxonomy seed.
-# Open vocabulary: the Triage Officer may propose new tags at runtime; they're
-# auto-normalized (via voyage-3 embedding similarity > 0.85 → merge) or
-# auto-added (otherwise) with no human-review gate. This is the starting set.
+# Blindspot V2 tag taxonomy seed — vertical: cn-sde-jobhunt
+# Open vocabulary: the Triage Officer may propose new tags at runtime;
+# they're auto-normalized (via voyage-3 embedding similarity > 0.85 → merge)
+# or auto-added (otherwise) with no human-review gate. This is the starting
+# set for the CN-SDE-jobhunt vertical.
 
 domain:
   # Hierarchical path syntax — children inherit from parents.
-  - tech-career
-  - tech-career/equity
-  - tech-career/negotiation
-  - tech-career/job-search
-  - tech-career/comp
-  - tech-career/exit
-  - tech-career/startup-stage
-  - tech-career/founder
-  - tech-career/early-employee
+  # Root is cn-sde-jobhunt: Chinese international students in the US,
+  # making SDE job-hunt and visa-coupled career decisions.
+  - cn-sde-jobhunt
+  - cn-sde-jobhunt/visa
+  - cn-sde-jobhunt/offer-comp
+  - cn-sde-jobhunt/employer-switch
+  - cn-sde-jobhunt/return-to-china
 
 entity:
   # Flat controlled string. Specific things mentioned in a situation.
   # Triage extracts these from user input.
 
-  # Stock types
-  - ISO
-  - NSO
+  # Non-immigrant student / work visa categories
+  - F-1
+  - F-1-CPT
+  - day-1-CPT
+  - OPT
+  - STEM-OPT
+  - cap-gap
+  - H-1B
+  - H-1B-transfer
+  - H-1B-amendment
+  - H-4
+  - H-4-EAD
+  - L-1
+  - L-1A
+  - L-1B
+  - O-1
+  - J-1
+  - J-1-waiver
+
+  # Employment authorization & adjustment
+  - EAD
+  - AC21-portability
+  - 60-day-grace-period
+
+  # Immigrant / green card categories
+  - EB-1
+  - EB-1A
+  - EB-1B
+  - EB-2
+  - EB-2-NIW
+  - EB-3
+  - PERM
+  - I-140
+  - I-485
+  - I-765
+  - AOS                          # adjustment of status
+  - consular-processing
+  - advance-parole
+  - priority-date
+
+  # Procedural friction points
+  - RFE
+  - premium-processing
+  - lottery-selection
+  - lottery-failure
+  - priority-date-retrogression
+
+  # Comp / equity entities that intersect visa decisions
   - RSU
+  - sign-on
+  - equity-cliff
+  - refresher-grant
+  - total-comp
+  - sponsorship-history-of-employer
+  - LCA                          # employer wage filing
+  - H-1B-prevailing-wage
 
-  # Tax concepts
-  - AMT
-  - 409A-valuation
-  - strike-price
-  - FMV
-  - qualifying-disposition
-
-  # Vesting mechanics
-  - vesting-cliff
-  - vesting-schedule
-  - single-trigger
-  - double-trigger
-  - refresher
-  - accelerator
-
-  # Exit events
-  - IPO
-  - acquisition
-  - secondary-sale
-  - tender-offer
-
-  # Company stage
-  - seed-stage
+  # Employer / company types
+  - FAANG
+  - unicorn
   - series-A
   - series-B
   - series-C-plus
-  - late-stage
+  - no-name-startup
+  - government-contractor
+  - public-company
+  - CN-tech-employer             # 字节 / 腾讯 / 阿里 / 美团 etc.
 
-  # Special clauses
-  - post-termination-exercise-window
-  - early-exercise
-  - 83b-election
-  - golden-handcuffs
+  # CN-tech career leveling (intersects return-to-china)
+  - P7
+  - P8
+  - 国内倒挂                      # CN-tech comp inversion phenomenon
+
+  # Life-stage / status markers
+  - CPT-not-yet-used
+  - OPT-active
+  - STEM-extension-window
+  - GC-backlog
+  - I-140-approved
+  - laid-off
 
 risk_surface:
   # Flat. What kind of harm/concern is in play.
-  - tax                # tax consequences, esp. AMT and double taxation
-  - legal              # contract clauses, legal traps
-  - timing             # when to exercise, when to leave, etc.
-  - counterparty       # company's behavior — dilution, broken promises, cap-table maneuvers
-  - liquidity          # paper vs cash; ability to convert holdings
-  - regret             # cost of irreversible decisions
-  - info-asymmetry     # they know things you don't
-  - power-dynamics     # negotiation leverage
-  - opportunity-cost   # choosing A means giving up B
+  - visa-status-pressure         # losing legal status if event X happens
+  - sponsorship-fit              # employer's willingness/track-record to sponsor
+  - cap-gap-timing               # OPT-to-H1B gap window
+  - lottery-failure              # consequences if H-1B lottery not selected
+  - 60-day-grace-period          # post-termination clock for status
+  - priority-date-retrogression  # GC backlog risk for India/China-born
+  - return-to-china-irreversibility  # cost of failed-return; one-way door
+  - sponsorship-asymmetry        # FAANG-vs-startup gap on visa
+  - tax                          # US/CN double-tax, RSU-vesting tax timing
+  - legal                        # contract clauses, day-1-CPT legitimacy, etc.
+  - timing                       # when to file, when to leave, when to return
+  - counterparty                 # employer behavior (layoffs, broken promises)
+  - opportunity-cost             # choosing A means giving up B
+  - regret                       # cost of irreversible decisions
+  - info-asymmetry               # they know things you don't (esp. attorneys)
+  - power-dynamics               # leverage in negotiation under visa pressure
+  - family-coupling              # spouse / kids' status coupled to yours
 
 persona:
   # Flat. Who the user is in this situation.
-  - first-time-offer       # their first formal offer
-  - comparing-offers       # holding multiple offers
-  - considering-quit       # thinking about leaving
-  - pre-vest-cliff         # approaching the 1-year cliff
-  - post-vest-cliff        # past cliff, deciding what's next
-  - early-employee         # at small company (<50)
-  - senior-employee        # at large company (>500)
-  - founder
+  - f1-final-year-cs-master                            # final-year MS student
+  - f1-final-year-cs-undergrad                         # final-year BS student
+  - cs-phd-post-defense                                # PhD post-defense, deciding industry-vs-academia
+  - opt-active-h1b-pending                             # OPT active, in lottery cycle
+  - opt-active-h1b-not-yet-filed                       # OPT active, employer hasn't filed
+  - stem-opt-extension                                 # on the +24mo STEM extension
+  - h1b-on-lottery-fail                                # didn't get selected, deciding backup path
+  - h1b-on-first-year                                  # cap-subject H-1B start-of-employment
+  - mid-perm-considering-switch                        # PERM in progress, weighing AC21 risk
+  - i140-approved-considering-return                   # I-140 approved, considering CN return
+  - laid-off-on-h1b                                    # 60-day-grace clock running
+  - comparing-fang-vs-startup-with-sponsorship-asymmetry  # the canonical CN-student dilemma
+  - gc-backlog-considering-return                      # priority-date stuck, weighing return
+  - h4-spouse-on-ead                                   # spouse work-authorization coupled
+  - dual-citizenship-family                            # kids with US citizenship, parents on visa
+  - senior-ic-already-passed-cliff                     # post-vest, weighing next chapter

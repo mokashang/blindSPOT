@@ -1,236 +1,352 @@
-# Blindspot V1 source registry.
-# Each entry is a "source-view": a configured, filtered, annotated lens into one source.
+# Blindspot V2 source registry — vertical: cn-sde-jobhunt
+# Scope: Chinese international students in the US, making SDE job-hunt and
+# visa-coupled career decisions. The 4 in-scope communities are:
+#   - oneponethreeacres        (一亩三分地; Chinese-language US SDE forum)
+#   - reddit-us-tech-collective (r/cscareerquestions, r/csMajors, r/leetcode)
+#   - us-immigration-counsel   (Murthy, Boundless, Reddy, Klasko + r/immigration / r/h1b)
+#   - china-returnee-voices    (Zhihu, WeChat blogs, podcast voices like 硅谷101)
+#
+# Each entry is a "source-view": a configured, filtered, annotated lens.
 # Schema:
 #   id              unique slug
 #   adapter         rss | reddit_search | hn_search | static_corpus
 #   fetch_config    adapter-specific
-#   domains         hierarchical tag paths (multi-label)
+#   domains         hierarchical tag paths, all rooted at cn-sde-jobhunt/*
 #   community_tag   single community label (drives diversity constraint)
 #   reliability     1-5, initial value; auto-adjusted via rating feedback
 #   freshness_required  true → cache TTL 7 days; false → 30 days
 #   notes           multi-paragraph; what this view is good for, bad for, caveats
+#
+# Reliability anchor: 5 = consistently cited, named legal/professional
+# authority; 4 = strong community voice with track record; 3 = community
+# signal that needs filtering; 1-2 = unverified.
 
-# ─── community: founder-engineer-bloggers ─────────────────────────────────────
+# ─── community: oneponethreeacres (一亩三分地) ────────────────────────────────
+# Static corpus only — 1point3acres ToS forbids scraping; bot detection is
+# aggressive; the community values its walled-garden nature. The author
+# manually curates representative threads into the static markdown file.
+# Each entry below differentiates by keyword_filter, scoping to a section
+# of the corpus.
 
-- id: pmck-equity
-  adapter: rss
+- id: oneponethreeacres-offer-comp
+  adapter: static_corpus
   fetch_config:
-    feed: https://www.kalzumeus.com/feed/
-    keyword_filter: [equity, negotiation, salary, ISO, RSU, vesting]
-  domains: [tech-career/equity, tech-career/negotiation]
-  community_tag: founder-engineer-bloggers
-  reliability: 5
+    path: data/static/oneponethreeacres-curated.md
+    keyword_filter: [offer, package, comp, RSU, sign-on, base, total-comp,
+                     总包, 薪资, 谈薪, 跳槽涨幅]
+  domains:
+    - cn-sde-jobhunt/offer-comp
+    - cn-sde-jobhunt/employer-switch
+  community_tag: oneponethreeacres
+  reliability: 4
   freshness_required: false
   notes: |
-    Patrick McKenzie's blog. Gold standard for salary negotiation,
-    equity grant structure, and "how employers actually think" framing.
-    Best for: ISO/NSO mechanics, salary negotiation tactics, BATNA framing,
-    first-offer dynamics.
-    Weak: late-stage / public-company contexts, non-US, hourly/contract work.
+    Offer-comparison and total-comp threads on 一亩三分地. Curated by the
+    author from the 求职 / offer 求比较 / 薪资 sections.
+    Best for: realistic comp benchmarks for new-grad and 2-5yr SDE roles
+    in the US through a CN-student lens — includes negotiation transcripts,
+    sign-on / RSU breakdowns, and the running awareness of which employers
+    actually deliver promised packages.
+    Weak: senior-IC (L6+) data is sparse; founder/executive comp is out
+    of community range.
+    Caveats: the forum's culture skews toward FAANG / unicorn aspirations
+    and "offer 收割" mindset, which can bias against perfectly fine non-
+    name-brand outcomes. The curator should pull in counter-narrative
+    threads where they exist.
 
-- id: danluu-career
-  adapter: rss
+- id: oneponethreeacres-visa
+  adapter: static_corpus
   fetch_config:
-    feed: https://danluu.com/atom.xml
-    keyword_filter: [salary, comp, interview, level, career]
-  domains: [tech-career/comp, tech-career/job-search]
-  community_tag: founder-engineer-bloggers
-  reliability: 5
-  freshness_required: false
+    path: data/static/oneponethreeacres-curated.md
+    keyword_filter: [H-1B, H1B, OPT, STEM-OPT, cap-gap, lottery, F-1, CPT,
+                     绿卡, 抽签, 排期, 身份, 中签, 续签, RFE]
+  domains:
+    - cn-sde-jobhunt/visa
+  community_tag: oneponethreeacres
+  reliability: 3
+  freshness_required: true
   notes: |
-    Dan Luu's blog. Heavily data-driven analysis of comp, interview
-    practices, big-tech-vs-startup tradeoffs. Often surfaces structural
-    misconceptions that junior engineers hold.
-    Best for: comp comparisons across tiers, hidden costs of startups,
-    interview/leveling mechanics, perf-review pathology.
+    Visa / 身份 threads on 一亩三分地 — covers H-1B lottery experiences,
+    OPT-to-H-1B transitions, cap-gap timing, day-1-CPT debates, RFE
+    encounters, transfer-during-lottery cases. Curated from 实习/全职 +
+    H-1B/绿卡 + 法律咨询 sub-forums.
+    Best for: timely lived experience of recent visa-process changes
+    (USCIS policy shifts, RFE patterns by employer, lottery-year folklore)
+    in a CN-student voice.
+    Weak: not a substitute for licensed-attorney advice. The forum's
+    consensus on edge cases (day-1-CPT legitimacy, F-1 reinstatement
+    success rates, etc.) is often more bullish than counsel would be.
+    Pair with us-immigration-counsel sources for any actionable claim.
 
-- id: pragmatic-engineer
-  adapter: rss
+- id: oneponethreeacres-haigui
+  adapter: static_corpus
   fetch_config:
-    feed: https://newsletter.pragmaticengineer.com/feed
-    keyword_filter: [comp, equity, layoff, hiring, level]
-  domains: [tech-career/comp, tech-career/job-search, tech-career/exit]
-  community_tag: founder-engineer-bloggers
+    path: data/static/oneponethreeacres-curated.md
+    keyword_filter: [海归, 回国, return, 国内, 回流, 反向, 中美, 字节,
+                     腾讯, 阿里, P7, P8, 倒挂]
+  domains:
+    - cn-sde-jobhunt/return-to-china
+  community_tag: oneponethreeacres
+  reliability: 3
+  freshness_required: true
+  notes: |
+    海归 / return-to-China discussion threads on 一亩三分地. Curated from
+    the 海归 sub-forum and cross-posts in 全职找工 / 跳槽.
+    Best for: practitioner sentiment on US-to-China timing — which CN
+    employers honor US-titled levels, comp inversion ("倒挂") realities,
+    "5-yr-window" folk wisdom, and what the return looks like 1-2 years
+    after the decision.
+    Weak: the population that posts trends younger and self-selects toward
+    "the return went well or went badly" extremes. Less signal on the
+    quiet middle. Pair with china-returnee-voices for longer-form
+    reflection.
+
+- id: oneponethreeacres-employer-list
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/oneponethreeacres-curated.md
+    keyword_filter: [sponsor, sponsorship, 担保, 是否办身份, employer-list,
+                     公司列表, 黑名单, 不办H1B, 不sponsor]
+  domains:
+    - cn-sde-jobhunt/employer-switch
+    - cn-sde-jobhunt/visa
+  community_tag: oneponethreeacres
   reliability: 4
   freshness_required: true
   notes: |
-    Gergely Orosz's newsletter. Current tech-industry market intel,
-    layoff dynamics, hiring trends, recent comp shifts.
-    Best for: timely market context, big-tech HR practices, EU/UK angles.
-    Weak: deep technical equity mechanics (defer to pmck/holloway).
+    Employer-level sponsorship-behavior threads on 一亩三分地. Curated
+    list-style threads tracking which US tech employers reliably sponsor
+    H-1B / GC, which file the bare minimum, and which have effectively
+    stopped sponsoring after layoffs.
+    Best for: a critical input to the "FAANG vs startup" tradeoff —
+    sponsorship behavior is often the load-bearing variable that the
+    English-language tech-careers community completely ignores.
+    Weak: company-level data ages fast; a sponsorship-friendly employer
+    in 2024 may be cap-frozen in 2026.
 
-# ─── community: reddit-tech-collective ────────────────────────────────────────
+# ─── community: reddit-us-tech-collective ─────────────────────────────────────
 
-- id: reddit-cscareerquestions-equity
+- id: reddit-cscareerquestions-visa
   adapter: reddit_search
   fetch_config:
     subreddit: cscareerquestions
-    query_template: "{entities} {risk_surfaces}"
+    query_template: "{entities} international visa sponsorship"
     sort: top
     time_window: year
-    min_upvotes: 50
-  domains: [tech-career/equity, tech-career/comp]
-  community_tag: reddit-tech-collective
+    min_upvotes: 30
+  domains:
+    - cn-sde-jobhunt/offer-comp
+    - cn-sde-jobhunt/visa
+  community_tag: reddit-us-tech-collective
   reliability: 3
   freshness_required: true
   notes: |
     Largest US tech career subreddit, junior-skewed but high volume.
-    High-upvote threads on equity/comp surface common misconceptions and
-    real war stories. Anonymity makes honesty high.
-    Caveats: skews young, sometimes confidently wrong. Filter heavily by
-    upvotes; prefer threaded explanations over hot takes.
+    High-upvote threads where international students surface their
+    sponsorship-anxiety questions — useful for the "domestic peer view"
+    on whether sponsorship-asymmetry actually changes hiring outcomes.
+    Caveats: skews toward US-citizen perspective; international concerns
+    are sometimes dismissed. Filter by upvotes and read replies, not
+    just OPs.
 
-- id: reddit-experienceddevs
+- id: reddit-csmajors-newgrad
   adapter: reddit_search
   fetch_config:
-    subreddit: ExperiencedDevs
+    subreddit: csMajors
     query_template: "{entities} {risk_surfaces}"
     sort: top
     time_window: year
     min_upvotes: 30
-  domains: [tech-career/comp, tech-career/exit, tech-career/negotiation]
-  community_tag: reddit-tech-collective
+  domains:
+    - cn-sde-jobhunt/offer-comp
+    - cn-sde-jobhunt/visa
+  community_tag: reddit-us-tech-collective
+  reliability: 3
+  freshness_required: true
+  notes: |
+    Undergrad / new-grad-focused subreddit. Best signal on the entry-level
+    CS hiring market and OPT-to-H-1B timing decisions from a peer
+    perspective. The "should I take Big Tech with worse role for visa
+    security" question gets asked here frequently and gets diverse
+    replies.
+    Weak: skews very junior, sometimes confidently wrong on visa specifics.
+
+- id: reddit-leetcode-interview
+  adapter: reddit_search
+  fetch_config:
+    subreddit: leetcode
+    query_template: "{entities} interview experience"
+    sort: top
+    time_window: year
+    min_upvotes: 30
+  domains:
+    - cn-sde-jobhunt/offer-comp
+  community_tag: reddit-us-tech-collective
+  reliability: 3
+  freshness_required: true
+  notes: |
+    r/leetcode. Interview experience threads, recent question patterns
+    by company, OA-vs-onsite preparation strategy.
+    Best for: ground-truth on the interview pipeline at named employers
+    in the last 6 months. Useful for "is this employer still hiring
+    internationals" inference via OA-and-onsite report frequency.
+    Weak: not a decision-making source; an information-gathering one.
+
+# ─── community: us-immigration-counsel ────────────────────────────────────────
+
+- id: murthy-law-blog
+  adapter: rss
+  fetch_config:
+    feed: https://www.murthy.com/feed/
+    keyword_filter: [H-1B, H1B, OPT, STEM-OPT, EB-1, EB-2, EB-3, NIW, PERM,
+                     I-140, I-485, AC21, cap-gap, RFE, premium-processing]
+  domains:
+    - cn-sde-jobhunt/visa
+  community_tag: us-immigration-counsel
+  reliability: 5
+  freshness_required: true
+  notes: |
+    Murthy Law Firm bulletin. Long-running immigration-attorney newsletter
+    with case-law-level treatment of H-1B / EB-2 / EB-3 / NIW topics.
+    Reliability 5 — licensed attorneys, named authors, decades of practice.
+    Best for: ground-truth on USCIS policy changes, post-RFE strategy,
+    AC21 portability mechanics, priority-date retrogression updates.
+    Weak: not opinionated on personal tradeoffs (e.g. "should I take
+    this offer") — only on procedural law. Pair with community sources
+    for the "should I" layer.
+    TODO-verify-URL: feed URL is a best-guess; confirm against current
+    Murthy site structure during refine loop.
+
+- id: boundless-h1b-blog
+  adapter: rss
+  fetch_config:
+    feed: https://www.boundless.com/blog/feed/
+    keyword_filter: [H-1B, H1B, lottery, cap, sponsor, employer,
+                     transfer, RFE, STEM-OPT, EAD, premium-processing]
+  domains:
+    - cn-sde-jobhunt/visa
+  community_tag: us-immigration-counsel
   reliability: 4
   freshness_required: true
   notes: |
-    Senior-IC filter on r/cscareerquestions. Higher signal on negotiation,
-    exit decisions, equity-vs-cash tradeoffs at senior levels.
-    Best for: realistic senior-IC tradeoffs, post-IPO regret stories,
-    manager-vs-IC track perspective.
+    Boundless Immigration blog. Tech-friendly immigration practice with
+    strong content marketing — produces explainers and policy-change
+    coverage at a readability that complements Murthy's denser style.
+    Best for: recent-year H-1B registration mechanics, lottery odds
+    analysis, employer-side filing nuance.
+    Weak: explainer voice can over-simplify edge cases. Cross-check
+    actionable claims against Murthy.
+    TODO-verify-URL: feed URL is a best-guess; confirm during refine.
 
-- id: reddit-personalfinance-equity
+- id: reddit-h1b
   adapter: reddit_search
   fetch_config:
-    subreddit: personalfinance
+    subreddit: h1b
     query_template: "{entities} {risk_surfaces}"
     sort: top
     time_window: year
-    min_upvotes: 50
-  domains: [tech-career/equity]
-  community_tag: reddit-tech-collective
+    min_upvotes: 30
+  domains:
+    - cn-sde-jobhunt/visa
+  community_tag: us-immigration-counsel
   reliability: 3
-  freshness_required: false
+  freshness_required: true
   notes: |
-    Equity from a tax-aware angle rather than a tech angle. Catches things
-    the tech subs miss — state tax interactions, ESPP gotchas, qualified
-    vs disqualified dispositions, AMT credit recovery.
+    r/h1b. Lived-experience visa subreddit — recent RFE patterns, transfer
+    timing experiences, lottery-fail backup-path discussions, layoff +
+    60-day-grace stories. The OPs are practitioners, not attorneys.
+    Best for: timely sentiment on what's actually happening in USCIS
+    processing this quarter.
+    Caveats: anecdote-heavy; do not treat as legal advice. Useful for
+    "what does the lived process feel like" but not for "is this legal".
 
-# ─── community: vc-blogosphere ────────────────────────────────────────────────
-
-- id: avc-fred-wilson
-  adapter: rss
+- id: reddit-immigration
+  adapter: reddit_search
   fetch_config:
-    feed: https://avc.com/feed/
-    keyword_filter: [equity, employee, founder, vesting, exit]
-  domains: [tech-career/equity, tech-career/founder, tech-career/exit]
-  community_tag: vc-blogosphere
-  reliability: 4
-  freshness_required: false
-  notes: |
-    Fred Wilson's blog. VC perspective on startup employee equity,
-    typical grant sizes by stage, what founders/VCs are thinking when
-    structuring offers. Important counterparty intel.
-
-# ─── community: hn-collective ─────────────────────────────────────────────────
-
-- id: hn-equity-discussions
-  adapter: hn_search
-  fetch_config:
-    query_template: "{entities}"
-    min_points: 100
-    types: [story]
-  domains: [tech-career/equity, tech-career/comp, tech-career/startup-stage]
-  community_tag: hn-collective
+    subreddit: immigration
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 30
+  domains:
+    - cn-sde-jobhunt/visa
+  community_tag: us-immigration-counsel
   reliability: 3
-  freshness_required: false
-  notes: |
-    Hacker News stories and top comments on equity, comp, IPOs, acquisitions.
-    Adversarial signal in comments — useful for surfacing counter-takes
-    that don't make it into the headline narrative.
-    Caveats: noise high. The dissent in comments often points to real
-    blind-spots in the original story.
-
-# ─── community: tax-and-finance-professionals ─────────────────────────────────
-
-- id: kb-financial-equity
-  adapter: rss
-  fetch_config:
-    feed: https://kbfinancialadvisors.com/feed/
-    keyword_filter: [equity, AMT, ISO, secondary, tender]
-  domains: [tech-career/equity]
-  community_tag: tax-and-finance-professionals
-  reliability: 4
-  freshness_required: false
-  notes: |
-    KB Financial Advisors. CPA / financial-advisor practice specializing
-    in tech equity. Concrete AMT / qualifying-disposition mechanics,
-    secondary tax planning, exercise-and-hold strategies.
-    Best for: tax-side blind spots that non-tax sources miss.
-
-# ─── community: matt-levine-school ────────────────────────────────────────────
-
-- id: matt-levine-money-stuff
-  adapter: rss
-  fetch_config:
-    feed: https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss
-    keyword_filter: [IPO, SPAC, secondary, tender, acquisition, comp]
-  domains: [tech-career/equity, tech-career/exit]
-  community_tag: matt-levine-school
-  reliability: 4
   freshness_required: true
   notes: |
-    Matt Levine's Money Stuff. Adversarial framing of M&A, IPO, and
-    acquisition deals — surfaces what dealmakers actually optimize for
-    (often at the expense of rank-and-file employees). Unique
-    counter-narrative source.
-    Best for: blind spots about IPO mechanics, dilution math, SPAC traps,
-    "why is this happening this way" answers.
+    r/immigration. Broader-than-h1b subreddit, covers consular processing,
+    AOS, advance parole, H-4 EAD, family-based paths that intersect with
+    spouse / dependent decisions for CN students.
+    Best for: cross-cutting topics that aren't pure H-1B — H-4 EAD work
+    authorization, kids' status questions, travel-during-AOS questions.
+    Weak: high noise; tighten filters when querying.
 
-# ─── community: carta-and-platform-data ───────────────────────────────────────
+# ─── community: china-returnee-voices ─────────────────────────────────────────
+# Static corpus — Zhihu ToS allows individual citation but forbids systematic
+# scraping; WeChat / podcast transcripts are similarly walled. Author
+# manually curates representative pieces into the static markdown file.
 
-- id: carta-blog
-  adapter: rss
-  fetch_config:
-    feed: https://carta.com/blog/feed/
-    keyword_filter: [equity, vesting, grant, dilution, cap-table, 409a]
-  domains: [tech-career/equity, tech-career/startup-stage]
-  community_tag: carta-and-platform-data
-  reliability: 4
-  freshness_required: true
-  notes: |
-    Carta's blog/research. Aggregated cap-table data — typical grants
-    by stage, dilution patterns, recent industry trends.
-    Best for: benchmarking — "is what I'm being offered normal for this
-    stage / role / location?".
-
-- id: levels-fyi-blog
-  adapter: rss
-  fetch_config:
-    feed: https://www.levels.fyi/blog/rss.xml
-    keyword_filter: [comp, equity, levels, negotiation]
-  domains: [tech-career/comp, tech-career/negotiation]
-  community_tag: carta-and-platform-data
-  reliability: 4
-  freshness_required: true
-  notes: |
-    NOTE: Only the public BLOG is included. The levels.fyi comp database
-    is NOT used — its ToS forbids scraping and requires a partnership.
-    Blog topics: industry comp benchmarks, level mapping, recent shifts.
-
-# ─── community: long-form-references ──────────────────────────────────────────
-
-- id: holloway-equity-guide
+- id: zhihu-haigui-corpus
   adapter: static_corpus
   fetch_config:
-    path: data/static/holloway-equity-guide.md
-  domains: [tech-career/equity]
-  community_tag: long-form-references
-  reliability: 5
+    path: data/static/zhihu-haigui-curated.md
+    keyword_filter: [海归, 回国, return, 美国, 中国, 字节, 腾讯, 阿里,
+                     P7, P8, 倒挂, 35岁, 中年危机, 反向]
+  domains:
+    - cn-sde-jobhunt/return-to-china
+  community_tag: china-returnee-voices
+  reliability: 3
   freshness_required: false
   notes: |
-    The Holloway Guide to Equity Compensation (free version). Comprehensive
-    reference text on ISOs, NSOs, RSUs, AMT, vesting schedules, exercise
-    windows, secondary sales, etc.
-    Best for: ground-truth definitions and corner-case mechanics.
-    Manual ingest — paste the relevant chapters into the static markdown
-    file. Update annually or when major tax/regulatory changes occur.
+    Zhihu long-form 海归 reflections curated by the author. Differs from
+    一亩三分地 in voice — Zhihu posters are typically further along in
+    the return process (5+ years post-return, reflecting on whether it
+    was the right call) and write at essay length.
+    Best for: longer time-horizon reflection on "is the return
+    irreversible in practice", career-capital depreciation in CN-tech
+    after long US tenure, family / lifestyle tradeoffs.
+    Weak: small-N anecdote; respect that representative posts are
+    self-selected for narrative value.
+
+- id: guigu101-podcast-corpus
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/zhihu-haigui-curated.md
+    keyword_filter: [硅谷101, podcast, 播客, transcript, US Studio,
+                     湾区, Silicon Valley, 中美对比]
+  domains:
+    - cn-sde-jobhunt/return-to-china
+    - cn-sde-jobhunt/offer-comp
+  community_tag: china-returnee-voices
+  reliability: 4
+  freshness_required: true
+  notes: |
+    硅谷101 (Guigu101, US Studio) podcast transcript excerpts. Curated
+    by the author when the host or a guest surfaces a load-bearing
+    pattern for CN-students-in-US tech careers.
+    Best for: longer-form interview-style content with practitioners
+    that doesn't exist on forums. Often includes legal / VC / HR
+    perspectives that complement the engineer-only view of
+    一亩三分地.
+    Weak: editorial framing means individual guests may be cherry-
+    picked for narrative; cross-check claims against other sources.
+
+- id: ruanshili-podcast-corpus
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/zhihu-haigui-curated.md
+    keyword_filter: [软实力, 播客, podcast, 中美, 职场, 转码, 留学]
+  domains:
+    - cn-sde-jobhunt/return-to-china
+    - cn-sde-jobhunt/offer-comp
+  community_tag: china-returnee-voices
+  reliability: 3
+  freshness_required: false
+  notes: |
+    软实力 (Ruanshili) and similar Chinese-language career podcasts.
+    Curated transcript excerpts of segments specifically discussing
+    CN-student SDE career paths, US-vs-CN tradeoffs, and post-graduation
+    decision-making.
+    Best for: practitioner voices that don't end up on Zhihu or
+    一亩三分地 — career coaches, recruiters, returnees in their 30s.
+    Weak: corpus is small; treat as supplementary signal.

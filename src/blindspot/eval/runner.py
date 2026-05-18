@@ -19,13 +19,15 @@ from blindspot.eval.judge import judge_response
 from blindspot.llm.base import Embedder, LLMClient
 from blindspot.orchestrator import Orchestrator
 
-# V1 domain name used to annotate fixtures loaded from the legacy
-# monolithic file. The migration from `fixtures/eval_situations.yaml`
-# to `domain_knowledge/tech-career/fixtures/*.yaml` is tracked as a
-# separate roadmap item (v2/tech-career/fixtures); until that migration
-# lands, every V1 fixture is treated as belonging to this domain so
-# per-domain aggregation has a stable bucket.
-V1_LEGACY_DOMAIN = "tech-career"
+# Domain name used to annotate fixtures loaded from the legacy
+# monolithic file at `fixtures/eval_situations.yaml`. Post-2026-05-18
+# scope-narrow: when per-domain fixtures exist under
+# `domain_knowledge/cn-sde-jobhunt/fixtures/*.yaml`, the V2 branch
+# below wins and this constant is unused. It remains as the V1
+# fallback annotation so per-domain aggregation has a stable bucket
+# during any transitional state where the monolithic file is the
+# only available fixture source.
+V1_LEGACY_DOMAIN = "cn-sde-jobhunt"
 
 # Default per-fixture timeout (seconds). Wraps each fixture's full
 # pipeline + judge call. Rationale: 5 consecutive refine runs have been
@@ -90,9 +92,10 @@ def load_all_fixtures(
        ``domain`` key set to the parent folder name. Domains and files
        are iterated in sorted order for deterministic output.
     2. If no per-domain fixture files are found, fall back to
-       ``<root>/<legacy_path>`` — the V1 monolithic file. Each fixture
-       loaded from there is annotated with ``domain: "tech-career"``
-       (V1's only domain).
+       ``<root>/<legacy_path>`` — the monolithic file. Each fixture
+       loaded from there is annotated with
+       ``domain: "cn-sde-jobhunt"`` (the project's only in-scope
+       vertical post-2026-05-18 scope-narrow).
 
     Bit-for-bit V1 preservation: when no per-domain files exist,
     ``load_all_fixtures()`` returns exactly the same list of dicts as

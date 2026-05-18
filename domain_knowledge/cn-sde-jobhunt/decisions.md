@@ -1,0 +1,115 @@
+# cn-sde-jobhunt — Decisions (Layer 1)
+
+Decision ontology for `cn-sde-jobhunt`. Scope inherits from
+[`_meta_ontology.md`](../_meta_ontology.md): US-based SDE career
+decisions made by Chinese international students whose visa status
+(F-1, OPT, STEM-OPT, cap-gap, H-1B, H-4 / H-4-EAD, O-1, AOS-pending)
+is a binding constraint on the move. The vertical lives at the
+intersection of tech-career and immigration; purely-tech-career or
+purely-visa situations are out of scope and Triage refuses them
+(see `domain_pack.md` §Triage).
+
+This file names **what** decisions exist, with scope and pointers to
+the framing axes they argue over. The framings themselves live in
+`framings.md` (F1–F6 cross-referenced below). Per-entry paragraph
+content is voice-work and is authored by the human only.
+
+---
+
+## Cross-reference
+
+| # | Decision | Layer-2 framings | Layer-3 risk surfaces |
+|---|---|---|---|
+| 1 | Offer comparison under H-1B sponsorship-willingness filter | F1, F2, F3, F6 | visa-security, sponsorship-commitment, gc-timeline, comp-arithmetic |
+| 2 | OPT / STEM-OPT / cap-gap timing across employer choice | F1, F6 | opt-clock, e-verify-employer, cap-gap-eligibility |
+| 3 | H-1B lottery backup paths (O-1, L-1, day-1-CPT, MS-pipeline) | F1, F4, F6 | second-lottery-strategy, day-1-cpt-risk, status-restoration |
+| 4 | Employer switch mid-PERM / mid-I-140 (AC21 §106(c)) | F1, F2, F6 | same-or-similar, i-140-portability, priority-date-preservation |
+| 5 | Layoff response under H-1B / H-4 status pressure | F1, F5, F6 | 60-day-grace, severance-clock-interaction, h4-status-tracks-principal |
+| 6 | Return-to-China (海归) timing decision | F2, F4, F5 | gc-backlog-roi, china-tech-window, 35-and-over-discount, family-pressure |
+| 7 | Family-located optimization (H-4-EAD spouse, parent B-2, school) | F1, F5 | h4-ead-vulnerability, state-residency-coupling, school-enrollment |
+| 8 | PhD / postdoc-to-industry conversion (route choice) | F1, F2, F6 | eb1a-niw-vs-h1b, opt-to-h1b-bridge, advisor-relationship-timing |
+| 9 | Long-term career capital vs visa security tradeoff | F1, F2 | skill-trajectory-vs-status-stability, employer-quality-premium |
+| 10 | O-1 vs H-1B-lottery route selection | F1, F6 | evidentiary-bar, cap-exempt-flexibility, employer-cooperation |
+| 11 | Post-cliff (post-RSU-vest) career strategy under visa coupling | F1, F2, F3 | rsu-cliff-timing, gc-timeline-vs-comp-cycle, retention-vs-departure |
+| 12 | First-employer choice under "willing to sponsor" filter (new-grad) | F1, F3, F6 | sponsorship-history, h1b-vs-h4-vs-l1-strategy, comp-discount-for-sponsorship |
+
+Each row's framing IDs reference `framings.md` (F1 = Visa-security
+maximization; F2 = Long-term career capital; F3 = Comp maximization
+in a 4-year window; F4 = Return-to-China optionality; F5 =
+Family-located optimization; F6 = Legal-mechanic rigor).
+
+---
+
+## Entries
+
+### 1. Offer comparison under H-1B sponsorship-willingness filter
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 2. OPT / STEM-OPT / cap-gap timing across employer choice
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 3. H-1B lottery backup paths (O-1, L-1, day-1-CPT, MS-pipeline)
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 4. Employer switch mid-PERM / mid-I-140 (AC21 §106(c) portability)
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 5. Layoff response under H-1B / H-4 status pressure
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 6. Return-to-China (海归) timing decision
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 7. Family-located optimization (H-4-EAD spouse, parent B-2, kids' schooling)
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 8. PhD / postdoc-to-industry conversion (route choice)
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 9. Long-term career capital vs visa-security tradeoff
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 10. O-1 vs H-1B-lottery route selection
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 11. Post-cliff (post-RSU-vest) career strategy under visa coupling
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
+
+### 12. First-employer choice under "willing to sponsor" filter (new-grad)
+
+- **Scope** — (to be authored)
+- **Framing-axes-covered** — (to be authored)
+- **Sample situations** — (to be authored)
