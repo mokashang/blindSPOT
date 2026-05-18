@@ -58,7 +58,40 @@ authored later may surface additional risks.
 Anchor framing: F1 (Visa-security maximization) — see
 `framings.md` §F1.
 
-(Entries authored by user; ≥ 5 per framing per `_schema.md`.)
+#### B-F1-1. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F1-2. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F1-3. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F1-4. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F1-5. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
 
 ---
 
@@ -67,7 +100,40 @@ Anchor framing: F1 (Visa-security maximization) — see
 Anchor framing: F2 (Long-term career capital) — see
 `framings.md` §F2.
 
-(Entries authored by user; ≥ 5 per framing per `_schema.md`.)
+#### B-F2-1. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F2-2. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F2-3. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F2-4. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F2-5. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
 
 ---
 
@@ -76,7 +142,40 @@ Anchor framing: F2 (Long-term career capital) — see
 Anchor framing: F3 (Comp maximization in a 4-year window) — see
 `framings.md` §F3.
 
-(Entries authored by user; ≥ 5 per framing per `_schema.md`.)
+#### B-F3-1. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F3-2. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F3-3. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F3-4. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F3-5. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
 
 ---
 
@@ -85,7 +184,40 @@ Anchor framing: F3 (Comp maximization in a 4-year window) — see
 Anchor framing: F4 (Return-to-China optionality) — see
 `framings.md` §F4.
 
-(Entries authored by user; ≥ 5 per framing per `_schema.md`.)
+#### B-F4-1. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F4-2. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F4-3. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F4-4. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F4-5. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
 
 ---
 
@@ -94,7 +226,40 @@ Anchor framing: F4 (Return-to-China optionality) — see
 Anchor framing: F5 (Family-located optimization) — see
 `framings.md` §F5.
 
-(Entries authored by user; ≥ 5 per framing per `_schema.md`.)
+#### B-F5-1. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F5-2. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F5-3. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F5-4. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F5-5. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
 
 ---
 
@@ -102,4 +267,37 @@ Anchor framing: F5 (Family-located optimization) — see
 
 Anchor framing: F6 (Legal-mechanic rigor) — see `framings.md` §F6.
 
-(Entries authored by user; ≥ 5 per framing per `_schema.md`.)
+#### B-F6-1. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F6-2. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F6-3. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F6-4. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
+
+#### B-F6-5. (statement placeholder)
+
+- **Statement** — (to be authored)
+- **Failure-mode** — (to be authored)
+- **Trigger-situation** — (to be authored)
+- **Recovery-move** — (to be authored)
