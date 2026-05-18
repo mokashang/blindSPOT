@@ -13,6 +13,46 @@ human only.
 
 ---
 
+## Cross-reference
+
+Derived from the `framings.md` F→decisions / F→communities tables
+and the `decisions.md` cross-reference column. No new claims — these
+two tables make per-framing coverage legible at-a-glance so the user
+(when authoring entry content) can verify ≥ 5 entries per framing
+against the decisions and risk surfaces actually in scope.
+
+### Blindspot section → framing → decisions
+
+Each blindspot section is anchored to one framing in `framings.md`
+and inherits that framing's decisions-in-scope. The "Min entries"
+column is the floor from `_schema.md` Layer 3.
+
+| Section | Framing | Anchor community | Decisions in scope | Min entries |
+|---|---|---|---|---|
+| §F1 | Visa-security maximization | `oneponethreeacres` | D1, D2, D3, D4, D5, D7, D8, D9, D10, D11, D12 | 5 |
+| §F2 | Long-term career capital | (Bay-Area-engineer-mentor voice) | D1, D4, D6, D8, D9, D11 | 5 |
+| §F3 | Comp maximization in a 4-year window | `reddit-us-tech-collective` | D1, D11, D12 | 5 |
+| §F4 | Return-to-China optionality | `china-returnee-voices` | D3, D6 | 5 |
+| §F5 | Family-located optimization | `oneponethreeacres` (家庭 / 配偶 / 父母 / 子女) | D5, D6, D7 | 5 |
+| §F6 | Legal-mechanic rigor | `us-immigration-counsel` | D1, D2, D3, D4, D5, D8, D10, D12 | 5 |
+
+### Section → typical risk surfaces (sampling)
+
+Sampled from the risk-surface labels associated with each decision
+in `decisions.md` for the rows cited above. Non-exhaustive — entries
+authored later may surface additional risks.
+
+| Section | Typical risk surfaces (sampling) |
+|---|---|
+| §F1 | visa-security, opt-clock, sponsorship-commitment, 60-day-grace, status-restoration, e-verify-employer, h4-ead-vulnerability |
+| §F2 | skill-trajectory-vs-status-stability, employer-quality-premium, gc-backlog-roi, retention-vs-departure |
+| §F3 | comp-arithmetic, rsu-cliff-timing, gc-timeline-vs-comp-cycle, h1b-vs-h4-vs-l1-strategy |
+| §F4 | china-tech-window, 35-and-over-discount, gc-backlog-roi, second-lottery-strategy |
+| §F5 | h4-ead-vulnerability, state-residency-coupling, school-enrollment, family-pressure |
+| §F6 | i-140-portability, priority-date-preservation, evidentiary-bar, same-or-similar, cap-gap-eligibility, cap-exempt-flexibility, eb1a-niw-vs-h1b |
+
+---
+
 ## §F1. Visa-security-maximization blindspots
 
 Anchor framing: F1 (Visa-security maximization) — see
