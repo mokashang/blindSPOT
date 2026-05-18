@@ -1,0 +1,57 @@
+id: cofounder-equity-split-vesting-cliff
+text: |
+  Two-cofounder Delaware C-corp forming next month. I'm the
+  business / GTM founder; my cofounder is a 12-year deep-tech ML
+  engineer leaving a Senior Staff role at a public ML-platform
+  company. I have the original idea + 8 months of pre-incorporation
+  customer-development work (~40 LOIs, three pilot conversations,
+  one $25k signed pilot contract in my personal name) but no
+  production code. My cofounder will architect and build the
+  product. We've agreed verbally on 50/50 with standard 4-year
+  vesting + 1-year cliff. Three things are nagging me. (1) Their
+  current employer's offer letter has a broad IP-assignment clause
+  + "anticipated business" language; we're both California
+  residents so Labor Code §2870 should apply, but their
+  employer's IP literature claims a 12-month tail on anything
+  "developed during employment." Do we need a written carve-out
+  letter from them before they touch our codebase, or is the
+  CIIAA we sign at incorporation enough? (2) The vesting clock —
+  if we incorporate on June 1 and they give 8 weeks notice (last
+  day August 1), should their vesting start at June 1 (the grant
+  date) or August 1 (when they actually start)? The cliff matters
+  here; a June 1 cliff with August 1 start means they hit cliff at
+  10 months actual work. (3) 83(b) — we'll have 4M shares each at
+  $0.0001 par; the 30-day window is hard but I keep reading
+  conflicting advice about whether spouse-signature is required in
+  CA (community property) and whether certified mail is sufficient
+  evidence of filing.
+expected_domains: [entrepreneurship, tech-career, legal-disputes]
+expected_entities:
+  - Delaware-C-corp
+  - 50/50-equity-split
+  - 4-year-vesting-1-year-cliff
+  - 4M-shares-at-$0.0001-par
+  - CA-Labor-Code-§2870
+  - CIIAA
+  - "anticipated-business-IP-assignment"
+  - 83(b)-election-30-day-window
+  - certified-mail-IRS-filing
+  - $25k-pilot-contract
+  - CA-community-property-spouse-signature
+expected_personas: [two-cofounder-pre-equity]
+expected_risk_surfaces:
+  - prior-employer-IP-assignment-carve-out-pre-start
+  - vesting-start-date-vs-grant-date-cliff-arithmetic
+  - 83(b)-election-30-day-window-no-recovery
+  - CIIAA-prior-art-carve-out-scope
+  - founder-personal-name-pilot-contract-assignment-to-newco
+  - CA-Labor-Code-§2870-anticipated-business-fuzzy-term
+expected_decisions: [D1]
+expected_framings: [F3, F4, F5]
+expected_blindspot_categories:
+  - 83-b-election-30-day-window-no-recovery-mechanism
+  - prior-employer-IP-assignment-carve-out-must-be-pre-work-not-pre-exit
+  - vesting-start-grant-vs-actual-start-distinction-cliff-impact
+  - CIIAA-scope-disputes-most-litigated-founder-disagreement-category
+  - founder-personal-contracts-pre-incorporation-must-be-assigned-to-newco
+  - high-stakes-consult-startup-attorney-founder-side-cooley-gunderson-wsgr-orrick-fenwick-or-clerky-atlas

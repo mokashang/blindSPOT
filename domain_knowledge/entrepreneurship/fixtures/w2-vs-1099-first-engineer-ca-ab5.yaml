@@ -1,0 +1,71 @@
+id: w2-vs-1099-first-engineer-ca-ab5
+text: |
+  Two-cofounder seed-stage B2B SaaS, just closed $1.5M
+  pre-seed on a YC-form SAFE 4 months ago, currently
+  $28k MRR. We need a backend engineer to scale our
+  reliability + multi-tenancy work — projected 30-35 hrs/wk
+  ongoing, will use our codebase, will attend our daily
+  standup, will be paid weekly based on hours. We're in
+  Delaware-incorporated but both founders live in CA
+  (Berkeley + Oakland). Candidate is a freelance contractor
+  based in Los Angeles, has 4 other clients on his roster
+  (so he claims), wants to bill us $135/hr through his
+  single-member LLC, prefers 1099. Our motivation for 1099:
+  payroll complexity (we'd avoid Gusto + workers-comp +
+  CA-SDI + CA-PFL + CA unemployment + small-group health
+  decision), and the $135/hr is below our W-2 budget for an
+  equivalent role. Three concerns. (1) ABC test under CA
+  AB-5: prong (B) "outside usual course of business" — we're
+  a SaaS company, he's writing backend services for our
+  SaaS. He fails (B) on its face, regardless of (A) free-
+  from-control and (C) customarily-engaged-in-independent-
+  trade. Does his single-member LLC change the analysis?
+  Some founder Twitter says "LLC immunizes you, just pay
+  the LLC not the person" — that doesn't match what I read
+  on the CA DIR site. (2) PAGA exposure: if we engage him
+  as 1099 and the CA Labor Commissioner / a future-disgruntled
+  contractor / a competitor's tip-off triggers an audit, the
+  exposure is $100/pay-period/employee for initial PAGA
+  violation, plus unpaid overtime, plus §203 waiting-time
+  penalties (up to 30 days additional wages), plus attorney
+  fees. At $135/hr × 35hrs × 52 weeks = $245k/yr, even one
+  year of misclassification could cost us $50k+ in penalties
+  alone. (3) The W-2 alternative loading: $135/hr × 2080hrs
+  = $281k base-equivalent. With CA employer-side FICA 7.65%,
+  FUTA + SUTA ~$2k, workers comp ~1% ($2.8k), CA-SDI 0.9% +
+  PFL 0.4%, $1,200/mo small-group health employer-share
+  ($14.4k) = ~$320k loaded vs $281k 1099. Is the 14% loading
+  premium really worth the misclassification risk?
+expected_domains: [entrepreneurship, legal-disputes, health-insurance]
+expected_entities:
+  - CA-AB-5-ABC-test
+  - prong-B-outside-usual-course-of-business
+  - CA-PAGA-$100-pay-period-initial-violation
+  - CA-Labor-Code-§203-waiting-time-penalties-30-days
+  - $135/hr-contractor-rate
+  - $245k/yr-1099-engagement-value
+  - single-member-LLC-immunization-myth
+  - $1.5M-pre-seed-YC-form-SAFE
+  - $28k-MRR
+  - CA-SDI-0.9%-PFL-0.4%
+  - employer-FICA-7.65%
+  - workers-comp-1%-class-code-office
+  - QSEHRA-vs-ICHRA-vs-small-group-SHOP
+expected_personas: [first-w2-employee-considerer]
+expected_risk_surfaces:
+  - ABC-test-prong-B-outside-usual-course-of-business-fails-for-saas-backend-eng
+  - contractors-own-LLC-does-not-immunize-hiring-entity-from-misclassification
+  - CA-PAGA-private-attorneys-general-act-exposure-stacks-many-fold-unpaid-wages
+  - W-2-employer-cost-loading-15-30-pct-above-base-salary
+  - first-w-2-employee-triggers-small-group-health-eligibility-decision
+  - 409A-valuation-required-before-equity-grant-to-first-employee
+expected_decisions: [D7]
+expected_framings: [F7, F12]
+expected_blindspot_categories:
+  - CA-AB-5-ABC-test-prong-B-software-eng-fails-on-face-for-saas-company-regardless-of-control
+  - contractors-own-LLC-does-not-immunize-hiring-entity-pass-through-misclassification
+  - CA-PAGA-penalty-stack-100-200-per-pay-period-plus-§203-waiting-time-plus-attorney-fees-many-fold-unpaid-wages
+  - W-2-loading-15-30-pct-FICA-FUTA-SUTA-workers-comp-CA-SDI-PFL-health-share
+  - QSEHRA-vs-ICHRA-vs-SHOP-small-group-vs-cash-stipend-first-employee-triggers-decision
+  - 409A-valuation-mis-pricing-options-below-FMV-income-at-vest-plus-20-pct-penalty
+  - high-stakes-consult-employment-law-attorney-CA-MA-NJ-IL-ABC-test-strict-states

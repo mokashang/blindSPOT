@@ -1,0 +1,66 @@
+id: quit-day-job-faang-rsu-cliff-leap
+text: |
+  Single, 32, Staff SWE at a FAANG in Seattle. Comp: $245k base +
+  $185k RSU annualized (vesting quarterly, ~$46k/quarter at
+  current stock), $35k target bonus. WA resident so no state
+  income tax, but the RSU concentration is now 64% of my
+  liquid net worth. I have $190k saved cash + $310k 401(k) (mix
+  of traditional and Roth) + $42k HSA + $95k taxable brokerage.
+  Side project: a developer-tools API at $4.2k MRR after 7
+  months, growing ~22%/mo. Day job is 60+ hrs/wk on a launch
+  cycle, no room to push the side project harder. Next RSU
+  cliff is 9 months out worth roughly $52k post-tax. My current
+  employer's PIIA includes a broad "related to the employer's
+  actual or anticipated business" assignment clause; the
+  employer is huge and could plausibly claim "developer tooling"
+  is anticipated. WA Labor law mirrors CA §2870 partially (RCW
+  49.44.140) but is less protective than CA's bright lines. I'm
+  in a $4,200/mo apartment (lease ends in 5 months), no
+  dependents, no debt. My employer's health plan is rich
+  (Anthem PPO, $0 deductible, $2k OOP-max single). The Indie
+  Hackers / Patio11 framing says quit at $10k MRR with
+  retention; r/Entrepreneur says don't quit until 50% of
+  expenses are covered. I have neither of those. But if I wait
+  9 months for the cliff, the side-project trajectory likely
+  bends because I can't sustain context-switching at this
+  intensity. What am I missing on (a) the IP carve-out
+  mechanics from this employer specifically, (b) the
+  Roth-conversion window opportunity in a partial-year zero-
+  W-2 year, (c) the COBRA-vs-ACA bridge math given my
+  individual-market premiums in WA would be ~$520/mo silver,
+  (d) the HELOC-or-bridge financing window which I currently
+  have via my employer credit union but would close on
+  resignation?
+expected_domains: [entrepreneurship, tech-career, personal-finance, health-insurance, housing]
+expected_entities:
+  - FAANG-Staff-SWE
+  - $245k-base
+  - $185k-RSU-annualized
+  - $46k-quarterly-vest
+  - 64%-RSU-concentration
+  - WA-state-no-income-tax
+  - $4.2k-MRR-22%-MoM
+  - 9-month-RSU-cliff-$52k-post-tax
+  - RCW-49.44.140-WA-IP-carve-out
+  - "anticipated-business-PIIA"
+  - $4,200/mo-apartment
+  - Anthem-PPO-$0-deductible
+  - $520/mo-WA-silver-marketplace
+  - Roth-conversion-window-zero-W-2-year
+expected_personas: [ex-faang-quitting]
+expected_risk_surfaces:
+  - golden-handcuffs-RSU-cliff-implicit-per-month-opportunity-cost
+  - day-job-IP-assignment-on-moonlight-work-anticipated-business-fuzzy
+  - RSU-concentration-as-stealth-allocation-on-employer-balance-sheet
+  - Roth-conversion-low-income-year-window-highest-leverage-leap-move
+  - COBRA-18-month-at-full-cost-plus-2-vs-ACA-marketplace-subsidy
+  - HELOC-must-originate-pre-leap-W-2-qualification-disappears-on-1099
+expected_decisions: [D3]
+expected_framings: [F2, F8, F13, F14]
+expected_blindspot_categories:
+  - day-job-IP-assignment-anticipated-business-fuzzy-term-swallows-adjacent-founder-ideas
+  - Roth-conversion-window-on-low-income-year-almost-universally-missed-by-founders
+  - HELOC-or-cash-out-refi-bridge-capital-must-originate-before-W-2-income-drop
+  - COBRA-vs-ACA-marketplace-vs-spousal-coverage-bridge-financing-choice
+  - MRR-threshold-heuristic-ignores-growth-slope-load-bearing-variable
+  - not-a-substitute-for-case-specific-licensed-counsel-on-PIIA-carve-out-letter

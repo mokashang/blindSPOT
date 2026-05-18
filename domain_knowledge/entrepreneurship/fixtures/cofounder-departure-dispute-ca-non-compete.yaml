@@ -1,0 +1,75 @@
+id: cofounder-departure-dispute-ca-non-compete
+text: |
+  Three-cofounder Delaware C-corp, Series A 18 months ago at
+  $32M post-money ($8M raised, lead Index Ventures, one board
+  observer + one board seat). Cap-table: founder A (me, CEO)
+  20% pre-Series-A vested; founder B (CTO) 20% pre-Series-A
+  vested; founder C (COO, the situation) 20% pre-Series-A,
+  currently month 26 of 4-year vesting (54%). Series A added
+  preferred 20% (lead 14%, secondary investors 6%), employee
+  option pool 14%, common stock pool 12% reserved for advisors
+  and convertible-note conversion residuals. All three founders
+  are CA residents (SF / Oakland / Mountain View). Founder C
+  has been performance-managing poorly for ~9 months — board
+  has lost confidence — and we're approaching a forced
+  separation. Documented issues: missed three quarterly OKRs,
+  three direct reports left citing C's management style.
+  Founder C disputes the facts. The agreement defines "for
+  cause" as fraud / felony / material breach but says nothing
+  about performance. Specific decisions converging. (1) The
+  vesting calc: per agreement, "without-cause termination
+  preserves vested per schedule; for-cause forfeits vested
+  AND unvested" — so the for-cause / without-cause distinction
+  is worth (54% - 0%) × $32M × 20% = ~$3.5M of equity value to
+  founder C alone. They have hired employment counsel. (2)
+  Non-compete: agreement has a 12-month broad non-compete and
+  18-month non-solicit of customers and employees. CA
+  Bus & Prof Code §16600 voids non-competes against employees
+  (limited carve-outs: sale-of-business and partnership-
+  dissolution). The FTC 2024 non-compete rule is in
+  litigation and status varies. Non-solicit is more
+  enforceable than non-compete even in CA. (3) Customer-
+  poaching: we have evidence C has been talking to 3 of our
+  named customers about a directly-competing concept. They
+  haven't formally pitched yet but the conversations are
+  documented in customer-side emails our customers forwarded
+  to us. (4) Board / shareholder transition: C holds a board
+  seat per founder-agreement; if we force them out, does the
+  seat go vacant, board-elected, or remaining-founder-elected?
+  Per certificate of incorporation it's "remaining-founders
+  elect." Our Series A lead's protective provisions require
+  investor consent for board composition changes.
+expected_domains: [entrepreneurship, legal-disputes, personal-finance]
+expected_entities:
+  - Delaware-C-corp
+  - $32M-post-money-Series-A
+  - Index-Ventures-board-seat-protective-provisions
+  - 26-of-48-months-vested-54-pct
+  - "for-cause-fraud-felony-material-breach-no-performance-clause"
+  - CA-Bus-Prof-Code-§16600-non-compete-void
+  - 12-month-broad-non-compete
+  - 18-month-non-solicit-customers-employees
+  - FTC-2024-non-compete-rule-litigation-status
+  - $3.5M-equity-value-at-stake
+  - certificate-of-incorporation-remaining-founders-elect-board-seat
+  - documented-customer-poaching-evidence
+expected_personas: [dispute-mid-cap-table]
+expected_risk_surfaces:
+  - for-cause-vs-without-cause-vague-definition-load-bearing-litigation-ground
+  - CA-§16600-voids-non-competes-against-employees-narrow-exceptions
+  - FTC-2024-non-compete-rule-status-in-litigation-verify-current
+  - non-solicit-more-enforceable-than-non-compete-even-in-CA
+  - Defend-Trade-Secrets-Act-DTSA-claim-on-customer-poaching
+  - board-seat-transition-per-certificate-of-incorporation-investor-consent
+  - severance-and-release-of-claims-mutual-insurance-bilateral
+expected_decisions: [D11, D10]
+expected_framings: [F3, F11]
+expected_blindspot_categories:
+  - for-cause-definition-vague-creates-litigation-ground-load-bearing-legal-text
+  - CA-§16600-voids-non-competes-non-solicit-more-enforceable
+  - FTC-2024-non-compete-rule-litigation-status-changing-verify-current-operative-state
+  - DTSA-Defend-Trade-Secrets-Act-recovery-path-when-non-compete-unenforceable
+  - severance-and-release-bilateral-mutual-insurance-departing-founder-and-company
+  - investor-consent-on-board-composition-protective-provisions-Series-A-load-bearing
+  - ADEA-protected-employees-age-40-plus-21-day-consider-7-day-revoke-statutory
+  - high-stakes-consult-startup-attorney-AND-employment-law-attorney-both-sides-CA-disputed-departure-over-10pct-equity

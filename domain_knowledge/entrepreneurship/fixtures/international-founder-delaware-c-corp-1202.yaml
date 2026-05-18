@@ -1,0 +1,76 @@
+id: international-founder-delaware-c-corp-1202
+text: |
+  Two-cofounder dev-tools company, both founders are
+  Brazilian nationals currently in the US on different
+  visas. I'm on an H-1B (5th year, I-140 approved, priority
+  date 2022 in EB-2 ROW). Cofounder is on an O-1A approved
+  6 months ago. Company is Delaware C-corp formed 3 months
+  ago, currently revenue $0, working off personal savings
+  + a $300k YC standard MFN SAFE at $1M floor / $20M post-
+  money cap. Three structural questions converge with major
+  tax + immigration consequences. (1) Founder ownership
+  structure: I currently own 50% directly as a US H-1B
+  visa holder (this is OK; H-1B does not bar passive
+  ownership). But H-1B "work for the petitioning employer"
+  rules mean I can't be a paid employee or do material work
+  for my own startup while on H-1B without a separate
+  H-1B-transfer to the startup as employer (which requires
+  the startup to have funding + ability to pay + actual
+  employer-employee relationship, including someone who can
+  fire me). My cofounder on O-1A has more flexibility. The
+  founder-on-H-1B mechanics here cross deeply into
+  immigration domain. (2) §1202 QSBS eligibility: as a US
+  tax resident I should qualify for §1202 gain exclusion
+  on a successful exit (up to $10M or 10x basis), provided
+  (a) the company is a domestic C-corp at issuance, (b) I
+  hold for 5+ years, (c) gross assets at issuance < $50M.
+  But there's a structural concern: I'm planning to apply
+  for adjustment of status (I-485) in the next 12 months
+  when my priority date is current; if I'm out-of-status
+  for any window or if I leave the US for >180 days, do I
+  lose US-tax-resident status, and does that void §1202?
+  (3) §351 contribution: my cofounder is planning to
+  contribute Brazilian-domiciled IP (some pre-existing
+  software he built before joining) to the C-corp via §351
+  tax-free contribution in exchange for founder stock. The
+  US §351 mechanics require "control" (80%+ ownership
+  immediately after) and "active trade or business" tests.
+  The Brazilian-source IP has Brazilian tax exposure on
+  outbound transfer — Brazilian "ganho de capital" 15-22.5%
+  if it's appreciated. We need cross-border tax planning
+  most US CPAs can't do.
+expected_domains: [entrepreneurship, immigration, personal-finance]
+expected_entities:
+  - H-1B-visa-5th-year
+  - I-140-approved-EB-2-ROW-priority-date-2022
+  - O-1A-visa-approved
+  - Delaware-C-corp
+  - $300k-YC-standard-MFN-SAFE-$1M-floor-$20M-post
+  - IRC-§1202-QSBS-$10M-or-10x-basis
+  - 5-year-hold-period
+  - $50M-gross-assets-at-issuance-cap
+  - IRC-§351-tax-free-contribution
+  - 80-pct-control-test-§351
+  - Brazilian-ganho-de-capital-15-22.5%
+  - I-485-adjustment-of-status
+  - H-1B-work-for-petitioning-employer-rule
+  - 180-day-foreign-presence-tax-residency-threshold
+expected_personas: [international-founder]
+expected_risk_surfaces:
+  - H-1B-founder-cannot-work-for-own-startup-without-H-1B-transfer
+  - §1202-QSBS-domestic-C-corp-at-issuance-requirement
+  - §1202-QSBS-5-year-hold-from-stock-issuance-not-SAFE-conversion
+  - §351-tax-free-contribution-control-80-pct-and-active-trade-tests
+  - cross-border-IP-contribution-Brazilian-ganho-de-capital-on-outbound-transfer
+  - I-485-adjustment-of-status-out-of-status-window-tax-residency-risk
+  - tax-residency-loss-via-180-day-foreign-presence-substantial-presence-test
+expected_decisions: [D11, D5, D1]
+expected_framings: [F1, F5, F13]
+expected_blindspot_categories:
+  - H-1B-founder-on-own-startup-petitioning-employer-rule-requires-H-1B-transfer-funding-and-fire-ability-tests
+  - §1202-QSBS-domestic-C-corp-at-stock-issuance-not-SAFE-foreign-incorporation-disqualifies
+  - §1202-QSBS-state-conformity-CA-NY-NJ-don't-conform-tax-free-tail-disappears-at-state-level
+  - §351-tax-free-contribution-control-and-active-trade-tests-pre-existing-IP-from-foreign-domicile
+  - Brazilian-ganho-de-capital-outbound-IP-transfer-cross-border-tax-exposure
+  - tax-residency-loss-via-substantial-presence-test-failure-180-day-rule
+  - high-stakes-consult-startup-attorney-AND-tax-attorney-cross-border-1202-and-351-and-immigration-coordination

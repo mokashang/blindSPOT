@@ -1,0 +1,70 @@
+id: pricing-model-pivot-services-to-product
+text: |
+  Three-person bootstrapped studio in Brooklyn, NY,
+  productizing a SaaS spinout from our 6-year consulting
+  business. Consulting business is $750k revenue ($420k net),
+  cash-flow positive, no debt, three founders 40/30/30. The
+  product is a vertical workflow tool for accounting firms
+  (mid-market, 20-200 employees). 5 months of dogfooding,
+  beta-launched 8 weeks ago, 7 paying customers at varied
+  pricing experiments. Pricing data so far: customer #1
+  $2,400/yr flat (signed before we had pricing); customers
+  #2-3 per-seat at $30/user/mo (avg seat count 28, so
+  $10k/yr); customers #4-5 usage-based at $0.10 per
+  transaction with $500/mo minimum (avg $1,200/mo realized);
+  customers #6-7 tiered "Starter $99 / Pro $399 / Enterprise
+  $999" flat per company. NRR is uninterpretable across this
+  mix. We've also been asked by 2 prospective customers about
+  "Enterprise" tier with SSO + SOC 2 + custom retention; we
+  don't have SOC 2 yet (estimated 9 months + $35k). Three
+  decisions converging at once. (1) Pricing-model selection:
+  Patrick Campbell's ProfitWell line is "align pricing to
+  customer value metric"; for accounting workflow the value
+  metric is unclear — # of workflows automated? # of users
+  on the team? # of clients managed by the firm? hours saved?
+  Per-seat anchors well for buyer-side budgeting but caps
+  expansion revenue. (2) Hiring path: do we hire #4 employee
+  US-W-2 ($150k loaded for a senior engineer in NYC), US-1099
+  (ABC test risk under NY's 2023 enacted ABC-style law), or
+  offshore EOR via Deel ($90k all-in for an Eastern European
+  mid-level engineer)? Cultural-foundation effects on a
+  3-founder team — does the first non-founder hire reshape
+  our culture? (3) The 9-month / $35k SOC 2 investment: gates
+  enterprise tier, but consumes ~10% of our 18-month runway
+  of self-funded transition; alternative is "SOC 2 readiness"
+  marketing language + reference letters from beta customers
+  for the next 12 months. Which decisions actually drive each
+  other, and which framings are we missing?
+expected_domains: [entrepreneurship, tech-career]
+expected_entities:
+  - $750k-consulting-revenue
+  - $420k-net-consulting-income
+  - 40/30/30-founder-equity
+  - 7-paying-customers-mixed-pricing
+  - $30/user/mo-per-seat
+  - $0.10-per-transaction-usage
+  - $99-$399-$999-tiered-flat
+  - SOC-2-9-months-$35k
+  - NY-2023-ABC-style-misclassification-law
+  - Deel-EOR-Eastern-Europe-$90k-all-in
+  - Patrick-Campbell-ProfitWell-value-metric-alignment
+  - $150k-loaded-NYC-senior-eng
+expected_personas: [services-to-product-pivot]
+expected_risk_surfaces:
+  - pricing-model-aligned-to-value-metric-vs-buyer-side-budgeting-friction
+  - per-seat-caps-expansion-revenue-at-user-count-growth-may-lag-value-growth
+  - usage-pricing-customer-budget-uncertainty-enterprise-procurement-friction
+  - SOC-2-investment-as-gate-vs-readiness-language-bridge
+  - cultural-foundation-effects-of-first-non-founder-hire-3-founder-team
+  - NY-ABC-style-misclassification-law-2023-similar-to-CA-AB-5
+expected_decisions: [D9, D10, D2]
+expected_framings: [F2, F9, F10, F12]
+expected_blindspot_categories:
+  - pricing-aligned-to-value-metric-vs-per-seat-default-without-questioning
+  - per-seat-caps-expansion-revenue-when-value-scales-faster-than-user-count
+  - usage-pricing-customer-budget-friction-procurement-needs-known-annual-spend
+  - SOC-2-readiness-language-as-bridge-vs-investment-9-months-$35k-runway-trade-off
+  - cultural-foundation-load-bearing-first-5-hires-shape-norms-for-years
+  - offshore-EOR-vs-US-W-2-loaded-cost-30-60pct-savings-with-collaboration-cost
+  - NY-ABC-style-misclassification-2023-law-similar-to-CA-AB-5-strict-test
+  - not-a-substitute-for-case-specific-licensed-counsel-on-pricing-and-hiring-decisions

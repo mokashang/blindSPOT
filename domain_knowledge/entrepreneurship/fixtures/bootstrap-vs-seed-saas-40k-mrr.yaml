@@ -1,0 +1,57 @@
+id: bootstrap-vs-seed-saas-40k-mrr
+text: |
+  Two-cofounder B2B SaaS, sales-ops tooling for mid-market account
+  executives, 14 months in. Currently at $42k MRR ($504k ARR run-
+  rate), 17 paying customers, NRR ~108% over last 6 months, gross
+  margin 78% (one full-time customer-success contractor at $4k/mo
+  is the main COGS line). We're both pre-seed-eligible: my
+  cofounder is ex-Salesforce PM, I'm ex-Looker eng manager. We
+  have $145k combined personal runway burned to date and roughly
+  18 months of remaining household runway each (both married, no
+  kids yet, partners on supportive day-jobs). Two offers on the
+  table from real pre-seed funds we like: (a) $1.5M on a $7.5M
+  post-money SAFE cap, no discount, MFN clause, no pro-rata; (b)
+  $2.0M priced seed at $10M post-money with full Series Seed
+  paper (1x non-participating liquidation preference, pro-rata
+  rights, one board seat, weighted-average broad-based anti-
+  dilution, protective provisions on $250k debt / new equity /
+  sale-of-company). At our current 11%/month MoM growth we'd hit
+  $80k MRR in ~6 months on cash flow alone if we don't blow up
+  the unit economics. The Indie Hackers framing says stay
+  bootstrap and own 100%; the YC playbook says raise so we can
+  hire and not lose the category to a venture-backed competitor.
+  We honestly don't know which framing fits — and we don't know
+  what the "raise from strength" inflection means at our specific
+  numbers.
+expected_domains: [entrepreneurship]
+expected_entities:
+  - $42k-MRR
+  - $504k-ARR-run-rate
+  - 17-paying-customers
+  - 108%-NRR
+  - 78%-gross-margin
+  - $1.5M-on-$7.5M-post-money-SAFE-cap
+  - $2.0M-priced-seed-at-$10M-post
+  - MFN-clause
+  - 1x-non-participating-liquidation-preference
+  - pro-rata-rights
+  - weighted-average-broad-based-anti-dilution
+  - 11%-MoM-growth
+  - $145k-burned-personal-runway
+expected_personas: [indie-saas-product-led]
+expected_risk_surfaces:
+  - dilution-arithmetic-across-rounds-50-55pct-retained-pre-series-B
+  - venture-trap-cash-flow-business-mistakenly-takes-VC-money
+  - protective-provision-decision-velocity-loss-compounds
+  - revenue-bar-as-leverage-bootstrap-to-strength-vs-raise-from-weakness
+  - founder-personal-runway-as-implicit-cost-rarely-surfaced
+  - QSBS-clock-starts-at-priced-stock-issuance-not-SAFE
+expected_decisions: [D2, D5]
+expected_framings: [F1, F2, F5, F13, F14]
+expected_blindspot_categories:
+  - venture-trap-cash-flow-business-signs-up-for-100m-arr-trajectory-destroys-5m-comfortable
+  - bootstrap-vs-raise-binary-frame-misses-strategic-window-timing-on-network-effect-categories
+  - SAFE-MFN-clause-auto-upgrades-prior-SAFEs-stacking-multiplies-dilution
+  - QSBS-clock-doesnt-start-on-SAFE-only-on-conversion-to-priced-equity-c-corp
+  - founder-personal-runway-as-implicit-investment-cost-bootstrap-path-amplifies
+  - not-a-substitute-for-case-specific-licensed-counsel-on-term-sheet-review

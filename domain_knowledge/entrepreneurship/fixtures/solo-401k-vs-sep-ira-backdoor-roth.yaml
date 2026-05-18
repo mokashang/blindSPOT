@@ -1,0 +1,65 @@
+id: solo-401k-vs-sep-ira-backdoor-roth
+text: |
+  Solo product-design consultant, 38, married filing jointly,
+  spouse is W-2 at $115k. Texas resident. Operating as single-
+  member CA LLC (we just moved to TX from SF six months ago,
+  still untangling state-residency). Net SE income trajectory:
+  $245k in 2024, projecting $310k in 2025. I've been doing
+  back-door Roth via personal traditional-IRA → Roth conversion
+  every January for 5 years. Today: $0 traditional IRA
+  (cleared via prior-year backdoor), $72k Roth IRA, $40k Roth
+  401(k) (rolled from prior W-2 employer when I went solo 6
+  years ago — held in a Vanguard self-directed Roth IRA).
+  Spouse: $48k 403(b) at her nonprofit employer, $35k Roth IRA,
+  no traditional IRA. My existing CPA — solo-prep, generic
+  Schedule C — is suggesting I open a SEP-IRA for 2025
+  contributions because "it's the simplest." Specifically she
+  proposes 20% × $310k × 0.9235 = ~$57k SEP-IRA contribution.
+  Three things I'm trying to verify before letting her file.
+  (1) The SEP-IRA balance counts as pre-tax IRA for backdoor-
+  Roth pro-rata purposes (Form 8606 aggregation rule). If I
+  contribute $57k SEP-IRA in 2025, my $7k backdoor-Roth for
+  2025 becomes $7k × $7k/($7k + $57k) = $766 nontaxable, $6,234
+  taxable at marginal 24%. That destroys the backdoor-Roth
+  strategy. (2) Solo-401(k) alternative: $23,500 employee
+  deferral + ~$48k profit-sharing on net SE = ~$71.5k, doesn't
+  touch the IRA aggregation, preserves backdoor-Roth. But
+  Vanguard / Fidelity / Schwab solo-401(k) plans don't
+  support after-tax contributions / in-plan-Roth conversion
+  (Mega-Backdoor Roth) — requires a custom plan-document
+  ($500-$1,500 setup, ~$100/yr). At $310k net SE I'd hit the
+  §415(c) $70k cap on regular contributions alone so the
+  Mega-Backdoor wouldn't add capacity anyway, right? (3)
+  Should I elect S-corp tax treatment for 2026 (decision 4
+  parallel) — and if so, how does the W-2 split affect this
+  retirement math?
+expected_domains: [entrepreneurship, personal-finance]
+expected_entities:
+  - $310k-net-SE-income-2025
+  - SEP-IRA-20%-of-net-SE-times-0.9235
+  - solo-401(k)-$23,500-employee-deferral-2025
+  - §415(c)-cap-$70,000-2025
+  - Form-8606-pro-rata-aggregation-rule
+  - backdoor-Roth-strategy
+  - Mega-Backdoor-Roth-solo-401(k)-custom-plan-document
+  - $7k-IRA-contribution-limit-2025
+  - TX-no-state-income-tax
+  - CA-to-TX-residency-untangle
+  - IRS-Form-2553-S-corp-election-parallel-decision
+expected_personas: [solo-self-employed-retirement-maxer]
+expected_risk_surfaces:
+  - SEP-IRA-balance-counts-as-pre-tax-IRA-Form-8606-pro-rata-aggregation
+  - backdoor-Roth-strategy-destroyed-by-SEP-IRA-balance
+  - solo-401(k)-as-default-when-eligible-no-employees-no-IRA-aggregation
+  - Mega-Backdoor-Roth-requires-custom-plan-document-not-default-providers
+  - S-corp-election-W-2-split-affects-retirement-contribution-base
+  - SEP-vs-solo-401(k)-W-2-vs-net-SE-base-arithmetic-asymmetry
+expected_decisions: [D8, D4]
+expected_framings: [F4, F5]
+expected_blindspot_categories:
+  - SEP-IRA-balance-creates-Form-8606-pro-rata-trap-destroys-backdoor-Roth-aggregation-rule
+  - solo-401(k)-preserves-backdoor-Roth-no-IRA-aggregation-default-when-eligible
+  - Mega-Backdoor-Roth-requires-plan-document-after-tax-AND-in-plan-conversion-not-default-vanguard-fidelity-schwab
+  - S-corp-election-saves-SE-tax-costs-retirement-contribution-capacity-30-40pct
+  - generic-cpa-recommends-SEP-without-considering-backdoor-Roth-impact-recurring-error-pattern
+  - high-stakes-consult-retirement-experienced-cpa-S-corp-and-solo-401(k)-plan-document-selection

@@ -1,0 +1,65 @@
+id: llc-vs-s-corp-ca-180k-consultant
+text: |
+  Solo software consultant, year 3, California resident
+  (Berkeley). Operate as single-member CA LLC currently taxed
+  as disregarded entity / Schedule C. 2025 projected net income
+  $182k after expenses, all clients are out-of-state (3 in TX,
+  1 in NY, 1 in CO — pure remote engagements, no physical
+  presence in any client state). Three concrete questions on
+  the S-corp election decision via IRS Form 2553 with effective
+  date Jan 1, 2026 (75-day deadline mid-March). (1) The SE-tax
+  arithmetic: at $182k net SE, I'm currently paying ~$22k SE
+  tax (15.3% on first $168.6k SS wage base + 2.9% Medicare on
+  remainder); a $90k W-2 salary + $92k distribution S-corp
+  split would pay ~$13.8k FICA, saving ~$8.2k. CA imposes a
+  1.5% S-corp tax = $2.7k + $800 minimum franchise tax (which
+  I already pay as LLC anyway). Net savings ~$4.7k. Gusto
+  payroll is $50/mo = $600. Additional CPA cost from 1040 +
+  Schedule C to 1040 + 1120-S + K-1 + payroll filings is
+  ~$1,500. Net post-cost savings ~$2,600. Is the math right or
+  am I missing something? (2) The QBI / SSTB interaction: I'm
+  a software consultant — is that a Specified Service Trade or
+  Business under §199A? The 2024 single phase-out is
+  $191,950-$241,950; my QBI as LLC at $182k would generate
+  ~$36k §199A deduction (20% of $182k); as S-corp the QBI is
+  only the $92k distribution portion (~$18k §199A). Does the
+  SE-tax savings exceed the QBI deduction loss? (3) Multi-
+  state nexus: am I creating economic nexus in TX / NY / CO by
+  doing remote work for clients there? NY in particular has
+  the "convenience of the employer" rule that's caught remote
+  workers; does that apply to a contractor? Reasonable-salary
+  defensibility — Watson v US backdrop, RCReports puts me at
+  $85-110k for "software consultant" — is $90k defensible?
+expected_domains: [entrepreneurship, personal-finance]
+expected_entities:
+  - $182k-net-SE-income
+  - IRS-Form-2553-75-day-deadline
+  - $168.6k-SS-wage-base-2025
+  - 15.3%-SE-tax-combined
+  - $90k-W-2-salary-$92k-distribution-split
+  - CA-1.5%-S-corp-tax
+  - $800-CA-minimum-franchise-tax
+  - IRC-§199A-QBI-deduction
+  - SSTB-phase-out-$191,950-$241,950-single-2024
+  - Watson-v-US-2012-reasonable-salary
+  - RCReports-salary-benchmark
+  - "NY-convenience-of-the-employer-rule"
+  - economic-nexus-multi-state
+expected_personas: [solo-consulting-multi-state]
+expected_risk_surfaces:
+  - 80k-crossover-actually-fuzzy-state-and-SSTB-dependent
+  - S-corp-election-destroys-QBI-deduction-via-W-2-salary-not-in-QBI
+  - reasonable-salary-defensibility-Watson-precedent-RCReports-alone-insufficient
+  - multi-state-economic-nexus-from-remote-clients-NY-convenience-rule
+  - QBI-SSTB-phase-out-software-consultant-classification-ambiguous
+  - S-corp-election-saves-SE-tax-costs-retirement-contribution-capacity-decision-8
+expected_decisions: [D4, D6]
+expected_framings: [F4, F5]
+expected_blindspot_categories:
+  - 80k-crossover-actually-fuzzy-CA-with-1.5pct-tax-pushes-crossover-to-100-120k
+  - S-corp-election-reduces-QBI-deduction-by-salary-amount-§199A-interaction-non-trivial
+  - SSTB-phase-out-software-consulting-ambiguous-classification-as-consulting-SSTB
+  - reasonable-salary-RCReports-alone-insufficient-Watson-v-US-audit-defensibility
+  - multi-state-nexus-NY-convenience-of-employer-rule-applies-to-contractors-too
+  - S-corp-election-destroys-retirement-contribution-capacity-30-40pct-decision-8-interaction
+  - high-stakes-consult-S-corp-experienced-CPA-multi-state-nexus-not-generic-1040-prep
