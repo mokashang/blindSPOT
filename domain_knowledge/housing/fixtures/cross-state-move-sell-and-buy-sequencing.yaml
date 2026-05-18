@@ -1,0 +1,48 @@
+id: cross-state-move-sell-and-buy-sequencing
+text: |
+  Cross-state move from San Jose, CA to Raleigh, NC for a staff-engineer
+  offer ($385k base + $260k RSU at a mid-size public company). Current
+  home in San Jose: bought 2018 for $1.45M, mortgage balance $720k at
+  3.125% (refied 2021), current Zillow $1.95M, comparable recent sale
+  on the cul-de-sac at $1.92M. Target home in Raleigh: $850k, would put
+  20% down. Three sequencing options: (a) sell first, rent in Raleigh
+  6–12 months while shopping, lose the 3.125% mortgage to no avail since
+  we wouldn't carry it forward; (b) buy in Raleigh first with a bridge
+  loan at 9.5% APR against CA equity (~$1.2M extractable), close on
+  Raleigh, then list CA — risk: carrying both for 3–6 months in a
+  cooling Bay Area market; (c) contingent offer in Raleigh subject to
+  CA sale — agents say this is non-competitive in Triangle market.
+  Section 121 exclusion: $500k MFJ, our basis is $1.45M + ~$60k capex
+  = $1.51M, gain at $1.92M sale ≈ $410k (under exclusion). Tax
+  consideration: the 3.125% mortgage is worth ~$220k in PV of avoided
+  future interest. Which sequencing?
+expected_domains: [housing, tech-career]
+expected_entities:
+  - San-Jose-to-Raleigh
+  - $1.45M-2018-basis
+  - 3.125%-mortgage
+  - $720k-balance
+  - $1.95M-current-value
+  - $850k-target
+  - 9.5%-bridge-loan
+  - Section-121-$500k-MFJ
+  - $410k-realized-gain
+  - $220k-PV-low-rate-mortgage
+  - contingent-offer-Triangle-market
+expected_personas: [cross-state-mover, comparing-offers]
+expected_risk_surfaces:
+  - sell-first-vs-buy-first-market-direction-asymmetry
+  - bridge-loan-cost-and-double-carry
+  - contingent-offer-competitive-strength-by-market
+  - section-121-exclusion-cap-and-ownership-and-use-test
+  - golden-handcuff-low-rate-mortgage-portability-myth
+  - california-Prop-13-basis-loss-on-relocation
+expected_decisions: [D1, D3, D7]
+expected_framings: [F2, F11, F14]
+expected_blindspot_categories:
+  - golden-handcuffs-low-rate-mortgage-tax-on-mobility
+  - capital-gains-exclusion-section-121-near-cap-cpa-territory
+  - transaction-cost-amortization-error
+  - bridge-loan-as-double-carry-risk-in-cooling-market
+  - macro-cycle-metro-level-variance-vs-national-framing
+  - high-stakes-consult-real-estate-attorney

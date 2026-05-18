@@ -1,0 +1,47 @@
+id: downsize-empty-nest-tax-trigger
+text: |
+  Married couple, mid-50s, both kids out of college and launched. Current
+  home: 4BR/3BA SFR in Newton, MA, bought 1998 for $410k, basis with
+  capex around $520k, current value ~$1.85M, mortgage paid off in 2019.
+  Looking to downsize to a 2BR condo near Boston Common, target $950k,
+  pay cash from sale proceeds. Section 121 exclusion: $500k MFJ on
+  primary residence gain. Sale gain ≈ $1.85M − $520k basis = $1.33M;
+  $500k excluded, $830k taxable at LTCG (federal 20% + 3.8% NIIT +
+  MA 5%) = roughly $240k tax bill. Our financial advisor suggested an
+  installment sale to spread the gain over 3 tax years. A separate
+  advisor floated converting the current home to a rental for 2 years
+  before selling — "depreciation deductions in the meantime, and if
+  prices keep moving in Newton you capture more." A third option: gift
+  appreciated home to charitable remainder trust. We're early Boomers
+  but still active; horizon on the next home is 15+ years if health
+  cooperates. Sale-and-downsize vs convert-to-rental vs CRT?
+expected_domains: [housing]
+expected_entities:
+  - Newton-MA
+  - 1998-basis-$410k
+  - $1.85M-current-value
+  - $950k-Boston-condo-target
+  - Section-121-$500k-MFJ
+  - $830k-taxable-gain
+  - LTCG-20%-plus-NIIT-3.8%-plus-MA-5%
+  - $240k-projected-tax
+  - installment-sale
+  - charitable-remainder-trust
+  - convert-to-rental-2-years
+expected_personas: [downsizer, aging-in-place-evaluator]
+expected_risk_surfaces:
+  - section-121-exclusion-cap-MFJ-$500k
+  - depreciation-recapture-on-converted-rental
+  - 2-of-5-year-use-test-on-section-121
+  - installment-sale-buyer-default-risk
+  - CRT-irrevocability-and-trustee-fees
+  - aging-in-place-physical-suitability-of-stair-condo
+expected_decisions: [D7]
+expected_framings: [F3, F11, F14]
+expected_blindspot_categories:
+  - section-121-cap-tail-risk-high-stakes-consult-cpa
+  - depreciation-recapture-deferred-not-avoided-on-rental-conversion
+  - aging-in-place-presumes-physical-compatibility-most-stock-lacks
+  - household-is-moving-target-not-15-year-stable-snapshot
+  - macro-cycle-metro-level-variance-vs-national-framing
+  - high-stakes-consult-cpa-section-121-near-cap

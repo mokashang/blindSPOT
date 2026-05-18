@@ -1,0 +1,42 @@
+id: fixed-vs-arm-rate-trajectory-bet
+text: |
+  Buying a $1.35M SFR in Bellevue, WA, 25% down ($337.5k). Mortgage broker
+  quoted three structures: (a) 30-year fixed at 6.625%, (b) 7/1 ARM at
+  5.875% with a 2/2/5 cap structure indexed to 1-year SOFR + 2.75 margin,
+  (c) 10/1 ARM at 6.125% with the same caps. The spread between fixed and
+  7/1 is 75bp = ~$680/mo on this loan size. We expect to be in this house
+  10–15 years (school district reason — our kids are 4 and 6, so the
+  elementary + middle school window is fixed). My instinct says fixed,
+  because we're holding past either ARM reset. My partner argues "rates
+  are at a cyclical peak; in 5 years we can refi to something cheaper
+  whether we picked ARM or fixed, but the ARM saves us $680/mo in the
+  meantime." Our combined back-end DTI at the fixed payment is 31%, ARM
+  is 28%. Which structure and why?
+expected_domains: [housing]
+expected_entities:
+  - Bellevue
+  - $1.35M
+  - 25%-down
+  - 6.625%-fixed
+  - 7/1-ARM
+  - 5.875%
+  - 2/2/5-cap
+  - SOFR
+  - 10/1-ARM
+  - 10-to-15-year-hold
+  - DTI-31%
+expected_personas: [fixed-vs-arm-decider, school-district-anchored-buyer]
+expected_risk_surfaces:
+  - ARM-reset-cap-payment-shock-7-to-10-year-horizon
+  - rate-forecast-uncertainty-beyond-6-months
+  - refinance-window-may-not-open-within-hold
+  - discount-points-break-even-vs-refi-soon-contradiction
+  - household-cashflow-margin-on-back-end-DTI
+expected_decisions: [D4]
+expected_framings: [F5, F6, F7]
+expected_blindspot_categories:
+  - marry-the-house-date-the-rate-assumes-refi-window-that-may-not-open
+  - rate-forecasts-weakly-accurate-beyond-6-months
+  - arm-cap-structure-load-bearing-not-headline-rate
+  - duration-of-stay-stress-test-against-3-year-hold
+  - high-stakes-consult-fee-only-mortgage-broker

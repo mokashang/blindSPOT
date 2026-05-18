@@ -1,0 +1,43 @@
+id: condo-vs-sfh-first-time-buyer
+text: |
+  First-time buyer in Denver metro. Budget around $700k all-in. Two
+  finalists: (a) a 1,400sqft 2BR/2BA condo in LoHi, walkable, $695k,
+  HOA $850/mo (includes water, trash, exterior, master insurance, gym,
+  small reserve fund); building is 28 years old, last HOA reserve study
+  was 2022 and showed reserves at 65% of recommended. (b) a 1,650sqft
+  3BR/2BA SFR in Wheat Ridge 35 minutes further out, $710k, no HOA,
+  needs ~$15k cosmetic work in the first year. Both are conventional
+  warrantable, no PMI issue. My buyer's agent (referred by the
+  mortgage broker) is pushing the condo hard — "easier to maintain,
+  better appreciation in walkable urban core, you'll thank me." I'm a
+  remote worker with occasional NYC trips; my partner commutes 3 days
+  a week to RTD-served Anschutz. Neither of us has owned before. Which
+  property type, and what am I missing about HOA / inspection / agent-
+  alignment that nobody has flagged?
+expected_domains: [housing]
+expected_entities:
+  - Denver
+  - LoHi
+  - Wheat-Ridge
+  - $695k-condo
+  - $710k-SFR
+  - $850/mo-HOA
+  - 65%-of-recommended-reserves
+  - 28-year-old-building
+  - warrantable-condo
+  - $15k-cosmetic-work
+expected_personas: [first-time-buyer, sfh-vs-condo-evaluator]
+expected_risk_surfaces:
+  - HOA-reserve-funding-below-recommended-threshold
+  - special-assessment-risk-aging-condo-stock
+  - warrantability-of-condo-for-conforming-loans
+  - master-policy-loss-assessment-exposure
+  - buyer-agent-conflict-of-interest-mortgage-broker-referral
+expected_decisions: [D5]
+expected_framings: [F2, F4, F13]
+expected_blindspot_categories:
+  - hoa-disclosure-gap-reserve-study-special-assessment-trajectory
+  - condo-warrantability-changes-affect-financeability-and-resale
+  - inspection-tiers-under-specified-by-generic-get-an-inspection
+  - counterparty-incentive-alignment-against-buyer
+  - tco-honesty-without-consumption-side-scoring-routes-out-of-valid-buys
