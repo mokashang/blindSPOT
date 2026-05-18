@@ -1,0 +1,56 @@
+id: medigap-vs-medicare-advantage-IEP-cancer-survivor
+text: |
+  Dad turns 65 in August, retiring from a state-government job
+  September 30 (pension + retiree health bridge until Medicare picks
+  up). IEP runs May through November. Treated for stage-II colorectal
+  cancer in 2022; clean scans since but ongoing every-6-month
+  surveillance colonoscopies with his GI at MSK in NYC. He lives in
+  Westchester County NY (which has year-round Medigap GI by state
+  rule, important context). Local Humana MA-PD has $0 premium, $500
+  Part-A admit copay, $50 specialist copay, includes dental and the
+  SilverSneakers gym he uses, but the network is mostly Westchester
+  Medical Center system — does NOT include MSK as in-network. Plan
+  G Medigap from a strong carrier runs $245/mo + a Wellcare Part-D
+  plan at $32/mo + standard Part-B premium ($185/mo 2027) = ~$462/mo.
+  He's leaning Humana MA because "$0 premium plus dental, why pay
+  $245?" The MSK GI's office says "we accept Medicare but not Humana
+  MA in Westchester." Mom (60) is staying on her own employer plan
+  for now. Dad is asking me to help him decide. I keep reading about
+  "trial rights" and "Medigap underwriting" and "you can switch
+  back later" — true, false, depends on what?
+expected_domains: [health-insurance]
+expected_entities:
+  - Medicare-Part-A
+  - Medicare-Part-B
+  - Medicare-Part-D
+  - Original-Medicare
+  - Medicare-Advantage-MA-PD
+  - Medigap-Plan-G
+  - Medigap-Guaranteed-Issue-window
+  - IEP-Initial-Enrollment-Period
+  - NY-year-round-Medigap-GI-rule
+  - MSK-Memorial-Sloan-Kettering
+  - Westchester-County-NY
+  - colorectal-cancer-survivor
+  - MA-trial-right-12-month
+  - $245/mo-Plan-G
+  - $185/mo-Part-B-2027
+  - $0-MA-PD-premium-marketing
+expected_personas: [new-medicare-IEP-with-comorbidity, picking-medigap-letter]
+expected_risk_surfaces:
+  - Medigap-GI-window-6-months-from-Part-B-irreversible-outside-state-exceptions
+  - MA-network-mid-year-provider-drop-risk-for-specialty-cancer-care
+  - prior-authorization-burden-MA-vs-no-prior-auth-original-medicare
+  - MA-trial-right-12-month-return-to-Original-with-GI-but-only-if-enrolled-MA-at-IEP
+  - $0-premium-MA-extras-anchoring-vs-major-event-coverage-comparison
+  - center-of-excellence-cancer-care-network-access
+  - state-year-round-GI-rules-NY-CT-ME-MA-vary
+expected_decisions: [D8]
+expected_framings: [F6, F8, F9, F10]
+expected_blindspot_categories:
+  - Medigap-GI-one-time-irreversible-outside-NY-CT-ME-MA-year-round-GI-states
+  - MA-network-mid-year-provider-drop-converts-in-network-cancer-center-to-OON-overnight
+  - $0-MA-premium-extras-anchoring-inverts-major-event-coverage-framing
+  - MA-trial-right-12-month-return-path-only-from-MA-enrolled-at-IEP-not-from-subsequent-MA-elections
+  - prior-authorization-burden-MA-vs-near-zero-prior-auth-on-Original-Medicare
+  - high-stakes-consult-SHIBA-SHIP-volunteer-Medicare-counselor-conflict-free-non-commissioned

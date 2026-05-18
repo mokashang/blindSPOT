@@ -1,0 +1,57 @@
+id: mixed-status-household-daca-marketplace-eligibility
+text: |
+  Mixed-status household in Houston, TX. Me (US citizen, 36), spouse
+  (DACA recipient, work-authorized through 2027 renewal pending),
+  two US-citizen kids (5 and 8). Household 2026 MAGI projected $74k
+  (combined W-2 from both adults). Currently on my employer's
+  family-tier PPO at $720/biweekly — eats a real chunk of take-home.
+  My employer offers a "spouse can decline coverage at no charge"
+  option, no spousal surcharge. Options I'm weighing for OE Nov 1 –
+  Dec 15 (Healthcare.gov, since Texas has no state exchange):
+  (a) keep family-tier PPO; (b) move myself + kids to marketplace
+  silver-CSR — at our household income we'd be in CSR-73 territory
+  or just above 250% FPL depending on how household-size and DACA-
+  recipient eligibility are counted; (c) keep self + kids on
+  marketplace, spouse stays self-only on her employer plan (small-
+  business retail, $180/biweekly self-only).
+  The DACA-eligibility question is the one I can't resolve: I've
+  read three different things — the 2024 final rule made DACA
+  recipients APTC-eligible; that rule was vacated in late 2025; CMS
+  has issued mixed guidance since. The mixed-status household FPL
+  math is also unclear to me: do we count my spouse in household
+  size (numerator denominator?), is her income counted? Does her
+  exclusion from APTC mean we lose subsidy on the kids too?
+  Healthcare.gov chat says "talk to a Navigator."
+expected_domains: [health-insurance, immigration]
+expected_entities:
+  - DACA
+  - Deferred-Action-for-Childhood-Arrivals
+  - ACA-marketplace-APTC
+  - Healthcare.gov
+  - silver-CSR-73
+  - 250-pct-FPL-threshold
+  - mixed-status-household-FPL-calculation
+  - Texas-no-state-exchange
+  - 2024-DACA-marketplace-rule-vacated-2025
+  - INA-§245(a)-lawful-presence
+  - CMS-mixed-status-guidance
+  - in-person-assister-Navigator
+expected_personas: [mixed-status-household, navigating-aca-subsidy-cliff]
+expected_risk_surfaces:
+  - DACA-marketplace-eligibility-2024-rule-vacated-regulatory-posture-shift
+  - mixed-status-household-FPL-numerator-denominator-asymmetry
+  - lawful-presence-test-for-APTC-vs-household-FPL-for-subsidy-amount
+  - state-exchange-vs-Healthcare.gov-mixed-status-handling-variance
+  - DACA-renewal-clock-coupled-to-coverage-eligibility
+  - kid-coverage-via-CHIP-Medicaid-as-alternative-for-US-citizen-children
+  - high-stakes-permanent-loss-of-subsidy-if-status-or-rule-shifts-mid-plan-year
+expected_decisions: [D5, D3]
+expected_framings: [F5, F9, F13, F14]
+expected_blindspot_categories:
+  - DACA-recipient-APTC-eligibility-vacated-late-2025-current-posture-must-be-verified-not-assumed-from-prior-rule
+  - mixed-status-household-FPL-calculation-excludes-DACA-from-numerator-coverage-but-may-include-in-denominator-FPL
+  - US-citizen-children-may-qualify-CHIP-or-Medicaid-separately-from-marketplace-decision-Texas-no-Medicaid-expansion-context
+  - state-exchange-vs-Healthcare.gov-mixed-status-procedural-handling-varies-Texas-uses-federal
+  - DACA-renewal-failure-mid-plan-year-cuts-work-authorization-and-flips-coverage-eligibility-mid-stream
+  - structural-market-failure-framing-DACA-population-pays-into-employer-and-Medicare-without-marketplace-access
+  - high-stakes-consult-CMS-trained-Marketplace-Navigator-on-mixed-status-FPL-math-AND-immigration-attorney-on-DACA-renewal-coupling

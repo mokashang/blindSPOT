@@ -1,0 +1,50 @@
+id: medicare-part-b-delay-65-still-working-small-employer
+text: |
+  Turning 65 in March 2027. Still working full-time at a 14-employee
+  architecture firm; founder + 13 staff. Our employer plan is a fully-
+  insured small-group BCBS PPO, $0/mo employee-only premium, $1,500
+  deductible, $4,000 OOP-max. HR (the founder's wife, who handles
+  benefits) says "just stay on our plan, you don't need Medicare yet,
+  we'll re-evaluate when you actually retire." Plan to keep working
+  through 67 or 68 if my back holds out. I've also been maxing my HSA
+  for the last 6 years ($43k balance, all invested in VTSAX) on the
+  HDHP option my firm USED to offer before switching to PPO three
+  years ago. Started taking Social Security early at 62 because I
+  wanted the cash flow. My CPA mentioned in passing "you might want
+  to look at Part-A and HSA" but didn't follow up. Spouse is 61, not
+  Medicare-eligible yet, currently a dependent on my employer plan.
+  IEP runs Dec 2026 – June 2027. Skip Part B per HR's advice, or am
+  I about to walk into a multi-decade penalty trap?
+expected_domains: [health-insurance, personal-finance]
+expected_entities:
+  - Medicare-Part-A
+  - Medicare-Part-B
+  - Medicare-Part-D
+  - IEP-7-month-window
+  - SEP-after-end-of-employment
+  - Part-B-late-enrollment-penalty-10pct-per-12-months
+  - HSA-and-Medicare-mutual-exclusion
+  - Part-A-6-month-retroactive-on-SS-claim
+  - Medicare-Secondary-Payer-rule
+  - employer-size-under-20-threshold
+  - small-group-fully-insured-plan
+  - $43k-HSA-balance
+  - SHIBA-SHIP-volunteer
+expected_personas: [aging-into-medicare-still-working, small-employer-creditable-coverage-uncertain]
+expected_risk_surfaces:
+  - MSP-rule-under-20-employees-flips-employer-plan-to-secondary-at-65
+  - SS-claim-triggers-retroactive-Part-A-up-to-6-months-voiding-HSA-contributions
+  - 8-month-SEP-clock-runs-from-end-of-employment-not-end-of-COBRA
+  - creditable-coverage-determination-not-automatic-on-small-group-plan
+  - Medigap-GI-window-6-months-from-Part-B-effective-date
+  - permanent-Part-B-10-pct-per-12-month-penalty-non-waivable
+  - high-stakes-irreversible-Medicare-election
+expected_decisions: [D4, D9]
+expected_framings: [F6, F7, F8, F12]
+expected_blindspot_categories:
+  - employer-under-20-employees-MSP-rule-flips-plan-to-secondary-leaving-massive-uncovered-exposure
+  - SS-claiming-at-62-triggers-Part-A-retroactive-which-disqualifies-HSA-contributions-look-back-6-months
+  - 8-month-SEP-clock-runs-from-employment-end-not-coverage-end-not-COBRA-end
+  - creditable-coverage-attestation-on-small-group-plan-must-be-explicitly-verified-not-assumed
+  - HR-or-founder-spouse-not-licensed-to-give-Medicare-advice-conflict-with-retention-interest
+  - high-stakes-consult-SHIBA-SHIP-volunteer-non-commissioned-Medicare-counselor

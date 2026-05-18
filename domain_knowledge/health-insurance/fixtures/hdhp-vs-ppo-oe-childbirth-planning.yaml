@@ -1,0 +1,56 @@
+id: hdhp-vs-ppo-oe-childbirth-planning
+text: |
+  Open enrollment at my employer (large self-funded plan, ~8,000
+  employees) runs Nov 6–Nov 20. I'm 31, wife is 30, no kids yet but
+  actively trying — realistic shot at a 2027 birth. Two plan options:
+  HDHP at $95/biweekly with $3,300 deductible / $7,050 individual OOP-
+  max / $14,100 family OOP-max, plus a $1,500 employer HSA seed. PPO
+  at $260/biweekly with $750 deductible / $4,500 individual OOP-max /
+  $9,000 family OOP-max, $30 PCP copay, $250 hospital admit copay.
+  Both networks include my wife's OB and the in-network L&D hospital.
+  HDHP premium savings: ($260 − $95) × 26 = $4,290/yr plus the $1,500
+  HSA seed = $5,790 of pre-tax/HSA dollars on the HDHP side. A
+  vaginal-delivery in-network is roughly $13–18k billed, c-section
+  $22–30k; my wife's OB says c-section probability is around 25%
+  baseline. We have ~$45k in liquid savings and max out 401(k) +
+  Roth IRAs. Friend told me "always HDHP when you're healthy and
+  high-income, never look back." Run the math — but also: am I
+  thinking about this right at all if we might have a NICU
+  complication?
+expected_domains: [health-insurance, personal-finance]
+expected_entities:
+  - HDHP
+  - PPO
+  - $95/biweekly
+  - $260/biweekly
+  - $3,300-deductible
+  - $7,050-individual-OOP-max
+  - $14,100-family-OOP-max
+  - $750-deductible
+  - $4,500-individual-OOP-max
+  - $9,000-family-OOP-max
+  - $1,500-employer-HSA-seed
+  - $8,550-family-HSA-cap-2026
+  - vaginal-delivery-$13-18k
+  - c-section-$22-30k
+  - NICU
+  - self-funded-ERISA-plan
+  - embedded-individual-OOP-max
+expected_personas: [comparing-OE-plans, planning-family]
+expected_risk_surfaces:
+  - NICU-billed-in-newborn-name-not-parent
+  - embedded-vs-aggregate-family-deductible-structure
+  - 30-day-newborn-QLE-enrollment-window
+  - HSA-as-triple-tax-advantaged-retirement-vehicle
+  - prenatal-prior-authorization-burden-mid-treatment
+  - employer-premium-subsidy-asymmetry-across-tiers
+  - high-stakes-12-month-plan-year-lock-in
+expected_decisions: [D1, D6, D10]
+expected_framings: [F1, F2, F3, F11]
+expected_blindspot_categories:
+  - expected-utilization-arithmetic-misses-NICU-tail-risk-stacking-newborn-OOP-on-parent-OOP
+  - embedded-individual-OOP-max-ACA-floor-applies-but-aggregate-deductible-structure-varies-by-SPD
+  - HSA-strict-dominance-over-FSA-only-if-cash-flow-permits-paying-current-OOP
+  - newborn-30-day-QLE-failure-causes-coverage-gap-billed-in-newborn-name
+  - self-funded-ERISA-plan-state-insurance-commissioner-pre-empted-on-denial-appeals
+  - high-stakes-consult-licensed-broker-or-CPA-on-HSA-coordination-and-SPD-deductible-structure

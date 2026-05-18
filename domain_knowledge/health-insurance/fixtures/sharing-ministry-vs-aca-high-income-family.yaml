@@ -1,0 +1,58 @@
+id: sharing-ministry-vs-aca-high-income-family
+text: |
+  Independent consultant (LLC, sole-member) in Texas, projected 2027
+  business income $215k, spouse part-time (~$28k W-2), three kids
+  (4, 7, 11). Healthy family, no chronic conditions, no medications.
+  Marketplace gold (Blue Cross Blue Shield TX PPO) is $2,180/mo
+  family-tier with zero APTC — household income way above any
+  subsidy threshold even after ARPA-IRA. Our pastor recommended
+  Christian Healthcare Ministries — $670/mo for the "Gold" tier (no
+  relation to ACA gold), covers shareable expenses after $500 per-
+  incident "personal responsibility," lifetime sharing limit
+  $125k per incident with separate "Brother's Keeper" add-on. Saves
+  us $1,510/mo = $18,120/year. Member testimonials sound great. I
+  read CHM's guidelines: pre-existing conditions excluded for first
+  3 years; routine maternity shareable only after 9 months of
+  membership with sworn-statement marriage attestation; non-share
+  for events caused by behaviors contrary to faith (alcohol-related
+  injury, tobacco-related disease, "extramarital" pregnancy, mental-
+  health-treatment OOP not shared by default). Our 11-year-old plays
+  travel hockey — kids fall. My wife's family has BRCA-2; she hasn't
+  been tested but is considering it; if she tests positive and
+  pursues prophylactic surgery, is that "pre-existing"? Save the $18k
+  or stay on ACA?
+expected_domains: [health-insurance, personal-finance]
+expected_entities:
+  - Christian-Healthcare-Ministries
+  - CHM-Gold-tier
+  - $670/mo-member-fee
+  - $500-personal-responsibility-per-incident
+  - $125k-per-incident-sharing-limit
+  - ACA-marketplace-gold-$2,180/mo
+  - $215k-business-income
+  - $28k-spouse-W2
+  - BRCA-2-family-history
+  - pre-existing-condition-exclusion-3-years
+  - lifestyle-and-faith-attestation
+  - ACA-OOP-cap-$9,200-self-$18,400-family
+  - STLDI-short-term-limited-duration
+  - state-insurance-commissioner-fully-insured-grievance
+expected_personas: [non-subsidized-self-employed, evaluating-aca-noncompliant-alternative]
+expected_risk_surfaces:
+  - sharing-ministry-not-insurance-no-state-insurance-commissioner-recourse
+  - pre-existing-condition-exclusion-and-post-claim-rescission-risk
+  - OOP-cap-absent-on-non-ACA-alternatives
+  - BRCA-2-family-history-future-testing-as-pre-existing-trigger
+  - $125k-per-incident-cap-vs-real-cancer-treatment-cost
+  - lifestyle-and-faith-attestation-as-contract-not-formality
+  - EHB-mental-health-and-maternity-coverage-gap
+expected_decisions: [D7]
+expected_framings: [F2, F4, F5, F8, F9]
+expected_blindspot_categories:
+  - sharing-ministries-explicitly-not-insurance-no-state-insurance-commissioner-remedy
+  - lifestyle-and-faith-attestation-non-share-grounds-not-just-paperwork-formality
+  - pre-existing-condition-exclusion-3-years-with-post-claim-investigation-rescission-risk
+  - $125k-per-incident-sharing-cap-blown-by-single-NICU-or-cancer-event
+  - EHB-mental-health-and-maternity-and-pediatric-coverage-gap-on-non-ACA-alternatives
+  - BRCA-2-testing-conversion-from-uninsured-discovery-to-pre-existing-condition-on-future-coverage
+  - high-stakes-consult-state-insurance-commissioner-on-rescission-and-ERISA-attorney-on-six-figure-non-share-disputes

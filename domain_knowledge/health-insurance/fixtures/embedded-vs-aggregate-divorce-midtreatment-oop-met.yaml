@@ -1,0 +1,59 @@
+id: embedded-vs-aggregate-divorce-midtreatment-oop-met
+text: |
+  Mid-divorce, papers filed June; expected final decree October.
+  Currently on STBX-husband's employer family plan (his employer
+  Aetna PPO, self-funded ERISA, $5,000 family deductible / $14,100
+  family OOP-max with embedded $7,050 individual sub-limit). I was
+  diagnosed with breast cancer in March, started chemo May, currently
+  $9,800 toward the family OOP-max — $7,050 of that is my embedded
+  individual OOP-max, which is fully met. My oncologist at Dana-
+  Farber has scheduled the next three chemo cycles June 30, July 21,
+  August 11, plus a planned bilateral mastectomy in late September.
+  Once divorce decree finalizes I lose coverage as STBX's spouse —
+  QLE-triggered, 60-day SEP for marketplace OR I can elect COBRA
+  on his plan for up to 36 months (divorce is a "secondary qualifying
+  event" extending COBRA from 18 to 36 months). My own employer
+  (15-person nonprofit) offers HMO family plan I could enroll in via
+  divorce-QLE — but if I switch plans mid-treatment my deductible
+  and OOP-met reset to $0, plus prior-auth on the mastectomy resets,
+  plus my Dana-Farber team may not be in the HMO network. COBRA on
+  the existing plan is ~$2,100/mo for self-only continuation.
+  Marketplace silver with APTC at my projected $62k 2027 income is
+  ~$120/mo — but again deductible/OOP-met resets and Dana-Farber
+  network is plan-dependent. Decree timing isn't fixed yet — can
+  ask my attorney to push to November if it matters. Net what?
+expected_domains: [health-insurance, family-planning, legal-disputes]
+expected_entities:
+  - divorce-as-QLE
+  - COBRA-36-month-secondary-qualifying-event
+  - embedded-individual-OOP-max-$7,050
+  - aggregate-family-OOP-max-$14,100
+  - $5,000-family-deductible
+  - $9,800-family-OOP-met-YTD
+  - $7,050-individual-OOP-met-YTD
+  - Dana-Farber
+  - mastectomy
+  - chemo-cycle-prior-authorization
+  - self-funded-ERISA-plan
+  - HMO-network-narrowness
+  - 60-day-SEP-marketplace
+  - ARPA-IRA-APTC
+expected_personas: [divorcing-with-OOP-met, mid-treatment-coverage-transition]
+expected_risk_surfaces:
+  - mid-treatment-deductible-and-OOP-met-reset-on-plan-switch
+  - prior-authorization-reset-on-network-switch-mid-treatment
+  - divorce-secondary-qualifying-event-COBRA-extension-to-36-months
+  - self-funded-ERISA-plan-state-divorce-court-cannot-order-continuation
+  - 60-day-SEP-marketplace-clock-from-loss-of-coverage
+  - center-of-excellence-network-access-on-narrow-HMO
+  - QDRO-vs-QMCSO-for-medical-coverage-ordered-by-court
+expected_decisions: [D10, D2, D3]
+expected_framings: [F1, F2, F8, F11, F13]
+expected_blindspot_categories:
+  - embedded-individual-OOP-met-does-NOT-transfer-to-new-plan-on-divorce-mid-treatment
+  - divorce-decree-timing-relative-to-deductible-met-status-is-load-bearing-decision-variable
+  - COBRA-secondary-qualifying-event-extends-to-36-months-on-divorce-vs-18-on-job-loss
+  - self-funded-ERISA-plan-state-court-divorce-decree-cannot-compel-continuation-only-QMCSO-for-dependent-children
+  - prior-auth-reset-on-network-switch-not-just-deductible-reset-cancellable-surgeries
+  - QMCSO-Qualified-Medical-Child-Support-Order-only-for-dependent-children-not-for-spouse-coverage
+  - high-stakes-consult-ERISA-attorney-on-self-funded-plan-divorce-continuation-rights-and-state-domestic-relations-judge

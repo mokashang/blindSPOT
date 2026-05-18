@@ -1,0 +1,59 @@
+id: hsa-last-month-rule-mid-year-hire-testing-period
+text: |
+  Started a new job July 14, 2026. Prior employer (left June 27) had
+  PPO with no HSA option — zero HSA contributions YTD. New employer
+  offers HDHP-with-HSA (Anthem $1,800 individual deductible, HSA-
+  eligible per the SBC). I'm single, no dependents, 38, healthy,
+  no chronic conditions. HSA cap 2026 is $4,300 self-only. Two
+  contribution paths the benefits portal walks me through at
+  onboarding:
+  - "Standard prorated" = ~5.5 months of HDHP eligibility × ($4,300
+    / 12) = roughly $1,970 max for 2026.
+  - "Full annual via last-month rule" = full $4,300 if HSA-eligible
+    on Dec 1, 2026, BUT subject to 13-month testing period running
+    Dec 1, 2026 through Dec 31, 2027 — must remain HSA-eligible the
+    entire 2027 calendar year, or face income recapture on the
+    excess plus a 10% penalty (Form 8889 line 21).
+  Complicating factors: (1) I'm dating someone seriously and we've
+  loosely discussed marriage in 2027 — she's on her employer's PPO
+  (non-HDHP) family plan with two kids from prior marriage; (2) I
+  expect ~$3,000 in employer-FSA balance she'd want to roll into a
+  joint FSA election next OE (a general-purpose FSA voids HSA-
+  eligibility for both spouses, not just the FSA-electing spouse —
+  per IRC §223(c)(1)(B)); (3) my 401(k) match is already maxed and
+  I'm looking for the next dollar of tax-advantaged retirement
+  space. Take the $2,330 incremental contribution via last-month
+  rule and accept the testing-period bet, or play it safe with
+  prorated?
+expected_domains: [health-insurance, personal-finance]
+expected_entities:
+  - HSA
+  - $4,300-HSA-self-only-cap-2026
+  - last-month-rule
+  - 13-month-testing-period
+  - IRC-§223
+  - Form-8889
+  - income-recapture-plus-10pct-penalty
+  - HDHP
+  - SBC-Summary-of-Benefits-and-Coverage
+  - general-purpose-FSA-voids-HSA-eligibility-spousal
+  - mid-year-HDHP-enrollment
+  - amended-1040
+expected_personas: [mid-year-HDHP-enrollee, evaluating-tax-advantaged-retirement-bucket]
+expected_risk_surfaces:
+  - 13-month-testing-period-failure-triggers-income-recapture-on-amended-1040
+  - spousal-general-purpose-FSA-voids-HSA-eligibility-for-both-spouses
+  - mid-year-marriage-QLE-onto-non-HDHP-family-plan-as-testing-period-failure-trigger
+  - HSA-as-most-tax-advantaged-retirement-bucket-after-401k-match
+  - SBC-vs-SPD-HDHP-eligibility-determination-not-just-deductible-amount
+  - HSA-contribution-vs-spousal-family-plan-coordination-on-marriage
+expected_decisions: [D9, D1]
+expected_framings: [F3, F6, F7, F12]
+expected_blindspot_categories:
+  - last-month-rule-as-contingent-tax-liability-not-tax-bonus-positive-EV-only-if-2027-eligibility-stable
+  - 13-month-testing-period-failure-amends-2026-1040-plus-10-pct-penalty-not-just-next-year-adjustment
+  - marriage-onto-spouse-non-HDHP-family-plan-mid-year-is-testing-period-failure-event
+  - spouse-general-purpose-FSA-voids-HSA-eligibility-for-both-spouses-per-IRC-223
+  - HDHP-eligibility-determined-by-deductible-and-OOP-max-AND-no-disqualifying-coverage-not-just-deductible
+  - HSA-and-Medicare-mutual-exclusion-relevant-when-spouse-aging-into-Medicare-with-Part-A-retroactive
+  - high-stakes-consult-CPA-on-Form-8889-testing-period-mechanics-before-electing-last-month-rule
