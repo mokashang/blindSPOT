@@ -3,6 +3,69 @@
 # user would phrase it: shorthand, lived context, code-switching.
 # Mix of English-only and Chinese-mixed-English to exercise the
 # bilingual Editor stance.
+#
+# ─── COVERAGE HEADER (derived, schema-only; eval runner ignores) ───
+# Three derived tables mapping the 16 fixtures below to the vertical's
+# structural axes. Pure derivation from fixture text + expected_* arrays
+# + decisions.md D1-D12 + ROADMAP.md §3 communities — no new claims.
+# Same pattern as blindspots.md front-matter (PR #97). Fixture ids
+# abbreviated (last 2-3 slug words; see full id list at bottom).
+#
+# Table 1 — Per-decision coverage (D1-D12)
+# D1  offer-comparison under sponsorship filter   → faang-vs-series-c, career-capital, cn-newgrad, h4-school-district  (4)
+# D2  OPT / STEM-OPT / cap-gap timing             → opt-expiring, phd-opt-clock, day1-cpt-bridge                       (3)
+# D3  H-1B lottery backup paths                   → lottery-not-selected, o1-vs-h1b, day1-cpt-legitimacy, day1-cpt-bridge (4)
+# D4  employer switch mid-PERM / mid-I-140        → switch-mid-perm-ac21                                               (1 — under-covered)
+# D5  layoff response under H-1B / H-4 pressure   → laid-off-60-day-grace, h4-primary-switch (latter is layoff-fear)   (2)
+# D6  return-to-China timing                      → return-i140-approved, senior-ic-return-timing                      (2)
+# D7  family-located optimization                 → h4-school-district, h4-primary-switch                              (2)
+# D8  PhD / postdoc-to-industry conversion        → phd-opt-clock, postdoc-eb1a                                        (2)
+# D9  career-capital vs visa-security tradeoff    → career-capital-vs-visa-security                                    (1 — under-covered)
+# D10 O-1 vs H-1B-lottery route selection         → o1-vs-h1b, postdoc-eb1a (EB-1A is adjacent extraordinary-ability)  (2)
+# D11 post-cliff (post-RSU) career strategy       → senior-ic-return-timing (only fixture with equity-cliff entity)    (1 — under-covered)
+# D12 first-employer choice "willing-to-sponsor"  → faang-vs-series-c, cn-newgrad                                      (2)
+#
+# Table 2 — Per-persona coverage (counts include multi-persona fixtures)
+# f1-final-year-cs-master                              → faang-vs-series-c, cn-newgrad                                  (2)
+# comparing-fang-vs-startup-with-sponsorship-asymmetry → faang-vs-series-c, career-capital, cn-newgrad                  (3)
+# opt-active-h1b-pending                               → opt-expiring                                                   (1)
+# opt-active-h1b-not-yet-filed                         → phd-opt-clock                                                  (1)
+# h1b-on-lottery-fail                                  → lottery-not-selected, o1-vs-h1b, day1-cpt-legitimacy, day1-cpt-bridge (4 — most-exercised)
+# post-opt-h1b-not-selected                            → day1-cpt-bridge                                                (1)
+# mid-perm-considering-switch                          → switch-mid-perm-ac21                                           (1)
+# laid-off-on-h1b                                      → laid-off-60-day-grace                                          (1)
+# i140-approved-considering-return                     → return-i140-approved, senior-ic-return-timing                  (2)
+# gc-backlog-considering-return                        → return-i140-approved                                           (1)
+# senior-ic-already-passed-cliff                       → senior-ic-return-timing                                        (1)
+# cs-phd-post-defense                                  → phd-opt-clock, postdoc-eb1a                                    (2)
+# phd-pivot-to-industry                                → postdoc-eb1a                                                   (1)
+# h4-spouse-on-ead                                     → h4-school-district, h4-primary-switch                          (2)
+# h4-spouse-eligible-for-ead                           → h4-primary-switch                                              (1)
+# dual-citizenship-family                              → h4-school-district                                             (1)
+#
+# Table 3 — Per-community coverage (derived structurally from text + expected_*)
+# (heuristic: CN code-switching / 一亩三分地 ref → oneponethreeacres; English tech-career
+# framing → reddit-us-tech-collective; visa-mechanic / attorney / regulatory anchors →
+# us-immigration-counsel; return-decision / CN-employer framing → china-returnee-voices)
+# oneponethreeacres (一亩三分地)
+#   → cn-newgrad, day1-cpt-legitimacy (refs 一亩三分地), day1-cpt-bridge, h4-primary-switch, faang-vs-series-c  (5)
+# reddit-us-tech-collective
+#   → faang-vs-series-c, career-capital-vs-visa-security, phd-opt-clock, postdoc-eb1a  (4)
+# us-immigration-counsel
+#   → opt-expiring, lottery-not-selected, switch-mid-perm-ac21, laid-off-60-day-grace, o1-vs-h1b,
+#     day1-cpt-legitimacy (refs r/h1b), day1-cpt-bridge (lawyer/RFE/221(g)), postdoc-eb1a (Matter-of-Dhanasar),
+#     h4-primary-switch  (9 — most-exercised; matches visa-mechanic center-of-gravity)
+# china-returnee-voices
+#   → return-i140-approved, senior-ic-return-timing  (2 — under-covered; only explicit return-decision fixtures)
+#
+# Coverage debt: D4/D9/D11 under-covered (1 fixture each); china-returnee-voices under-covered (2 fixtures).
+# Full fixture ids (in order): faang-vs-series-c-sponsorship-asymmetry, opt-expiring-h1b-decision,
+# h1b-lottery-not-selected-backup, switch-mid-perm-ac21, laid-off-h1b-60-day-grace,
+# return-to-china-i140-approved, h4-ead-spouse-school-district, phd-to-industry-opt-clock,
+# career-capital-vs-visa-security, o1-vs-h1b-lottery, senior-ic-return-timing,
+# cn-language-newgrad-offer-comp, day1-cpt-legitimacy-question, day1-cpt-bridge-after-h1b-miss,
+# postdoc-eb1a-vs-h1b-route, h4-ead-spouse-primary-h1b-switch.
+# ─────────────────────────────────────────────────────────────────
 
 - id: faang-vs-series-c-sponsorship-asymmetry
   text: |
