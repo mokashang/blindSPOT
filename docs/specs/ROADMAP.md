@@ -139,9 +139,9 @@ quality_score ≥ 0.75 over ≥ 8 fixtures across 3 consecutive runs.
 
 ```
 Status: 🟡 in progress
-Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/13)
-Last completed: (pivot commit) — scope narrowed, deprecated domains archived, stubs scaffolded
-Next up: cn-sde-jobhunt/decisions.md — author Layer 1 with ≥10 vertical-specific decisions
+Progress: █████████████░░░░░░░ 67% (8/12)
+Last completed: de8211a — cn-sde-jobhunt/fixtures/ expanded 3 → 10 files (fixtures-md item complete)
+Next up: cn-sde-jobhunt/decisions.md — author Layer 1 paragraph content (voice work, user-authored only per SKILL.md §5)
 ```
 
 ### Per-task checklist
@@ -177,48 +177,58 @@ Knowledge content — Layers 1–4 of `cn-sde-jobhunt/`:
   move. Hand-authored from real evidence (1p3a threads, Reddit posts,
   attorney blog case studies). No generic LLM-generated bullets.
 
-- [ ] **sources.yaml** (Layer 4) — ≥12 source-views across ≥4
+- [x] **sources.yaml** (Layer 4) — ≥12 source-views across ≥4
   community_tags. Mix RSS, Reddit, static-corpus (for 1p3a threads
   the author curates manually — 1p3a is hostile to automated scraping,
   so this stays static). Voice-anchor coverage from framings.
+  *Done at pivot: 15 source-views across all 4 communities.*
 
-- [ ] **communities/** — one profile per community-tag (4 files
+- [x] **communities/** — one profile per community-tag (4 files
   matching §3): Voice / Mental model / Typical concerns / Known
   blind spots OF this community. 250–500 words each, per
-  `community_profiles/_schema.md`.
+  `community_profiles/_schema.md`. *Done at pivot: all 4 profiles
+  authored (5–7 KB each).*
 
-- [ ] **fixtures/** — ≥10 eval fixtures. Cover all 4 communities, the
+- [x] **fixtures/** — ≥10 eval fixtures. Cover all 4 communities, the
   ~10 decisions, and ≥6 distinct personas (first-time-OPT, post-PhD,
-  laid-off-on-H1B, GC-backlog-considering-return, etc.).
+  laid-off-on-H1B, GC-backlog-considering-return, etc.). *Done
+  2026-05-18 21:54 UTC via PR #96: 10 per-fixture YAMLs covering
+  D1-D12 across the 4 communities and 6+ personas.*
 
-- [ ] **domain_pack.md** — Triage / Editor / Critic system-prompt
+- [x] **domain_pack.md** — Triage / Editor / Critic system-prompt
   overrides. Mechanism E (high-stakes referral) applies: Editor
   labels visa-decision output "decision-support, not legal advice"
   and routes to a named immigration-attorney channel. Editor
   bilingual posture: respond in the user's input language by
   default — Chinese in, Chinese out; English in, English out.
-  Citations stay in source language.
+  Citations stay in source language. *Done at pivot: 119 lines,
+  all three sections within the ≤300-words-per-section bar.*
 
 Infra & data:
 
-- [ ] **Triage prompts updated** — `src/blindspot/prompts/triage.md`
+- [x] **Triage prompts updated** — `src/blindspot/prompts/triage.md`
   and `triage_pass1.md` narrowed to single in-scope domain
   (`cn-sde-jobhunt`). Pass-1 returns `["cn-sde-jobhunt"]` or `[]`;
   Pass-2 extracts the vertical-specific facets. Out-of-scope
   situations return all-empty arrays → orchestrator refuses.
+  *Done at pivot.*
 
-- [ ] **Source registry replaced** — `data/source_registry.yaml`
+- [x] **Source registry replaced** — `data/source_registry.yaml`
   rewritten with the 4 communities' source-views. Old registry
   archived under `data/_archive/source_registry-v1.yaml`.
+  *Done at pivot.*
 
-- [ ] **Tag taxonomy replaced** — `data/tag_taxonomy_seed.yaml`
+- [x] **Tag taxonomy replaced** — `data/tag_taxonomy_seed.yaml`
   rewritten with vertical-specific facets (entities like
   `H1B`, `OPT`, `STEM-OPT`, `AC21`, `I-140`, `EB-2-NIW`, `cap-gap`;
   personas like `f1-final-year`, `post-opt-h1b-lottery`,
   `mid-PERM-employer-switch`, `gc-backlog-considering-return`).
+  *Done at pivot.*
 
-- [ ] **Eval fixtures replaced** — `fixtures/eval_situations.yaml`
+- [x] **Eval fixtures replaced** — `fixtures/eval_situations.yaml`
   replaced with cn-sde-jobhunt situations. Old fixtures archived.
+  *Done at pivot (13 situations); extended 2026-05-18 21:54 UTC
+  via PR #95 to 16 situations.*
 
 - [ ] **Eval pass on cn-sde-jobhunt** — `./bin/blindspot eval`
   produces `quality_score` ≥ 0.75 over ≥ 8 of the new fixtures
@@ -435,10 +445,12 @@ This roadmap explicitly does NOT plan for:
 V1.0:      ✅ shipped
 V1.x:      ✅ closed at pivot 2026-05-18
 V2-orig:   ⛔ deprecated; content archived under domain_knowledge/_archive/
-V2-narrow: 🟡 in progress (0/13)
+V2-narrow: 🟡 in progress (8/12)
 V3-ui:     ⬜ pending (0/7)
 V4-freeze: ⬜ pending (0/6)
 ```
 
-Total remaining: 26 concrete sub-tasks across V2-narrow + V3-ui +
-V4-freeze. Target completion 2026-06-01.
+Total remaining: 17 concrete sub-tasks across V2-narrow + V3-ui +
+V4-freeze (8 V2-narrow items already complete: 7 carried by the
+pivot commit + 1 via PR #96 on 2026-05-18 21:54 UTC). Target
+completion 2026-06-01.
