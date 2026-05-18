@@ -1,0 +1,529 @@
+# Blindspot V2 per-domain source registry for housing.
+#
+# Layer 4 of the 4-layer knowledge model (per docs/specs/ROADMAP.md §3).
+# This file holds the source-view inventory scoped to the `housing`
+# domain. Mirrors the schema of domain_knowledge/immigration/sources.yaml
+# (PR #49) and domain_knowledge/tech-career/sources.yaml (PR #37).
+#
+# `housing` is **high_stakes: false** per
+# domain_knowledge/_meta_ontology.md §3 — most outcomes recoverable
+# (sell, refinance, sublet, break a lease with a fee). Mechanism E at
+# runtime is therefore PARTIAL, not blanket: per
+# domain_knowledge/housing/blindspots.md, Recovery moves are
+# selectively routed to professional counsel only where six-figure
+# tail risk is present — CPA for §121 / 1031 / depreciation-recapture
+# math, real-estate-attorney for title / easement / TOPA / boundary,
+# insurance broker + IBHS / climate-resilience inspector for
+# flood / wind / wildfire / hail exposure, structural / pest / sewer
+# inspector for inspection-side findings that would change the offer,
+# mortgage-broker for ARM cap-structure / refinance trigger math.
+# These sources feed the pipeline as reference / community signal —
+# they are not adjudicative answers. Per-case decisions still come
+# from the named professional with current facts.
+#
+# Each entry is a "source-view": a configured, filtered, annotated lens
+# into one source.
+# Schema:
+#   id              unique slug
+#   adapter         rss | reddit_search | hn_search | static_corpus
+#   fetch_config    adapter-specific
+#   domains         hierarchical tag paths (multi-label)
+#   community_tag   single community label (drives diversity constraint)
+#   reliability     1-5, initial value; auto-adjusted via rating feedback
+#                   (per ROADMAP §5 Mechanism C "cite-and-promote": new
+#                   sources start at 1 and earn higher reliability via
+#                   runtime usage / rating feedback)
+#   freshness_required  true → cache TTL 7 days; false → 30 days
+#   notes           multi-paragraph; what this view is good for, bad
+#                   for, caveats
+#   domain          (V2) the per-domain folder this source-view lives in
+#
+# Community-tag coverage maps the framings.md §"Voice anchors for
+# Layer 3 (blindspots)" classes (housing/framings.md lines 1059-1146):
+#   real-estate-experience-forums     → r/RealEstate, r/FirstTimeHomeBuyer,
+#                                       BiggerPockets, metro subreddits voice
+#   mortgage-and-personal-finance     → Bogleheads-housing, MMM/FIRE,
+#                                       Ramit Sethi calculator-pilled voice,
+#                                       fee-only CFP / CPA voice
+#   real-estate-data-and-economics    → Calculated Risk, Marketplace,
+#                                       housing-economist voice
+#   journalists-and-explainers        → ProPublica housing, NYT real-estate
+#                                       desk, NPR Planet Money housing voice
+#   industry-associations-and-government
+#                                     → NAR, NAHB, FHFA, HUD authority voice
+#                                       (use with anti-source posture per
+#                                       framings.md F13 consumer-advocate)
+#   climate-and-insurance-research    → First Street Foundation, IBHS,
+#                                       state insurance commissioner voice
+#   consumer-advocacy-and-tenant-rights
+#                                     → tenant union / Legal Aid landlord-
+#                                       tenant publications voice
+#
+# URL caveat: where a feed URL could not be live-verified at authoring
+# time, the entry carries a `notes:` line flagging
+# "URL placeholder — verify before enabling". The registry loader is
+# tolerant of non-resolving feeds (fetch failures are caught per-source
+# in the Collection layer and the turn proceeds); a placeholder entry
+# is inert until verified, not breaking. Reddit-adapter entries soft-
+# fail without REDDIT_CLIENT_ID/SECRET (the Reddit adapter wraps PRAW
+# construction in try/except at the Collection layer — see CLAUDE.md
+# "Quirks").
+
+# ─── community: real-estate-experience-forums ─────────────────────────
+
+- id: reddit-realestate
+  adapter: reddit_search
+  fetch_config:
+    subreddit: RealEstate
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 25
+  domains: [housing/buying, housing/selling, housing/transaction-cost, housing/appraisal, housing/comps]
+  community_tag: real-estate-experience-forums
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    r/RealEstate on Reddit. Transactional voice anchor named in
+    framings.md §"Voice anchors" — agent-mediated vocabulary of
+    "comps," "appraisal gap," "escalation clause." Primary source
+    for D1 (rent-vs-buy), D3 (price-vs-comp), D5 (offer-strategy),
+    D7 (post-purchase-cap-events) framings per framings.md voice
+    map. The community's own blind spot (per framings.md): under-
+    weights opportunity cost (F1) and macro cycle (F14); over-
+    weights the immediate transaction — so use as transactional
+    signal, not strategic input.
+    Best for: real-time transaction tactics, escalation-clause war
+    stories, appraisal-gap behavior, agent-relationship friction,
+    listing-strategy reality vs NAR marketing.
+    Weak: macro context, opportunity-cost framing, tenant-side
+    perspective, climate-and-insurance trajectory. Soft-fails
+    without REDDIT_CLIENT_ID/SECRET.
+
+- id: reddit-firsttimehomebuyer
+  adapter: reddit_search
+  fetch_config:
+    subreddit: FirstTimeHomeBuyer
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 25
+  domains: [housing/buying, housing/down-payment, housing/closing-costs, housing/inspection, housing/transaction-cost]
+  community_tag: real-estate-experience-forums
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    r/FirstTimeHomeBuyer on Reddit. Counterpart to r/RealEstate
+    skewed toward the buyer-onboarding journey — down-payment
+    assembly, closing-cost surprise, inspection-finding triage,
+    first-mortgage-rate-shock posts. Captures the
+    information-asymmetry surface that blindspots.md F11
+    (transaction-cost) and F13 (consumer-advocate) framings hinge
+    on. Same transactional bias as r/RealEstate — useful for
+    surfacing what a first-time buyer didn't know to ask, not for
+    strategic counsel.
+    Best for: closing-cost expectation calibration, inspection-
+    finding common-shocks, down-payment-assistance program
+    surfacing, first-mortgage decision regret patterns.
+    Weak: investor / multi-property strategy, refinance mechanics
+    (audience has not yet refinanced once), tax-loss harvesting
+    via 1031. Soft-fails without REDDIT_CLIENT_ID/SECRET.
+
+- id: biggerpockets-forums
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/biggerpockets-thread-archive.md
+  domains: [housing/investor-leverage, housing/cap-rate, housing/cash-on-cash, housing/house-hacking, housing/landlord]
+  community_tag: real-estate-experience-forums
+  reliability: 1
+  freshness_required: false
+  domain: housing
+  notes: |
+    BiggerPockets forums archive. Investor-pilled voice anchor
+    named in framings.md §"Voice anchors": cap-rate / cash-on-cash
+    arithmetic, leverage as amplifier, "house-hacking" as wedge.
+    Primary source for F10 (investor-leverage). Community blind
+    spot (per framings.md): under-weights tenant-rights (F12) and
+    operational drag of self-management — so pair with tenant-
+    rights sources for balanced framing. Also surfaces the
+    landlord-side of the F12 split (operational-landlord
+    perspective on eviction-cost reality, tenant-selection
+    heuristics — per framings.md voice anchor list).
+    Best for: cap-rate / cash-on-cash arithmetic patterns,
+    house-hacking mechanics, BRRRR sequencing, real-estate-
+    professional-status discussion (with the caveat that the
+    forum routinely overstates its W-2-asker availability —
+    blindspots.md F10 entry).
+    Weak: opportunity-cost framing vs equities, tenant-side
+    perspective. Static ingest — periodically scrape / paste
+    high-signal long-threads from the General Real Estate
+    Investing, Tax & Legal, and Landlord forums. URL placeholder
+    — verify before enabling.
+
+- id: reddit-metro-housing
+  adapter: reddit_search
+  fetch_config:
+    subreddit: AskNYC+Seattle+Austin+Boston+chicago
+    query_template: "housing {entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 30
+  domains: [housing/metro-variance, housing/school-attendance-zone, housing/neighborhood, housing/gentrification, housing/zone-premium]
+  community_tag: real-estate-experience-forums
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    Metro-specific subreddits aggregated — voice anchor named in
+    framings.md §"Voice anchors" (r/Seattle, r/Austin, r/AskNYC,
+    r/Boston). Neighborhood granularity, school-attendance-zone
+    obsession, gentrification narrative. Primary source for F9
+    (zone-premium) and F14 (macro-cycle) metro-variance
+    calibration. Community blind spot (per framings.md): under-
+    weights national-cycle context; metro-internal framing can be
+    18 months out of phase with national — so cross-validate
+    metro signal against Calculated Risk / national-data sources
+    below.
+    Best for: school-attendance-zone real-world reputation (vs
+    GreatSchools rating), gentrification-trajectory community
+    knowledge, micro-neighborhood walkability and transit
+    reality. Weak: national-cycle context, investor strategy,
+    statutory mechanics.
+    Reddit's PRAW supports multi-subreddit search via `+`
+    separator (`AskNYC+Seattle+Austin+Boston+chicago`); the
+    adapter's `subreddit` field is passed through directly. Soft-
+    fails without REDDIT_CLIENT_ID/SECRET.
+
+# ─── community: mortgage-and-personal-finance ─────────────────────────
+
+- id: bogleheads-housing
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/bogleheads-housing-threads.md
+  domains: [housing/rent-vs-buy, housing/opportunity-cost, housing/down-payment, housing/refinance, housing/financial-return]
+  community_tag: mortgage-and-personal-finance
+  reliability: 1
+  freshness_required: false
+  domain: housing
+  notes: |
+    Bogleheads forum housing-thread archive. Opportunity-cost-
+    pilled voice anchor named in framings.md §"Voice anchors":
+    rent-vs-buy as portfolio-allocation question, NYT calculator
+    as canonical artifact. Primary source for F1 (financial-
+    return) framing. Community blind spot (per framings.md):
+    under-weights consumption value (F2, F3) and household-
+    stability premium — so pair with consumption-side framings
+    when surfacing this voice. blindspots.md §1.1 (IRR-superiority
+    over rent ignores consumption value) is the direct
+    counterweight.
+    Best for: opportunity-cost-of-down-payment math, mortgage-as-
+    tax-leveraged-position framing, SALT-cap interactions,
+    counterfactual-equity-portfolio reasoning, three-fund-
+    portfolio-adjacent housing discussion.
+    Weak: investor / multi-property strategy, landlord operations,
+    metro-specific nuance, consumption-value framing. Static
+    ingest — periodically scrape / paste high-signal threads from
+    the "Personal Investments" and "Personal Finance" sub-forums
+    where housing comes up. URL placeholder — verify before
+    enabling.
+
+- id: reddit-personalfinance-housing
+  adapter: reddit_search
+  fetch_config:
+    subreddit: personalfinance
+    query_template: "housing {entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 50
+  domains: [housing/rent-vs-buy, housing/dti, housing/budget, housing/down-payment, housing/refinance, housing/household-cashflow]
+  community_tag: mortgage-and-personal-finance
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    r/personalfinance housing-tagged threads. Generalist personal-
+    finance voice — DTI math, household-budget constraints,
+    down-payment-vs-investment trade-offs. Useful for F6
+    (household-cashflow) and F1 (financial-return) calibration
+    against the Bogleheads thread archive above (which skews
+    higher-net-worth and more theory-pilled). Higher upvote
+    threshold (50) to surface the questions with thread-
+    convergence signal — single-anecdote rate-shock posts are not
+    useful evidence.
+    Best for: DTI / household-cashflow stress-test mechanics, the
+    "should I touch retirement to buy" question (blindspots.md
+    F6), first-time-buyer-budget reality, refinance-vs-pay-down
+    math.
+    Weak: investor / multi-property strategy, advanced tax
+    mechanics, statutory tenant-rights. Soft-fails without
+    REDDIT_CLIENT_ID/SECRET.
+
+- id: mortgage-news-daily
+  adapter: rss
+  fetch_config:
+    feed: https://www.mortgagenewsdaily.com/rss/MortgageNewsDaily.aspx
+    keyword_filter: [rate, mortgage, ARM, refinance, conforming, jumbo, points, LLPA, Fed]
+  domains: [housing/rate-trajectory, housing/refinance, housing/arm-cap-structure, housing/conforming-jumbo, housing/mortgage-mechanics]
+  community_tag: mortgage-and-personal-finance
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    Mortgage News Daily — rate-sheet weekly + commentary aimed at
+    loan officers and informed retail borrowers. Maps to the
+    "Mortgage-broker blogs / r/Mortgages / loan-officer
+    publications" voice anchor in framings.md §"Voice anchors".
+    Primary source for F5 (rate-trajectory) and F6 (rate
+    mechanics) framings. blindspots.md F5 Recovery moves
+    (refinance-trigger math, ARM cap-structure stress-tests) sit
+    on the mortgage-broker side; this source backs the
+    self-directed half of those Recovery moves before a paid
+    mortgage-broker consultation is warranted.
+    Best for: weekly rate context, LLPA-cliff visibility,
+    conforming-vs-jumbo cliff arithmetic, ARM-margin / cap-
+    structure mechanics, Fed-meeting impact on mortgage pricing
+    (which is loan-secondary-market driven, NOT Fed Funds
+    directly — a recurring misconception).
+    Weak: individual-loan strategy (lender-credit / point-buying
+    sit on the broker side for paid advice), tax mechanics, tenant-
+    rights. URL placeholder — verify before enabling.
+
+# ─── community: real-estate-data-and-economics ────────────────────────
+
+- id: calculated-risk
+  adapter: rss
+  fetch_config:
+    feed: https://www.calculatedriskblog.com/feeds/posts/default
+    keyword_filter: [housing, mortgage, MBA, existing-home, new-home, months-of-supply, housing starts, FHFA, Case-Shiller]
+  domains: [housing/macro-cycle, housing/months-of-supply, housing/housing-starts, housing/case-shiller, housing/mba-applications]
+  community_tag: real-estate-data-and-economics
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    Calculated Risk blog (Bill McBride). Voice anchor named in
+    framings.md §"Voice anchors": macro housing cycle, months-of-
+    supply, MBA mortgage application index, housing starts. Primary
+    source for F14 (macro-cycle). Community blind spot (per
+    framings.md): forecast confidence is well-calibrated, BUT the
+    framing itself can route an asker into market-timing failures
+    on individual decisions — so use as macro-context input, not
+    as buy-vs-wait dispositive evidence.
+    Best for: months-of-supply trajectory, NAR existing-home-sales
+    interpretation, housing-starts seasonality, MBA application
+    index reading, Fed-balance-sheet impact on mortgage spreads.
+    Weak: micro-market signal (national / regional only), tax
+    mechanics, statutory tenant-rights. URL placeholder — verify
+    before enabling.
+
+- id: fhfa-house-price-index
+  adapter: rss
+  fetch_config:
+    feed: https://www.fhfa.gov/Media/PublicAffairs/Pages/HousingMarketData.aspx
+    keyword_filter: [HPI, House Price Index, FHFA, conforming, loan limit, refinance, mortgage]
+  domains: [housing/hpi, housing/conforming-loan-limit, housing/macro-cycle, housing/refinance, housing/appraisal]
+  community_tag: real-estate-data-and-economics
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    FHFA (Federal Housing Finance Agency) — House Price Index
+    series, conforming-loan-limit announcements, GSE policy
+    updates. Authoritative data source for the macro-cycle (F14)
+    framing and for conforming-vs-jumbo cliff arithmetic that
+    feeds F5. Critic should weight FHFA HPI citations heavily
+    when an asker's framing depends on national or regional
+    price-trajectory claims.
+    Best for: HPI quarterly releases (Census-tract-level data
+    available), conforming-loan-limit annual reset (drives the
+    jumbo cliff visible in mortgage-news-daily), GSE foreclosure-
+    prevention data, refinance-trends data.
+    Weak: zero on individual-decision interpretation, real-time
+    micro-market signal (quarterly cadence), tenant-side data.
+    URL placeholder — verify before enabling.
+
+# ─── community: journalists-and-explainers ────────────────────────────
+
+- id: marketplace-housing
+  adapter: rss
+  fetch_config:
+    feed: https://www.marketplace.org/topics/economy/housing/feed/
+    keyword_filter: [housing, mortgage, rent, real estate, homebuilders, Fed, rate]
+  domains: [housing/macro-cycle, housing/rate-trajectory, housing/rent-trends, housing/housing-policy]
+  community_tag: journalists-and-explainers
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    Marketplace housing-tagged stories (American Public Media).
+    Voice anchor named in framings.md §"Voice anchors" alongside
+    NPR Planet Money housing episodes: generalist-economic voice,
+    accessible-explainer. Useful for cross-validating F1
+    (financial-return) and F14 (macro-cycle) against single-issue
+    communities; rarely the primary source. Pairs well with
+    Calculated Risk above — Marketplace is the explainer layer
+    over CR's data layer.
+    Best for: macro-cycle context for non-specialist askers,
+    rent-trend narrative, housing-policy explainer (LIHTC, zoning
+    reform, etc.), Fed-decision-day translation.
+    Weak: actionable filing-style advice, statutory mechanics,
+    deep technical equity mechanics. URL placeholder — verify
+    before enabling.
+
+- id: propublica-housing
+  adapter: rss
+  fetch_config:
+    feed: https://www.propublica.org/feeds/topics/topic/housing
+    keyword_filter: [housing, mortgage, foreclosure, landlord, eviction, HOA, redlining, appraisal, discrimination]
+  domains: [housing/foreclosure, housing/eviction, housing/hoa, housing/appraisal-bias, housing/discrimination, housing/landlord]
+  community_tag: journalists-and-explainers
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    ProPublica's housing topic feed. Investigative long-form
+    journalism — exposes appraisal-bias data, HOA reserve-study
+    pathology, foreclosure-mill mechanics, predatory-lending
+    patterns, eviction-court data. Adversarial framing useful for
+    surfacing the "what could go wrong with the system itself"
+    blind spots that NAR / industry-association sources (which
+    work *within* the system) systematically miss. Pairs with
+    framings.md F13 (consumer-advocate) and F12 (tenant-rights)
+    Excludes lines on the asymmetry between asker and
+    institutional counterparties.
+    Best for: appraisal-bias data with provenance (blindspots.md
+    F11), HOA-reserve-study failure modes (blindspots.md F11.5),
+    foreclosure-process pathology, redlining-legacy effects on
+    neighborhood selection.
+    Weak: filing strategy, transaction-tactical advice, rate
+    mechanics. URL placeholder — verify before enabling.
+
+# ─── community: industry-associations-and-government ──────────────────
+
+- id: nar-research
+  adapter: rss
+  fetch_config:
+    feed: https://www.nar.realtor/feeds/news.xml
+    keyword_filter: [existing-home, pending-home, REALTOR, settlement, commission, NAR]
+  domains: [housing/existing-home-sales, housing/pending-home-sales, housing/commission-structure, housing/nar-settlement]
+  community_tag: industry-associations-and-government
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    NAR (National Association of REALTORS) research feed. Voice
+    anchor named in framings.md §"Voice anchors": institutional
+    optimism, "real estate always goes up," "marry the house, date
+    the rate." Primary source for F11 commission-structure
+    baseline; PRIMARY ANTI-SOURCE for F13 (consumer-advocate
+    reflex builds against this voice). The Critic should treat
+    NAR claims about price-trajectory or buyer-benefit with
+    elevated skepticism — institutional-optimism is the explicit
+    house style. Useful for what the establishment *says*; pair
+    with ProPublica + Calculated Risk for what is actually
+    happening.
+    Best for: existing-home / pending-home sales monthly data
+    (Census reports the new-home side), post-2024 NAR settlement
+    coverage from inside the industry, REALTOR-side framing of
+    commission mechanics (use adversarially — this is the F13
+    anti-source).
+    Weak: opportunity-cost framing, tenant-rights, climate-and-
+    insurance risk (NAR has institutional incentive to
+    under-weight all three). URL placeholder — verify before
+    enabling.
+
+# ─── community: climate-and-insurance-research ────────────────────────
+
+- id: first-street-foundation
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/first-street-foundation-reports.md
+  domains: [housing/flood-risk, housing/wildfire-risk, housing/heat-risk, housing/wind-risk, housing/climate-trajectory]
+  community_tag: climate-and-insurance-research
+  reliability: 1
+  freshness_required: false
+  domain: housing
+  notes: |
+    First Street Foundation climate-risk research publications.
+    Voice anchor named in framings.md §"Voice anchors": physical-
+    risk-anchored, model-output framing. Primary source for F8
+    (climate-and-insurance). Community blind spot (per
+    framings.md): model-output uncertainty rarely surfaced;
+    can be over-confident on perils that lack ground-truth
+    calibration — so cross-validate against IBHS / state insurance
+    commissioner data on actual loss experience. blindspots.md
+    F8 Recovery moves (climate-resilience inspector, insurance
+    broker) sit on the paid-professional side; First Street is
+    the self-directed pre-screen layer.
+    Best for: parcel-level flood/wildfire/heat/wind 30-year
+    projections, FEMA-flood-map gap analysis (urban stormwater
+    under-priced by FEMA — blindspots.md F8 entry), insurance-
+    trajectory directional signal.
+    Weak: actual-loss data (use IBHS), insurance-availability
+    real-time data (use state commissioner), tactical claims-
+    handling advice. Static ingest — download First Street's
+    public reports and paste relevant peril-by-peril sections.
+
+- id: ibhs-research
+  adapter: rss
+  fetch_config:
+    feed: https://ibhs.org/feed/
+    keyword_filter: [wind, hail, wildfire, FORTIFIED, hurricane, roof, mitigation, loss]
+  domains: [housing/wind-risk, housing/hail-risk, housing/wildfire-risk, housing/roof, housing/mitigation]
+  community_tag: climate-and-insurance-research
+  reliability: 1
+  freshness_required: true
+  domain: housing
+  notes: |
+    IBHS (Insurance Institute for Business & Home Safety)
+    research feed. Insurance-industry-funded research lab —
+    publishes wind / hail / wildfire / hurricane testing data,
+    FORTIFIED building-standard documentation, mitigation cost-
+    benefit studies. Voice anchor in framings.md §"Voice anchors"
+    is named via "State insurance commissioner publications /
+    r/Insurance / insurance-adjuster blogs" + the climate-
+    research class; IBHS sits at the empirical intersection.
+    Pairs with First Street: First Street models forward risk,
+    IBHS measures actual loss behavior under controlled
+    conditions. Both feed F8.
+    Best for: FORTIFIED-roof premium-discount mechanics
+    (blindspots.md F8 Recovery move includes this), wind /
+    hail-deductible structure context, hurricane-zone mitigation
+    ROI data, wildfire-home-hardening prioritization.
+    Weak: parcel-level forward projections (use First Street),
+    statutory tenant-rights, transaction tactics. URL placeholder
+    — verify before enabling.
+
+# ─── community: consumer-advocacy-and-tenant-rights ───────────────────
+
+- id: nlihc-tenant-rights
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/nlihc-tenant-publications.md
+  domains: [housing/tenant-rights, housing/eviction, housing/rent-stabilization, housing/lease-mechanics, housing/landlord-tenant]
+  community_tag: consumer-advocacy-and-tenant-rights
+  reliability: 1
+  freshness_required: false
+  domain: housing
+  notes: |
+    NLIHC (National Low Income Housing Coalition) + state Legal
+    Aid landlord-tenant publications. Voice anchor named in
+    framings.md §"Voice anchors": "Tenant union publications /
+    Bay Area / NYC tenant associations / Legal Aid landlord-
+    tenant publications" — statute-and-enforcement voice,
+    eviction-process timelines. Primary source for F12 (tenant
+    side). Counterweight to BiggerPockets's landlord-side framing
+    above; blindspots.md F12 entries pull from both sides to
+    surface the asymmetry an asker on either side misses.
+    Best for: jurisdiction-specific eviction-process timeline
+    data, rent-stabilization / rent-control statute summaries,
+    lease-clause enforceability by state, security-deposit-return
+    statute (a recurring blindspots.md F12 trigger).
+    Weak: investor / cap-rate strategy (the opposite voice),
+    macro-cycle context, federal-policy detail (NLIHC focuses on
+    state and local). Static ingest — collect NLIHC's annual
+    "Out of Reach" report + state Legal Aid landlord-tenant
+    handbook excerpts. Update annually when state legislatures
+    finish their sessions.
