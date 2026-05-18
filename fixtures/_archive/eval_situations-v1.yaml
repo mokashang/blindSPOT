@@ -1,0 +1,115 @@
+- id: series-b-iso-cliff
+  text: |
+    I got a Series B offer with 0.1% in ISOs over 4 years with a 1-year cliff.
+    Comp is below market but the team is exceptional. Take it?
+  expected_domains: [tech-career/equity, tech-career/comp]
+  expected_entities: [ISO, series-B, vesting-cliff]
+
+- id: late-stage-rsu-vs-base
+  text: |
+    Public co offered me $250k base + $400k RSUs vesting over 4 years.
+    Current employer counter-offered $310k base + smaller RSU grant.
+    Which is better?
+  expected_domains: [tech-career/comp, tech-career/negotiation]
+  expected_entities: [RSU]
+
+- id: pre-cliff-quit-dilemma
+  text: |
+    I'm 10 months in at a Series A startup. I want to leave for a competing
+    Series B offer. Should I wait two months for the cliff?
+  expected_entities: [vesting-cliff, series-A, series-B]
+  expected_personas: [pre-vest-cliff, considering-quit]
+
+- id: amt-exercise-decision
+  text: |
+    My ISOs are deeply in the money. FMV is 10x my strike. Company says no
+    IPO planned for at least 2 years. Should I exercise now?
+  expected_entities: [ISO, AMT, strike-price]
+  expected_risk_surfaces: [tax, timing]
+
+- id: acquihire-double-trigger
+  text: |
+    Our startup got acquired. The buyer wants me to re-vest over 4 years
+    with double-trigger acceleration. Is this normal?
+  expected_entities: [acquisition, double-trigger]
+  expected_risk_surfaces: [counterparty]
+
+- id: first-job-equity-confusion
+  text: |
+    Just got my first offer out of school. $180k base + 0.05% equity at a
+    seed-stage startup. I don't understand the equity part.
+  expected_personas: [first-time-offer, early-employee]
+  expected_entities: [seed-stage]
+
+- id: comparing-offers-3-companies
+  text: |
+    I have offers from a FAANG, a Series C company, and a Series A startup.
+    Compensation packages are very different in structure. Help me think.
+  expected_personas: [comparing-offers]
+  expected_domains: [tech-career/comp]
+
+- id: refresher-grant-negotiation
+  text: |
+    I'm 2.5 years in. My initial grant is mostly vested. How do I bring up
+    a refresher grant without sounding ungrateful?
+  expected_entities: [refresher]
+  expected_personas: [senior-employee]
+
+- id: ipo-secondary-decision
+  text: |
+    Company is filing for IPO in 3 months. I can do a secondary at the
+    last private valuation. Worth taking some liquidity?
+  expected_entities: [IPO, secondary-sale]
+  expected_risk_surfaces: [liquidity, timing]
+
+- id: founder-equity-cofounder
+  text: |
+    My co-founder wants 50/50 equity but I had the idea, am doing most of
+    the early work, and brought in our first investor. How should I think?
+  expected_personas: [founder]
+  expected_domains: [tech-career/founder]
+
+- id: 83b-deadline-missed
+  text: |
+    I joined a startup 5 weeks ago. They mentioned an 83(b) election. The
+    deadline is 30 days from grant. Did I miss it? What now?
+  expected_entities: [83b-election]
+  expected_risk_surfaces: [tax, regret]
+
+- id: golden-handcuffs-eval
+  text: |
+    I've vested half my grant at FAANG. I'm being recruited by a competitor
+    with a better tech stack. The unvested portion is worth ~$400k. Stay or go?
+  expected_entities: [golden-handcuffs]
+  expected_risk_surfaces: [opportunity-cost, regret]
+
+- id: layoff-severance-negotiation
+  text: |
+    I was laid off yesterday from a Series D startup after 3 years. They offered
+    8 weeks severance with a release that includes a 12-month non-compete and
+    waiver of unvested RSUs worth ~$180k. I have 7 days to sign. Can I push back?
+  expected_domains: [tech-career/negotiation, tech-career/comp]
+  expected_entities: [severance, non-compete, release, unvested-RSU]
+  expected_personas: [recently-laid-off]
+  expected_risk_surfaces: [non-compete-enforceability, release-waiver, signing-deadline]
+
+- id: pip-accept-vs-exit
+  text: |
+    My manager put me on a 60-day PIP yesterday. My RSU cliff is in 4 months
+    (~$220k vesting). HR hinted I could "negotiate a transition" instead. Should
+    I accept the PIP and fight, or take a managed exit now?
+  expected_domains: [tech-career/negotiation]
+  expected_entities: [PIP, RSU-cliff, managed-exit]
+  expected_personas: [on-PIP]
+  expected_risk_surfaces: [vesting-forfeiture, future-reference, signal-to-future-employer]
+
+- id: pre-ipo-tender-offer
+  text: |
+    My pre-IPO company (last valued at $4B, ~80% of my net worth in vested shares)
+    is running a tender offer letting employees sell up to 25% of vested equity
+    to a secondary investor at a 10% discount to the last round. IPO is "1-2 years
+    out" per the CEO. Sell the full 25% or hold?
+  expected_domains: [tech-career/equity]
+  expected_entities: [tender-offer, pre-IPO-secondary, vested-shares, secondary-discount]
+  expected_personas: [late-stage-pre-IPO]
+  expected_risk_surfaces: [concentration-risk, tender-offer-tax, signal-to-future-acquirer]

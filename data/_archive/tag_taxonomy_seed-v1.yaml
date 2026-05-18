@@ -1,0 +1,82 @@
+# Blindspot V1 tag taxonomy seed.
+# Open vocabulary: the Triage Officer may propose new tags at runtime; they're
+# auto-normalized (via voyage-3 embedding similarity > 0.85 → merge) or
+# auto-added (otherwise) with no human-review gate. This is the starting set.
+
+domain:
+  # Hierarchical path syntax — children inherit from parents.
+  - tech-career
+  - tech-career/equity
+  - tech-career/negotiation
+  - tech-career/job-search
+  - tech-career/comp
+  - tech-career/exit
+  - tech-career/startup-stage
+  - tech-career/founder
+  - tech-career/early-employee
+
+entity:
+  # Flat controlled string. Specific things mentioned in a situation.
+  # Triage extracts these from user input.
+
+  # Stock types
+  - ISO
+  - NSO
+  - RSU
+
+  # Tax concepts
+  - AMT
+  - 409A-valuation
+  - strike-price
+  - FMV
+  - qualifying-disposition
+
+  # Vesting mechanics
+  - vesting-cliff
+  - vesting-schedule
+  - single-trigger
+  - double-trigger
+  - refresher
+  - accelerator
+
+  # Exit events
+  - IPO
+  - acquisition
+  - secondary-sale
+  - tender-offer
+
+  # Company stage
+  - seed-stage
+  - series-A
+  - series-B
+  - series-C-plus
+  - late-stage
+
+  # Special clauses
+  - post-termination-exercise-window
+  - early-exercise
+  - 83b-election
+  - golden-handcuffs
+
+risk_surface:
+  # Flat. What kind of harm/concern is in play.
+  - tax                # tax consequences, esp. AMT and double taxation
+  - legal              # contract clauses, legal traps
+  - timing             # when to exercise, when to leave, etc.
+  - counterparty       # company's behavior — dilution, broken promises, cap-table maneuvers
+  - liquidity          # paper vs cash; ability to convert holdings
+  - regret             # cost of irreversible decisions
+  - info-asymmetry     # they know things you don't
+  - power-dynamics     # negotiation leverage
+  - opportunity-cost   # choosing A means giving up B
+
+persona:
+  # Flat. Who the user is in this situation.
+  - first-time-offer       # their first formal offer
+  - comparing-offers       # holding multiple offers
+  - considering-quit       # thinking about leaving
+  - pre-vest-cliff         # approaching the 1-year cliff
+  - post-vest-cliff        # past cliff, deciding what's next
+  - early-employee         # at small company (<50)
+  - senior-employee        # at large company (>500)
+  - founder
