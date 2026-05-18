@@ -1,0 +1,666 @@
+# Blindspot V2 per-domain source registry for health-insurance.
+#
+# Layer 4 of the 4-layer knowledge model (per docs/specs/ROADMAP.md §3).
+# This file holds the source-view inventory scoped to the `health-
+# insurance` domain. Mirrors the schema of
+# domain_knowledge/tech-career/sources.yaml (PR #37),
+# domain_knowledge/immigration/sources.yaml (PR #49), and
+# domain_knowledge/housing/sources.yaml (PR #66).
+#
+# `health-insurance` is **high_stakes: true** per
+# domain_knowledge/_meta_ontology.md §4 — wrong choice during the
+# 12-month lock-in causes uncapped OOP exposure; Medicare late-
+# enrollment penalties are permanent (Part B 10%/year cumulative;
+# Medigap Guaranteed-Issue window expires 6 months after Part B
+# effective date, after which underwriting denies common chronic
+# conditions). Mechanism E (ROADMAP §5) applies at runtime: Editor
+# labels output "decision-support, not benefits-counseling /
+# medical / legal advice"; Critic applies stricter grounding on
+# citation-bearing claims (statute, CFR section, IRS publication,
+# CMS bulletin, NAIC bulletin, SPD / EOC reference). These sources
+# feed that pipeline as reference / community signal — they are not
+# adjudicative answers. Per-case decisions still come from the
+# named professional with current facts: licensed independent
+# broker (commercial OE), SHIBA / SHIP counselor (Medicare),
+# CMS-trained Navigator (Marketplace), HSA administrator + IRS
+# Pub 969 (HSA mechanics), ERISA-side attorney (denial appeal of
+# a self-funded plan), patient-advocate (post-billing recovery
+# under No Surprises Act §2799A IDR).
+#
+# Each entry is a "source-view": a configured, filtered, annotated
+# lens into one source.
+# Schema:
+#   id              unique slug
+#   adapter         rss | reddit_search | hn_search | static_corpus
+#   fetch_config    adapter-specific
+#   domains         hierarchical tag paths (multi-label)
+#   community_tag   single community label (drives diversity constraint)
+#   reliability     1-5, initial value; auto-adjusted via rating feedback
+#                   (per ROADMAP §5 Mechanism C "cite-and-promote": new
+#                   sources start at 1 and earn higher reliability via
+#                   runtime usage / rating feedback)
+#   freshness_required  true → cache TTL 7 days; false → 30 days
+#   notes           multi-paragraph; what this view is good for, bad
+#                   for, caveats
+#   domain          (V2) the per-domain folder this source-view lives in
+#
+# Community-tag coverage maps the framings.md §"Voice anchors" classes
+# (health-insurance/framings.md lines 41–83 and the Layer-4 forward-
+# pointer at lines 1282–1316):
+#   broker-and-actuarial             → actuarial-and-broker voice
+#                                       (eHealth, GoHealth, licensed-
+#                                       broker blogs, NAIC consumer
+#                                       guides) — Mechanism C anchor
+#                                       for commercial / individual-
+#                                       market decisions
+#   medicare-shiba-and-government    → SHIBA / SHIP counselor +
+#                                       Medicare.gov + CMS authority
+#                                       voice — Mechanism E anchor for
+#                                       D4 / D8 Medicare timing decisions
+#   aca-marketplace-and-navigator    → ACA Navigator + Healthcare.gov +
+#                                       CSR / APTC subsidy-cliff
+#                                       arithmetic voice
+#   hsa-and-bogleheads-personal-finance
+#                                    → HSA-administrator (HealthEquity /
+#                                       Fidelity / Lively / Optum) +
+#                                       Bogleheads HSA wiki + IRS Pub
+#                                       969 voice
+#   healthcare-economics-journalism  → Sarah Kliff (NYT The Upshot),
+#                                       KFF Health News, Margot Sanger-
+#                                       Katz, ProPublica health-care
+#                                       desk voice — narrative grounding
+#                                       of denial / surprise-billing /
+#                                       structural market-failure cases
+#   kff-and-policy-research          → KFF (Kaiser Family Foundation),
+#                                       Commonwealth Fund, Health
+#                                       Affairs blog, Brookings Center
+#                                       on Health Policy — academic
+#                                       framing of subsidy design,
+#                                       market stabilization, mixed-
+#                                       status FPL math
+#   erisa-and-denial-appeal-law      → ERISA-attorney voice (29 USC
+#                                       §1132 civil enforcement,
+#                                       *Firestone* deference, 29 CFR
+#                                       §2560.503 claim-and-appeal
+#                                       procedural rights) — pre-empts
+#                                       state-insurance-commissioner
+#                                       remedy where the plan is self-
+#                                       funded
+#   patient-advocacy-and-billing-recovery
+#                                    → NAHAC / Patient Advocate
+#                                       Foundation / Marshall Allen
+#                                       *Never Pay the First Bill*
+#                                       voice — EOB-reading, balance-
+#                                       billing recovery, No Surprises
+#                                       Act IDR arbitration mechanics
+#   chronic-illness-patient-experience
+#                                    → r/ChronicIllness / r/Disability /
+#                                       Patient Advocate Foundation
+#                                       voice — claim-denial-and-
+#                                       appeal-as-norm, prior-auth
+#                                       procedural literacy
+#
+# URL caveat: where a feed URL could not be live-verified at authoring
+# time, the entry carries a `notes:` line flagging
+# "URL placeholder — verify before enabling". The registry loader is
+# tolerant of non-resolving feeds (fetch failures are caught per-source
+# in the Collection layer and the turn proceeds); a placeholder entry
+# is inert until verified, not breaking. Reddit-adapter entries soft-
+# fail without REDDIT_CLIENT_ID/SECRET (the Reddit adapter wraps PRAW
+# construction in try/except at the Collection layer — see CLAUDE.md
+# "Quirks").
+
+# ─── community: broker-and-actuarial ──────────────────────────────────
+
+- id: naic-consumer-guides
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/naic-health-insurance-consumer-guides.md
+  domains: [health-insurance/plan-selection, health-insurance/medigap, health-insurance/state-regulation, health-insurance/oop-max, health-insurance/network-adequacy]
+  community_tag: broker-and-actuarial
+  reliability: 1
+  freshness_required: false
+  domain: health-insurance
+  notes: |
+    NAIC (National Association of Insurance Commissioners) consumer
+    guides + Medigap standardized-plan reference. Matches the
+    "actuarial-and-broker voice" anchor in framings.md §"Voice
+    anchors": NAIC standardized Medigap plan literacy (Plans A–N
+    after the 2010 / 2020 reforms), state-insurance-commissioner-
+    remedy mechanics, fully-insured-vs-self-funded jurisdictional
+    distinction that ERISA pre-emption pivots on.
+    Best for: ground-truth Medigap plan letter definitions (the
+    benefits inside any "Plan G" sold by any insurer in any state
+    are statutorily identical — premium is the only legitimate
+    differentiator, per F4 framing), state insurance commissioner
+    contact directory (which becomes the remedy path only when the
+    plan is fully-insured, per blindspots.md F3 self-funded ERISA
+    pre-emption surface), HHS / NAIC No Surprises Act IDR data on
+    arbitration win rates by specialty.
+    Weak: individual-plan recommendation (NAIC is the standards
+    body, not a recommender), Medicare Part D / MA plan-by-plan
+    detail (defer to Medicare Plan Finder), employer-side
+    self-funded SPD mechanics (ERISA-attorney territory). Manual
+    ingest — download NAIC's "A Shopper's Guide to Long-Term Care
+    Insurance" and Medigap reference table, plus the state-specific
+    Medigap standardized-benefits chart, into the static markdown
+    file. Update when NAIC publishes a new model law or when CMS
+    revises the Medigap chart (annual).
+
+- id: ehealth-broker-blog
+  adapter: rss
+  fetch_config:
+    feed: https://www.ehealthinsurance.com/resources/feed
+    keyword_filter: [HDHP, PPO, HMO, deductible, OOP, premium, network, OE, open enrollment, marketplace, ACA, COBRA, Medicare, Medigap, Part D]
+  domains: [health-insurance/plan-selection, health-insurance/hdhp, health-insurance/ppo, health-insurance/medigap, health-insurance/cobra, health-insurance/marketplace]
+  community_tag: broker-and-actuarial
+  reliability: 1
+  freshness_required: true
+  domain: health-insurance
+  notes: |
+    eHealth Resource Center — large national licensed-broker outlet
+    publishing comparison content across commercial, Marketplace, and
+    Medicare-Advantage / Medigap product lines. Matches the
+    "actuarial-and-broker voice" anchor in framings.md: premium-vs-
+    OOP-max-vs-network arithmetic, expected-utilization-across-
+    scenarios framing, NAIC standardized-Medigap literacy. Useful
+    for surfacing the practitioner's mental model of an OE decision.
+    Best for: HDHP-vs-PPO scenario-table arithmetic (F1 expected-
+    utilization), COBRA-vs-Marketplace timing arithmetic (D7 / D9
+    decisions), Medicare-Advantage-vs-Medigap framing (D4 / D8 — but
+    cross-check against SHIBA below; broker incentive is to sell MA
+    where commission > Medigap commission, a known F2 framing bias).
+    Weak: nuanced ERISA mechanics (broker is not an attorney), state-
+    specific mini-COBRA extensions (state-commissioner publications
+    are more authoritative), self-funded-plan SPD interpretation
+    (ERISA territory). URL placeholder — verify before enabling.
+
+- id: milliman-research
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/milliman-and-actuarial-research.md
+  domains: [health-insurance/actuarial-value, health-insurance/trend-rate, health-insurance/utilization, health-insurance/risk-adjustment, health-insurance/medicare-advantage]
+  community_tag: broker-and-actuarial
+  reliability: 1
+  freshness_required: false
+  domain: health-insurance
+  notes: |
+    Milliman + Oliver Wyman + Wakely actuarial research publications
+    (Milliman Medical Index, Aon health-cost trend reports, Mercer
+    National Survey of Employer-Sponsored Health Plans summaries).
+    Matches the deepest actuarial layer of the framings.md
+    "actuarial-and-broker voice" anchor — the source of the trend-
+    rate numbers that ripple into employer plan-design decisions and
+    that the broker layer above reads downstream. Useful for
+    grounding macro claims about cost trajectory, employer-side cost-
+    sharing trends, and the actuarial-value math behind metal-tier
+    designations.
+    Best for: Milliman Medical Index annual cost-of-care benchmark
+    (anchors blindspots.md F1 expected-utilization tables), employer-
+    plan trend-rate data (for D1 / D7 decisions where the asker's
+    employer-side context matters), Medicare-Advantage risk-
+    adjustment-coding research (anchors the F2 framing on MA
+    commission structure and supplemental-benefit churn).
+    Weak: individual plan recommendation (these are firm-research
+    publications, not consumer-facing), Marketplace-specific subsidy
+    detail (KFF / Commonwealth are better here), tactical claims-
+    handling advice. Manual ingest — Milliman publishes the MMI
+    every May and Wakely / Oliver Wyman publish ad-hoc; paste
+    summary chapters and the executive-summary tables into the
+    static markdown file. Update when MMI publishes annually.
+
+# ─── community: medicare-shiba-and-government ─────────────────────────
+
+- id: medicare-gov-and-cms-bulletins
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/medicare-gov-and-cms-bulletins.md
+  domains: [health-insurance/medicare, health-insurance/part-b-igep, health-insurance/medigap-gi, health-insurance/medicare-advantage, health-insurance/part-d, health-insurance/lep]
+  community_tag: medicare-shiba-and-government
+  reliability: 1
+  freshness_required: false
+  domain: health-insurance
+  notes: |
+    Medicare.gov + CMS official bulletins (Medicare & You annual
+    handbook, MLN Matters articles, CMS Manual System chapters
+    relevant to enrollment timing and LEP calculation). Ground-truth
+    source for Medicare-side timing decisions — the Initial
+    Enrollment Period (IEP), General Enrollment Period (GEP),
+    Special Enrollment Period (SEP), Medigap Guaranteed-Issue 6-
+    month window (42 USC §1395ss-1(b)), Part B Late Enrollment
+    Penalty (10% per 12-month period, cumulative and permanent), and
+    Part D LEP (1% of national base premium per uncovered month,
+    also permanent). Critic should weight Medicare.gov / CMS
+    citations heavily under the high_stakes posture (Mechanism E
+    grounding tightening, especially for D4 / D8 decisions).
+    Best for: Part B IEP / GEP / SEP eligibility rules, Medigap GI
+    window mechanics (the irreversibility lever in D4), Part D LEP
+    arithmetic, Medicare Plan Finder methodology and the formulary-
+    snapshot caveat (Plan Finder shows the current-year formulary;
+    plans can change formulary mid-year with 60-day notice for non-
+    protected classes).
+    Weak: real-world adjudicator variance and appeal-winning patterns
+    (defer to patient-advocate sources), pre-Medicare commercial-
+    plan mechanics (defer to broker / ACA-Navigator sources). Manual
+    ingest — download the current-year Medicare & You handbook, the
+    most-recent CMS-12036-N annual rule, and relevant MLN Matters
+    PDFs into the static markdown file. Update annually when the
+    handbook is republished.
+
+- id: ship-state-resources
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/ship-state-program-resources.md
+  domains: [health-insurance/medicare, health-insurance/medicare-advantage, health-insurance/medigap, health-insurance/extra-help, health-insurance/state-medicaid-buy-in]
+  community_tag: medicare-shiba-and-government
+  reliability: 1
+  freshness_required: false
+  domain: health-insurance
+  notes: |
+    SHIP / SHIBA (State Health Insurance Assistance Program) — the
+    state-by-state federally-funded Medicare counseling network
+    operating under SSA §4360. The framings.md voice anchor names
+    SHIBA explicitly as the "gold-standard referral for D4 and D8"
+    Medicare decisions because counselors are non-commissioned and
+    plan-agnostic — the structural counterweight to broker / agent
+    commission-driven recommendations on Medicare Advantage. Each
+    state's SHIP publishes consumer-facing comparison guides,
+    Medigap-rate-comparison spreadsheets (state insurance
+    commissioner data), and Extra Help / Medicare Savings Program
+    eligibility worksheets.
+    Best for: state-by-state Medigap pricing reality (the same NAIC
+    Plan G has wildly different premiums by state and insurer; SHIP
+    publishes the local rate sheets), Extra Help / MSP eligibility
+    (a recurring blindspot — the asker on D8 often qualifies for
+    state-funded MSP that pays Part B premium and doesn't know it),
+    state-specific mini-COBRA extensions that bridge a gap to
+    Medicare-eligibility age.
+    Weak: commercial-plan / pre-65 Marketplace detail (defer to
+    Navigator sources), self-funded ERISA-plan mechanics (ERISA
+    attorney territory). Manual ingest — pull each state SHIP's
+    published consumer brochure (most state programs publish PDFs)
+    and the SHIP National Technical Assistance Center's training
+    modules into the static markdown file. Update annually around
+    OEP/AEP (Oct 15 – Dec 7 each year, when SHIP volume peaks).
+
+# ─── community: aca-marketplace-and-navigator ─────────────────────────
+
+- id: healthcare-gov-policy-updates
+  adapter: rss
+  fetch_config:
+    feed: https://www.healthcare.gov/blog/feed/
+    keyword_filter: [APTC, CSR, SEP, OEP, subsidy, marketplace, Marketplace, Healthcare.gov, premium tax credit, redetermination]
+  domains: [health-insurance/marketplace, health-insurance/aptc, health-insurance/csr, health-insurance/sep, health-insurance/redetermination]
+  community_tag: aca-marketplace-and-navigator
+  reliability: 1
+  freshness_required: true
+  domain: health-insurance
+  notes: |
+    Healthcare.gov blog + CMS Marketplace policy bulletins.
+    Authoritative source for ACA Marketplace mechanics — Open
+    Enrollment Period (OEP) deadlines, Special Enrollment Period
+    (SEP) triggers (loss-of-coverage, marriage, birth/adoption,
+    income-change, residency-change), APTC reconciliation on Form
+    8962, CSR (Cost-Sharing Reduction) silver-plan-only quirk, and
+    the recent ARPA/IRA-extended subsidy structure (200% FPL silver-
+    plan-zero-premium floor through 2025; structural framings.md F3
+    "subsidy-cliff" arithmetic depends on whether the 400% FPL cliff
+    is restored post-2025).
+    Best for: SEP eligibility-rule clarity, APTC reconciliation
+    edge cases (over-estimation refund cap by FPL band — a recurring
+    blindspots.md F3 surprise), state-based-exchange jurisdiction
+    map (16 states + DC run their own exchange; HHS Marketplace
+    serves the rest), the post-2025 subsidy-cliff regulatory
+    posture (which depends on Congressional action and is a known
+    F3 evolution risk).
+    Weak: state-based-exchange-specific consumer guidance (defer to
+    each SBE's own consumer pages), broker-side commission
+    mechanics, Medicare detail (this feed is pre-65 only). URL
+    placeholder — verify before enabling.
+
+- id: kff-marketplace-and-medicaid
+  adapter: rss
+  fetch_config:
+    feed: https://www.kff.org/topic/health-reform/feed/
+    keyword_filter: [Marketplace, ACA, APTC, subsidy, redetermination, Medicaid, mixed-status, FPL, unwinding, CHIP]
+  domains: [health-insurance/marketplace, health-insurance/aptc, health-insurance/medicaid, health-insurance/mixed-status, health-insurance/fpl, health-insurance/unwinding]
+  community_tag: aca-marketplace-and-navigator
+  reliability: 1
+  freshness_required: true
+  domain: health-insurance
+  notes: |
+    KFF (Kaiser Family Foundation) Health Reform topic feed. The
+    framings.md voice anchor names KFF as the "ACA-reform-academic"
+    voice — subsidy-design analysis, market-stabilization argument,
+    mixed-status household FPL calculation. KFF's research-quality
+    is the highest among non-government Marketplace sources and its
+    state-by-state Medicaid expansion / unwinding tracker is the
+    authoritative reference for who-loses-coverage-and-when. Also
+    publishes the canonical FPL → APTC subsidy worksheets that map
+    directly to D5 (Marketplace metal-tier selection given APTC and
+    CSR).
+    Best for: state-by-state Medicaid eligibility detail (10 states
+    haven't expanded as of authoring; the "coverage gap" between
+    Medicaid eligibility and 100% FPL APTC threshold is an explicit
+    F3 blindspot), mixed-immigration-status household subsidy math
+    (the family-glitch fix + the lawful-presence requirement for
+    APTC interact in non-obvious ways — cross-domain D3 boundary
+    with immigration), unwinding-of-COVID-continuous-coverage
+    impact data, CSR-silver-plan-zero-deductible mechanics.
+    Weak: tactical filing advice (KFF is research; defer to
+    Healthcare.gov / Navigators for the form-filling layer),
+    employer-side self-funded plan detail. URL placeholder — verify
+    before enabling.
+
+# ─── community: hsa-and-bogleheads-personal-finance ───────────────────
+
+- id: bogleheads-hsa-and-healthcare
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/bogleheads-hsa-and-healthcare-threads.md
+  domains: [health-insurance/hsa, health-insurance/hsa-investing, health-insurance/hdhp, health-insurance/last-month-rule, health-insurance/oop-tax-efficiency]
+  community_tag: hsa-and-bogleheads-personal-finance
+  reliability: 1
+  freshness_required: false
+  domain: health-insurance
+  notes: |
+    Bogleheads forum HSA + health-insurance thread archive. Matches
+    the "Bogleheads-meets-health-insurance voice" anchor in
+    framings.md: HSA as the most tax-advantaged retirement account
+    in the IRC, dollar-cost-averaging the HSA investment, "spend
+    OOP, let HSA compound" as the dominant strategy. Primary source
+    for F6 (HSA / FSA / dep-care FSA sizing) arithmetic and the
+    long-term framing of HDHP enrollment as a retirement-vehicle
+    decision rather than a current-year-utilization decision.
+    Community blind spot (per framings.md): under-weights consumption
+    value of a low-deductible plan and the cashflow-stress reality
+    of paying OOP up to a high deductible mid-year, especially for
+    households without the savings cushion the framing assumes.
+    Best for: HSA last-month-rule mechanics + testing-period
+    recapture math (IRC §223(b)(8) — a recurring blindspots.md F6
+    trap), HSA-investing minimum-cash-threshold mechanics by
+    administrator (HealthEquity, Fidelity, Lively, Optum, Further
+    each have different thresholds), counterfactual-equity-portfolio
+    reasoning vs OOP spending decision, FSA-forfeiture-vs-grace-
+    period strategy.
+    Weak: COBRA / Marketplace decision arithmetic, Medicare detail
+    (HSA contributions stop at Medicare enrollment — IRC §223(b)(7)
+    — but the asker often discovers this 6 months in via the IRS
+    Form 8889 recapture), tenant-rights and statutory mechanics.
+    Static ingest — periodically scrape / paste high-signal threads
+    from the "Personal Investments" and "Personal Finance" sub-
+    forums where HSA / HDHP / health-insurance comes up. URL
+    placeholder — verify before enabling.
+
+- id: irs-pub-969-and-hsa-rulings
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/irs-pub-969-and-hsa-rulings.md
+  domains: [health-insurance/hsa, health-insurance/qualified-medical-expense, health-insurance/last-month-rule, health-insurance/hsa-contribution-limit, health-insurance/excise-tax]
+  community_tag: hsa-and-bogleheads-personal-finance
+  reliability: 1
+  freshness_required: false
+  domain: health-insurance
+  notes: |
+    IRS Publication 969 (Health Savings Accounts and Other Tax-
+    Favored Health Plans) + relevant Revenue Rulings / Notices
+    governing HSA mechanics (Rev. Proc. annual HSA-limit update;
+    Notice 2004-50 / 2008-59 HSA-eligibility guidance; CARES Act
+    §3702 OTC-without-prescription qualification). Authoritative
+    statutory + regulatory ground-truth for HSA / FSA / Archer MSA
+    mechanics. Critic should weight Pub 969 citations heavily on
+    F6 / D6 / D9 questions.
+    Best for: HSA-eligibility definitional rules (HDHP minimum
+    deductible + OOP-max ceilings, no other-non-HDHP-coverage rule
+    including spouse's GP-FSA which knocks out HSA eligibility — a
+    recurring blindspots.md F6 trap), last-month-rule + testing-
+    period §223(b)(8) recapture mechanics, qualified-medical-expense
+    scoping under IRC §213(d), Medicare-enrollment HSA-contribution
+    cutoff under IRC §223(b)(7).
+    Weak: post-account-holder-death HSA spousal-vs-non-spousal
+    inheritance mechanics (IRC §223(f)(8) is sparse here; needs
+    paired tax-attorney resources), HSA-administrator-fee mechanics
+    (administrator selection is a separate decision the IRS does
+    not regulate). Manual ingest — download IRS Pub 969 (annually
+    updated, current-year revision around Dec/Jan), the annual Rev.
+    Proc. HSA-limit update, and Notice 2004-50 / 2008-59 / CARES
+    Act §3702 reference into the static markdown file. Update
+    annually when IRS issues the new Pub 969 revision.
+
+- id: reddit-personalfinance-health-insurance
+  adapter: reddit_search
+  fetch_config:
+    subreddit: personalfinance+HealthInsurance+ChronicIllness
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 50
+  domains: [health-insurance/plan-selection, health-insurance/hsa, health-insurance/cobra, health-insurance/marketplace, health-insurance/denial-appeal]
+  community_tag: hsa-and-bogleheads-personal-finance
+  reliability: 1
+  freshness_required: true
+  domain: health-insurance
+  notes: |
+    r/personalfinance + r/HealthInsurance + r/ChronicIllness
+    aggregated. Matches the "employer-benefits / HR-Reddit voice"
+    anchor in framings.md — practical-OE-week calculus, FSA timing,
+    HDHP-vs-PPO scenario-table arithmetic, dependent-care-FSA-vs-
+    credit coordination. The r/HealthInsurance subreddit is a
+    smaller, denser community where benefits-administrators and
+    licensed agents lurk and answer; r/personalfinance hosts the
+    annual OE megathread which is a high-signal source on the
+    practical decision framing.
+    Reddit's PRAW supports multi-subreddit search via `+` separator
+    (`personalfinance+HealthInsurance+ChronicIllness`); the
+    adapter's `subreddit` field is passed through directly. Higher
+    upvote threshold (50) to surface threads with convergence
+    signal; single-anecdote denial posts are not useful evidence
+    without thread volume.
+    Best for: OE-week practical decision walkthroughs, HSA-
+    administrator comparison war stories, COBRA-vs-Marketplace
+    decision regret patterns at job change, dependent-care-FSA-vs-
+    credit math.
+    Weak: statutory mechanics (defer to IRS / CMS / Medicare.gov),
+    state-specific Medicaid eligibility (defer to KFF), self-funded
+    ERISA-plan denial appeals (defer to ERISA-attorney sources).
+    Soft-fails without REDDIT_CLIENT_ID/SECRET (the Reddit adapter
+    wraps PRAW construction in try/except at the Collection layer
+    — see CLAUDE.md "Quirks").
+
+# ─── community: healthcare-economics-journalism ───────────────────────
+
+- id: kff-health-news
+  adapter: rss
+  fetch_config:
+    feed: https://kffhealthnews.org/feed/
+    keyword_filter: [denial, surprise, billing, prior authorization, balance bill, IDR, No Surprises Act, Medicare Advantage, Medicaid, ACA, exchange, navigator, COBRA, HSA, formulary, step therapy]
+  domains: [health-insurance/denial-appeal, health-insurance/surprise-billing, health-insurance/prior-authorization, health-insurance/no-surprises-act, health-insurance/medicare-advantage]
+  community_tag: healthcare-economics-journalism
+  reliability: 1
+  freshness_required: true
+  domain: health-insurance
+  notes: |
+    KFF Health News (formerly Kaiser Health News). The framings.md
+    voice anchor names "Sarah Kliff at NYT, Julie Rovner at KHN,
+    Margot Sanger-Katz, Charles Ornstein at ProPublica — denial /
+    surprise-billing / claim-investigation reporting, structural
+    market-failure analysis, narrative grounding of edge cases" as
+    the healthcare-economics-journalism voice; KFF Health News is
+    the editorial home for Julie Rovner + a rotating bench of
+    deeply-sourced reporters. Bill of the Month series (with NPR)
+    is the canonical case-archive for surprise-billing pathology.
+    Best for: structural-market-failure framing on denial /
+    surprise-billing patterns (blindspots.md F7 / F8 anchors),
+    Medicare-Advantage prior-auth / claim-denial reporting (anchors
+    F2 framing's Excludes line on MA risk-adjustment-coding
+    incentives), No Surprises Act §2799A IDR enforcement reality
+    (the gap between statute and implementation is a recurring
+    blindspots.md surface), state-by-state insurance-commissioner
+    enforcement variance.
+    Weak: filing-strategy advice (this is journalism; defer to
+    NAHAC / patient-advocate sources for tactical billing
+    recovery), individual-plan-recommendation. URL placeholder —
+    verify before enabling.
+
+- id: propublica-health-care
+  adapter: rss
+  fetch_config:
+    feed: https://www.propublica.org/feeds/topics/topic/health-care
+    keyword_filter: [denial, insurer, prior auth, claims, surprise bill, Medicare Advantage, Medicaid, ERISA, ACA, formulary, step therapy, MLR]
+  domains: [health-insurance/denial-appeal, health-insurance/prior-authorization, health-insurance/medicare-advantage, health-insurance/erisa, health-insurance/medical-loss-ratio]
+  community_tag: healthcare-economics-journalism
+  reliability: 1
+  freshness_required: true
+  domain: health-insurance
+  notes: |
+    ProPublica's Health Care topic feed (Charles Ornstein + Marshall
+    Allen + the broader investigative desk). Matches the
+    "healthcare-economics-journalism voice" anchor in framings.md.
+    Adversarial framing useful for surfacing the "what could go
+    wrong with the system itself" blind spots that insurance-
+    industry-funded sources systematically miss. Long-form
+    investigations into Cigna's "click-and-deny" prior-auth review,
+    United HealthCare's NaviHealth Medicare-Advantage SNF-denial
+    algorithm, and the Medical Loss Ratio (MLR) accounting that
+    drives plan-design behavior have all set the journalistic
+    baseline for D3 / D7 framings.
+    Best for: insurer-side denial-pathology systemic data, Medicare-
+    Advantage post-acute-care denial patterns (the NaviHealth /
+    naviHealth / SNF-denial body of work), self-funded-plan ERISA
+    denial mechanics with named-case detail, MLR-loophole
+    accounting context.
+    Weak: filing-strategy advice, statutory mechanics (defer to
+    Medicare.gov / IRS / CMS for the rule itself), individual-plan
+    recommendation. URL placeholder — verify before enabling.
+
+# ─── community: erisa-and-denial-appeal-law ───────────────────────────
+
+- id: erisa-attorney-and-aba-resources
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/erisa-attorney-and-aba-resources.md
+  domains: [health-insurance/erisa, health-insurance/denial-appeal, health-insurance/self-funded, health-insurance/pre-emption, health-insurance/firestone-deference]
+  community_tag: erisa-and-denial-appeal-law
+  reliability: 1
+  freshness_required: false
+  domain: health-insurance
+  notes: |
+    American Bar Association ERISA Committee + leading ERISA-side
+    plaintiff-attorney blogs (Roberts Disability Law, Kantor &
+    Kantor, ERISA Law Center) + SHRM employer-side resources +
+    *Employee Benefits News*. Matches the "ERISA-attorney voice"
+    anchor in framings.md: self-funded-vs-fully-insured distinction,
+    state-insurance-commissioner-remedy pre-emption, 29 USC §1132
+    civil enforcement, *Firestone* deference standard for plan-
+    administrator discretion, claim-and-appeal procedural rights
+    under 29 CFR §2560.503. This is the only source layer that
+    properly grounds D3 / D7 framings where the asker has a self-
+    funded plan and assumes state-insurance-commissioner remedy is
+    available (it is not — ERISA pre-empts).
+    Best for: self-funded-vs-fully-insured determination procedure
+    (look at the SPD's "insurance information" disclosure + Form
+    5500 filing — a recurring blindspots.md F3 trap), claim-and-
+    appeal procedural-rights checklist under 29 CFR §2560.503-1
+    (timing requirements, plan's obligation to provide all
+    documents relied upon, right to independent medical review on
+    medical-necessity denials post-ACA), *Firestone* deferential
+    review vs de-novo review (controlled by SPD's grant-of-
+    discretion clause), administrative-exhaustion-then-§502(a)
+    federal-court framework, ACA §2719 external-review-process
+    requirements that supplement ERISA for non-grandfathered
+    plans.
+    Weak: medical-necessity argumentation (clinical territory),
+    individual case strategy (these are public-facing resources;
+    real cases need a retained ERISA-side attorney), Medicare /
+    Medicaid (these are not ERISA plans). Manual ingest — collect
+    ABA ERISA Committee published essays, Kantor & Kantor + ERISA
+    Law Center blog highlights, and SHRM's employer-facing self-
+    funded-plan overview into the static markdown file. Update
+    when major Circuit decisions land (Supreme Court grants on
+    ERISA preemption / Firestone deference are infrequent but
+    high-impact).
+
+# ─── community: patient-advocacy-and-billing-recovery ─────────────────
+
+- id: nahac-and-patient-advocate-foundation
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/nahac-and-patient-advocate-resources.md
+  domains: [health-insurance/surprise-billing, health-insurance/no-surprises-act, health-insurance/balance-billing, health-insurance/eob-reading, health-insurance/idr]
+  community_tag: patient-advocacy-and-billing-recovery
+  reliability: 1
+  freshness_required: false
+  domain: health-insurance
+  notes: |
+    NAHAC (National Association of Healthcare Advocacy) +
+    AdvoConnection patient-advocate directory + Patient Advocate
+    Foundation publications + Marshall Allen's *Never Pay the First
+    Bill* methodology (and his pre-death ProPublica work cataloging
+    EOB-reading and balance-billing recovery patterns). Matches the
+    "patient-advocate / billing-error-recovery voice" anchor in
+    framings.md. This is the tactical complement to the journalism
+    sources above: where KFF Health News + ProPublica document the
+    structural problem, NAHAC + Patient Advocate Foundation publish
+    the procedural recovery moves the asker actually executes.
+    Best for: EOB-line-item reading procedure (matching EOB to bill
+    + CPT code lookup + UCR-rate comparison — the core blindspots.md
+    F7 Recovery move), No Surprises Act §2799A IDR-arbitration
+    triggering procedure (the asker has to know to request IDR;
+    facilities don't volunteer the option), balance-billing-recovery
+    case studies, prior-auth-denial-appeal scripts and timing.
+    Weak: ERISA-side litigation (defer to ERISA-attorney sources
+    above when a self-funded plan denies and a federal §502(a)
+    claim is the path), Medicare appeals (defer to SHIP / SHIBA
+    for QIC + ALJ navigation), individual medical-necessity
+    argumentation (clinical territory). Manual ingest — collect
+    NAHAC's published consumer guides, Patient Advocate Foundation's
+    case-management handbooks, and key chapters from Marshall
+    Allen's *Never Pay the First Bill* into the static markdown
+    file. Update annually or when major No Surprises Act
+    regulatory revisions land.
+
+# ─── community: chronic-illness-patient-experience ────────────────────
+
+- id: reddit-chronic-illness-and-disability
+  adapter: reddit_search
+  fetch_config:
+    subreddit: ChronicIllness+disability+ChronicPain+HealthInsurance
+    query_template: "{entities} {risk_surfaces}"
+    sort: top
+    time_window: year
+    min_upvotes: 25
+  domains: [health-insurance/denial-appeal, health-insurance/prior-authorization, health-insurance/formulary, health-insurance/step-therapy, health-insurance/network-adequacy]
+  community_tag: chronic-illness-patient-experience
+  reliability: 1
+  freshness_required: true
+  domain: health-insurance
+  notes: |
+    r/ChronicIllness + r/disability + r/ChronicPain +
+    r/HealthInsurance aggregated. Matches the "disability / chronic-
+    illness patient voice" anchor in framings.md: claim-denial-and-
+    appeal-as-norm, prior-auth procedural literacy, ERISA-attorney
+    familiarity, formulary-tier reality. This community lives inside
+    the failure modes — formulary-mid-year-change, step-therapy
+    "fail first" requirements, prior-auth turnaround that exceeds
+    medication-supply runway, network-adequacy claims where the in-
+    network specialist has a 6-month wait. The community's framing
+    is the inverse of the broker-and-actuarial voice's expected-
+    utilization framing — chronic-utilization is not "tail," it is
+    the recurring baseline, and a plan's apparent low premium
+    routinely loses to a higher-premium plan once formulary-tier and
+    in-network-specialist-availability are priced in.
+    Best for: real-world formulary-tier reality (vs the plan's
+    published formulary at OE — formularies change mid-year for
+    non-protected classes with 60-day notice, a recurring
+    blindspots.md F2 trap), step-therapy / fail-first procedural
+    appeals, prior-auth supply-runway gap mitigation, in-network-
+    specialist-availability ground-truth by metro + specialty (NAIC
+    network-adequacy filings exist on paper; the patient experience
+    is the real test).
+    Caveats: skews toward more-severe-condition cases (which is
+    actually useful — the framing's value is in routing the asker
+    who's previously been a low-utilizer toward the chronic-
+    utilizer's framing for a year they suspect will be higher).
+    Soft-fails without REDDIT_CLIENT_ID/SECRET (the Reddit adapter
+    wraps PRAW construction in try/except at the Collection layer
+    — see CLAUDE.md "Quirks").
