@@ -1,0 +1,55 @@
+id: mid-senior-ic-faang-to-non-sponsor-startup
+domain: cn-sde-jobhunt
+text: |
+  L5 backend SDE at 一家 FAANG (Google MTV),3.5 年,H-1B approved
+  on first try and renewed once,但 PERM 还没 file — manager 说
+  要等 promo to L6 才会启动 GC track,而 promo packet 这个 cycle
+  又 punt 了。刚收到一个 series-B AI infra startup 的 staff
+  offer:$220k base + 0.7% equity,role substance 是 building
+  distributed training infra from scratch — 真正的 career-capital
+  work,不是 maintenance。问题是他们 sponsorship history 几乎
+  为零:5 年公司只 filed 过 1 个 H-1B transfer (approved),没有
+  任何 PERM/I-140 历史。CEO 在电话里说 "we'll figure out the
+  visa stuff",但 founder 自己是美籍,team 里 25 人只有 3 个
+  international,其中 2 个已经是 GC holder。
+  具体 mechanic 上我的担忧是:H-1B transfer 应该问题不大(LCA
+  + 新 I-129),但 60-day grace period 在 transfer pending
+  期间 if RFE'd or denied,我就直接 out-of-status — 没有 PERM
+  start clock 可以 reset on PERM-start-365-day rule (AC21
+  §106(a) 需要 PERM filed 365 days ago, 我现在 PERM 都没 file)。
+  Career-capital 论说 staff infra at a real AI shop 是 unbeatable
+  long-term, 一亩三分地上看到的论调是 "FAANG GC 没到手别 jump",
+  但 GC 到手要等 PERM filed (现在没排上) + I-140 + EB-2 China
+  backlog (priority date 2026 = ~6 years out)。这个 60-day
+  grace vs PERM start clock 的 mechanics 我想看清楚才能决定:
+  visa-security 真实风险有多大?Career-capital 在 mid-senior
+  level 到底 weight 多少?
+expected_domains:
+  - cn-sde-jobhunt/offer-comp
+  - cn-sde-jobhunt/visa
+  - cn-sde-jobhunt/employer-switch
+expected_entities:
+  - H-1B
+  - H-1B-transfer
+  - PERM
+  - I-140
+  - AC21
+  - 60-day-grace-period
+  - sponsorship-history-of-employer
+  - FAANG
+  - series-B
+  - EB-2
+  - priority-date
+expected_personas:
+  - mid-senior-ic-considering-non-sponsor-startup
+  - comparing-fang-vs-startup-with-sponsorship-asymmetry
+expected_risk_surfaces:
+  - sponsorship-asymmetry
+  - sponsorship-fit
+  - 60-day-grace-period
+  - perm-start-clock
+  - career-capital-vs-visa-security
+  - visa-status-pressure
+  - opportunity-cost
+  - regret
+  - timing

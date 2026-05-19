@@ -1,0 +1,45 @@
+id: mid-i140-switch-same-or-similar-rfe-risk
+domain: cn-sde-jobhunt
+text: |
+  My I-140 was approved 14 months ago under EB-2, current title is
+  Software Engineer III at a FAANG, PERM was filed against that job
+  description (general full-stack SDE, SOC code 15-1252). Just got
+  an offer from a different employer for Staff Machine Learning
+  Engineer — pay bump, much better team, but the role substance is
+  notably narrower: ML training infrastructure, model serving, no
+  generalist app-layer work. Attorney at new employer says AC21
+  §106(c) portability is fine because both fall under broad
+  "software engineering occupations" and the priority date carries.
+  My current employer's attorney is more cautious — says USCIS has
+  been issuing same-or-similar RFEs on title jumps from "Software
+  Engineer" to "Staff ML Engineer" because SOC 15-1252 vs 15-2051
+  (data scientist family) is a real classification gap, and the
+  duties test gets read narrowly under recent AAO decisions. If I
+  file the I-485 portability letter and USCIS RFEs on same-or-
+  similar, can I still preserve the priority date, or does a denial
+  on portability cascade into needing a new PERM at the new
+  employer? How real is the SOC-code mismatch risk in 2026?
+expected_domains:
+  - cn-sde-jobhunt/employer-switch
+  - cn-sde-jobhunt/visa
+expected_entities:
+  - AC21
+  - I-140
+  - PERM
+  - priority-date
+  - same-or-similar
+  - USCIS
+  - RFE
+  - SOC-code
+expected_personas:
+  - senior-engineer-with-i140-approved
+  - mid-perm-considering-switch
+expected_risk_surfaces:
+  - same-or-similar
+  - i-140-portability
+  - priority-date-preservation
+  - rfe-risk-on-amended-i485
+  - sponsorship-fit
+  - timing
+  - info-asymmetry
+  - regret
