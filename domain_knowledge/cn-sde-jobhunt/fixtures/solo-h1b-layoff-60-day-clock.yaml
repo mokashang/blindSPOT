@@ -1,0 +1,83 @@
+id: solo-h1b-layoff-60-day-clock
+domain: cn-sde-jobhunt
+text: |
+  上周四被裁了。Stripe 缩 infra 团队,我 SDE2,H-1B Year 2 of 6,
+  没有 I-140(PERM 都还没开始)。无配偶,父母在国内,no US-side
+  family coupling。Severance: 8 周 base + COBRA reimbursement 3
+  个月。Termination letter 上 "last day of employment" 写的是
+  上周五,severance 是 lump sum 这周到账。60-day grace 已经开始
+  跑了 — 算到 7 月初。
+
+  三条路在脑子里反复绕:
+
+  (a) H-1B transfer。Recruiter pipeline 我已经 ping 了三个,
+      Meta / Databricks / Snowflake 各有 phone screen。问题:
+      transfer petition 必须在 grace 60 天内 employer-receipted
+      (不是 approved),realistic timeline 4-6 周从 offer 到
+      LCA-filed-to-USCIS-receipted。如果 onsite 拖到 5 月底我
+      就剩 3 周 cushion。
+
+  (b) F-1 downgrade 回学校 — 朋友推荐 UMass-Amherst 的 part-time
+      MS-CS (online),Spring '26 还有 rolling admit。change-of-
+      status I-539 from H-1B → F-1,据说现在 USCIS 处理 4-6 个月
+      但 timely-filed 期间维持 status。Day-1-CPT 那种我不考虑
+      (上次 1p3a 看到 RFE 故事吓到了),只考虑正经 program。
+
+  (c) 直接回国。我手里 ByteDance Seattle 的 referral 朋友说可以
+      帮内推到北京 infra 团队,P7 起。但回国 means 再回美几乎
+      不可能 (H-1B 重新抽签 + 我现在 30 岁,父母也希望我在国内
+      建立 footing)。这是 one-way door。
+
+  Murthy 网站说 grace period 是 "discretionary, USCIS may grant
+  less than 60 days in some circumstances",这句话我不知道怎么
+  reason about。1p3a 上看到的 transfer 故事都是 happy path,
+  没看到 transfer 拒了或者 LCA 卡审的真实数据。我应该怎么 sequence
+  这三条路?能不能 parallel pursue (a) 和 (b) — H-1B transfer
+  并行 I-539 backup?
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/visa]
+expected_entities:
+  - H-1B
+  - H-1B-transfer
+  - 60-day-grace-period
+  - severance
+  - PERM
+  - I-539
+  - F-1
+  - day-1-CPT
+  - LCA
+  - RFE
+  - CN-tech-employer
+expected_personas:
+  - laid-off-on-h1b
+  - h1b-on-first-year
+expected_risk_surfaces:
+  - 60-day-grace-period
+  - visa-status-pressure
+  - sponsorship-asymmetry
+  - sponsorship-fit
+  - timing
+  - return-to-china-irreversibility
+  - regret
+  - info-asymmetry
+expected_communities:
+  - 1p3a-跳槽
+  - reddit-h1b
+  - murthy-bulletins
+expected_decisions: [5, 6]
+expected_framings: [F1, F4, F6]
+expected_blindspot_categories:
+  - grace-clock-discretionary-shortening-mechanism-misunderstood
+  - h-1b-transfer-receipt-vs-approval-timing-conflation
+  - i-539-h1b-to-f1-change-of-status-as-parallel-track-with-h1b-transfer
+  - return-to-china-as-one-way-door-when-cap-subject-restart-arithmetic-ignored
+  - 1p3a-transfer-stories-survivorship-bias
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step
+notes: |
+  Net-new D5 fixture filling solo-H-1B-layoff persona (no spouse
+  coupling). Distinct from layoff-on-h1b-with-h4-spouse: that one
+  is D5+D7 family-coupled; this one is D5+D6 (return-to-China as
+  one of three competing paths) with single-decision-maker
+  trade-off arithmetic. Risk surfaces lean on grace-clock-mechanic
+  and parallel-track-sequencing — the H-1B-transfer-vs-I-539-vs-
+  return-to-China tri-choice is structurally different from
+  spouse-coupled cascade-failure framing.
