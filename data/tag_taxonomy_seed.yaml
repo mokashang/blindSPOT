@@ -110,6 +110,20 @@ entity:
   - I-140-approved
   - laid-off
 
+  # Family-located petitions (parent / spouse) — referenced by D7
+  # parents-on-b2-childcare-aging-care-state-residency fixture
+  - I-130                          # Family-based petition (Form I-130);
+                                   # IR-5 parent-of-US-citizen path requires
+                                   # sponsor naturalization first. INA §201(b)(2)(A)(i).
+                                   # Cited in D7 parents-on-b2 fixture as the only
+                                   # legal long-term parent-residency path.
+  - B-2-extension                  # B-2 visitor stay extension via Form I-539,
+                                   # max +6mo per grant. 8 CFR §214.1(c)(2).
+                                   # Frequent filings raise immigrant-intent
+                                   # presumption at next visa renewal (Murthy
+                                   # bulletin practice advisory); central
+                                   # mechanic in D7 parents-on-b2 fixture.
+
 risk_surface:
   # Flat. What kind of harm/concern is in play.
   - visa-status-pressure         # losing legal status if event X happens
@@ -153,6 +167,21 @@ risk_surface:
   - i-485-ac21-180day-rule       # AC21 §106(c) portability requires the I-485 to be pending
                                  # for ≥180 days before the applicant can change employers
                                  # to a same-or-similar occupation without re-filing PERM/I-140
+  - b2-frequent-reentry-immigrant-intent-flag  # CBP secondary inspection scrutinizes
+                                               # B-2 visitors with repeat long stays under
+                                               # INA §214(b) presumption of immigrant intent;
+                                               # frequent leave-and-reenter cycles raise
+                                               # denial-of-entry risk. Central mechanic in
+                                               # D7 parents-on-b2 fixture; AILA / Murthy
+                                               # practice advisories on B-2 stay patterns.
+  - emergency-medicaid-state-eligibility-asymmetry  # PRWORA §401 / 42 USC §1396b(v) preserves
+                                                    # emergency-Medicaid for non-qualified aliens
+                                                    # (incl. B-2 visitors) but eligibility rules
+                                                    # vary materially by state (CA Medi-Cal vs
+                                                    # NY / WA / MA), and income/affidavit-of-support
+                                                    # treatment is ambiguous for visitors.
+                                                    # Couples healthcare risk to state-of-residence
+                                                    # choice. Cited in D7 parents-on-b2 fixture.
 
 persona:
   # Flat. Who the user is in this situation.
@@ -195,3 +224,12 @@ persona:
                                                        # switch to IR-1, which is current for
                                                        # immediate-relatives but doesn't carry the
                                                        # EB priority date
+  - parent-b2-visiting-caregiver-with-newborn          # H-1B / I-140-approved primary with newborn
+                                                       # US-citizen child, parents in CN bringing
+                                                       # on B-2 to cover the infant-care-to-daycare
+                                                       # gap window. Couples B-2 stay-cycle mechanics
+                                                       # + parent-aging-window + I-130 (citizen-only)
+                                                       # timeline + state-residency healthcare
+                                                       # asymmetry. Explicitly net-new in D7
+                                                       # parents-on-b2 fixture notes (open-vocab
+                                                       # tag; seeding it here for normalizer hit).
