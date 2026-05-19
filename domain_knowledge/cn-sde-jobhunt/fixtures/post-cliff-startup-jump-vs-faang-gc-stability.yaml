@@ -43,3 +43,13 @@ expected_risk_surfaces:
   - opportunity-cost
   - regret
   - timing
+expected_decisions: [4, 9, 11]
+expected_framings: [F1, F2, F3, F6]
+expected_blindspot_categories:
+  - same-or-similar-job-code-mismatch-when-role-pivots-domain
+  - sponsorship-history-survivorship-without-ac21-case-study
+  - rsu-cliff-refresh-arithmetic-vs-startup-illiquid-equity
+  - market-window-perishability-vs-gc-timeline-stability
+  - i140-portability-tied-to-employer-non-revocation-window
+  - 1p3a-dont-move-before-gc-survivorship-bias
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step
