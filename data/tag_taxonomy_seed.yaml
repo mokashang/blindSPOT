@@ -130,6 +130,15 @@ risk_surface:
   - gc-timeline-vs-comp-cycle    # GC progress traded against comp / promo windows
   - priority-date-preservation   # keeping the earlier PD when changing employers
   - i-140-portability            # AC21 portability availability AND timing risk
+  - cap-gap-eligibility          # OPT->H-1B cap-gap auto-extension eligibility test
+                                 # (employer must file H-1B + lottery selected
+                                 # + EAD date constraints); distinct from cap-gap-timing
+  - retention-vs-departure       # post-cliff / post-promo-cycle decision axis:
+                                 # RSU refresh + GC progression at current employer
+                                 # vs. opportunity cost of leaving
+  - rfe-risk-on-amended-i485     # USCIS-RFE risk on AC21 §106(c) I-485 portability
+                                 # when new SOC code differs from PERM's SOC code;
+                                 # same-or-similar denial -> new PERM at new employer
 
 persona:
   # Flat. Who the user is in this situation.
@@ -149,3 +158,14 @@ persona:
   - h4-spouse-on-ead                                   # spouse work-authorization coupled
   - dual-citizenship-family                            # kids with US citizenship, parents on visa
   - senior-ic-already-passed-cliff                     # post-vest, weighing next chapter
+  - senior-engineer-with-i140-approved                 # FAANG L5/L6 IC with I-140 approved,
+                                                       # weighing employer switch w/ PD carry-over
+  - post-cliff-considering-startup                     # FAANG IC past 4yr RSU cliff,
+                                                       # considering staff/principal jump to
+                                                       # Series-C / startup; counter-pull to GC stability
+  - mid-senior-ic-considering-non-sponsor-startup      # mid-senior IC eyeing a startup with
+                                                       # little/no sponsorship history; visa-security
+                                                       # vs career-capital tradeoff
+  - senior-eng-bytedance-offer-with-i140-approved      # senior IC weighing US-FAANG -> CN-tech
+                                                       # (字节/腾讯/阿里) return offer w/ I-140 approved;
+                                                       # family-coupling + i-140-retention-rule mechanics
