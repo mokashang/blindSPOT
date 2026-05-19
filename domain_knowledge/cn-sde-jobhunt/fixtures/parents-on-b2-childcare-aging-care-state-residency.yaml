@@ -1,0 +1,149 @@
+id: parents-on-b2-childcare-aging-care-state-residency
+domain: cn-sde-jobhunt
+text: |
+  H-1B Year 4,EB-2 China I-140 approved 2024 (priority date 2023-06,
+  按 bulletin 现在的速度估计还要 8-10 年才能 file I-485)。在湾区一家
+  FAANG 做 Senior SDE,TC ~$420k,RSU 还有 3 年没 vest 完。老婆 H-4,
+  上 H-4-EAD 在做 remote PM。我们 6 个月前刚有了第一个孩子 (US-born,
+  US citizen)。
+
+  现在最压头的是 childcare + 父母接来美国这一摊事。
+
+  父母情况:我爸 68,我妈 65,都在国内。我爸 3 年前查出 type-2 diabetes
+  + 高血压控制中,我妈去年做了 knee replacement,recovery OK 但走路
+  还是有点 limit。两个人都没出过国,英语零基础。独生子女,他们也想来
+  看看孙子。
+
+  Plan 是这样:让父母办 B-2 (10-year multiple-entry tourism visa,他们
+  上次 2019 没办成 — administrative processing 421(g) 拖了 4 个月最后
+  case closed,这次重新申请),来美国帮我们带娃。问题是 B-2 single
+  stay max 6 个月,理论上可以 leave-and-reenter,但 CBP 在 entry 时
+  scrutiny 越来越严 (1p3a 上有人说今年 SFO 二审被遣返的案例),长期
+  停留模式 high-risk。我看了 Murthy 几篇 bulletin,说 B-2 extension
+  via I-539 可以再加 6 个月,但 frequent 申请会 raise immigrant-intent
+  flag,影响下次 visa renewal。
+
+  几个 coupled questions:
+
+  (a) Childcare timeline:孩子现在 6 个月,daycare 至少要等到 18 个月
+      (湾区好的 infant care 现在 wait list 1 年起,$3k-3.5k/月),所以
+      接下来 12 个月是 childcare gap 最痛的窗口。父母 B-2 能不能 cover
+      这 12 个月? 如果分两段 (第一段 6 个月 → 回国 2-3 个月 → 第二段
+      I-539 extension 或者重新入境),CBP 第二次入境会不会因为 stay 时长
+      被怀疑 immigrant intent 拒入?
+
+  (b) 父母 aging window:我爸现在 68,糖尿病 + 心血管 risk,过 5 年可能
+      就 not fit to travel 了。如果我们要让父母长期 (10+ 年) 帮看孩子,
+      唯一的合法 path 是我自己拿到 GC 后办 I-130 给父母 (IR-5 parent of
+      US citizen 不适用 — 那个 requires the sponsor to be a US citizen,
+      我是 LPR 之后还要再等入籍才能办;以及即使 file 了 IR-5,父母这个
+      年龄 + 健康状况能不能 pass medical exam 也是问题)。这个 path
+      timeline 大概是 我入籍后 10-15 年才能让父母拿到 GC ——到那时我爸
+      78,我妈 75。基本上不现实。
+
+  (c) State-residency for parents' healthcare:父母 B-2 期间没有 US
+      health insurance,visitor insurance (e.g. Atlas America) 只 cover
+      emergency,exclude pre-existing conditions (糖尿病 / 心血管均是)。
+      如果父母有严重 acute event,bill 可能 $50k-200k+。看到一些
+      Chinese-medical-tourism 帖子说 CA 的 Medi-Cal 有 emergency-only
+      provision (PRUCOL / Emergency Medi-Cal) 对 income-qualifying
+      undocumented + non-immigrant 也开放, 但 B-2 holder 的 income
+      threshold 计算方式不清楚 (是按 sponsor 的 affidavit-of-support
+      还是 visitor 自己 declare $0?)。其他 state 比如 WA / NY / MA
+      的 emergency-Medicaid 怎么样?这个能不能 factor 进我之后 employer
+      switch 时的 state-of-residence 决定?
+
+  (d) Kids' school:孩子现在还小,但 4 年后 pre-K,我们已经在看湾区
+      vs Seattle vs Boston 几个 metro。湾区 SFUSD/PAUSD/Cupertino 大家
+      都有听过, but cost-of-living + 学区 lottery 不确定 (PAUSD 要
+      strict residency proof)。如果父母这个时候还在帮看,state 选择就
+      要兼顾 (i) 离湾区飞行 reasonable, (ii) emergency-Medicaid 覆盖
+      OK, (iii) 学区 + childcare 资源。能不能给我一个 decision frame
+      把这些 axes 一起想清楚?
+
+  Murthy 上没看到 specifically 关于 B-2 长期 childcare 的 bulletin,
+  1p3a "签证版" 上的故事多数是单次 B-2 申请经验 + 短期入境,长期
+  cycle pattern 的 真实数据少。我想要的不是 happy-path advice ——
+  是这种 family-located 决策里我现在不知道我不知道的是什么。
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/visa]
+expected_entities:
+  - H-1B
+  - H-4
+  - H-4-EAD
+  - EB-2-China
+  - I-140
+  - I-140-approved
+  - priority-date
+  - I-485
+  - I-130
+  - I-539
+  - B-2
+  - B-2-extension
+  - B-2-change-of-status
+  - IR-5
+  - LPR
+  - naturalization
+  - 221(g)
+  - administrative-processing
+  - advance-parole
+  - parent-eldercare-单身子女
+  - dual-citizenship-family
+  - Emergency-Medicaid
+  - PRUCOL
+  - Medi-Cal
+  - affidavit-of-support
+  - I-864
+  - visitor-medical-insurance
+  - immigrant-intent
+  - CBP-secondary-inspection
+  - daycare-wait-list
+  - infant-childcare-cost
+  - FAANG
+  - RSU
+expected_personas:
+  - senior-engineer-with-i140-approved
+  - dual-citizenship-family
+  - parent-b2-visiting-caregiver-with-newborn
+expected_risk_surfaces:
+  - family-coupling
+  - visa-status-pressure
+  - timing
+  - regret
+  - info-asymmetry
+  - parent-aging-window-vs-i-130-citizen-only-timeline
+  - b2-frequent-reentry-immigrant-intent-flag
+  - b2-extension-i539-cumulative-stay-scrutiny
+  - emergency-medicaid-state-eligibility-asymmetry
+  - visitor-insurance-pre-existing-condition-exclusion
+  - state-of-residence-coupling-to-employer-choice
+  - childcare-gap-infant-window-vs-daycare-wait-list
+  - school-district-residency-proof-multi-year-coupling
+expected_decisions: [6, 7]
+expected_framings: [F1, F4, F5, F6]
+expected_blindspot_categories:
+  - i-130-parent-petition-citizen-only-restriction
+  - parent-aging-window-closes-faster-than-naturalization-clock
+  - b2-cumulative-stay-mistaken-for-renewable-residency
+  - b2-extension-frequency-raises-immigrant-intent-presumption
+  - cbp-secondary-inspection-discretion-on-repeat-long-stays
+  - emergency-medicaid-eligibility-varies-by-state-and-status
+  - visitor-insurance-pre-existing-exclusion-silent-uncovered-tail-risk
+  - childcare-gap-infant-window-anchors-state-residency-choice
+  - state-residency-multi-axis-coupling-school-healthcare-flight-time
+  - 1p3a-b2-stories-short-stay-bias-vs-long-cycle-data-gap
+  - parent-care-back-in-china-as-deferred-return-pressure-on-d6
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step
+notes: |
+  Net-new D7 fixture filling parent-B-2-coupled persona gap. The
+  two existing D7 fixtures (h4-ead-spouse-considering-h1b-primary-
+  switch and layoff-on-h1b-with-h4-spouse) are both spouse-centric;
+  this one centers on parents-on-B-2 + aging-window + state-residency
+  healthcare coupling for a newborn-childcare scenario. Cross-tagged
+  D6 because the parent-aging-window + i-130-citizen-only-timeline
+  arithmetic is a real driver of return-to-China timing pressure
+  (parents can't be brought permanently for 25+ years under current
+  rules; this often flips return-timing math). Persona
+  parent-b2-visiting-caregiver-with-newborn is net-new — does not
+  currently exist in tag_taxonomy_seed.yaml, but the open-vocabulary
+  tag policy means triage may surface it and the taxonomy normalizer
+  will handle merge-or-insert at runtime.
