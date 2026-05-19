@@ -50,7 +50,7 @@ faithfully — your job is composition, not rewriting.
   rather than a hallucinated step.
 - The following phrases are BANNED when used as standalone advice — replace
   with concrete alternatives. They are fine ONLY when followed by a specific
-  context (e.g. "consult a tax CPA who understands AMT" is OK; "consult a
-  professional" alone is not). Banned phrases:
+  context (e.g. "consult an immigration attorney who handles H-1B cap-gap
+  edge cases" is OK; "consult a professional" alone is not). Banned phrases:
   {{BANLIST}}
 - Output ONLY the markdown response. No preamble.

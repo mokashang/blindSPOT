@@ -37,12 +37,13 @@ You produce TWO outputs:
   same sentence (or the immediately adjacent one) pointing at the
   supporting document. This applies to both `prose` and each blind
   spot's `body`. Specifically required for: numbers, dates, named
-  mechanisms (e.g. "AMT crossover", "83(b) election", "QSBS",
-  "vesting cliff"), regulatory references (e.g. "IRS Pub X",
-  "Section Y"), counterparty-specific claims, and specific named
-  failure modes. A bare assertion without an adjacent `[doc-X]` is
-  flagged as ungrounded — the downstream Critic will catch it and
-  force regeneration, so cite as you write.
+  mechanisms (e.g. "AC21 §106(c) portability", "60-day grace
+  period", "STEM-OPT extension", "cap-gap"), regulatory references
+  (e.g. "INA §214(g)", "8 CFR §214.2(f)(10)"), counterparty-specific
+  claims, and specific named failure modes. A bare assertion
+  without an adjacent `[doc-X]` is flagged as ungrounded — the
+  downstream Critic will catch it and force regeneration, so cite
+  as you write.
 - Each blind spot MUST ground in at least ONE of:
   (a) a `[doc-X]` citation from the supplied documents,
   (b) an entry from this community's "Known blind spots" section in
@@ -57,8 +58,9 @@ You produce TWO outputs:
   "do your research", "consult a professional", "it depends",
   "there are many factors", "make sure you read X carefully". These
   are acceptable ONLY when followed by a specific named context
-  (e.g. "consult a tax CPA who understands AMT crossover at strike >
-  $50k" is OK; "consult a professional" alone is not).
+  (e.g. "consult an immigration attorney who tracks AC21 §106(c)
+  same-or-similar determinations" is OK; "consult a professional"
+  alone is not).
 - If the available documents don't support a useful angle from this
   community, return `blind_spots: []` rather than fabricate. An empty
   list is a valid, honest output.
