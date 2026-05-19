@@ -1,0 +1,83 @@
+id: newgrad-sponsor-willing-vs-faang-no-sponsor
+domain: cn-sde-jobhunt
+text: |
+  CMU MSCS final semester,F-1 STEM-OPT 还没开始(毕业 5/15 才申)。
+  两个 new-grad offer 同时在 deadline:
+
+  Offer A — Ramp(Series B fintech, NYC)。SDE。Base $170k + sign-on
+  $30k + 0.08% equity(4-yr, 1-yr cliff)。Recruiter 明确说 "we
+  sponsor H-1B for all engineers, this year we filed 14 petitions
+  including 6 first-time and 5 got selected"。Total comp ~$200k/yr。
+
+  Offer B — Stripe(已 IPO, "FAANG-equivalent" in 2025-2026 tech-
+  career discourse, SF)。SDE。Base $200k + sign-on $50k +
+  $220k/4-yr RSU。Total comp ~$305k/yr first year, ~$255k steady
+  state。问题:他们 internal recruiter 说 "we generally do not
+  sponsor new-grad H-1B; we'll sponsor green card after 2 years of
+  tenure but lottery petition is not standard"。Hiring manager 私下
+  跟我说 "I've seen one new-grad get sponsored in 3 years"。
+
+  我 visa 状况:F-1 → STEM-OPT(34 个月 total runway, 2026 年 5 月
+  起算)。父母在福州小县城,没有 US backup。Offer 我都 verbal-
+  accepted-pending-decision,deadline 周五。
+
+  TC delta ~$100k/yr × 4yr = $400k 是真金白银。但 Stripe 这条路
+  实际 visa-arithmetic 是:34 月 STEM-OPT 期间必须中签 H-1B
+  (一次 ~25%, 三次累积 ~58%);如果三次都没中,要么走 O-1
+  (我没有 publication,基本不可能),要么 L-1 (Stripe 没有 CN
+  分公司开 transfer 的路径),要么 return-to-China。Ramp 那边
+  虽然 startup risk 大 (Series B,fintech 监管不确定),但 visa
+  pipeline 是 baseline 假设。
+
+  这是 first-employer choice 的 sponsorship-history-as-filter 问题。
+  我应该把 "willing-to-sponsor" 作为 hard filter,还是可以 trade
+  TC 当作 visa-risk-premium?
+expected_domains: [cn-sde-jobhunt, cn-sde-jobhunt/offer-comp, cn-sde-jobhunt/visa]
+expected_entities:
+  - F-1
+  - STEM-OPT
+  - H-1B
+  - OPT
+  - O-1
+  - L-1
+  - RSU
+  - sign-on
+  - sponsorship-history-of-employer
+  - FAANG
+  - series-B
+expected_personas:
+  - f1-final-year-cs-master
+  - comparing-fang-vs-startup-with-sponsorship-asymmetry
+expected_risk_surfaces:
+  - sponsorship-asymmetry
+  - sponsorship-fit
+  - visa-status-pressure
+  - lottery-failure
+  - opportunity-cost
+  - timing
+  - regret
+  - info-asymmetry
+expected_communities:
+  - 1p3a-跳槽
+  - reddit-csQ-int'l
+  - 1p3a-offer-comp
+expected_decisions: [1, 12]
+expected_framings: [F1, F3, F6]
+expected_blindspot_categories:
+  - faang-equivalent-as-status-anchor-overrides-visa-arithmetic
+  - sponsorship-willing-vs-sponsorship-history-base-rate-confusion
+  - lottery-cumulative-probability-overstated-by-aggregating-attempts
+  - tc-premium-as-visa-risk-pricing-treats-irreversible-status-loss-as-fungible
+  - hiring-manager-private-disclosure-as-leading-indicator-vs-recruiter-policy-script
+  - first-employer-choice-locks-future-petition-history
+notes: |
+  Net-new D12 fixture filling the first-employer-choice gap where
+  the existing cn-language-newgrad-offer-comp fixture frames the
+  decision as bilingual code-switching + family-pressure-weighting.
+  This one frames it as sponsorship-willing vs FAANG-no-sponsor TC
+  delta — distinct entity (Stripe-as-FAANG-equivalent-2025-2026)
+  and distinct risk-surface (sponsorship-history-base-rate vs
+  hiring-manager-private-disclosure as signal). Cross-cuts D1 +
+  D12 (first-offer choice IS an offer-comparison under sponsorship
+  filter). The visa-arithmetic (~58% over 3 lottery attempts) is
+  the load-bearing fact most CMU MSCS students under-weight.
