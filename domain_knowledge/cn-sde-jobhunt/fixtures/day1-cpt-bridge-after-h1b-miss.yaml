@@ -1,0 +1,39 @@
+id: day1-cpt-bridge-after-h1b-miss
+domain: cn-sde-jobhunt
+text: |
+  Just finished my CS MS at CMU, on F-1 STEM-OPT, working as
+  backend SDE at a Series C. H-1B lottery 没中 this March —
+  employer says they can refile next year but I only have ~14
+  months of OPT left after STEM extension. 朋友 in similar
+  situation last cycle started a day-1-CPT MS at Westcliff /
+  Sofia / one of those NJ programs and said it "保持身份" plus
+  keeps you working. Lawyer I consulted is hedging — says
+  "technically fine" but also "if you re-enter on F-1 visa
+  stamp with day-1-CPT history, 221(g) administrative
+  processing is the realistic outcome", and any future H-1B
+  petition will eat RFE. 也在考虑 F-1 restoration if I just
+  let OPT expire and re-enroll in a real program. Bridge to
+  next H-1B lottery feels like the obvious play but the
+  visa-mechanic mortality of CPT used in year 1 of an MS
+  keeps me up at night.
+expected_domains:
+  - cn-sde-jobhunt/visa
+expected_entities:
+  - F-1
+  - F-1-CPT
+  - day-1-CPT
+  - OPT
+  - STEM-OPT
+  - H-1B-lottery
+  - RFE
+expected_personas:
+  - post-opt-h1b-not-selected
+  - h1b-on-lottery-fail
+expected_risk_surfaces:
+  - day-1-cpt-scrutiny
+  - f1-restoration-alternative
+  - ms-pipeline-as-status-strategy
+  - visa-status-pressure
+  - legal
+  - lottery-failure
+  - info-asymmetry
