@@ -5,38 +5,42 @@
 # bilingual Editor stance.
 #
 # ─── COVERAGE HEADER (derived, schema-only; eval runner ignores) ───
-# Three derived tables mapping the 16 fixtures below to the vertical's
+# Three derived tables mapping the 20 fixtures below to the vertical's
 # structural axes. Pure derivation from fixture text + expected_* arrays
 # + decisions.md D1-D12 + ROADMAP.md §3 communities — no new claims.
 # Same pattern as blindspots.md front-matter (PR #97). Fixture ids
 # abbreviated (last 2-3 slug words; see full id list at bottom).
 #
 # Table 1 — Per-decision coverage (D1-D12)
-# D1  offer-comparison under sponsorship filter   → faang-vs-series-c, career-capital, cn-newgrad, h4-school-district  (4)
+# D1  offer-comparison under sponsorship filter   → faang-vs-series-c, career-capital, cn-newgrad, h4-school-district, mid-senior-non-sponsor-startup  (5)
 # D2  OPT / STEM-OPT / cap-gap timing             → opt-expiring, phd-opt-clock, day1-cpt-bridge                       (3)
 # D3  H-1B lottery backup paths                   → lottery-not-selected, o1-vs-h1b, day1-cpt-legitimacy, day1-cpt-bridge (4)
-# D4  employer switch mid-PERM / mid-I-140        → switch-mid-perm-ac21                                               (1 — under-covered)
+# D4  employer switch mid-PERM / mid-I-140        → switch-mid-perm-ac21, mid-i140-switch-rfe-risk, mid-senior-non-sponsor-startup  (3)
 # D5  layoff response under H-1B / H-4 pressure   → laid-off-60-day-grace, h4-primary-switch (latter is layoff-fear)   (2)
-# D6  return-to-China timing                      → return-i140-approved, senior-ic-return-timing                      (2)
-# D7  family-located optimization                 → h4-school-district, h4-primary-switch                              (2)
+# D6  return-to-China timing                      → return-i140-approved, senior-ic-return-timing, bytedance-i140-return-window  (3)
+# D7  family-located optimization                 → h4-school-district, h4-primary-switch, bytedance-i140-return-window  (3)
 # D8  PhD / postdoc-to-industry conversion        → phd-opt-clock, postdoc-eb1a                                        (2)
-# D9  career-capital vs visa-security tradeoff    → career-capital-vs-visa-security                                    (1 — under-covered)
+# D9  career-capital vs visa-security tradeoff    → career-capital-vs-visa-security, mid-senior-non-sponsor-startup    (2)
 # D10 O-1 vs H-1B-lottery route selection         → o1-vs-h1b, postdoc-eb1a (EB-1A is adjacent extraordinary-ability)  (2)
-# D11 post-cliff (post-RSU) career strategy       → senior-ic-return-timing (only fixture with equity-cliff entity)    (1 — under-covered)
+# D11 post-cliff (post-RSU) career strategy       → senior-ic-return-timing, post-cliff-startup-jump                   (2)
 # D12 first-employer choice "willing-to-sponsor"  → faang-vs-series-c, cn-newgrad                                      (2)
 #
 # Table 2 — Per-persona coverage (counts include multi-persona fixtures)
 # f1-final-year-cs-master                              → faang-vs-series-c, cn-newgrad                                  (2)
-# comparing-fang-vs-startup-with-sponsorship-asymmetry → faang-vs-series-c, career-capital, cn-newgrad                  (3)
+# comparing-fang-vs-startup-with-sponsorship-asymmetry → faang-vs-series-c, career-capital, cn-newgrad, mid-senior-non-sponsor-startup  (4)
 # opt-active-h1b-pending                               → opt-expiring                                                   (1)
 # opt-active-h1b-not-yet-filed                         → phd-opt-clock                                                  (1)
 # h1b-on-lottery-fail                                  → lottery-not-selected, o1-vs-h1b, day1-cpt-legitimacy, day1-cpt-bridge (4 — most-exercised)
 # post-opt-h1b-not-selected                            → day1-cpt-bridge                                                (1)
-# mid-perm-considering-switch                          → switch-mid-perm-ac21                                           (1)
+# mid-perm-considering-switch                          → switch-mid-perm-ac21, mid-i140-switch-rfe-risk                  (2)
+# senior-engineer-with-i140-approved                   → mid-i140-switch-rfe-risk                                       (1)
+# mid-senior-ic-considering-non-sponsor-startup        → mid-senior-non-sponsor-startup                                 (1)
 # laid-off-on-h1b                                      → laid-off-60-day-grace                                          (1)
-# i140-approved-considering-return                     → return-i140-approved, senior-ic-return-timing                  (2)
+# i140-approved-considering-return                     → return-i140-approved, senior-ic-return-timing, bytedance-i140-return-window  (3)
+# senior-eng-bytedance-offer-with-i140-approved        → bytedance-i140-return-window                                   (1)
 # gc-backlog-considering-return                        → return-i140-approved                                           (1)
-# senior-ic-already-passed-cliff                       → senior-ic-return-timing                                        (1)
+# senior-ic-already-passed-cliff                       → senior-ic-return-timing, post-cliff-startup-jump               (2)
+# post-cliff-considering-startup                       → post-cliff-startup-jump                                        (1)
 # cs-phd-post-defense                                  → phd-opt-clock, postdoc-eb1a                                    (2)
 # phd-pivot-to-industry                                → postdoc-eb1a                                                   (1)
 # h4-spouse-on-ead                                     → h4-school-district, h4-primary-switch                          (2)
@@ -48,23 +52,34 @@
 # framing → reddit-us-tech-collective; visa-mechanic / attorney / regulatory anchors →
 # us-immigration-counsel; return-decision / CN-employer framing → china-returnee-voices)
 # oneponethreeacres (一亩三分地)
-#   → cn-newgrad, day1-cpt-legitimacy (refs 一亩三分地), day1-cpt-bridge, h4-primary-switch, faang-vs-series-c  (5)
+#   → cn-newgrad, day1-cpt-legitimacy (refs 一亩三分地), day1-cpt-bridge, h4-primary-switch, faang-vs-series-c,
+#     post-cliff-startup-jump (refs 一亩三分地 GC-没到手别动), mid-senior-non-sponsor-startup (refs 一亩三分地),
+#     bytedance-i140-return-window (refs 海归 sub-threads + 脉脉)  (8)
 # reddit-us-tech-collective
-#   → faang-vs-series-c, career-capital-vs-visa-security, phd-opt-clock, postdoc-eb1a  (4)
+#   → faang-vs-series-c, career-capital-vs-visa-security, phd-opt-clock, postdoc-eb1a,
+#     mid-senior-non-sponsor-startup (career-capital framing)  (5)
 # us-immigration-counsel
 #   → opt-expiring, lottery-not-selected, switch-mid-perm-ac21, laid-off-60-day-grace, o1-vs-h1b,
 #     day1-cpt-legitimacy (refs r/h1b), day1-cpt-bridge (lawyer/RFE/221(g)), postdoc-eb1a (Matter-of-Dhanasar),
-#     h4-primary-switch  (9 — most-exercised; matches visa-mechanic center-of-gravity)
+#     h4-primary-switch, mid-i140-switch-rfe-risk (AC21 §106(c) + SOC-code + AAO),
+#     post-cliff-startup-jump (same-or-similar + I-140 portability),
+#     mid-senior-non-sponsor-startup (60-day grace + AC21 §106(a) + PERM-start clock),
+#     bytedance-i140-return-window (I-140-priority-date-retention + L-1B blanket)  (13 — most-exercised; matches visa-mechanic center-of-gravity)
 # china-returnee-voices
-#   → return-i140-approved, senior-ic-return-timing  (2 — under-covered; only explicit return-decision fixtures)
+#   → return-i140-approved, senior-ic-return-timing, bytedance-i140-return-window
+#     (refs 硅谷101 podcast + soft-power-asymmetry framing)  (3)
 #
-# Coverage debt: D4/D9/D11 under-covered (1 fixture each); china-returnee-voices under-covered (2 fixtures).
+# Coverage debt: D5/D10/D12 thinnest at 2 fixtures each; china-returnee-voices now 3 fixtures
+# (no longer under-covered); D8 still 2 fixtures (PhD-to-industry remains a thin slice — only
+# 2 PhD-persona fixtures exist domain-wide).
 # Full fixture ids (in order): faang-vs-series-c-sponsorship-asymmetry, opt-expiring-h1b-decision,
 # h1b-lottery-not-selected-backup, switch-mid-perm-ac21, laid-off-h1b-60-day-grace,
 # return-to-china-i140-approved, h4-ead-spouse-school-district, phd-to-industry-opt-clock,
 # career-capital-vs-visa-security, o1-vs-h1b-lottery, senior-ic-return-timing,
 # cn-language-newgrad-offer-comp, day1-cpt-legitimacy-question, day1-cpt-bridge-after-h1b-miss,
-# postdoc-eb1a-vs-h1b-route, h4-ead-spouse-primary-h1b-switch.
+# postdoc-eb1a-vs-h1b-route, h4-ead-spouse-primary-h1b-switch,
+# mid-i140-switch-same-or-similar-rfe-risk, post-cliff-startup-jump-vs-faang-gc-stability,
+# mid-senior-ic-faang-to-non-sponsor-startup, bytedance-i140-approved-return-window.
 # ─────────────────────────────────────────────────────────────────
 
 - id: faang-vs-series-c-sponsorship-asymmetry
@@ -410,3 +425,85 @@
                            priority-date-preservation,
                            sponsorship-fit, opportunity-cost,
                            regret, timing]
+
+- id: mid-senior-ic-faang-to-non-sponsor-startup
+  text: |
+    L5 backend SDE at 一家 FAANG (Google MTV),3.5 年,H-1B approved
+    on first try and renewed once,但 PERM 还没 file — manager 说
+    要等 promo to L6 才会启动 GC track,而 promo packet 这个 cycle
+    又 punt 了。刚收到一个 series-B AI infra startup 的 staff
+    offer:$220k base + 0.7% equity,role substance 是 building
+    distributed training infra from scratch — 真正的 career-capital
+    work,不是 maintenance。问题是他们 sponsorship history 几乎
+    为零:5 年公司只 filed 过 1 个 H-1B transfer (approved),没有
+    任何 PERM/I-140 历史。CEO 在电话里说 "we'll figure out the
+    visa stuff",但 founder 自己是美籍,team 里 25 人只有 3 个
+    international,其中 2 个已经是 GC holder。
+    具体 mechanic 上我的担忧是:H-1B transfer 应该问题不大(LCA
+    + 新 I-129),但 60-day grace period 在 transfer pending
+    期间 if RFE'd or denied,我就直接 out-of-status — 没有 PERM
+    start clock 可以 reset on PERM-start-365-day rule (AC21
+    §106(a) 需要 PERM filed 365 days ago, 我现在 PERM 都没 file)。
+    Career-capital 论说 staff infra at a real AI shop 是 unbeatable
+    long-term, 一亩三分地上看到的论调是 "FAANG GC 没到手别 jump",
+    但 GC 到手要等 PERM filed (现在没排上) + I-140 + EB-2 China
+    backlog (priority date 2026 = ~6 years out)。这个 60-day
+    grace vs PERM start clock 的 mechanics 我想看清楚才能决定:
+    visa-security 真实风险有多大?Career-capital 在 mid-senior
+    level 到底 weight 多少?
+  expected_domains: [cn-sde-jobhunt/offer-comp, cn-sde-jobhunt/visa,
+                     cn-sde-jobhunt/employer-switch]
+  expected_entities: [H-1B, H-1B-transfer, PERM, I-140, AC21,
+                      60-day-grace-period, sponsorship-history-of-employer,
+                      FAANG, series-B, EB-2, priority-date]
+  expected_personas: [mid-senior-ic-considering-non-sponsor-startup,
+                      comparing-fang-vs-startup-with-sponsorship-asymmetry]
+  expected_risk_surfaces: [sponsorship-asymmetry, sponsorship-fit,
+                           60-day-grace-period,
+                           perm-start-clock,
+                           career-capital-vs-visa-security,
+                           visa-status-pressure,
+                           opportunity-cost, regret, timing]
+
+- id: bytedance-i140-approved-return-window
+  text: |
+    Senior SDE 在 Meta (E5),H-1B + I-140 approved 18 months ago,
+    EB-2 China priority date Jan 2023 — 看 visa bulletin 估计 I-485
+    还要 5-6 年。字节 Mountain View office 的 head of infra 是我
+    前同事,refer 我去字节 Seattle 但 base 在国内 the role 是 Lark
+    infra L3-2 (字节 levels.fyi 大致 = staff/E6,但 同事 在脉脉
+    上对应到 senior staff)+ 全球 share grant 大约 RMB 280万/年
+    + onboarding bonus + relocation。父母 65+ 在杭州,去年我爸
+    心梗放了支架,我老婆在 SF 一家 biotech 做 senior scientist
+    (H-1B 主申请),孩子 4 岁刚上 preschool。
+    具体上我在 weigh 几个 mechanics:
+    (1) I-140 portability — 如果我 leave US for ByteDance,
+    现有 I-140 的 priority date 是否保留 (10-year-retention rule
+    on approved I-140 是 conditional on 雇主 not withdrawing,
+    Meta 大概率 不会 主动 withdraw,但 if I leave and come back
+    in 4 years, can I re-activate the priority date with a new
+    employer's PERM?);
+    (2) 老婆 H-1B 如果我转 dependent 她 instead — Meta H-1B 不能
+    "shelve",她 6th year 还有 18 个月,她公司 PERM 没 file 过;
+    (3) 实质问题:字节 Seattle 名义上是 US-based 但 reporting
+    line 到北京,visa status 仍然是 H-1B-transfer 还是直接 L-1B
+    blanket?海归 voices 里反复出现的是 "等 GC 到手再走" + "字节
+    的 over-promised China-equity 经常 reprice",硅谷101 podcast
+    上海归们 framing 是 "soft-power 优势在 NA 边缘公司,在 CN big
+    tech 完全是 disposable"。
+    Mechanics + irreversibility 都想 frame 清楚再决定。
+  expected_domains: [cn-sde-jobhunt/return-to-china, cn-sde-jobhunt/visa,
+                     cn-sde-jobhunt/employer-switch]
+  expected_entities: [H-1B, I-140, EB-2, priority-date,
+                      CN-tech-employer, FAANG,
+                      I-140-priority-date-retention,
+                      L-1B, family-coupling]
+  expected_personas: [senior-eng-bytedance-offer-with-i140-approved,
+                      i140-approved-considering-return]
+  expected_risk_surfaces: [return-to-china-irreversibility,
+                           i-140-portability,
+                           priority-date-preservation,
+                           family-coupling,
+                           cn-equity-repricing-risk,
+                           soft-power-asymmetry-na-vs-cn,
+                           opportunity-cost, regret, timing]
