@@ -1,0 +1,45 @@
+id: post-cliff-startup-jump-vs-faang-gc-stability
+domain: cn-sde-jobhunt
+text: |
+  L5 backend at 一家 FAANG,4 年了刚过 vesting cliff,RSU refresh
+  每年 ~$180k 但 promo to L6 这两年明显 cycle 变长,manager 暗示
+  至少还要一个 calibration cycle。I-140 approved 一年了 priority
+  date Apr 2023 EB-2,看 visa bulletin 估计 GC 还要 3-4 年。
+  现在收到一个 Series C AI infra startup 的 staff offer,$240k
+  base + 0.4% equity,他们 sponsorship history 是 last 3 years
+  sponsored 5 个 H-1B 全过了 PERM,但都是 first-time GC filers
+  所以没有 same-or-similar 测试的 case study。如果跳:新雇主
+  重新跑 PERM 意味着 priority date 锁住但 I-140 portability 取决
+  于新岗位算不算 same-or-similar(staff ML infra vs current
+  backend platform 不太像);如果不跳:接受 post-cliff comp
+  stagnation 换 GC timeline 的 stability。一亩三分地上看到的
+  人都在喊"GC 没到手别动",但我看到的 staff infra 机会窗口
+  可能 18 个月后就没了。这个 tradeoff 应该怎么 weight?
+expected_domains:
+  - cn-sde-jobhunt/employer-switch
+  - cn-sde-jobhunt/visa
+  - cn-sde-jobhunt/offer-comp
+expected_entities:
+  - H-1B
+  - I-140
+  - RSU
+  - vesting-cliff
+  - PERM
+  - priority-date
+  - sponsorship-history-of-employer
+  - FAANG
+  - series-C-plus
+  - same-or-similar
+expected_personas:
+  - senior-ic-already-passed-cliff
+  - post-cliff-considering-startup
+expected_risk_surfaces:
+  - rsu-cliff-timing
+  - gc-timeline-vs-comp-cycle
+  - retention-vs-departure
+  - sponsorship-asymmetry
+  - priority-date-preservation
+  - sponsorship-fit
+  - opportunity-cost
+  - regret
+  - timing

@@ -1,0 +1,55 @@
+id: bytedance-i140-approved-return-window
+domain: cn-sde-jobhunt
+text: |
+  Senior SDE 在 Meta (E5),H-1B + I-140 approved 18 months ago,
+  EB-2 China priority date Jan 2023 — 看 visa bulletin 估计 I-485
+  还要 5-6 年。字节 Mountain View office 的 head of infra 是我
+  前同事,refer 我去字节 Seattle 但 base 在国内 the role 是 Lark
+  infra L3-2 (字节 levels.fyi 大致 = staff/E6,但 同事 在脉脉
+  上对应到 senior staff)+ 全球 share grant 大约 RMB 280万/年
+  + onboarding bonus + relocation。父母 65+ 在杭州,去年我爸
+  心梗放了支架,我老婆在 SF 一家 biotech 做 senior scientist
+  (H-1B 主申请),孩子 4 岁刚上 preschool。
+  具体上我在 weigh 几个 mechanics:
+  (1) I-140 portability — 如果我 leave US for ByteDance,
+  现有 I-140 的 priority date 是否保留 (10-year-retention rule
+  on approved I-140 是 conditional on 雇主 not withdrawing,
+  Meta 大概率 不会 主动 withdraw,但 if I leave and come back
+  in 4 years, can I re-activate the priority date with a new
+  employer's PERM?);
+  (2) 老婆 H-1B 如果我转 dependent 她 instead — Meta H-1B 不能
+  "shelve",她 6th year 还有 18 个月,她公司 PERM 没 file 过;
+  (3) 实质问题:字节 Seattle 名义上是 US-based 但 reporting
+  line 到北京,visa status 仍然是 H-1B-transfer 还是直接 L-1B
+  blanket?海归 voices 里反复出现的是 "等 GC 到手再走" + "字节
+  的 over-promised China-equity 经常 reprice",硅谷101 podcast
+  上海归们 framing 是 "soft-power 优势在 NA 边缘公司,在 CN big
+  tech 完全是 disposable"。
+  Mechanics + irreversibility 都想 frame 清楚再决定。
+expected_domains:
+  - cn-sde-jobhunt/return-to-china
+  - cn-sde-jobhunt/visa
+  - cn-sde-jobhunt/employer-switch
+expected_entities:
+  - H-1B
+  - I-140
+  - EB-2
+  - priority-date
+  - CN-tech-employer
+  - FAANG
+  - I-140-priority-date-retention
+  - L-1B
+  - family-coupling
+expected_personas:
+  - senior-eng-bytedance-offer-with-i140-approved
+  - i140-approved-considering-return
+expected_risk_surfaces:
+  - return-to-china-irreversibility
+  - i-140-portability
+  - priority-date-preservation
+  - family-coupling
+  - cn-equity-repricing-risk
+  - soft-power-asymmetry-na-vs-cn
+  - opportunity-cost
+  - regret
+  - timing
