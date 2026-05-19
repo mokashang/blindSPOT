@@ -49,10 +49,12 @@
 #         legacy-immigration-framings-corpus
 #       (count: 5)
 #   D4  Employer switch mid-PERM / mid-I-140 (AC21 §106(c) portability)
-#       → murthy-newsletter-h1b-perm,
+#       → 1p3a-offers-and-sponsorship,
+#         reddit-cscareerquestions-international,
+#         murthy-newsletter-h1b-perm,
 #         legacy-immigration-blindspots-corpus,
 #         legacy-immigration-framings-corpus
-#       (count: 3)
+#       (count: 5)
 #   D5  Layoff response under H-1B / H-4 status pressure
 #       → 1p3a-layoff-on-h1b-threads,
 #         murthy-newsletter-h1b-perm,
@@ -105,7 +107,7 @@
 #   D1  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #   D2  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #   D3  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
-#   D4  → us-immigration-counsel                                                (1) ← diversity gap
+#   D4  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #   D5  → oneponethreeacres, us-immigration-counsel                             (2) ← diversity gap
 #   D6  → china-returnee-voices, us-immigration-counsel                         (2)
 #   D7  → oneponethreeacres, us-immigration-counsel                             (2) ← diversity gap
@@ -120,12 +122,22 @@
 #     for every D1-D12 (no "(none — gap)" cells).
 #   - Per-decision view counts range 2..6; mean ≈ 4.
 #   - Remaining community-diversity gaps cluster in the legal-mechanic
-#     decisions (D4 / D8 / D10) and the family-located decision (D7). These
+#     decisions (D8 / D10) and the family-located decision (D7). These
 #     are candidates for future source-view additions that pull from a non-
 #     us-immigration-counsel community (e.g., 1p3a layoff threads for D7;
-#     attorney-blog cross-checks vs r/h1b case narratives for D4 / D8 / D10).
+#     attorney-blog cross-checks vs r/h1b case narratives for D8 / D10).
+#   - D8 (PhD / postdoc-to-industry, EB-1A/NIW evidentiary bar) remains
+#     single-community-covered (us-immigration-counsel only). No honest
+#     non-us-immigration-counsel pivot was identified in the current
+#     registry: 1p3a-offers-and-sponsorship's keyword_filter is sponsor /
+#     offer / 跳槽-centric (no PhD / postdoc / EB-1A / NIW terms);
+#     silicon-valley-101-podcast-notes and zhihu-haigui-career-threads
+#     filters are China-return-focused (海归 / 回国 / 中美), not
+#     PhD-to-US-industry conversion. The honest next step is a new
+#     source-view (e.g., a dedicated 1p3a 博士-转码 thread corpus or a
+#     non-Murthy attorney EB-1A blog), not a tag-pivot.
 #
-# D6 / D11 single-community gaps reduced via this PR — see commits for the
+# D6 / D11 single-community gaps reduced via PR #114 — see commits for the
 # source-view tag-pivots that warrant the additional decision coverage. D6
 # now also covered by reddit-h1b-and-immigration-cases (priority-date-backlog
 # give-up-and-return narratives are part of r/h1b's case-narration genre,
@@ -135,6 +147,19 @@
 # reddit-cscareerquestions-international (4-year-cliff RSU strategy and
 # post-cliff exit cost are the deepest comp-arithmetic content in r/cscq
 # per the community profile's typical-concerns section).
+#
+# D4 single-community gap reduced via this PR. D4 (Employer switch
+# mid-PERM / mid-I-140, AC21 §106(c) portability) now also covered by
+# 1p3a-offers-and-sponsorship (the keyword_filter already includes 跳槽 —
+# mid-PERM / mid-I-140 employer-switch is a core 1p3a "Offers / 找工"
+# board genre, and the source-view's persona/post-opt-h1b-lottery tag
+# already implies the H-1B-stage 跳槽 narratives where AC21 portability
+# is the load-bearing variable) and reddit-cscareerquestions-international
+# (the {risk_surfaces} slot in the query_template gets filled at runtime
+# with D4's risk surfaces — same-or-similar, i-140-portability,
+# priority-date-preservation — so the source-view is honestly queried
+# for D4-shaped situations, mirroring PR #114's D11 add to the same
+# source-view on the same query-template logic).
 
 # ─── community: oneponethreeacres (一亩三分地) ────────────────────────────────
 
@@ -147,6 +172,7 @@
   tags:
     - D1
     - D2
+    - D4
     - D9
     - D11
     - D12
@@ -223,6 +249,7 @@
     - D1
     - D2
     - D3
+    - D4
     - D11
     - D12
     - F2
