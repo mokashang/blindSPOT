@@ -1,0 +1,28 @@
+id: career-capital-vs-visa-security
+domain: cn-sde-jobhunt
+text: |
+  Two offers on the table. Big Tech (Amazon L5, Seattle) — I'd be
+  doing AdTech maintenance work that I find genuinely boring. The
+  name and the sponsorship history are bulletproof. Or a Series A
+  AI startup ($170k base + 1% equity) doing actual interesting
+  inference infra work — but they've never sponsored an H-1B and
+  the founder hand-waved it as "we'll figure it out". I keep
+  hearing "career capital matters most in the long run" — does
+  that argument hold when I have to choose between role quality
+  and visa-security?
+expected_domains:
+  - cn-sde-jobhunt/offer-comp
+  - cn-sde-jobhunt/visa
+expected_entities:
+  - FAANG
+  - series-A
+  - H-1B
+  - sponsorship-history-of-employer
+expected_personas:
+  - comparing-fang-vs-startup-with-sponsorship-asymmetry
+expected_risk_surfaces:
+  - sponsorship-fit
+  - sponsorship-asymmetry
+  - opportunity-cost
+  - regret
+  - visa-status-pressure

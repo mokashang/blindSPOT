@@ -1,0 +1,25 @@
+id: day1-cpt-legitimacy-question
+domain: cn-sde-jobhunt
+text: |
+  My H-1B 没中两次了,STEM-OPT 还有 9 个月。朋友推荐了一个所谓 day-1-CPT
+  的 master's program,在 NJ,据说一年学费 ~$15k,可以保持身份还
+  能 full-time work。一亩三分地上看到的描述都说没问题,但 reddit r/h1b
+  上有人说 USCIS 最近开始 deny 这种 history。这个到底有多大风险?
+  会不会以后 H-1B 拿到了也被翻出来 RFE?
+expected_domains:
+  - cn-sde-jobhunt/visa
+expected_entities:
+  - H-1B
+  - STEM-OPT
+  - day-1-CPT
+  - F-1
+  - F-1-CPT
+  - RFE
+expected_personas:
+  - h1b-on-lottery-fail
+expected_risk_surfaces:
+  - legal
+  - regret
+  - info-asymmetry
+  - visa-status-pressure
+  - lottery-failure
