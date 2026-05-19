@@ -1,0 +1,42 @@
+id: postdoc-eb1a-vs-h1b-route
+domain: cn-sde-jobhunt
+text: |
+  Finishing my second postdoc year at Stanford ML systems lab,
+  H-1B cap-exempt currently. 有 28 citations on a first-author
+  NeurIPS paper, two patents pending, served as reviewer for
+  ICLR/NeurIPS the last 2 cycles. Meta GenAI just made me an
+  L5 research engineer offer — cap-subject H-1B transfer means
+  I'd need to enter the regular lottery (or rely on H-1B-cap-
+  exempt-to-cap-subject portability mechanics, which my
+  immigration attorney calls "underused but real"). She's also
+  pitching me to self-petition EB-1A in parallel — says my
+  citation count + reviewer service + patents probably clears
+  3 of the Matter of Dhanasar prongs but EB-1A is a different
+  standard (extraordinary ability, not national interest).
+  Advisor is supportive of the move but our co-authored
+  follow-up paper is mid-review and a clean recommendation
+  letter from him in 6 months is worth more than one written
+  under time pressure now. NIW vs EB-1A 到底哪个更稳? And
+  can I time the petition filing such that I don't burn the
+  advisor relationship?
+expected_domains:
+  - cn-sde-jobhunt/visa
+expected_entities:
+  - H-1B
+  - H-1B-cap-exempt
+  - EB-1A
+  - EB-2-NIW
+  - I-140
+  - Matter-of-Dhanasar
+  - advance-parole
+  - FAANG
+expected_personas:
+  - phd-pivot-to-industry
+  - cs-phd-post-defense
+expected_risk_surfaces:
+  - niw-vs-eb1a-evidentiary-bar
+  - cap-exempt-to-cap-subject-portability
+  - postdoc-advisor-recommendation-timing
+  - timing
+  - opportunity-cost
+  - info-asymmetry

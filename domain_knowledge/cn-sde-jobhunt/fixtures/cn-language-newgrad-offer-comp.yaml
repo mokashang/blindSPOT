@@ -1,0 +1,27 @@
+id: cn-language-newgrad-offer-comp
+domain: cn-sde-jobhunt
+text: |
+  我是 CS 硕士最后一学期,在两个 offer 之间纠结。Microsoft Redmond
+  L60 base $135k + $50k sign-on + $80k/4yr RSU,稳定 sponsor H-1B。
+  另外一个是 Snap LA 也是 new grad SDE,$160k base + $40k sign-on
+  + $200k/4yr RSU,他们今年 sponsor 了几个但听说 layoff 过一轮。
+  我没有美国身份 backup,父母希望我稳定一些。这种情况下 visa
+  securty 应该 weight 多少?
+expected_domains:
+  - cn-sde-jobhunt/offer-comp
+  - cn-sde-jobhunt/visa
+expected_entities:
+  - H-1B
+  - RSU
+  - sign-on
+  - sponsorship-history-of-employer
+  - FAANG
+expected_personas:
+  - f1-final-year-cs-master
+  - comparing-fang-vs-startup-with-sponsorship-asymmetry
+expected_risk_surfaces:
+  - sponsorship-fit
+  - sponsorship-asymmetry
+  - visa-status-pressure
+  - family-coupling
+  - opportunity-cost
