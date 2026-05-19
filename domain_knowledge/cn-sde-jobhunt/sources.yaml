@@ -60,8 +60,9 @@
 #         murthy-newsletter-h1b-perm,
 #         boundless-immigration-blog,
 #         reddit-h1b-and-immigration-cases,
+#         reddit-cscareerquestions-international,
 #         legacy-immigration-blindspots-corpus
-#       (count: 5)
+#       (count: 6)
 #   D6  Return-to-China (海归) timing decision
 #       → zhihu-haigui-career-threads,
 #         silicon-valley-101-podcast-notes,
@@ -110,7 +111,7 @@
 #   D2  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #   D3  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #   D4  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
-#   D5  → oneponethreeacres, us-immigration-counsel                             (2) ← diversity gap
+#   D5  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #   D6  → china-returnee-voices, us-immigration-counsel                         (2)
 #   D7  → oneponethreeacres, us-immigration-counsel                             (2) ← diversity gap
 #   D8  → oneponethreeacres, us-immigration-counsel                             (2)
@@ -123,13 +124,10 @@
 #   - No decision has zero coverage; the registry currently has ≥ 2 source-views
 #     for every D1-D12 (no "(none — gap)" cells).
 #   - Per-decision view counts range 2..6; mean ≈ 4.
-#   - Remaining community-diversity gaps cluster on the family-located
-#     decision (D7) and the layoff decision (D5), both at 2 communities.
-#     These are candidates for future source-view additions; D7 already
-#     has 1p3a layoff threads but lacks a Reddit / china-returnee voice;
-#     D5 has 1p3a + us-immigration-counsel coverage but no
-#     reddit-us-tech-collective view (r/cscareerquestions / r/csMajors
-#     layoff-on-h1b threads would fit honestly).
+#   - Remaining community-diversity gap clusters on the family-located
+#     decision (D7), at 2 communities. D7 already has 1p3a layoff threads
+#     but lacks a Reddit / china-returnee voice and is the next
+#     coverage-diversity candidate for future source-view additions.
 #
 # D6 / D11 single-community gaps reduced via PR #114 — see commits for the
 # source-view tag-pivots that warrant the additional decision coverage. D6
@@ -187,6 +185,28 @@
 # rises from 1 to 2 communities, because the new view tags D10 — 1p3a
 # PhD-track threads materially discuss O-1 eligibility for post-defense
 # applicants, and the keyword_filter includes the O-1 term explicitly.
+#
+# D5 single-community-shadow closure via this PR. D5 (Layoff response
+# under H-1B / H-4 status pressure) now also covered by
+# reddit-cscareerquestions-international (community_tag:
+# reddit-us-tech-collective) via the same {risk_surfaces}-slot
+# tag-pivot pattern as PR #114 (D6/D11) and PR #117 (D4) on the same
+# source-view. The source-view's query_template is "international
+# student {entities} {risk_surfaces}"; D5's risk surfaces per
+# decisions.md are 60-day-grace, severance-clock-interaction, and
+# h4-status-tracks-principal — so the template fills at runtime with
+# queries like "international student layoff 60-day grace H-1B
+# transfer" which substantively match r/cscareerquestions threads
+# where laid-off-on-H1B SDEs ask for grace-period and transfer
+# advice. This is honest topical coverage (the threads exist and
+# match the query semantics), not a coverage-inflation tag — same
+# mechanism the prior two PRs established. D5 communities go from
+# 2 → 3 (adds reddit-us-tech-collective to the 1p3a + counsel
+# baseline); D5 is no longer flagged as a diversity gap in the
+# Communities-present-per-decision table above. D7 (Family-located
+# optimization) remains the residual diversity gap at 2 communities
+# and is the next coverage-diversity candidate for future
+# source-view additions.
 
 # ─── community: oneponethreeacres (一亩三分地) ────────────────────────────────
 
@@ -317,6 +337,7 @@
     - D2
     - D3
     - D4
+    - D5
     - D11
     - D12
     - F2
@@ -331,7 +352,15 @@
     (useful as a contrast), domestic perspective on the sponsorship
     discount, US-domestic-engineer view of "why does it matter so
     much to them." Cross-checks 1p3a's risk weights against the
-    broader pool.
+    broader pool. D5 (Layoff response under H-1B / H-4 status
+    pressure) is included via the {risk_surfaces}-slot tag-pivot:
+    the query_template "international student {entities}
+    {risk_surfaces}" fills with D5's risk surfaces (60-day-grace,
+    severance-clock-interaction, h4-status-tracks-principal) at
+    runtime, hitting r/cscareerquestions threads where laid-off-on-
+    H1B SDEs ask for grace-period and transfer advice — the same
+    honest mechanism as PR #114 (D6/D11) and PR #117 (D4) on this
+    source-view.
 
 - id: reddit-leetcode-interview-prep
   adapter: reddit_search
