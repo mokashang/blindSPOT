@@ -70,8 +70,10 @@
 #       (count: 3)
 #   D7  Family-located optimization (H-4-EAD spouse, parent B-2, school)
 #       → 1p3a-layoff-on-h1b-threads,
-#         boundless-immigration-blog
-#       (count: 2)
+#         boundless-immigration-blog,
+#         zhihu-haigui-career-threads,
+#         silicon-valley-101-podcast-notes
+#       (count: 4)
 #   D8  PhD / postdoc-to-industry conversion (route choice)
 #       → murthy-newsletter-h1b-perm,
 #         legacy-immigration-blindspots-corpus,
@@ -113,7 +115,7 @@
 #   D4  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #   D5  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #   D6  → china-returnee-voices, us-immigration-counsel                         (2)
-#   D7  → oneponethreeacres, us-immigration-counsel                             (2) ← diversity gap
+#   D7  → oneponethreeacres, us-immigration-counsel, china-returnee-voices      (3)
 #   D8  → oneponethreeacres, us-immigration-counsel                             (2)
 #   D9  → oneponethreeacres, china-returnee-voices, us-immigration-counsel      (3)
 #   D10 → oneponethreeacres, us-immigration-counsel                             (2)
@@ -124,10 +126,13 @@
 #   - No decision has zero coverage; the registry currently has ≥ 2 source-views
 #     for every D1-D12 (no "(none — gap)" cells).
 #   - Per-decision view counts range 2..6; mean ≈ 4.
-#   - Remaining community-diversity gap clusters on the family-located
-#     decision (D7), at 2 communities. D7 already has 1p3a layoff threads
-#     but lacks a Reddit / china-returnee voice and is the next
-#     coverage-diversity candidate for future source-view additions.
+#   - Community-diversity gap on the family-located decision (D7) is now
+#     closed (was 2 → now 3 communities, adding china-returnee-voices via
+#     this PR's D7 tag-pivot on zhihu-haigui-career-threads and
+#     silicon-valley-101-podcast-notes). With D5 closed in PR #123 and D7
+#     closed here, all twelve in-scope decisions now have ≥ 3
+#     community-class coverage (community-diversity gap closure complete
+#     for V2-narrow sources-yaml roadmap item).
 #
 # D6 / D11 single-community gaps reduced via PR #114 — see commits for the
 # source-view tag-pivots that warrant the additional decision coverage. D6
@@ -186,7 +191,7 @@
 # PhD-track threads materially discuss O-1 eligibility for post-defense
 # applicants, and the keyword_filter includes the O-1 term explicitly.
 #
-# D5 single-community-shadow closure via this PR. D5 (Layoff response
+# D5 single-community-shadow closure via PR #123. D5 (Layoff response
 # under H-1B / H-4 status pressure) now also covered by
 # reddit-cscareerquestions-international (community_tag:
 # reddit-us-tech-collective) via the same {risk_surfaces}-slot
@@ -203,10 +208,28 @@
 # mechanism the prior two PRs established. D5 communities go from
 # 2 → 3 (adds reddit-us-tech-collective to the 1p3a + counsel
 # baseline); D5 is no longer flagged as a diversity gap in the
-# Communities-present-per-decision table above. D7 (Family-located
-# optimization) remains the residual diversity gap at 2 communities
-# and is the next coverage-diversity candidate for future
-# source-view additions.
+# Communities-present-per-decision table above.
+#
+# D7 (Family-located optimization) diversity gap closed by adding
+# D7 tag to zhihu-haigui-career-threads and silicon-valley-101-
+# podcast-notes (china-returnee-voices community); 2 → 3 communities.
+# With D5 closed in PR #123 and D7 closed here, all twelve in-scope
+# decisions now have ≥ 3 community-class coverage. The pivot
+# rationale is honest topical match, not coverage-inflation tagging:
+# zhihu-haigui-career-threads' existing notes already cited
+# "family-pressure and 双方父母医疗 framing" — these ARE D7 axes
+# (aging-parent care, parent-visiting visas, family-located housing
+# / medical decisions), and the curated Zhihu 海归-career corpus
+# narrates them in retrospect (父母养老 timing, H-4 spouse
+# career-sync 回国-vs-留美, kids 上学 K-12 美国-vs-国际学校).
+# silicon-valley-101-podcast-notes' "family arc" episodes carry
+# the same long-form family-located narratives (spouse career sync,
+# kids' schooling, aging-parent care) that thread-forums fragment.
+# Both views were already in-scope on the china-returnee-voices
+# community; the D7 tag-pivot surfaces what was already there in
+# the curated corpora. With this closure, the V2-narrow sources-yaml
+# roadmap item's coverage-diversity dimension reaches the design
+# floor for every in-scope decision.
 
 # ─── community: oneponethreeacres (一亩三分地) ────────────────────────────────
 
@@ -490,6 +513,7 @@
   community_tag: china-returnee-voices
   tags:
     - D6
+    - D7
     - F4
     - persona/gc-backlog-considering-return
   reliability: 4
@@ -500,6 +524,14 @@
     static-corpus inclusion is manual per ROADMAP §9. Best for:
     when ROI of staying flipped negative; 35-and-over 职场风险
     in China-tech; family-pressure and 双方父母医疗 framing.
+    Family-located optimization (D7) anchors: 父母养老 timing,
+    H-4 spouse career-sync 回国 vs 留美, kids 上学 K-12 美国 vs
+    国际学校 — these are the same family-arc axes Zhihu returnees
+    narrate in retrospect, honestly matching the D7 surface area
+    (aging-parent care, spouse career sync, kids' schooling
+    decisions) and closing the D7 community-diversity gap via
+    the same {risk_surfaces}-anchored tag-pivot mechanism as
+    PRs #114 / #117 / #123.
 
 - id: silicon-valley-101-podcast-notes
   adapter: static_corpus
@@ -509,6 +541,7 @@
   community_tag: china-returnee-voices
   tags:
     - D6
+    - D7
     - D9
     - F4
     - persona/gc-backlog-considering-return
@@ -518,7 +551,14 @@
     Hand-transcribed notes from 硅谷101 / 软实力 podcast episodes
     featuring returnee narratives. Captures the long-form personal
     narrative (career arc, family arc, geopolitical-posture arc)
-    that thread-based forums fragment.
+    that thread-based forums fragment. Family arc episodes anchor
+    D7: spouse career sync (H-4-EAD vs returnee-spouse track),
+    kids' schooling decisions (K-12 US public / private vs
+    Shanghai-international vs Beijing-haidian), aging-parent care
+    (B-2 parent visiting windows, sibling-in-China split-load).
+    These are the long-form family-located optimization narratives
+    that thread-forums fragment — directly D7 surface area, closing
+    the D7 community-diversity gap alongside zhihu-haigui-career-threads.
 
 # ─── community: legacy-tech-career (cross-domain upstream) ────────────────
 
