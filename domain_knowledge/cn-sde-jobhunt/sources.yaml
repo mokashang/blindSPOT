@@ -74,8 +74,9 @@
 #   D8  PhD / postdoc-to-industry conversion (route choice)
 #       → murthy-newsletter-h1b-perm,
 #         legacy-immigration-blindspots-corpus,
-#         legacy-immigration-framings-corpus
-#       (count: 3)
+#         legacy-immigration-framings-corpus,
+#         1p3a-phd-to-industry-threads
+#       (count: 4)
 #   D9  Long-term career capital vs visa-security tradeoff
 #       → 1p3a-offers-and-sponsorship,
 #         silicon-valley-101-podcast-notes,
@@ -86,8 +87,9 @@
 #         boundless-immigration-blog,
 #         reddit-h1b-and-immigration-cases,
 #         legacy-immigration-blindspots-corpus,
-#         legacy-immigration-framings-corpus
-#       (count: 5)
+#         legacy-immigration-framings-corpus,
+#         1p3a-phd-to-industry-threads
+#       (count: 6)
 #   D11 Post-cliff (post-RSU-vest) career strategy under visa coupling
 #       → 1p3a-offers-and-sponsorship,
 #         reddit-cscareerquestions-international,
@@ -111,9 +113,9 @@
 #   D5  → oneponethreeacres, us-immigration-counsel                             (2) ← diversity gap
 #   D6  → china-returnee-voices, us-immigration-counsel                         (2)
 #   D7  → oneponethreeacres, us-immigration-counsel                             (2) ← diversity gap
-#   D8  → us-immigration-counsel                                                (1) ← diversity gap
+#   D8  → oneponethreeacres, us-immigration-counsel                             (2)
 #   D9  → oneponethreeacres, china-returnee-voices, us-immigration-counsel      (3)
-#   D10 → us-immigration-counsel                                                (1) ← diversity gap
+#   D10 → oneponethreeacres, us-immigration-counsel                             (2)
 #   D11 → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #   D12 → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
 #
@@ -121,21 +123,13 @@
 #   - No decision has zero coverage; the registry currently has ≥ 2 source-views
 #     for every D1-D12 (no "(none — gap)" cells).
 #   - Per-decision view counts range 2..6; mean ≈ 4.
-#   - Remaining community-diversity gaps cluster in the legal-mechanic
-#     decisions (D8 / D10) and the family-located decision (D7). These
-#     are candidates for future source-view additions that pull from a non-
-#     us-immigration-counsel community (e.g., 1p3a layoff threads for D7;
-#     attorney-blog cross-checks vs r/h1b case narratives for D8 / D10).
-#   - D8 (PhD / postdoc-to-industry, EB-1A/NIW evidentiary bar) remains
-#     single-community-covered (us-immigration-counsel only). No honest
-#     non-us-immigration-counsel pivot was identified in the current
-#     registry: 1p3a-offers-and-sponsorship's keyword_filter is sponsor /
-#     offer / 跳槽-centric (no PhD / postdoc / EB-1A / NIW terms);
-#     silicon-valley-101-podcast-notes and zhihu-haigui-career-threads
-#     filters are China-return-focused (海归 / 回国 / 中美), not
-#     PhD-to-US-industry conversion. The honest next step is a new
-#     source-view (e.g., a dedicated 1p3a 博士-转码 thread corpus or a
-#     non-Murthy attorney EB-1A blog), not a tag-pivot.
+#   - Remaining community-diversity gaps cluster on the family-located
+#     decision (D7) and the layoff decision (D5), both at 2 communities.
+#     These are candidates for future source-view additions; D7 already
+#     has 1p3a layoff threads but lacks a Reddit / china-returnee voice;
+#     D5 has 1p3a + us-immigration-counsel coverage but no
+#     reddit-us-tech-collective view (r/cscareerquestions / r/csMajors
+#     layoff-on-h1b threads would fit honestly).
 #
 # D6 / D11 single-community gaps reduced via PR #114 — see commits for the
 # source-view tag-pivots that warrant the additional decision coverage. D6
@@ -148,7 +142,7 @@
 # post-cliff exit cost are the deepest comp-arithmetic content in r/cscq
 # per the community profile's typical-concerns section).
 #
-# D4 single-community gap reduced via this PR. D4 (Employer switch
+# D4 single-community gap reduced via PR #117. D4 (Employer switch
 # mid-PERM / mid-I-140, AC21 §106(c) portability) now also covered by
 # 1p3a-offers-and-sponsorship (the keyword_filter already includes 跳槽 —
 # mid-PERM / mid-I-140 employer-switch is a core 1p3a "Offers / 找工"
@@ -160,6 +154,39 @@
 # priority-date-preservation — so the source-view is honestly queried
 # for D4-shaped situations, mirroring PR #114's D11 add to the same
 # source-view on the same query-template logic).
+#
+# D8 single-community gap reduced via this PR. D8 (PhD / postdoc-to-
+# industry conversion, EB-1A / NIW evidentiary bar) now also covered by
+# 1p3a-phd-to-industry-threads (community_tag: oneponethreeacres) — a
+# NEW source-view (not a tag-pivot of an existing view; run-20260519-0418
+# established that no honest non-us-immigration-counsel pivot existed
+# in the registry at that time, because 1p3a-offers-and-sponsorship's
+# keyword_filter is sponsor / offer / 跳槽-centric without PhD / postdoc
+# / EB-1A / NIW terms, and silicon-valley-101 + zhihu-haigui filters
+# are China-return-focused, not PhD-to-US-industry-conversion-focused).
+# The new view's keyword_filter is PhD-track-specific (博士 / PhD /
+# postdoc / 转码 / EB-1A / NIW / O-1 / 凑材料 / 引用 / 论文 / advisor /
+# defense), it carries persona/cs-phd-post-defense, and it tags F6
+# with an explicit notes-field caveat that 1p3a is reliable for the
+# decision-making and persona-level anecdata but not for F6-rigor
+# statutory claims (per `communities/oneponethreeacres.md` § "Known
+# blind spots" — 1p3a filters out adversarial / contrarian framings
+# including EB-1A / NIW statutory rigor; the F6 tag reflects topical
+# touch, not authoritative grounding). The view is `reliability: 3`
+# rather than the sibling 1p3a views' `reliability: 5` because the
+# corpus file `data/static/1p3a-phd-to-industry-curated.md` is a
+# deferred curation pointer per ROADMAP §9 — until the author populates
+# it, the adapter returns zero documents and the source-view contributes
+# to the registry's coverage shape without contributing live documents.
+# This is the same operational pattern as `1p3a-offers-curated.md`,
+# `1p3a-lottery-curated.md`, and `1p3a-layoff-curated.md` (all of
+# which are also unpopulated placeholder paths in the current tree;
+# their honest curated content lives in
+# `data/static/oneponethreeacres-curated.md` as the V2-narrow sprint
+# proceeds). Side-effect: D10 (O-1 vs H-1B-lottery) coverage also
+# rises from 1 to 2 communities, because the new view tags D10 — 1p3a
+# PhD-track threads materially discuss O-1 eligibility for post-defense
+# applicants, and the keyword_filter includes the O-1 term explicitly.
 
 # ─── community: oneponethreeacres (一亩三分地) ────────────────────────────────
 
@@ -233,6 +260,46 @@
     schooling, parent-visa visits during the recovery window). The
     2022-2024 tech-layoff wave produced a deep corpus on 1p3a; this
     is the moat against the English-only attorney narrative.
+
+- id: 1p3a-phd-to-industry-threads
+  adapter: static_corpus
+  fetch_config:
+    path: data/static/1p3a-phd-to-industry-curated.md
+    keyword_filter: [博士, PhD, postdoc, 转码, EB-1A, NIW, O-1, 凑材料, 引用, 论文, advisor, defense]
+  community_tag: oneponethreeacres
+  tags:
+    - D8
+    - D10
+    - F6
+    - persona/cs-phd-post-defense
+  reliability: 3
+  freshness_required: false
+  notes: |
+    Curated 1p3a 博士 / 找工 / 跳槽 board threads on PhD / postdoc-
+    to-industry transition, EB-1A / NIW evidentiary-bar discussions
+    as 1p3a askers themselves frame them, and O-1 eligibility for
+    post-defense applicants. This is the honest D8 grounding from a
+    non-`us-immigration-counsel` community: 1p3a askers DO discuss
+    these decisions ("postdoc 还是直接 industry"; "EB-1A 凑材料 够不够"; "O-1
+    比 H1B 抽签靠谱吗"), and their first-person timeline-style
+    narratives are the moat against attorney-blog generalities.
+    Reliability is 3 (not 5 like the sibling 1p3a static-corpus
+    entries) because: (a) the corpus is a deferred curation pointer
+    — the file `data/static/1p3a-phd-to-industry-curated.md` is a
+    placeholder pending manual curation per ROADMAP §9, so the
+    adapter returns zero documents until the author populates it;
+    (b) per `communities/oneponethreeacres.md` § "Known blind spots",
+    1p3a filters out adversarial / contrarian framings including the
+    statutory-rigor side of EB-1A / NIW — 1p3a is reliable for the
+    decision-making angle and the persona-level anecdata, but F6
+    claims sourced here should cross-check against
+    `murthy-newsletter-h1b-perm` or `legacy-immigration-framings-corpus`
+    for the statute-and-policy-manual side. The F6 tag is included
+    because 1p3a's PhD threads DO touch EB-1A / NIW / O-1 mechanics;
+    it is NOT a claim that 1p3a is the F6-rigor authority. This
+    source-view brings D8 from 1 → 2 communities and D10 from a
+    single-community (us-immigration-counsel only at the time of
+    PR #117) state to multi-community coverage.
 
 # ─── community: reddit-us-tech-collective ─────────────────────────────────
 
