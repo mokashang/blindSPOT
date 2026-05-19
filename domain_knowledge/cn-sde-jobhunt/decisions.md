@@ -18,25 +18,26 @@ content is voice-work and is authored by the human only.
 
 ## Cross-reference
 
-| # | Decision | Layer-2 framings | Layer-3 risk surfaces |
-|---|---|---|---|
-| 1 | Offer comparison under H-1B sponsorship-willingness filter | F1, F2, F3, F6 | visa-security, sponsorship-commitment, gc-timeline, comp-arithmetic |
-| 2 | OPT / STEM-OPT / cap-gap timing across employer choice | F1, F6 | opt-clock, e-verify-employer, cap-gap-eligibility |
-| 3 | H-1B lottery backup paths (O-1, L-1, day-1-CPT, MS-pipeline) | F1, F4, F6 | second-lottery-strategy, day-1-cpt-risk, status-restoration |
-| 4 | Employer switch mid-PERM / mid-I-140 (AC21 §106(c)) | F1, F2, F6 | same-or-similar, i-140-portability, priority-date-preservation |
-| 5 | Layoff response under H-1B / H-4 status pressure | F1, F5, F6 | 60-day-grace, severance-clock-interaction, h4-status-tracks-principal |
-| 6 | Return-to-China (海归) timing decision | F2, F4, F5 | gc-backlog-roi, china-tech-window, 35-and-over-discount, family-pressure |
-| 7 | Family-located optimization (H-4-EAD spouse, parent B-2, school) | F1, F5 | h4-ead-vulnerability, state-residency-coupling, school-enrollment |
-| 8 | PhD / postdoc-to-industry conversion (route choice) | F1, F2, F6 | eb1a-niw-vs-h1b, opt-to-h1b-bridge, advisor-relationship-timing |
-| 9 | Long-term career capital vs visa security tradeoff | F1, F2 | skill-trajectory-vs-status-stability, employer-quality-premium |
-| 10 | O-1 vs H-1B-lottery route selection | F1, F6 | evidentiary-bar, cap-exempt-flexibility, employer-cooperation |
-| 11 | Post-cliff (post-RSU-vest) career strategy under visa coupling | F1, F2, F3 | rsu-cliff-timing, gc-timeline-vs-comp-cycle, retention-vs-departure |
-| 12 | First-employer choice under "willing to sponsor" filter (new-grad) | F1, F3, F6 | sponsorship-history, h1b-vs-h4-vs-l1-strategy, comp-discount-for-sponsorship |
+| # | Decision | Layer-2 framings | Layer-3 risk surfaces | Blindspot-§ |
+|---|---|---|---|---|
+| 1 | Offer comparison under H-1B sponsorship-willingness filter | F1, F2, F3, F6 | visa-security, sponsorship-commitment, gc-timeline, comp-arithmetic | §F1, §F2, §F3, §F6 |
+| 2 | OPT / STEM-OPT / cap-gap timing across employer choice | F1, F6 | opt-clock, e-verify-employer, cap-gap-eligibility | §F1, §F6 |
+| 3 | H-1B lottery backup paths (O-1, L-1, day-1-CPT, MS-pipeline) | F1, F4, F6 | second-lottery-strategy, day-1-cpt-risk, status-restoration | §F1, §F4, §F6 |
+| 4 | Employer switch mid-PERM / mid-I-140 (AC21 §106(c)) | F1, F2, F6 | same-or-similar, i-140-portability, priority-date-preservation | §F1, §F2, §F6 |
+| 5 | Layoff response under H-1B / H-4 status pressure | F1, F5, F6 | 60-day-grace, severance-clock-interaction, h4-status-tracks-principal | §F1, §F5, §F6 |
+| 6 | Return-to-China (海归) timing decision | F2, F4, F5 | gc-backlog-roi, china-tech-window, 35-and-over-discount, family-pressure | §F2, §F4, §F5 |
+| 7 | Family-located optimization (H-4-EAD spouse, parent B-2, school) | F1, F5 | h4-ead-vulnerability, state-residency-coupling, school-enrollment | §F1, §F5 |
+| 8 | PhD / postdoc-to-industry conversion (route choice) | F1, F2, F6 | eb1a-niw-vs-h1b, opt-to-h1b-bridge, advisor-relationship-timing | §F1, §F2, §F6 |
+| 9 | Long-term career capital vs visa security tradeoff | F1, F2 | skill-trajectory-vs-status-stability, employer-quality-premium | §F1, §F2 |
+| 10 | O-1 vs H-1B-lottery route selection | F1, F6 | evidentiary-bar, cap-exempt-flexibility, employer-cooperation | §F1, §F6 |
+| 11 | Post-cliff (post-RSU-vest) career strategy under visa coupling | F1, F2, F3 | rsu-cliff-timing, gc-timeline-vs-comp-cycle, retention-vs-departure | §F1, §F2, §F3 |
+| 12 | First-employer choice under "willing to sponsor" filter (new-grad) | F1, F3, F6 | sponsorship-history, h1b-vs-h4-vs-l1-strategy, comp-discount-for-sponsorship | §F1, §F3, §F6 |
 
 Each row's framing IDs reference `framings.md` (F1 = Visa-security
 maximization; F2 = Long-term career capital; F3 = Comp maximization
 in a 4-year window; F4 = Return-to-China optionality; F5 =
 Family-located optimization; F6 = Legal-mechanic rigor).
+Blindspot-§ column references `blindspots.md` §F1-§F6 sections (5 blindspot slots each).
 
 ---
 
