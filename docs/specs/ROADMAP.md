@@ -140,7 +140,7 @@ quality_score ≥ 0.75 over ≥ 8 fixtures across 3 consecutive runs.
 ```
 Status: 🟡 in progress
 Progress: █████████████░░░░░░░ 67% (8/12)
-Last completed: 9004d5d — decisions.md V2 fixtures column (5th col, extends 4-way cross-ref chain from PRs #97/#104/#106/#111 down to Layer 6; surfaces D10 zero-fixture-coverage gap) + 3 net-new legacy fixtures migrated to V2 per-domain layout (D9 career-capital-vs-visa-security, D10 o1-vs-h1b-lottery, D3 day1-cpt-legitimacy-question; live-eval-reachable count 14 → 17) + 3 honest sources.yaml decision-tag additions closing D6/D11 single-community-covered diversity gaps (D6: 1→2 communities; D11: 1→3 communities) (structural depth round; no checkbox flip)
+Last completed: 218e224 — decisions.md V2 fixtures column refresh post-PR-#113 (D3/D9/D10 cells updated; stale 'D10 zero-fixture-coverage gap' note removed) + 3 more legacy fixtures migrated to V2 per-domain layout (D3 day1-cpt-bridge-after-h1b-miss, D1/D12 cn-language-newgrad-offer-comp, D8/D10 postdoc-eb1a-vs-h1b-route; live-eval-reachable count 17 → 20) + sources.yaml D4 diversity gap closure via 2 honest tag-pivots (D4: 1→3 communities via 1p3a-offers-and-sponsorship 跳槽 keyword + reddit-cscareerquestions-international risk_surfaces query_template slot; D8 honestly abandoned — requires net-new source-view) (structural depth round; no checkbox flip)
 Next up: cn-sde-jobhunt/decisions.md — author Layer 1 paragraph content (voice work, user-authored only per SKILL.md §5)
 ```
 
