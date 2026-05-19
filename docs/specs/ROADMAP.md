@@ -140,7 +140,7 @@ quality_score ≥ 0.75 over ≥ 8 fixtures across 3 consecutive runs.
 ```
 Status: 🟡 in progress
 Progress: █████████████░░░░░░░ 67% (8/12)
-Last completed: af5e555 — framings.md "Framings → blindspots" front-matter cross-ref table (closes the 4-way cross-reference triangle across decisions/framings/blindspots) + 12 visa-mechanic taxonomy seed entries (8 entities + 4 risk-surfaces) + 2 new D9 / china-returnee fixtures (18 → 20) (structural depth round; no checkbox flip)
+Last completed: 4d6bec2 — sources.yaml "Decisions → source-views" front-matter cross-ref table (extends the 4-way coverage-visibility triangle from PRs #97/#104/#106 down to Layer 4; D4/D6/D8/D10/D11 surfaced as single-community-covered diversity gaps) + 4 unshadowed legacy fixtures migrated to V2 per-domain layout (live-eval-reachable count 10 → 14) + 7 deferred taxonomy seeds (3 risk-surface + 4 persona) closing prior-run next_step_hint (structural depth round; no checkbox flip)
 Next up: cn-sde-jobhunt/decisions.md — author Layer 1 paragraph content (voice work, user-authored only per SKILL.md §5)
 ```
 
