@@ -36,6 +36,20 @@ voice-work, authored by the human only.
 | F5 | Family-located optimization | `oneponethreeacres` | `us-immigration-counsel` (H-4 / dependent threads) |
 | F6 | Legal-mechanic rigor | `us-immigration-counsel` | `oneponethreeacres` (律师 AMA threads) |
 
+### Framings → blindspots
+
+Each framing anchors one section in `blindspots.md` (§F1–§F6), with
+5 empty entry skeletons per section ready for the author's voice work.
+
+| ID | Framing | Blindspots section | Skeleton IDs |
+|---|---|---|---|
+| F1 | Visa-security maximization | §F1 | B-F1-1, B-F1-2, B-F1-3, B-F1-4, B-F1-5 |
+| F2 | Long-term career capital | §F2 | B-F2-1, B-F2-2, B-F2-3, B-F2-4, B-F2-5 |
+| F3 | Comp maximization in a 4-year window | §F3 | B-F3-1, B-F3-2, B-F3-3, B-F3-4, B-F3-5 |
+| F4 | Return-to-China optionality | §F4 | B-F4-1, B-F4-2, B-F4-3, B-F4-4, B-F4-5 |
+| F5 | Family-located optimization | §F5 | B-F5-1, B-F5-2, B-F5-3, B-F5-4, B-F5-5 |
+| F6 | Legal-mechanic rigor | §F6 | B-F6-1, B-F6-2, B-F6-3, B-F6-4, B-F6-5 |
+
 ---
 
 ## Entries
