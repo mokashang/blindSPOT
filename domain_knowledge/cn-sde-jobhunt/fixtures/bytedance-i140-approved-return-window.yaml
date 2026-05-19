@@ -53,3 +53,13 @@ expected_risk_surfaces:
   - opportunity-cost
   - regret
   - timing
+expected_decisions: [4, 6, 7, 9]
+expected_framings: [F1, F2, F4, F5, F6]
+expected_blindspot_categories:
+  - i140-priority-date-retention-conditional-on-employer-non-withdrawal
+  - l-1b-blanket-vs-h-1b-transfer-when-reporting-line-is-overseas
+  - cn-big-tech-equity-repricing-as-soft-commitment-on-rmb-grants
+  - soft-power-asymmetry-na-edge-vs-cn-bigtech-disposable
+  - return-to-china-as-one-way-door-when-cap-subject-restart-arithmetic-ignored
+  - spousal-h1b-primary-shelving-impossibility-vs-h4-dependent-switch
+  - high-stakes-mechanism-E-counsel-referral-on-actual-filing-step
