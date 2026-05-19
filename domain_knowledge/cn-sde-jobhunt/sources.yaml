@@ -15,6 +15,114 @@
 #
 # Diversity constraint: ≥ 4 distinct community_tags. ≥ 8 entries total.
 
+# ─── COVERAGE HEADER (derived, schema-only; loader ignores) ──────────────────
+# Decision → source-views cross-reference table. Pure derivation from each
+# source-view's `tags:` field below — no new claims. Same pattern as the
+# blindspots.md (PR #97), decisions.md (PR #104), and framings.md (PR #106)
+# front-matter cross-ref tables that closed the 4-way triangle across the
+# three voice-work files. This block extends the same coverage-visibility
+# pattern down to the Layer-4 source-view registry, surfacing which decisions
+# are under-sourced and may need new source-view additions in future rounds.
+#
+# Table — Per-decision source-view coverage (D1-D12)
+#   D1  Offer comparison under sponsorship-willingness filter
+#       → 1p3a-offers-and-sponsorship,
+#         reddit-cscareerquestions-international,
+#         reddit-leetcode-interview-prep,
+#         reddit-csmajors-newgrad,
+#         legacy-tech-career-blindspots-corpus,
+#         legacy-tech-career-framings-corpus
+#       (count: 6)
+#   D2  OPT / STEM-OPT / cap-gap timing across employer choice
+#       → 1p3a-offers-and-sponsorship,
+#         1p3a-h1b-lottery-and-cap-gap,
+#         reddit-cscareerquestions-international,
+#         reddit-csmajors-newgrad,
+#         reddit-h1b-and-immigration-cases,
+#         legacy-immigration-blindspots-corpus
+#       (count: 6)
+#   D3  H-1B lottery backup paths (O-1, L-1, day-1-CPT, MS-pipeline)
+#       → 1p3a-h1b-lottery-and-cap-gap,
+#         reddit-cscareerquestions-international,
+#         reddit-h1b-and-immigration-cases,
+#         legacy-immigration-blindspots-corpus,
+#         legacy-immigration-framings-corpus
+#       (count: 5)
+#   D4  Employer switch mid-PERM / mid-I-140 (AC21 §106(c) portability)
+#       → murthy-newsletter-h1b-perm,
+#         legacy-immigration-blindspots-corpus,
+#         legacy-immigration-framings-corpus
+#       (count: 3)
+#   D5  Layoff response under H-1B / H-4 status pressure
+#       → 1p3a-layoff-on-h1b-threads,
+#         murthy-newsletter-h1b-perm,
+#         boundless-immigration-blog,
+#         reddit-h1b-and-immigration-cases,
+#         legacy-immigration-blindspots-corpus
+#       (count: 5)
+#   D6  Return-to-China (海归) timing decision
+#       → zhihu-haigui-career-threads,
+#         silicon-valley-101-podcast-notes
+#       (count: 2)
+#   D7  Family-located optimization (H-4-EAD spouse, parent B-2, school)
+#       → 1p3a-layoff-on-h1b-threads,
+#         boundless-immigration-blog
+#       (count: 2)
+#   D8  PhD / postdoc-to-industry conversion (route choice)
+#       → murthy-newsletter-h1b-perm,
+#         legacy-immigration-blindspots-corpus,
+#         legacy-immigration-framings-corpus
+#       (count: 3)
+#   D9  Long-term career capital vs visa-security tradeoff
+#       → 1p3a-offers-and-sponsorship,
+#         silicon-valley-101-podcast-notes,
+#         legacy-tech-career-framings-corpus
+#       (count: 3)
+#   D10 O-1 vs H-1B-lottery route selection
+#       → murthy-newsletter-h1b-perm,
+#         boundless-immigration-blog,
+#         reddit-h1b-and-immigration-cases,
+#         legacy-immigration-blindspots-corpus,
+#         legacy-immigration-framings-corpus
+#       (count: 5)
+#   D11 Post-cliff (post-RSU-vest) career strategy under visa coupling
+#       → legacy-tech-career-blindspots-corpus,
+#         legacy-tech-career-framings-corpus
+#       (count: 2)
+#   D12 First-employer choice under "willing to sponsor" filter (new-grad)
+#       → 1p3a-offers-and-sponsorship,
+#         reddit-cscareerquestions-international,
+#         reddit-leetcode-interview-prep,
+#         reddit-csmajors-newgrad,
+#         legacy-tech-career-blindspots-corpus
+#       (count: 5)
+#
+# Communities present per decision (distinct community_tag count; aim is to
+# surface decisions covered by only 1-2 communities as diversity gaps):
+#   D1  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
+#   D2  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
+#   D3  → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
+#   D4  → us-immigration-counsel                                                (1) ← diversity gap
+#   D5  → oneponethreeacres, us-immigration-counsel                             (2) ← diversity gap
+#   D6  → china-returnee-voices                                                 (1) ← diversity gap
+#   D7  → oneponethreeacres, us-immigration-counsel                             (2) ← diversity gap
+#   D8  → us-immigration-counsel                                                (1) ← diversity gap
+#   D9  → oneponethreeacres, china-returnee-voices, us-immigration-counsel      (3)
+#   D10 → us-immigration-counsel                                                (1) ← diversity gap
+#   D11 → us-immigration-counsel                                                (1) ← diversity gap
+#   D12 → oneponethreeacres, reddit-us-tech-collective, us-immigration-counsel  (3)
+#
+# Observed coverage shape:
+#   - No decision has zero coverage; the registry currently has ≥ 2 source-views
+#     for every D1-D12 (no "(none — gap)" cells).
+#   - Per-decision view counts range 2..6; mean ≈ 4.
+#   - Community-diversity gaps cluster in the legal-mechanic decisions
+#     (D4 / D8 / D10 / D11) and the family-located decision (D7). These are
+#     candidates for future source-view additions that pull from a non-
+#     us-immigration-counsel community (e.g., 1p3a layoff threads for D7;
+#     attorney-blog cross-checks vs r/h1b case narratives for D4 / D8 / D10;
+#     a CN-returnee voice for D11's post-cliff strategy if the cohort surfaces).
+
 # ─── community: oneponethreeacres (一亩三分地) ────────────────────────────────
 
 - id: 1p3a-offers-and-sponsorship
