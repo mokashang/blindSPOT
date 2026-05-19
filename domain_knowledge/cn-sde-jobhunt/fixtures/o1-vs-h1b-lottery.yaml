@@ -1,0 +1,23 @@
+id: o1-vs-h1b-lottery
+domain: cn-sde-jobhunt
+text: |
+  My H-1B got rejected for the second time. I have 4 publications
+  in NeurIPS/ICLR (one first-author), some open-source contributions
+  with non-trivial GitHub stars, and an immigration attorney is
+  pitching me O-1A for $8k retainer + $3k filing. Realistic? Or
+  should I just keep playing the H-1B lottery for one more year
+  while my STEM-OPT lasts?
+expected_domains:
+  - cn-sde-jobhunt/visa
+expected_entities:
+  - H-1B
+  - O-1
+  - STEM-OPT
+  - lottery-failure
+expected_personas:
+  - h1b-on-lottery-fail
+expected_risk_surfaces:
+  - lottery-failure
+  - opportunity-cost
+  - info-asymmetry
+  - regret
