@@ -140,7 +140,7 @@ quality_score ≥ 0.75 over ≥ 8 fixtures across 3 consecutive runs.
 ```
 Status: 🟡 in progress
 Progress: █████████████░░░░░░░ 67% (8/12)
-Last completed: 4d6bec2 — sources.yaml "Decisions → source-views" front-matter cross-ref table (extends the 4-way coverage-visibility triangle from PRs #97/#104/#106 down to Layer 4; D4/D6/D8/D10/D11 surfaced as single-community-covered diversity gaps) + 4 unshadowed legacy fixtures migrated to V2 per-domain layout (live-eval-reachable count 10 → 14) + 7 deferred taxonomy seeds (3 risk-surface + 4 persona) closing prior-run next_step_hint (structural depth round; no checkbox flip)
+Last completed: 9004d5d — decisions.md V2 fixtures column (5th col, extends 4-way cross-ref chain from PRs #97/#104/#106/#111 down to Layer 6; surfaces D10 zero-fixture-coverage gap) + 3 net-new legacy fixtures migrated to V2 per-domain layout (D9 career-capital-vs-visa-security, D10 o1-vs-h1b-lottery, D3 day1-cpt-legitimacy-question; live-eval-reachable count 14 → 17) + 3 honest sources.yaml decision-tag additions closing D6/D11 single-community-covered diversity gaps (D6: 1→2 communities; D11: 1→3 communities) (structural depth round; no checkbox flip)
 Next up: cn-sde-jobhunt/decisions.md — author Layer 1 paragraph content (voice work, user-authored only per SKILL.md §5)
 ```
 
