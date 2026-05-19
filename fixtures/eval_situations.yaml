@@ -348,3 +348,65 @@
                            h1b-primary-vs-h4-ead-stability-tradeoff,
                            family-coupling, visa-status-pressure,
                            opportunity-cost]
+
+- id: mid-i140-switch-same-or-similar-rfe-risk
+  text: |
+    My I-140 was approved 14 months ago under EB-2, current title is
+    Software Engineer III at a FAANG, PERM was filed against that job
+    description (general full-stack SDE, SOC code 15-1252). Just got
+    an offer from a different employer for Staff Machine Learning
+    Engineer — pay bump, much better team, but the role substance is
+    notably narrower: ML training infrastructure, model serving, no
+    generalist app-layer work. Attorney at new employer says AC21
+    §106(c) portability is fine because both fall under broad
+    "software engineering occupations" and the priority date carries.
+    My current employer's attorney is more cautious — says USCIS has
+    been issuing same-or-similar RFEs on title jumps from "Software
+    Engineer" to "Staff ML Engineer" because SOC 15-1252 vs 15-2051
+    (data scientist family) is a real classification gap, and the
+    duties test gets read narrowly under recent AAO decisions. If I
+    file the I-485 portability letter and USCIS RFEs on same-or-
+    similar, can I still preserve the priority date, or does a denial
+    on portability cascade into needing a new PERM at the new
+    employer? How real is the SOC-code mismatch risk in 2026?
+  expected_domains: [cn-sde-jobhunt/employer-switch, cn-sde-jobhunt/visa]
+  expected_entities: [AC21, I-140, PERM, priority-date, same-or-similar,
+                      USCIS, RFE, SOC-code]
+  expected_personas: [senior-engineer-with-i140-approved,
+                      mid-perm-considering-switch]
+  expected_risk_surfaces: [same-or-similar, i-140-portability,
+                           priority-date-preservation,
+                           rfe-risk-on-amended-i485,
+                           sponsorship-fit, timing,
+                           info-asymmetry, regret]
+
+- id: post-cliff-startup-jump-vs-faang-gc-stability
+  text: |
+    L5 backend at 一家 FAANG,4 年了刚过 vesting cliff,RSU refresh
+    每年 ~$180k 但 promo to L6 这两年明显 cycle 变长,manager 暗示
+    至少还要一个 calibration cycle。I-140 approved 一年了 priority
+    date Apr 2023 EB-2,看 visa bulletin 估计 GC 还要 3-4 年。
+    现在收到一个 Series C AI infra startup 的 staff offer,$240k
+    base + 0.4% equity,他们 sponsorship history 是 last 3 years
+    sponsored 5 个 H-1B 全过了 PERM,但都是 first-time GC filers
+    所以没有 same-or-similar 测试的 case study。如果跳:新雇主
+    重新跑 PERM 意味着 priority date 锁住但 I-140 portability 取决
+    于新岗位算不算 same-or-similar(staff ML infra vs current
+    backend platform 不太像);如果不跳:接受 post-cliff comp
+    stagnation 换 GC timeline 的 stability。一亩三分地上看到的
+    人都在喊"GC 没到手别动",但我看到的 staff infra 机会窗口
+    可能 18 个月后就没了。这个 tradeoff 应该怎么 weight?
+  expected_domains: [cn-sde-jobhunt/employer-switch, cn-sde-jobhunt/visa,
+                     cn-sde-jobhunt/offer-comp]
+  expected_entities: [H-1B, I-140, RSU, vesting-cliff, PERM,
+                      priority-date, sponsorship-history-of-employer,
+                      FAANG, series-C-plus, same-or-similar]
+  expected_personas: [senior-ic-already-passed-cliff,
+                      post-cliff-considering-startup]
+  expected_risk_surfaces: [rsu-cliff-timing,
+                           gc-timeline-vs-comp-cycle,
+                           retention-vs-departure,
+                           sponsorship-asymmetry,
+                           priority-date-preservation,
+                           sponsorship-fit, opportunity-cost,
+                           regret, timing]
