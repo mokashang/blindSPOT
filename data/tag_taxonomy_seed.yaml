@@ -64,6 +64,9 @@ entity:
   - Matter-of-Dhanasar           # USCIS precedent for EB-2 NIW eligibility
   - Section-245(k)               # INA §245(k); 180-day status-violation forgiveness for AOS
   - INA-§214(g)                  # statutory H-1B cap basis (65k + 20k US-master's)
+  - I-140-revocation-immunity-180day  # AC21 §106(c)(2) "duly approved": an I-140 approved
+                                      # for ≥180 days retains priority-date portability even
+                                      # if the petitioning employer later withdraws it
 
   # Procedural friction points
   - RFE
@@ -139,6 +142,17 @@ risk_surface:
   - rfe-risk-on-amended-i485     # USCIS-RFE risk on AC21 §106(c) I-485 portability
                                  # when new SOC code differs from PERM's SOC code;
                                  # same-or-similar denial -> new PERM at new employer
+  - f1-opt-unemployment-cap      # F-1 OPT has a 90-day cumulative unemployment cap;
+                                 # STEM-OPT extension raises the cumulative cap to 150 days.
+                                 # Exceeding terminates F-1 status. Critical under post-layoff.
+  - ead-renewal-authorization-gap  # EAD renewal must be filed within the 180-day window
+                                   # before expiry. Only specific categories get the 180-day
+                                   # auto-extension (H-4-EAD lost this protection in some
+                                   # USCIS interpretations 2018-2022 then partial restoration);
+                                   # gaps create work-authorization breaks
+  - i-485-ac21-180day-rule       # AC21 §106(c) portability requires the I-485 to be pending
+                                 # for ≥180 days before the applicant can change employers
+                                 # to a same-or-similar occupation without re-filing PERM/I-140
 
 persona:
   # Flat. Who the user is in this situation.
@@ -169,3 +183,15 @@ persona:
   - senior-eng-bytedance-offer-with-i140-approved      # senior IC weighing US-FAANG -> CN-tech
                                                        # (字节/腾讯/阿里) return offer w/ I-140 approved;
                                                        # family-coupling + i-140-retention-rule mechanics
+  - h1b-laid-off-second-grace-period                   # already used part of the 60-day grace
+                                                       # after first layoff, found a transfer mid-grace,
+                                                       # transfer employer also laid them off; second
+                                                       # 60-day clock running. Real edge case from
+                                                       # 2023-2024 tech-layoff wave
+  - married-to-citizen-mid-eb                          # H-1B holder mid-EB process marries a US
+                                                       # citizen; opens AOS-via-IR-1 (family-based)
+                                                       # path. Decision is whether to abandon
+                                                       # EB-2/EB-3 progress (priority date) and
+                                                       # switch to IR-1, which is current for
+                                                       # immediate-relatives but doesn't carry the
+                                                       # EB priority date
