@@ -28,6 +28,7 @@ entity:
   - H-1B
   - H-1B-transfer
   - H-1B-amendment
+  - H-1B-cap-exempt              # university / non-profit research employers
   - H-4
   - H-4-EAD
   - L-1
@@ -50,6 +51,7 @@ entity:
   - EB-2-NIW
   - EB-3
   - PERM
+  - Schedule-A                   # DOL fast-track PERM occupation list
   - I-140
   - I-485
   - I-765
@@ -57,6 +59,11 @@ entity:
   - consular-processing
   - advance-parole
   - priority-date
+  - same-or-similar              # AC21 §106(c) occupation-match test for I-140 portability
+  - SOC-code                     # Standard Occupational Classification; underpins same-or-similar
+  - Matter-of-Dhanasar           # USCIS precedent for EB-2 NIW eligibility
+  - Section-245(k)               # INA §245(k); 180-day status-violation forgiveness for AOS
+  - INA-§214(g)                  # statutory H-1B cap basis (65k + 20k US-master's)
 
   # Procedural friction points
   - RFE
@@ -64,6 +71,7 @@ entity:
   - lottery-selection
   - lottery-failure
   - priority-date-retrogression
+  - 221(g)                       # consular admin processing / visa-stamp hold
 
   # Comp / equity entities that intersect visa decisions
   - RSU
@@ -118,6 +126,10 @@ risk_surface:
   - info-asymmetry               # they know things you don't (esp. attorneys)
   - power-dynamics               # leverage in negotiation under visa pressure
   - family-coupling              # spouse / kids' status coupled to yours
+  - rsu-cliff-timing             # vest-cliff dynamics vs. job-change timing
+  - gc-timeline-vs-comp-cycle    # GC progress traded against comp / promo windows
+  - priority-date-preservation   # keeping the earlier PD when changing employers
+  - i-140-portability            # AC21 portability availability AND timing risk
 
 persona:
   # Flat. Who the user is in this situation.
