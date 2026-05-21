@@ -23,3 +23,12 @@ expected_risk_surfaces:
   - info-asymmetry
   - visa-status-pressure
   - lottery-failure
+expected_decisions: [3]
+expected_framings: [F1, F6]
+expected_blindspot_categories:
+  - day-1-cpt-legitimacy-judged-from-forum-consensus-not-uscis-adjudication-trend
+  - 一亩三分地-没问题-consensus-as-survivorship-biased-info-asymmetry
+  - reddit-r-h1b-uscis-deny-signal-weighed-without-base-rate-or-recency
+  - future-h1b-rfe-contamination-from-prior-day-1-cpt-history
+  - finite-stem-opt-runway-clock-pressuring-toward-the-cpt-shortcut
+  - cheap-15k-tuition-framing-omitting-downstream-visa-mechanic-cost

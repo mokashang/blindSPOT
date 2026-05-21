@@ -37,3 +37,12 @@ expected_risk_surfaces:
   - legal
   - lottery-failure
   - info-asymmetry
+expected_decisions: [3]
+expected_framings: [F1, F6]
+expected_blindspot_categories:
+  - day-1-cpt-used-in-year-1-of-ms-as-the-high-scrutiny-variant-uscis-targets
+  - 221g-administrative-processing-on-f1-re-entry-with-day-1-cpt-history
+  - future-h1b-petition-rfe-contamination-from-prior-day-1-cpt-status
+  - f1-restoration-via-real-program-re-enrollment-as-the-overlooked-clean-alternative
+  - finite-stem-opt-runway-clock-bounding-the-refile-next-year-bridge-plan
+  - friend-anecdote-保持身份-consensus-masking-individualized-visa-mechanic-mortality
