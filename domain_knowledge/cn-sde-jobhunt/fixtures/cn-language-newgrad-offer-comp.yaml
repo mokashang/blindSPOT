@@ -25,3 +25,12 @@ expected_risk_surfaces:
   - visa-status-pressure
   - family-coupling
   - opportunity-cost
+expected_decisions: [1, 9, 12]
+expected_framings: [F1, F2, F3, F6]
+expected_blindspot_categories:
+  - sponsor-willingness-not-equal-sponsor-track-record-on-layoff-prone-employer
+  - rsu-grant-headline-vs-risk-adjusted-value-under-layoff-exposure
+  - visa-security-weighting-as-utility-not-binary-with-no-status-backup
+  - sign-on-bonus-clawback-coupled-to-early-departure-under-status-loss
+  - layoff-history-as-leading-indicator-of-h1b-continuity-risk-not-just-comp-risk
+  - family-stability-preference-distorting-risk-weighting-on-comp-tradeoff

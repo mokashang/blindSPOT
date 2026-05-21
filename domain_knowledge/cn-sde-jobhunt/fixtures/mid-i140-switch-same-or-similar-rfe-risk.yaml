@@ -43,3 +43,12 @@ expected_risk_surfaces:
   - timing
   - info-asymmetry
   - regret
+expected_decisions: [4]
+expected_framings: [F1, F2, F6]
+expected_blindspot_categories:
+  - same-or-similar-duties-test-read-narrowly-on-soc-15-1252-vs-15-2051-jump
+  - dueling-counsel-opinions-as-info-asymmetry-not-resolvable-by-deferring-to-either
+  - portability-rfe-denial-cascading-into-new-perm-restart-at-new-employer
+  - title-jump-software-engineer-to-staff-ml-engineer-as-classification-flag-not-seniority-flag
+  - priority-date-preservation-contingent-on-portability-not-automatic-on-title-change
+  - aao-decision-trend-as-time-sensitive-risk-mispriced-by-optimistic-attorney
