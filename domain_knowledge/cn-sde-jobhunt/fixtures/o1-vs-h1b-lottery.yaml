@@ -21,3 +21,12 @@ expected_risk_surfaces:
   - opportunity-cost
   - info-asymmetry
   - regret
+expected_decisions: [3, 10]
+expected_framings: [F1, F4, F6]
+expected_blindspot_categories:
+  - o1a-evidentiary-bar-misjudged-from-publication-count-alone-without-criteria-mapping
+  - attorney-retainer-incentive-to-pitch-o1-decoupled-from-approval-odds
+  - stem-opt-runway-as-finite-clock-bounding-the-keep-playing-lottery-option
+  - o1-as-bridge-not-endpoint-green-card-path-still-unaddressed
+  - github-stars-and-citations-not-equal-uscis-recognized-extraordinary-ability-evidence
+  - sunk-lottery-attempts-biasing-toward-one-more-year-over-route-switch
