@@ -50,6 +50,26 @@ Each framing anchors one section in `blindspots.md` (§F1–§F6), with
 | F5 | Family-located optimization | §F5 | B-F5-1, B-F5-2, B-F5-3, B-F5-4, B-F5-5 |
 | F6 | Legal-mechanic rigor | §F6 | B-F6-1, B-F6-2, B-F6-3, B-F6-4, B-F6-5 |
 
+### Framings → fixtures
+
+| ID | Framing | V2 fixtures |
+|---|---|---|
+| F1 | Visa-security maximization | ac21-employer-switch-mid-perm-with-priority-date, bytedance-i140-approved-return-window, career-capital-vs-visa-security, cn-language-newgrad-offer-comp, h1b-lottery-not-selected-backup-paths, h4-ead-spouse-considering-h1b-primary-switch, layoff-on-h1b-with-h4-spouse, mid-i140-switch-same-or-similar-rfe-risk, mid-senior-ic-faang-to-non-sponsor-startup, newgrad-sponsor-willing-vs-faang-no-sponsor, non-stem-master-stem-pivot-for-opt-extension, o1-vs-h1b-lottery, offer-comparison-sponsorship-asymmetry, opt-stem-cap-gap-timing-fall-vs-spring-grad, parents-on-b2-childcare-aging-care-state-residency, phd-postdoc-to-industry-route-selection, post-cliff-startup-jump-vs-faang-gc-stability, postdoc-eb1a-vs-h1b-route, senior-ic-startup-vs-faang-with-i140-approved, solo-h1b-layoff-60-day-clock |
+| F2 | Long-term career capital | ac21-employer-switch-mid-perm-with-priority-date, bytedance-i140-approved-return-window, career-capital-vs-visa-security, cn-language-newgrad-offer-comp, mid-i140-switch-same-or-similar-rfe-risk, mid-senior-ic-faang-to-non-sponsor-startup, offer-comparison-sponsorship-asymmetry, phd-postdoc-to-industry-route-selection, post-cliff-startup-jump-vs-faang-gc-stability, postdoc-eb1a-vs-h1b-route, return-to-china-timing-eb2-backlog, senior-ic-startup-vs-faang-with-i140-approved |
+| F3 | Comp maximization in a 4-year window | cn-language-newgrad-offer-comp, mid-senior-ic-faang-to-non-sponsor-startup, newgrad-sponsor-willing-vs-faang-no-sponsor, non-stem-master-stem-pivot-for-opt-extension, offer-comparison-sponsorship-asymmetry, post-cliff-startup-jump-vs-faang-gc-stability, senior-ic-startup-vs-faang-with-i140-approved |
+| F4 | Return-to-China optionality | bytedance-i140-approved-return-window, h1b-lottery-not-selected-backup-paths, o1-vs-h1b-lottery, parents-on-b2-childcare-aging-care-state-residency, return-to-china-timing-eb2-backlog, solo-h1b-layoff-60-day-clock |
+| F5 | Family-located optimization | bytedance-i140-approved-return-window, h4-ead-spouse-considering-h1b-primary-switch, layoff-on-h1b-with-h4-spouse, parents-on-b2-childcare-aging-care-state-residency, return-to-china-timing-eb2-backlog |
+| F6 | Legal-mechanic rigor | ac21-employer-switch-mid-perm-with-priority-date, bytedance-i140-approved-return-window, cn-language-newgrad-offer-comp, h1b-lottery-not-selected-backup-paths, h4-ead-spouse-considering-h1b-primary-switch, layoff-on-h1b-with-h4-spouse, mid-i140-switch-same-or-similar-rfe-risk, mid-senior-ic-faang-to-non-sponsor-startup, newgrad-sponsor-willing-vs-faang-no-sponsor, non-stem-master-stem-pivot-for-opt-extension, o1-vs-h1b-lottery, offer-comparison-sponsorship-asymmetry, opt-stem-cap-gap-timing-fall-vs-spring-grad, parents-on-b2-childcare-aging-care-state-residency, phd-postdoc-to-industry-route-selection, post-cliff-startup-jump-vs-faang-gc-stability, postdoc-eb1a-vs-h1b-route, solo-h1b-layoff-60-day-clock |
+
+Derived from each fixture's `expected_framings` field in
+`domain_knowledge/cn-sde-jobhunt/fixtures/*.yaml` (slug = filename
+without `.yaml`); a fixture may exercise multiple framings and so
+appears under more than one row. Fixtures not yet carrying
+`expected_framings` (V1-only / mid-migration) are not represented
+here — at time of writing 21 of 23 fixtures carry the field
+(`day1-cpt-bridge-after-h1b-miss` and `day1-cpt-legitimacy-question`
+remain V1-only); a future refine run reconciles as those migrate.
+
 ---
 
 ## Entries
