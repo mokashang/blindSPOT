@@ -40,3 +40,12 @@ expected_risk_surfaces:
   - timing
   - opportunity-cost
   - info-asymmetry
+expected_decisions: [8, 10]
+expected_framings: [F1, F2, F6]
+expected_blindspot_categories:
+  - eb1a-extraordinary-ability-standard-conflated-with-niw-dhanasar-national-interest-prong-count
+  - cap-exempt-to-cap-subject-portability-treated-as-reliable-when-attorney-calls-it-underused
+  - h1b-cap-subject-lottery-odds-ignored-when-banking-on-portability-fallback
+  - advisor-recommendation-letter-quality-degraded-by-rushed-pre-departure-filing-timing
+  - parallel-petition-filing-burning-co-author-relationship-mid-review
+  - extraordinary-ability-self-petition-evidentiary-bar-overestimated-from-citation-count-alone

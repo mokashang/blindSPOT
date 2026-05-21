@@ -53,3 +53,12 @@ expected_risk_surfaces:
   - opportunity-cost
   - regret
   - timing
+expected_decisions: [1, 9]
+expected_framings: [F1, F2, F3, F6]
+expected_blindspot_categories:
+  - ac21-365-day-portability-unavailable-because-perm-never-filed-at-faang
+  - 60-day-grace-collapses-to-out-of-status-if-h1b-transfer-rfed-or-denied-mid-pending
+  - employer-zero-perm-i140-history-means-we-will-figure-it-out-is-an-empty-promise
+  - eb2-china-backlog-six-years-makes-gc-track-restart-cost-dominate-equity-upside
+  - career-capital-argument-weighed-without-pricing-status-restart-from-zero
+  - faang-promo-punt-leaves-gc-track-unstarted-so-staying-does-not-guarantee-progress

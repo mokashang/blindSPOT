@@ -26,3 +26,11 @@ expected_risk_surfaces:
   - opportunity-cost
   - regret
   - visa-status-pressure
+expected_decisions: [9]
+expected_framings: [F1, F2]
+expected_blindspot_categories:
+  - startup-never-sponsored-h1b-so-we-will-figure-it-out-is-an-unpriced-risk
+  - career-capital-maxim-applied-without-conditioning-on-visa-security-floor
+  - role-quality-vs-sponsorship-tradeoff-collapsed-into-a-false-binary
+  - sponsorship-history-bulletproof-at-big-tech-undervalued-against-boredom
+  - first-time-sponsor-rfe-and-prevailing-wage-risk-omitted-from-equity-comparison
